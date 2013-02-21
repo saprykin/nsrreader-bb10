@@ -6,6 +6,7 @@
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/ImageView>
+#include <bb/cascades/ActionItem>
 
 #include <QObject>
 
@@ -18,14 +19,21 @@ public:
     NSRReaderBB10(bb::cascades::Application *app);
     virtual ~NSRReaderBB10 () {}
 
-private slots:
+private Q_SLOTS:
     void onFileSelected (const QStringList& files);
     void onOpenActionTriggered ();
+    void onPrevPageActionTriggered ();
+    void onNextPageActionTriggered ();
 
 private:
+    void updateVisualControls ();
+
+    NSRReaderCore			*_core;
     NSRImageView			*_imageView;
     bb::cascades::pickers::FilePicker	*_filePicker;
-    NSRReaderCore			*_core;
+    bb::cascades::ActionItem		*_prevPageAction;
+    bb::cascades::ActionItem		*_nextPageAction;
+
 };
 
 #endif /* NSRREADERBB10_H_ */

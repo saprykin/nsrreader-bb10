@@ -7,7 +7,9 @@ using namespace bb::cascades;
 
 NSRReaderCore::NSRReaderCore (QObject *parent) :
 	QObject (parent),
-	_doc (NULL)
+	_doc (NULL),
+	_page (0),
+	_pagesCount (0)
 {
 }
 
@@ -33,8 +35,9 @@ NSRReaderCore::openDocument (const QString &path)
 	if (_doc == NULL)
 		return;
 
-	_doc->renderPage (1);
-	_currentPage = _doc->getCurrentPage ();
+	_pagesCount = _doc->getNumberOfPages ();
+
+	loadPage (PAGE_LOAD_CUSTOM, 1);
 }
 
 bool
@@ -54,11 +57,56 @@ NSRReaderCore::closeDocument ()
 		_doc = NULL;
 	}
 
+	_page = 0;
+	_pagesCount = 0;
 	_currentPage = Image ();
 }
 
 Image
-NSRReaderCore::getCurrentPage ()
+NSRReaderCore::getCurrentPage () const
 {
 	return _currentPage;
+}
+
+int
+NSRReaderCore::getCurrentPageNumber () const
+{
+	return _page;
+}
+
+int
+NSRReaderCore::getPagesCount () const
+{
+	return _pagesCount;
+}
+
+void
+NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
+{
+	if (_doc == NULL)
+		return;
+
+	int pageToLoad = _page;
+
+	switch (dir) {
+	case PAGE_LOAD_PREV:
+		pageToLoad -= 1;
+		break;
+	case PAGE_LOAD_NEXT:
+		pageToLoad += 1;
+		break;
+	case PAGE_LOAD_CUSTOM:
+		pageToLoad = pageNumber;
+		break;
+	default:
+		pageToLoad = _page;
+		break;
+	}
+
+	if (pageToLoad < 1 || pageToLoad > _pagesCount || pageToLoad == _page)
+		return;
+
+	_page = pageToLoad;
+	_doc->renderPage (pageToLoad);
+	_currentPage = _doc->getCurrentPage ();
 }
