@@ -7,8 +7,7 @@ using namespace bb::cascades;
 
 NSRReaderCore::NSRReaderCore (QObject *parent) :
 	QObject (parent),
-	_doc (NULL),
-	_currentPage (NULL)
+	_doc (NULL)
 {
 }
 
@@ -34,7 +33,7 @@ NSRReaderCore::openDocument (const QString &path)
 	if (_doc == NULL)
 		return;
 
-	_doc->renderPage (5);
+	_doc->renderPage (1);
 	_currentPage = _doc->getCurrentPage ();
 }
 
@@ -54,9 +53,11 @@ NSRReaderCore::closeDocument ()
 		delete _doc;
 		_doc = NULL;
 	}
+
+	_currentPage = Image ();
 }
 
-Image *
+Image
 NSRReaderCore::getCurrentPage ()
 {
 	return _currentPage;

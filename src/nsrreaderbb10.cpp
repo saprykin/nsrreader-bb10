@@ -55,7 +55,7 @@ void
 NSRReaderBB10::onFileSelected (const QStringList &files)
 {
 	_core->openDocument (files.first ());
-	_imageView->setImage (*_core->getCurrentPage());
+	_imageView->setImage (_core->getCurrentPage ());
 }
 
 void

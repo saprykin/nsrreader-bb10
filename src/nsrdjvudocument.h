@@ -27,7 +27,7 @@ public:
 	~NSRDjVuDocument();
 	int getNumberOfPages() const;
 	void renderPage(int page);
-	bb::cascades::Image * getCurrentPage ();
+	bb::cascades::Image getCurrentPage ();
 	bool isValid() const;
 	int getMaxZoom();
 	int getMinZoom();

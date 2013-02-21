@@ -157,10 +157,10 @@ int NSRPopplerDocument::getMinZoom()
 	return _cachedMinZoom;
 }
 
-Image * NSRPopplerDocument::getCurrentPage()
+Image NSRPopplerDocument::getCurrentPage()
 {
 	if (!_readyForLoad)
-		return new Image ();
+		return Image ();
 
 	SplashBitmap *bitmap = _dev->getBitmap();
 	int bw = bitmap->getWidth();
@@ -201,7 +201,7 @@ Image * NSRPopplerDocument::getCurrentPage()
 	_dev->startPage (0, NULL);
 	_readyForLoad = false;
 
-	return new Image (imgData);
+	return Image (imgData);
 }
 
 QString NSRPopplerDocument::getText()

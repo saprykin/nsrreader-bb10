@@ -60,7 +60,7 @@ public:
 	inline QString getDocumentPath () const {return _docPath;}
 	virtual int getNumberOfPages () const		= 0;
 	virtual void renderPage (int page)		= 0;
-	virtual bb::cascades::Image * getCurrentPage ()	= 0;
+	virtual bb::cascades::Image getCurrentPage ()	= 0;
 	virtual bool isValid ()	const			= 0;
 	virtual int ZoomIn ();
 	virtual int ZoomOut ();

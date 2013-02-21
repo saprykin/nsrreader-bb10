@@ -163,13 +163,13 @@ int NSRTIFFDocument::getMinZoom()
 		return (getMaxZoom() / 10) > 25 ? 25 : getMaxZoom() / 10;
 }
 
-Image * NSRTIFFDocument::getCurrentPage()
+Image NSRTIFFDocument::getCurrentPage()
 {
 	if (!_readyForLoad)
-		return new Image ();
+		return Image ();
 
 	if (_image.isNull())
-		return new Image ();
+		return Image ();
 
 	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
 			       _image.width (),
@@ -201,5 +201,5 @@ Image * NSRTIFFDocument::getCurrentPage()
 		addr += stride;
 	}
 
-	return new Image (imgData);
+	return Image (imgData);
 }

@@ -16,14 +16,15 @@ public:
 	NSRReaderCore (QObject *parent = 0);
 	virtual ~NSRReaderCore ();
 
-	Q_INVOKABLE void openDocument (const QString &path);
-	Q_INVOKABLE bool isDocumentOpened () const;
-	Q_INVOKABLE void closeDocument ();
-	Q_INVOKABLE bb::cascades::Image * getCurrentPage ();
+	void openDocument (const QString &path);
+	bool isDocumentOpened () const;
+	void closeDocument ();
+	bb::cascades::Image getCurrentPage ();
 
 private:
 	NSRAbstractDocument	*_doc;
-	bb::cascades::Image	* _currentPage;
+	bb::cascades::Image	_currentPage;
+
 };
 
 #endif /* NSRREADERCORE_H_ */

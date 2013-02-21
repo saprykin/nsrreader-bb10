@@ -90,9 +90,9 @@ void NSRTextDocument::renderPage (int page)
 	}
 }
 
-Image * NSRTextDocument::getCurrentPage ()
+Image NSRTextDocument::getCurrentPage ()
 {
-	return new Image ();
+	return Image ();
 }
 
 bool NSRTextDocument::isValid () const

@@ -369,13 +369,13 @@ int NSRDjVuDocument::getMinZoom()
 	return _cachedMinZoom;
 }
 
-Image * NSRDjVuDocument::getCurrentPage()
+Image NSRDjVuDocument::getCurrentPage()
 {
 	if (!_readyForLoad)
-		return new Image ();
+		return Image ();
 
 	if (_imgData == NULL)
-		return new Image ();
+		return Image ();
 
 	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
 			       _imgSize.width (),
@@ -401,7 +401,7 @@ Image * NSRDjVuDocument::getCurrentPage()
 	_imgData = NULL;
 	_readyForLoad = false;
 
-	return new Image (imgData);
+	return Image (imgData);
 }
 
 QString NSRDjVuDocument::getText()
