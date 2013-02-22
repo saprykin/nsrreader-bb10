@@ -7,11 +7,12 @@
 #include <bb/ImageData>
 
 #include "nsrabstractdocument.h"
+#include "nsrrenderthread.h"
 
 class NSRReaderCore: public QObject
 {
 	Q_OBJECT
-
+	Q_ENUMS (PageLoad)
 public:
 	enum PageLoad {
 		PAGE_LOAD_PREV		= 0,
@@ -30,8 +31,15 @@ public:
 	int getPagesCount () const;
 	void loadPage (PageLoad dir, int pageNumber = 0);
 
+Q_SIGNALS:
+	void pageRendered (int number);
+
+private Q_SLOTS:
+	void onRenderDone ();
+
 private:
 	NSRAbstractDocument	*_doc;
+	NSRRenderThread		*_thread;
 	bb::cascades::Image	_currentPage;
 	int			_page;
 	int			_pagesCount;

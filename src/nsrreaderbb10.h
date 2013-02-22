@@ -24,6 +24,7 @@ private Q_SLOTS:
     void onOpenActionTriggered ();
     void onPrevPageActionTriggered ();
     void onNextPageActionTriggered ();
+    void onPageRendered (int number);
 
 private:
     void updateVisualControls ();

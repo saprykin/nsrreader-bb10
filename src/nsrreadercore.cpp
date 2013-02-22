@@ -8,9 +8,13 @@ using namespace bb::cascades;
 NSRReaderCore::NSRReaderCore (QObject *parent) :
 	QObject (parent),
 	_doc (NULL),
+	_thread (NULL),
 	_page (0),
 	_pagesCount (0)
 {
+	_thread = new NSRRenderThread (this);
+
+	connect (_thread, SIGNAL (renderDone ()), this, SLOT (onRenderDone ()));
 }
 
 NSRReaderCore::~NSRReaderCore ()
@@ -81,6 +85,14 @@ NSRReaderCore::getPagesCount () const
 }
 
 void
+NSRReaderCore::onRenderDone ()
+{
+	_currentPage = _doc->getCurrentPage ();
+
+	emit pageRendered (_thread->getPage ());
+}
+
+void
 NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
 {
 	if (_doc == NULL)
@@ -107,6 +119,6 @@ NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
 		return;
 
 	_page = pageToLoad;
-	_doc->renderPage (pageToLoad);
-	_currentPage = _doc->getCurrentPage ();
+	_thread->setRenderContext (_doc, pageToLoad);
+	_thread->start ();
 }

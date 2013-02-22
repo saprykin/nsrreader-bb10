@@ -59,6 +59,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
 		 this, SLOT (onFileSelected (const QStringList&)));
+	connect (_core, SIGNAL (pageRendered (int)), this, SLOT (onPageRendered (int)));
 
 	Application::instance()->setScene (page);
 
@@ -69,8 +70,6 @@ void
 NSRReaderBB10::onFileSelected (const QStringList &files)
 {
 	_core->openDocument (files.first ());
-	_imageView->setImage (_core->getCurrentPage ());
-
 	updateVisualControls ();
 }
 
@@ -84,8 +83,6 @@ void
 NSRReaderBB10::onPrevPageActionTriggered ()
 {
 	_core->loadPage (NSRReaderCore::PAGE_LOAD_PREV);
-	_imageView->setImage (_core->getCurrentPage ());
-
 	updateVisualControls ();
 }
 
@@ -93,9 +90,15 @@ void
 NSRReaderBB10::onNextPageActionTriggered ()
 {
 	_core->loadPage (NSRReaderCore::PAGE_LOAD_NEXT);
-	_imageView->setImage (_core->getCurrentPage ());
-
 	updateVisualControls ();
+}
+
+void
+NSRReaderBB10::onPageRendered (int number)
+{
+	Q_UNUSED (number)
+
+	_imageView->setImage (_core->getCurrentPage ());
 }
 
 void
