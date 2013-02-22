@@ -43,6 +43,10 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
 
+	openItem->setImageSource (QUrl ("asset:///open.png"));
+	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
+	_nextPageAction->setImageSource (QUrl ("asset:///next.png"));
+
 	connect (openItem, SIGNAL (triggered ()),
 		 this, SLOT (onOpenActionTriggered ()));
 	connect (_prevPageAction, SIGNAL (triggered ()),
