@@ -1,19 +1,73 @@
 #include "nsrrenderthread.h"
 
+#include <QMutexLocker>
+
 NSRRenderThread::NSRRenderThread (QObject *parent) :
 	QThread (parent),
-	_doc (NULL),
-	_page (0)
+	_doc (NULL)
 {
 }
 
-void NSRRenderThread::run()
+void
+NSRRenderThread::setRenderContext (NSRAbstractDocument* doc)
 {
-	if (_doc == NULL || _page < 1) {
+	_doc = doc;
+}
+
+NSRRenderThread::~NSRRenderThread ()
+{
+	QMutexLocker locker (&_requestedMutex);
+	QMutexLocker rlocker (&_renderedMutex);
+
+	_requestedPages.clear ();
+	_renderedPages.clear ();
+}
+
+void
+NSRRenderThread::addRequest (NSRRenderedPage& page)
+{
+	QMutexLocker locker (&_requestedMutex);
+	_requestedPages.append (page);
+}
+
+void
+NSRRenderThread::cancelRequests ()
+{
+	QMutexLocker locker (&_requestedMutex);
+	_requestedPages.clear ();
+}
+
+NSRRenderedPage
+NSRRenderThread::getRenderedPage ()
+{
+	QMutexLocker locker (&_renderedMutex);
+
+	return _renderedPages.isEmpty () ? NSRRenderedPage () :
+					  _renderedPages.takeFirst ();
+}
+
+void
+NSRRenderThread::run ()
+{
+	QMutexLocker locker (&_requestedMutex);
+
+	if (_doc == NULL || _requestedPages.isEmpty ()) {
 		emit renderDone ();
 		return;
 	}
 
-	_doc->renderPage (_page);
+	NSRRenderedPage page = _requestedPages.takeFirst ();
+	locker.unlock ();
+
+	if (!(page.getNumber () > 0) || page.getNumber () > _doc->getNumberOfPages ())
+		return;
+
+	_doc->renderPage (page.getNumber ());
+	page.setImage (_doc->getCurrentPage ());
+
+	_renderedMutex.lock ();
+	_renderedPages.append (page);
+	_renderedMutex.unlock ();
+
 	emit renderDone ();
 }

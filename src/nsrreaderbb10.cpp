@@ -102,7 +102,7 @@ NSRReaderBB10::onPageRendered (int number)
 {
 	Q_UNUSED (number)
 
-	_imageView->setImage (_core->getCurrentPage ());
+	_imageView->setImage (_core->getCurrentPage().getImage ());
 }
 
 void
@@ -113,7 +113,7 @@ NSRReaderBB10::updateVisualControls ()
 		_nextPageAction->setEnabled (false);
 	} else {
 		int totalPages = _core->getPagesCount ();
-		int currentPage = _core->getCurrentPageNumber ();
+		int currentPage = _core->getCurrentPage().getNumber ();
 
 		_prevPageAction->setEnabled (totalPages != 1 && currentPage > 1);
 		_nextPageAction->setEnabled (totalPages != 1 && currentPage != totalPages);

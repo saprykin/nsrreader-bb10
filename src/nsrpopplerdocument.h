@@ -21,7 +21,7 @@ public:
 	~NSRPopplerDocument();
 	int getNumberOfPages() const;
 	void renderPage(int page);
-	bb::cascades::Image getCurrentPage ();
+	bb::ImageData getCurrentPage ();
 	bool isValid() const;
 	int getMaxZoom();
 	int getMinZoom();

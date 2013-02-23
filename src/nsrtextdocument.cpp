@@ -8,8 +8,6 @@
 #include <QTextCodec>
 #include <QDebug>
 
-using namespace bb::cascades;
-
 #define NSR_TEXT_PAGE_SIZE	5120
 #define NSR_TEXT_MIN_ZOOM	25
 #define NSR_TEXT_MAX_ZOOM	400
@@ -90,9 +88,9 @@ void NSRTextDocument::renderPage (int page)
 	}
 }
 
-Image NSRTextDocument::getCurrentPage ()
+bb::ImageData NSRTextDocument::getCurrentPage ()
 {
-	return Image ();
+	return bb::ImageData ();
 }
 
 bool NSRTextDocument::isValid () const

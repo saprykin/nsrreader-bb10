@@ -3,11 +3,9 @@
 
 #include <QObject.h>
 
-#include <bb/cascades/Image>
-#include <bb/ImageData>
-
 #include "nsrabstractdocument.h"
 #include "nsrrenderthread.h"
+#include "nsrrenderedpage.h"
 
 class NSRReaderCore: public QObject
 {
@@ -26,8 +24,7 @@ public:
 	void openDocument (const QString &path);
 	bool isDocumentOpened () const;
 	void closeDocument ();
-	bb::cascades::Image getCurrentPage () const;
-	int getCurrentPageNumber () const;
+	NSRRenderedPage getCurrentPage () const;
 	int getPagesCount () const;
 	void loadPage (PageLoad dir, int pageNumber = 0);
 
@@ -40,8 +37,7 @@ private Q_SLOTS:
 private:
 	NSRAbstractDocument	*_doc;
 	NSRRenderThread		*_thread;
-	bb::cascades::Image	_currentPage;
-	int			_page;
+	NSRRenderedPage		_currentPage;
 	int			_pagesCount;
 };
 

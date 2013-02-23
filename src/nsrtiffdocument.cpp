@@ -2,8 +2,6 @@
 
 #include <math.h>
 
-using namespace bb::cascades;
-
 NSRTIFFDocument::NSRTIFFDocument(const QString& file, QObject *parent) :
 	NSRAbstractDocument (file, parent),
 	_tiff (NULL),
@@ -163,13 +161,13 @@ int NSRTIFFDocument::getMinZoom()
 		return (getMaxZoom() / 10) > 25 ? 25 : getMaxZoom() / 10;
 }
 
-Image NSRTIFFDocument::getCurrentPage()
+bb::ImageData NSRTIFFDocument::getCurrentPage()
 {
 	if (!_readyForLoad)
-		return Image ();
+		return bb::ImageData ();
 
 	if (_image.isNull())
-		return Image ();
+		return bb::ImageData ();
 
 	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
 			       _image.width (),
@@ -201,5 +199,5 @@ Image NSRTIFFDocument::getCurrentPage()
 		addr += stride;
 	}
 
-	return Image (imgData);
+	return imgData;
 }

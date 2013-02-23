@@ -2,14 +2,12 @@
 #include "nsrpopplerdocument.h"
 
 #include <QtCore/QFile>
-
-using namespace bb::cascades;
+#include <QtCore/QFileInfo>
 
 NSRReaderCore::NSRReaderCore (QObject *parent) :
 	QObject (parent),
 	_doc (NULL),
 	_thread (NULL),
-	_page (0),
 	_pagesCount (0)
 {
 	_thread = new NSRRenderThread (this);
@@ -61,21 +59,14 @@ NSRReaderCore::closeDocument ()
 		_doc = NULL;
 	}
 
-	_page = 0;
 	_pagesCount = 0;
-	_currentPage = Image ();
+	_currentPage = NSRRenderedPage ();
 }
 
-Image
+NSRRenderedPage
 NSRReaderCore::getCurrentPage () const
 {
 	return _currentPage;
-}
-
-int
-NSRReaderCore::getCurrentPageNumber () const
-{
-	return _page;
 }
 
 int
@@ -87,18 +78,18 @@ NSRReaderCore::getPagesCount () const
 void
 NSRReaderCore::onRenderDone ()
 {
-	_currentPage = _doc->getCurrentPage ();
+	_currentPage = _thread->getRenderedPage ();
 
-	emit pageRendered (_thread->getPage ());
+	emit pageRendered (_currentPage.getNumber ());
 }
 
 void
 NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
 {
-	if (_doc == NULL)
+	if (_doc == NULL || _thread->isRunning ())
 		return;
 
-	int pageToLoad = _page;
+	int pageToLoad = _currentPage.getNumber ();
 
 	switch (dir) {
 	case PAGE_LOAD_PREV:
@@ -111,14 +102,17 @@ NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
 		pageToLoad = pageNumber;
 		break;
 	default:
-		pageToLoad = _page;
+		pageToLoad = _currentPage.getNumber ();
 		break;
 	}
 
-	if (pageToLoad < 1 || pageToLoad > _pagesCount || pageToLoad == _page)
+	if (pageToLoad < 1 || pageToLoad > _pagesCount ||
+	    pageToLoad == _currentPage.getNumber ())
 		return;
 
-	_page = pageToLoad;
-	_thread->setRenderContext (_doc, pageToLoad);
+	NSRRenderedPage request (pageToLoad);
+
+	_thread->setRenderContext (_doc);
+	_thread->addRequest (request);
 	_thread->start ();
 }

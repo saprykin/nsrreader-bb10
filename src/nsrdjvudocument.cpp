@@ -4,8 +4,6 @@
 
 #include <QString>
 
-using namespace bb::cascades;
-
 /* DjVu stuff for text extraction */
 #define S(n,s) (n = miniexp_symbol(s))
 
@@ -369,13 +367,13 @@ int NSRDjVuDocument::getMinZoom()
 	return _cachedMinZoom;
 }
 
-Image NSRDjVuDocument::getCurrentPage()
+bb::ImageData NSRDjVuDocument::getCurrentPage()
 {
 	if (!_readyForLoad)
-		return Image ();
+		return bb::ImageData ();
 
 	if (_imgData == NULL)
-		return Image ();
+		return bb::ImageData ();
 
 	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
 			       _imgSize.width (),
@@ -401,7 +399,7 @@ Image NSRDjVuDocument::getCurrentPage()
 	_imgData = NULL;
 	_readyForLoad = false;
 
-	return Image (imgData);
+	return imgData;
 }
 
 QString NSRDjVuDocument::getText()

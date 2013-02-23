@@ -7,8 +7,6 @@
 #include <QMutex>
 #include <QFile>
 
-using namespace bb::cascades;
-
 int NSRPopplerDocument::_refcount = 0;
 
 QMutex mutex;
@@ -157,10 +155,10 @@ int NSRPopplerDocument::getMinZoom()
 	return _cachedMinZoom;
 }
 
-Image NSRPopplerDocument::getCurrentPage()
+bb::ImageData NSRPopplerDocument::getCurrentPage()
 {
 	if (!_readyForLoad)
-		return Image ();
+		return bb::ImageData ();
 
 	SplashBitmap *bitmap = _dev->getBitmap();
 	int bw = bitmap->getWidth();
@@ -192,7 +190,6 @@ Image NSRPopplerDocument::getCurrentPage()
 				addr[j * 4 + 2] = inAddr[j * 3 + 0];
 				addr[j * 4 + 3] = 255;
 			}
-
 		}
 
 		addr += stride;
@@ -201,7 +198,7 @@ Image NSRPopplerDocument::getCurrentPage()
 	_dev->startPage (0, NULL);
 	_readyForLoad = false;
 
-	return Image (imgData);
+	return imgData;
 }
 
 QString NSRPopplerDocument::getText()
