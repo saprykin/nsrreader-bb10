@@ -38,7 +38,6 @@ private:
 	NSRAbstractDocument	*_doc;
 	NSRRenderThread		*_thread;
 	NSRRenderedPage		_currentPage;
-	int			_pagesCount;
 };
 
 #endif /* NSRREADERCORE_H_ */

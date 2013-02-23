@@ -7,8 +7,7 @@
 NSRReaderCore::NSRReaderCore (QObject *parent) :
 	QObject (parent),
 	_doc (NULL),
-	_thread (NULL),
-	_pagesCount (0)
+	_thread (NULL)
 {
 	_thread = new NSRRenderThread (this);
 
@@ -37,8 +36,6 @@ NSRReaderCore::openDocument (const QString &path)
 	if (_doc == NULL)
 		return;
 
-	_pagesCount = _doc->getNumberOfPages ();
-
 	loadPage (PAGE_LOAD_CUSTOM, 1);
 }
 
@@ -59,7 +56,6 @@ NSRReaderCore::closeDocument ()
 		_doc = NULL;
 	}
 
-	_pagesCount = 0;
 	_currentPage = NSRRenderedPage ();
 }
 
@@ -72,7 +68,10 @@ NSRReaderCore::getCurrentPage () const
 int
 NSRReaderCore::getPagesCount () const
 {
-	return _pagesCount;
+	if (_doc == NULL)
+		return 0;
+
+	return _doc->getNumberOfPages ();
 }
 
 void
@@ -106,7 +105,7 @@ NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
 		break;
 	}
 
-	if (pageToLoad < 1 || pageToLoad > _pagesCount ||
+	if (pageToLoad < 1 || pageToLoad > _doc->getNumberOfPages () ||
 	    pageToLoad == _currentPage.getNumber ())
 		return;
 
