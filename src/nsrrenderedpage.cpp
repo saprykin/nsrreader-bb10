@@ -17,6 +17,7 @@ NSRRenderedPage::NSRRenderedPage (const NSRRenderedPage& page) :
 {
 	_image = page._image;
 	_number = page._number;
+	_text = page._text;
 }
 
 NSRRenderedPage::~NSRRenderedPage ()
@@ -29,6 +30,7 @@ NSRRenderedPage::operator = (const NSRRenderedPage& page)
 	if (this != &page) {
 		_image = page._image;
 		_number = page._number;
+		_text = page._text;
 	}
 
 	return *this;
@@ -52,10 +54,10 @@ NSRRenderedPage::getImage () const
 	return _image;
 }
 
-void
-NSRRenderedPage::setNumber (int number)
+QString
+NSRRenderedPage::getText () const
 {
-	_number = number;
+	return _text;
 }
 
 bool
@@ -65,9 +67,22 @@ NSRRenderedPage::isValid () const
 }
 
 void
+NSRRenderedPage::setNumber (int number)
+{
+	_number = number;
+}
+
+void
 NSRRenderedPage::setImage (bb::ImageData img)
 {
 	_image = img;
 }
+
+void
+NSRRenderedPage::setText (const QString& text)
+{
+	_text = text;
+}
+
 
 

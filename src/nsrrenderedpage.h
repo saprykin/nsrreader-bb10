@@ -19,14 +19,17 @@ public:
 	int getNumber () const;
 	QSize getSize () const;
 	bb::ImageData getImage () const;
+	QString getText () const;
 	bool isValid () const;
 
 	void setNumber (int number);
 	void setImage (bb::ImageData img);
+	void setText (const QString &text);
 
 private:
 	bb::ImageData		_image;
 	int			_number;
+	QString			_text;
 };
 
 #endif /* NSRRENDEREDPAGE_H_ */
