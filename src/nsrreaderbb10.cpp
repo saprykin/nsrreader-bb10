@@ -118,7 +118,7 @@ NSRReaderBB10::onPageRendered (int number)
 {
 	Q_UNUSED (number)
 
-	_imageView->setImage (_core->getCurrentPage().getImage ());
+	_imageView->setPage (_core->getCurrentPage());
 	updateVisualControls ();
 }
 
@@ -206,6 +206,6 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 	toast->setBody (errorStr);
 	toast->show ();
 
-	_imageView->clearImage ();
+	_imageView->resetPage ();
 	updateVisualControls ();
 }
