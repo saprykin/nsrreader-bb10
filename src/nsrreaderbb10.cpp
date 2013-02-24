@@ -20,17 +20,22 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_imageView (NULL),
 	_filePicker (NULL),
 	_prevPageAction (NULL),
-	_nextPageAction (NULL)
+	_nextPageAction (NULL),
+	_indicator (NULL)
 {
 	Container *rootContainer = new Container ();
 	rootContainer->setLayout (DockLayout::create ());
-	rootContainer->setHorizontalAlignment (HorizontalAlignment::Center);
-	rootContainer->setVerticalAlignment (VerticalAlignment::Center);
+	rootContainer->setHorizontalAlignment (HorizontalAlignment::Fill);
+	rootContainer->setVerticalAlignment (VerticalAlignment::Fill);
 
 	_imageView = new NSRImageView ();
 	_imageView->setHorizontalAlignment (HorizontalAlignment::Center);
 	_imageView->setVerticalAlignment (VerticalAlignment::Center);
+	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
+						.vertical(VerticalAlignment::Fill);
+
 	rootContainer->add (_imageView);
+	rootContainer->add (_indicator);
 	rootContainer->setBackground (Color::Black);
 
 	Page *page = new Page ();
@@ -64,6 +69,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
 		 this, SLOT (onFileSelected (const QStringList&)));
 	connect (_core, SIGNAL (pageRendered (int)), this, SLOT (onPageRendered (int)));
+	connect (_core, SIGNAL (needIndicator (bool)), this, SLOT (setIndicatorEnabled (bool)));
 
 	Application::instance()->setScene (page);
 
@@ -118,4 +124,13 @@ NSRReaderBB10::updateVisualControls ()
 		_prevPageAction->setEnabled (totalPages != 1 && currentPage > 1);
 		_nextPageAction->setEnabled (totalPages != 1 && currentPage != totalPages);
 	}
+}
+
+void
+NSRReaderBB10::setIndicatorEnabled (bool enabled)
+{
+	if (enabled)
+		_indicator->start ();
+	else
+		_indicator->stop ();
 }

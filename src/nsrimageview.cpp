@@ -15,7 +15,7 @@ NSRImageView::NSRImageView (Container *parent) :
 	_rootContainer->setLayout (DockLayout::create ());
 	_imageView = ImageView::create().horizontal(HorizontalAlignment::Center)
 					.vertical(VerticalAlignment::Center);
-	_rootContainer->setBackground (Color::Black);
+
 	_rootContainer->add (_imageView);
 	setRoot (_rootContainer);
 }

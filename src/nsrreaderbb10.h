@@ -7,6 +7,7 @@
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/ImageView>
 #include <bb/cascades/ActionItem>
+#include <bb/cascades/ActivityIndicator>
 
 #include <QObject>
 
@@ -25,6 +26,7 @@ private Q_SLOTS:
     void onPrevPageActionTriggered ();
     void onNextPageActionTriggered ();
     void onPageRendered (int number);
+    void setIndicatorEnabled (bool enabled);
 
 private:
     void updateVisualControls ();
@@ -34,6 +36,7 @@ private:
     bb::cascades::pickers::FilePicker	*_filePicker;
     bb::cascades::ActionItem		*_prevPageAction;
     bb::cascades::ActionItem		*_nextPageAction;
+    bb::cascades::ActivityIndicator	*_indicator;
 
 };
 

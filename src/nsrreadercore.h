@@ -30,6 +30,7 @@ public:
 
 Q_SIGNALS:
 	void pageRendered (int number);
+	void needIndicator (bool enabled);
 
 private Q_SLOTS:
 	void onRenderDone ();

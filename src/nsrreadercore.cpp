@@ -79,6 +79,7 @@ NSRReaderCore::onRenderDone ()
 {
 	_currentPage = _thread->getRenderedPage ();
 
+	emit needIndicator (false);
 	emit pageRendered (_currentPage.getNumber ());
 }
 
@@ -110,6 +111,8 @@ NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
 		return;
 
 	NSRRenderedPage request (pageToLoad);
+
+	emit needIndicator (true);
 
 	_thread->setRenderContext (_doc);
 	_thread->addRequest (request);
