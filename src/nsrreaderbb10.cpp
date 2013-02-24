@@ -68,6 +68,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_filePicker->setTitle ("Select file");
 	_filePicker->setMode (FilePickerMode::Picker);
 	_filePicker->setType (FileType::Other);
+	_filePicker->setFilter (QStringList ("*.pdf") << "*.djvu" <<
+					     "*.tiff" << "*.tif" << "*.txt");
 
 	_core = new NSRReaderCore (this);
 

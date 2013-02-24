@@ -1,5 +1,8 @@
 #include "nsrreadercore.h"
 #include "nsrpopplerdocument.h"
+#include "nsrdjvudocument.h"
+#include "nsrtiffdocument.h"
+#include "nsrtextdocument.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
@@ -32,8 +35,16 @@ NSRReaderCore::openDocument (const QString &path)
 
 	closeDocument ();
 
-	if (fileInfo.suffix().toLower () == "pdf")
+	QString suffix = fileInfo.suffix().toLower ();
+
+	if (suffix == "pdf")
 		_doc = new NSRPopplerDocument (path);
+	else if (suffix == "djvu")
+		_doc = new NSRDjVuDocument (path);
+	else if (suffix == "tiff" || suffix == "tif")
+		_doc = new NSRTIFFDocument (path);
+	else
+		_doc = new NSRTextDocument (path);
 
 	if (!_doc->isValid ()) {
 		/* Check if we need password */
