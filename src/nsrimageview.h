@@ -7,6 +7,7 @@
 #include <bb/cascades/Container>
 #include <bb/cascades/ImageView>
 #include <bb/cascades/Image>
+#include <bb/cascades/ScrollView>
 
 class NSRImageView: public bb::cascades::CustomControl
 {
@@ -25,7 +26,7 @@ private slots:
 	void onHeightChanged (float height);
 
 private:
-	bb::cascades::Container		*_rootContainer;
+	bb::cascades::ScrollView	*_rootContainer;
 	bb::cascades::ImageView		*_imageView;
 };
 

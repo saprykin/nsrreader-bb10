@@ -34,8 +34,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	rootContainer->setVerticalAlignment (VerticalAlignment::Fill);
 
 	_imageView = new NSRImageView ();
-	_imageView->setHorizontalAlignment (HorizontalAlignment::Center);
-	_imageView->setVerticalAlignment (VerticalAlignment::Center);
+	_imageView->setHorizontalAlignment (HorizontalAlignment::Fill);
+	_imageView->setVerticalAlignment (VerticalAlignment::Fill);
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
 						.vertical(VerticalAlignment::Fill);
 
@@ -148,6 +148,8 @@ NSRReaderBB10::disableVisualControls ()
 void
 NSRReaderBB10::onIndicatorRequested (bool enabled)
 {
+	_indicator->setVisible (enabled);
+
 	if (enabled)
 		_indicator->start ();
 	else

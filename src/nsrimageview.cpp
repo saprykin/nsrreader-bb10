@@ -5,19 +5,26 @@
 
 using namespace bb::cascades;
 
+#define NSR_LOGO_WELCOME "asset:///nsrlogo-welcome.png"
+
 NSRImageView::NSRImageView (Container *parent) :
 	CustomControl (parent),
 	_rootContainer (NULL),
 	_imageView (NULL)
 {
-	_rootContainer = Container::create().horizontal(HorizontalAlignment::Center)
-					    .vertical(VerticalAlignment::Center);
-	_rootContainer->setLayout (DockLayout::create ());
+	_rootContainer = ScrollView::create().horizontal(HorizontalAlignment::Fill)
+					     .vertical(VerticalAlignment::Fill)
+					     .scrollMode (ScrollMode::Both);
 	_imageView = ImageView::create().horizontal(HorizontalAlignment::Center)
 					.vertical(VerticalAlignment::Center);
-	_imageView->setImageSource (QUrl ("asset:///nsrlogo-welcome.png"));
+	_imageView->setImageSource (QUrl (NSR_LOGO_WELCOME));
 
-	_rootContainer->add (_imageView);
+	Container *container = Container::create().horizontal(HorizontalAlignment::Fill)
+						  .vertical(VerticalAlignment::Fill);
+	container->setLayout (DockLayout::create ());
+	container->add (_imageView);
+
+	_rootContainer->setContent (container);
 	setRoot (_rootContainer);
 }
 
@@ -52,5 +59,5 @@ NSRImageView::setImage (const Image &img)
 void
 NSRImageView::clearImage ()
 {
-	_imageView->setImageSource (QUrl ("asset:///nsrlogo-welcome.png"));
+	_imageView->setImageSource (QUrl (NSR_LOGO_WELCOME));
 }
