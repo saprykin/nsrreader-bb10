@@ -65,6 +65,11 @@ NSRRenderThread::run ()
 	_doc->renderPage (page.getNumber ());
 	page.setImage (_doc->getCurrentPage ());
 
+	_doc->setTextOnly (true);
+	_doc->renderPage (page.getNumber ());
+	page.setText (_doc->getText ());
+	_doc->setTextOnly (false);
+
 	_renderedMutex.lock ();
 	_renderedPages.append (page);
 	_renderedMutex.unlock ();
