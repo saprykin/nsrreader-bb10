@@ -61,7 +61,7 @@ NSRRenderedPage::setNumber (int number)
 bool
 NSRRenderedPage::isValid () const
 {
-	return _number > 0 && !_image.isValid ();
+	return _number > 0 && _image.isValid ();
 }
 
 void
