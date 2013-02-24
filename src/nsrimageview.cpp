@@ -15,6 +15,7 @@ NSRImageView::NSRImageView (Container *parent) :
 	_rootContainer->setLayout (DockLayout::create ());
 	_imageView = ImageView::create().horizontal(HorizontalAlignment::Center)
 					.vertical(VerticalAlignment::Center);
+	_imageView->setImageSource (QUrl ("asset:///nsrlogo-welcome.png"));
 
 	_rootContainer->add (_imageView);
 	setRoot (_rootContainer);
@@ -51,5 +52,5 @@ NSRImageView::setImage (const Image &img)
 void
 NSRImageView::clearImage ()
 {
-	_imageView->resetImage ();
+	_imageView->setImageSource (QUrl ("asset:///nsrlogo-welcome.png"));
 }
