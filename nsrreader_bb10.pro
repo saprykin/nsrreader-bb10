@@ -15,5 +15,6 @@ LIBS += -lfreetype
 LIBS += -lz
 LIBS += -lbbcascadespickers
 LIBS += -lbb
+LIBS += -lbbsystem
 
 include(config.pri)

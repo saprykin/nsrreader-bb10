@@ -11,6 +11,9 @@
 #include <bb/cascades/Page>
 #include <bb/cascades/Color>
 
+#include <bb/system/SystemToast>
+
+using namespace bb::system;
 using namespace bb::cascades;
 using namespace bb::cascades::pickers;
 
@@ -22,7 +25,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_openAction (NULL),
 	_prevPageAction (NULL),
 	_nextPageAction (NULL),
-	_indicator (NULL)
+	_indicator (NULL),
+	_prompt (NULL)
 {
 	Container *rootContainer = new Container ();
 	rootContainer->setLayout (DockLayout::create ());
@@ -70,7 +74,10 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
 		 this, SLOT (onFileSelected (const QStringList&)));
 	connect (_core, SIGNAL (pageRendered (int)), this, SLOT (onPageRendered (int)));
-	connect (_core, SIGNAL (needIndicator (bool)), this, SLOT (setIndicatorEnabled (bool)));
+	connect (_core, SIGNAL (needIndicator (bool)), this, SLOT (onIndicatorRequested (bool)));
+	connect (_core, SIGNAL (needPassword ()), this, SLOT (onPasswordRequested ()));
+	connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::DocumentError)),
+		 this, SLOT (onErrorWhileOpening (NSRAbstractDocument::DocumentError)));
 
 	Application::instance()->setScene (page);
 
@@ -139,10 +146,62 @@ NSRReaderBB10::disableVisualControls ()
 }
 
 void
-NSRReaderBB10::setIndicatorEnabled (bool enabled)
+NSRReaderBB10::onIndicatorRequested (bool enabled)
 {
 	if (enabled)
 		_indicator->start ();
 	else
 		_indicator->stop ();
+}
+
+void
+NSRReaderBB10::onPasswordRequested ()
+{
+	if (_prompt != NULL)
+		return;
+
+	_prompt = new SystemPrompt (this);
+
+	_prompt->setTitle (trUtf8 ("Enter password"));
+	_prompt->setBody (trUtf8 ("Enter password:"));
+	_prompt->inputField()->setInputMode (SystemUiInputMode::Password);
+	_prompt->setDismissAutomatically (false);
+
+	bool res = connect (_prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+			    this, SLOT (onPasswordDialogFinished (bb::system::SystemUiResult::Type)));
+
+	if (res)
+		_prompt->exec ();
+	else {
+		_prompt->deleteLater ();
+		_prompt = NULL;
+	}
+}
+
+void
+NSRReaderBB10::onPasswordDialogFinished (bb::system::SystemUiResult::Type res)
+{
+	if (res == SystemUiResult::ConfirmButtonSelection)
+		_core->setPassword (_prompt->inputFieldTextEntry ());
+
+	_prompt->deleteLater ();
+	_prompt = NULL;
+}
+
+void
+NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
+{
+	QString errorStr;
+
+	if (error == NSRAbstractDocument::NSR_DOCUMENT_ERROR_PASSWD)
+		errorStr = trUtf8 ("Seems that entered password is wrong.");
+	else
+		errorStr = trUtf8 ("Unknown error! Maybe file is broken.");
+
+	SystemToast *toast = new SystemToast (this);
+	toast->setBody (errorStr);
+	toast->show ();
+
+	_imageView->clearImage ();
+	updateVisualControls ();
 }

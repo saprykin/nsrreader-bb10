@@ -9,6 +9,9 @@
 #include <bb/cascades/ActionItem>
 #include <bb/cascades/ActivityIndicator>
 
+#include <bb/system/SystemUiResult>
+#include <bb/system/SystemPrompt>
+
 #include <QObject>
 
 namespace bb { namespace cascades { class Application; }}
@@ -26,7 +29,10 @@ private Q_SLOTS:
     void onPrevPageActionTriggered ();
     void onNextPageActionTriggered ();
     void onPageRendered (int number);
-    void setIndicatorEnabled (bool enabled);
+    void onIndicatorRequested (bool enabled);
+    void onPasswordRequested ();
+    void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
+    void onErrorWhileOpening (NSRAbstractDocument::DocumentError error);
 
 private:
     void updateVisualControls ();
@@ -39,7 +45,7 @@ private:
     bb::cascades::ActionItem		*_prevPageAction;
     bb::cascades::ActionItem		*_nextPageAction;
     bb::cascades::ActivityIndicator	*_indicator;
-
+    bb::system::SystemPrompt		*_prompt;
 };
 
 #endif /* NSRREADERBB10_H_ */

@@ -35,6 +35,18 @@ NSRReaderCore::openDocument (const QString &path)
 	if (fileInfo.suffix().toLower () == "pdf")
 		_doc = new NSRPopplerDocument (path);
 
+	if (!_doc->isValid ()) {
+		/* Check if we need password */
+		if (_doc->getLastError () == NSRAbstractDocument::NSR_DOCUMENT_ERROR_PASSWD)
+			emit needPassword ();
+	}
+
+	if (!_doc->isValid ()) {
+		emit errorWhileOpening (_doc->getLastError ());
+		delete _doc;
+		_doc = NULL;
+	}
+
 	if (_doc == NULL)
 		return;
 
@@ -75,6 +87,12 @@ NSRReaderCore::getPagesCount () const
 		return 0;
 
 	return _doc->getNumberOfPages ();
+}
+
+void NSRReaderCore::setPassword (const QString& pass)
+{
+	if (_doc != NULL)
+		_doc->setPassword (pass);
 }
 
 void

@@ -28,10 +28,13 @@ public:
 	NSRRenderedPage getCurrentPage () const;
 	int getPagesCount () const;
 	void loadPage (PageLoad dir, int pageNumber = 0);
+	void setPassword (const QString &pass);
 
 Q_SIGNALS:
 	void pageRendered (int number);
 	void needIndicator (bool enabled);
+	void needPassword ();
+	void errorWhileOpening (NSRAbstractDocument::DocumentError error);
 
 private Q_SLOTS:
 	void onRenderDone ();
