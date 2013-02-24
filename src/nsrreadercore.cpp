@@ -7,9 +7,11 @@
 NSRReaderCore::NSRReaderCore (QObject *parent) :
 	QObject (parent),
 	_doc (NULL),
-	_thread (NULL)
+	_thread (NULL),
+	_cache (NULL)
 {
 	_thread = new NSRRenderThread (this);
+	_cache = new NSRPagesCache (this);
 
 	connect (_thread, SIGNAL (renderDone ()), this, SLOT (onRenderDone ()));
 }
@@ -57,6 +59,7 @@ NSRReaderCore::closeDocument ()
 	}
 
 	_currentPage = NSRRenderedPage ();
+	_cache->clearStorage ();
 }
 
 NSRRenderedPage
@@ -78,6 +81,9 @@ void
 NSRReaderCore::onRenderDone ()
 {
 	_currentPage = _thread->getRenderedPage ();
+
+	if (!_cache->isPageExists (_currentPage.getNumber ()))
+		_cache->addPage (_currentPage);
 
 	emit needIndicator (false);
 	emit pageRendered (_currentPage.getNumber ());
@@ -109,6 +115,12 @@ NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
 	if (pageToLoad < 1 || pageToLoad > _doc->getNumberOfPages () ||
 	    pageToLoad == _currentPage.getNumber ())
 		return;
+
+	if (_cache->isPageExists (pageToLoad)) {
+		_currentPage = _cache->getPage (pageToLoad);
+		emit pageRendered (pageToLoad);
+		return;
+	}
 
 	NSRRenderedPage request (pageToLoad);
 

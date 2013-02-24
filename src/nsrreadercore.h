@@ -6,6 +6,7 @@
 #include "nsrabstractdocument.h"
 #include "nsrrenderthread.h"
 #include "nsrrenderedpage.h"
+#include "nsrpagescache.h"
 
 class NSRReaderCore: public QObject
 {
@@ -38,6 +39,7 @@ private Q_SLOTS:
 private:
 	NSRAbstractDocument	*_doc;
 	NSRRenderThread		*_thread;
+	NSRPagesCache		*_cache;
 	NSRRenderedPage		_currentPage;
 };
 
