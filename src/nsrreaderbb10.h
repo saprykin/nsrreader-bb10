@@ -30,10 +30,12 @@ private Q_SLOTS:
 
 private:
     void updateVisualControls ();
+    void disableVisualControls ();
 
     NSRReaderCore			*_core;
     NSRImageView			*_imageView;
     bb::cascades::pickers::FilePicker	*_filePicker;
+    bb::cascades::ActionItem		*_openAction;
     bb::cascades::ActionItem		*_prevPageAction;
     bb::cascades::ActionItem		*_nextPageAction;
     bb::cascades::ActivityIndicator	*_indicator;

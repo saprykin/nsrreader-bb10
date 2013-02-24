@@ -19,6 +19,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_core (NULL),
 	_imageView (NULL),
 	_filePicker (NULL),
+	_openAction (NULL),
 	_prevPageAction (NULL),
 	_nextPageAction (NULL),
 	_indicator (NULL)
@@ -41,18 +42,18 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	Page *page = new Page ();
 	page->setContent (rootContainer);
 
-	ActionItem *openItem = ActionItem::create().title ("Open");
+	_openAction = ActionItem::create().title ("Open");
 	_prevPageAction = ActionItem::create().title ("Previous");
 	_nextPageAction = ActionItem::create().title ("Next");
-	page->addAction (openItem, ActionBarPlacement::OnBar);
+	page->addAction (_openAction, ActionBarPlacement::OnBar);
 	page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
 
-	openItem->setImageSource (QUrl ("asset:///open.png"));
+	_openAction->setImageSource (QUrl ("asset:///open.png"));
 	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
 	_nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 
-	connect (openItem, SIGNAL (triggered ()),
+	connect (_openAction, SIGNAL (triggered ()),
 		 this, SLOT (onOpenActionTriggered ()));
 	connect (_prevPageAction, SIGNAL (triggered ()),
 		 this, SLOT (onPrevPageActionTriggered ()));
@@ -79,8 +80,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 void
 NSRReaderBB10::onFileSelected (const QStringList &files)
 {
+	disableVisualControls ();
 	_core->openDocument (files.first ());
-	updateVisualControls ();
 }
 
 void
@@ -92,15 +93,15 @@ NSRReaderBB10::onOpenActionTriggered ()
 void
 NSRReaderBB10::onPrevPageActionTriggered ()
 {
+	disableVisualControls ();
 	_core->loadPage (NSRReaderCore::PAGE_LOAD_PREV);
-	updateVisualControls ();
 }
 
 void
 NSRReaderBB10::onNextPageActionTriggered ()
 {
+	disableVisualControls ();
 	_core->loadPage (NSRReaderCore::PAGE_LOAD_NEXT);
-	updateVisualControls ();
 }
 
 void
@@ -109,11 +110,14 @@ NSRReaderBB10::onPageRendered (int number)
 	Q_UNUSED (number)
 
 	_imageView->setImage (_core->getCurrentPage().getImage ());
+	updateVisualControls ();
 }
 
 void
 NSRReaderBB10::updateVisualControls ()
 {
+	_openAction->setEnabled (true);
+
 	if (!_core->isDocumentOpened ()) {
 		_prevPageAction->setEnabled (false);
 		_nextPageAction->setEnabled (false);
@@ -124,6 +128,14 @@ NSRReaderBB10::updateVisualControls ()
 		_prevPageAction->setEnabled (totalPages != 1 && currentPage > 1);
 		_nextPageAction->setEnabled (totalPages != 1 && currentPage != totalPages);
 	}
+}
+
+void
+NSRReaderBB10::disableVisualControls ()
+{
+	_openAction->setEnabled (false);
+	_prevPageAction->setEnabled (false);
+	_nextPageAction->setEnabled (false);
 }
 
 void
