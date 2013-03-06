@@ -10,8 +10,10 @@
 #include <bb/cascades/StackLayoutProperties>
 #include <bb/cascades/Page>
 #include <bb/cascades/Color>
+#include <bb/cascades/LocaleHandler>
 
 #include <bb/system/SystemToast>
+#include <bb/system/LocaleHandler>
 
 using namespace bb::system;
 using namespace bb::cascades;
@@ -46,9 +48,9 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	Page *page = new Page ();
 	page->setContent (rootContainer);
 
-	_openAction = ActionItem::create().title ("Open");
-	_prevPageAction = ActionItem::create().title ("Previous");
-	_nextPageAction = ActionItem::create().title ("Next");
+	_openAction = ActionItem::create().title (trUtf8 ("Open"));
+	_prevPageAction = ActionItem::create().title (trUtf8 ("Previous"));
+	_nextPageAction = ActionItem::create().title (trUtf8 ("Next"));
 	page->addAction (_openAction, ActionBarPlacement::OnBar);
 	page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
@@ -65,7 +67,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 		 this, SLOT (onNextPageActionTriggered ()));
 
 	_filePicker = new FilePicker (this);
-	_filePicker->setTitle ("Select file");
+	_filePicker->setTitle (trUtf8 ("Select file"));
 	_filePicker->setMode (FilePickerMode::Picker);
 	_filePicker->setType (FileType::Other);
 	_filePicker->setFilter (QStringList ("*.pdf") << "*.djvu" <<
@@ -82,6 +84,10 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 		 this, SLOT (onErrorWhileOpening (NSRAbstractDocument::DocumentError)));
 
 	Application::instance()->setScene (page);
+
+	bb::cascades::LocaleHandler *localeHandler = new bb::cascades::LocaleHandler (this);
+	connect (localeHandler, SIGNAL (systemLanguageChanged ()),
+		 this, SLOT (onSystemLanguageChanged ()));
 
 	updateVisualControls ();
 }
@@ -208,4 +214,15 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 
 	_imageView->resetPage ();
 	updateVisualControls ();
+}
+
+void
+NSRReaderBB10::onSystemLanguageChanged ()
+{
+	QTranslator translator;
+	QString locale_string = QLocale().name ();
+	QString filename = QString("nsrreader_bb10_%1").arg (locale_string);
+
+	if (translator.load (filename, "app/native/qm"))
+		QCoreApplication::instance()->installTranslator (&translator);
 }

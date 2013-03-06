@@ -16,5 +16,6 @@ LIBS += -lz
 LIBS += -lbbcascadespickers
 LIBS += -lbb
 LIBS += -lbbsystem
+LIBS += -lbbutilityi18n
 
 include(config.pri)

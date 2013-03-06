@@ -7,8 +7,6 @@
 #include <bb/ImageData>
 #include <bb/PixelFormat>
 
-#include "nsrlanguage.h"
-
 #define NSR_DOCUMENT_MAX_HEAP	(0xA000000 * 0.50)
 
 class NSRAbstractDocument : public QObject
@@ -76,7 +74,7 @@ public:
 	virtual void rotateRight ();
 	virtual void setRotation (int angle);
 	virtual int getRotation () const {return _rotation;}
-	virtual QString getText () {return NSRLanguage::instance()->getLanguage()->mainNoTextData;}
+	virtual QString getText () {return trUtf8 ("No text data available for this page");}
 	virtual void setTextOnly (bool textOnly) {_textOnly = textOnly;}
 	virtual bool isTextOnly () const {return _textOnly;}
 	void setInvertedColors (bool isInverted) {_invertedColors = isInverted;}

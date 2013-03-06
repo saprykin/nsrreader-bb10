@@ -17,9 +17,8 @@ Q_DECL_EXPORT int main (int argc, char **argv)
     QString locale_string = QLocale().name ();
     QString filename = QString("nsrreader_bb10_%1").arg (locale_string);
 
-    if (translator.load (filename, "app/native/qm")) {
+    if (translator.load (filename, "app/native/qm"))
         app.installTranslator (&translator);
-    }
 
     new NSRReaderBB10 (&app);
 

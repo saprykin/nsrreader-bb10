@@ -33,6 +33,7 @@ private Q_SLOTS:
     void onPasswordRequested ();
     void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
     void onErrorWhileOpening (NSRAbstractDocument::DocumentError error);
+    void onSystemLanguageChanged ();
 
 private:
     void updateVisualControls ();
