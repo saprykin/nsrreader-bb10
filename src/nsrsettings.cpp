@@ -70,6 +70,8 @@ NSRSession NSRSettings::getSessionForFile (const QString &file)
 	QString		formatName;
 
 	formatName = formatFileName (file);
+	session.setFile (file);
+	session.setPage (1);
 
 	if (!childGroups().contains(formatName))
 		return session;
