@@ -28,7 +28,8 @@ NSRReaderCore::~NSRReaderCore ()
 void
 NSRReaderCore::openDocument (const QString &path)
 {
-	QFileInfo fileInfo (path);
+	QFileInfo	fileInfo (path);
+	NSRSettings	settings;
 
 	if (!fileInfo.exists ())
 		return;
@@ -45,6 +46,9 @@ NSRReaderCore::openDocument (const QString &path)
 		_doc = new NSRTIFFDocument (path);
 	else
 		_doc = new NSRTextDocument (path);
+
+	_doc->setTextOnly (settings.isWordWrap ());
+	_doc->setInvertedColors (settings.isInvertedColors ());
 
 	if (!_doc->isValid ()) {
 		/* Check if we need password */
@@ -80,6 +84,15 @@ NSRReaderCore::closeDocument ()
 	_cache->clearStorage ();
 }
 
+QString
+NSRReaderCore::getDocumentPaht () const
+{
+	if (_doc == NULL)
+		return QString ();
+	else
+		return _doc->getDocumentPath ();
+}
+
 NSRRenderedPage
 NSRReaderCore::getCurrentPage () const
 {
@@ -95,10 +108,59 @@ NSRReaderCore::getPagesCount () const
 	return _doc->getNumberOfPages ();
 }
 
-void NSRReaderCore::setPassword (const QString& pass)
+void
+NSRReaderCore::setPassword (const QString& pass)
 {
 	if (_doc != NULL)
 		_doc->setPassword (pass);
+}
+
+void
+NSRReaderCore::reloadSettings (const NSRSettings* settings)
+{
+	if (_doc == NULL)
+		return;
+
+	bool needReload = false;
+	bool wasTextOnly = _doc->isTextOnly ();
+	bool wasInverted = _doc->isInvertedColors ();
+
+	_doc->setInvertedColors (settings->isInvertedColors ());
+	_doc->setTextOnly (settings->isWordWrap ());
+
+	/* Check whether we need to re-render the page */
+	if (wasTextOnly && !settings->isWordWrap ())
+		needReload = true;
+
+	if (wasInverted != _doc->isInvertedColors ())
+		needReload = true;
+
+	if (needReload)
+		loadPage (PAGE_LOAD_CUSTOM, _currentPage.getNumber ());
+}
+
+void
+NSRReaderCore::loadSession (const NSRSession *session)
+{
+	if (session == NULL)
+		return;
+
+	QString file = session->getFile ();
+
+	if (QFile::exists (file)) {
+		openDocument (file);
+
+		if (isDocumentOpened ()) {
+			_doc->setRotation (session->getRotation ());
+			loadPage (PAGE_LOAD_CUSTOM, session->getPage ());
+		}
+	}
+}
+
+bool
+NSRReaderCore::isPageRendering () const
+{
+	return _thread->isRunning ();
 }
 
 void

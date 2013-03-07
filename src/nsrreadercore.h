@@ -7,6 +7,8 @@
 #include "nsrrenderthread.h"
 #include "nsrrenderedpage.h"
 #include "nsrpagescache.h"
+#include "nsrsession.h"
+#include "nsrsettings.h"
 
 class NSRReaderCore: public QObject
 {
@@ -25,10 +27,14 @@ public:
 	void openDocument (const QString &path);
 	bool isDocumentOpened () const;
 	void closeDocument ();
+	QString getDocumentPaht () const;
 	NSRRenderedPage getCurrentPage () const;
 	int getPagesCount () const;
 	void loadPage (PageLoad dir, int pageNumber = 0);
 	void setPassword (const QString &pass);
+	void reloadSettings (const NSRSettings *settings);
+	void loadSession (const NSRSession *session);
+	bool isPageRendering () const;
 
 Q_SIGNALS:
 	void pageRendered (int number);

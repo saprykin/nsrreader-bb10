@@ -1,6 +1,8 @@
 #include "nsrreaderbb10.h"
 #include "nsrimageview.h"
 #include "nsrreadercore.h"
+#include "nsrsettings.h"
+#include "nsrsession.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
@@ -48,9 +50,9 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	Page *page = new Page ();
 	page->setContent (rootContainer);
 
-	_openAction = ActionItem::create().title (trUtf8 ("Open"));
-	_prevPageAction = ActionItem::create().title (trUtf8 ("Previous"));
-	_nextPageAction = ActionItem::create().title (trUtf8 ("Next"));
+	_openAction = ActionItem::create().title(trUtf8 ("Open")).enabled (false);
+	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
+	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
 	page->addAction (_openAction, ActionBarPlacement::OnBar);
 	page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
@@ -89,14 +91,29 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (localeHandler, SIGNAL (systemLanguageChanged ()),
 		 this, SLOT (onSystemLanguageChanged ()));
 
-	updateVisualControls ();
+	/* Load previously saved session */
+	if (QFile::exists (NSRSettings().getLastSession().getFile ()))
+		loadSession ();
+	else
+		updateVisualControls ();
+}
+
+NSRReaderBB10::~NSRReaderBB10 ()
+{
+	saveSession ();
 }
 
 void
 NSRReaderBB10::onFileSelected (const QStringList &files)
 {
+	NSRSettings	settings;
+	NSRSession	session = settings.getSessionForFile (files.first ());
+
+	/* Save session for opened document */
+	saveSession ();
+
 	disableVisualControls ();
-	_core->openDocument (files.first ());
+	_core->loadSession (&session);
 }
 
 void
@@ -151,6 +168,33 @@ NSRReaderBB10::disableVisualControls ()
 	_openAction->setEnabled (false);
 	_prevPageAction->setEnabled (false);
 	_nextPageAction->setEnabled (false);
+}
+
+void
+NSRReaderBB10::reloadSettings ()
+{
+}
+
+void
+NSRReaderBB10::loadSession ()
+{
+	NSRSession session = NSRSettings().getLastSession ();
+
+	_core->loadSession (&session);
+}
+
+void
+NSRReaderBB10::saveSession ()
+{
+	NSRSession	session;
+	NSRSettings	settings;
+
+	if (!_core->isDocumentOpened () || _core->isPageRendering ())
+		return;
+
+	session.setFile (_core->getDocumentPaht ());
+	session.setPage (_core->getCurrentPage().getNumber ());
+	settings.saveSession (&session);
 }
 
 void

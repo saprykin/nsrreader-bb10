@@ -20,8 +20,8 @@ class NSRReaderBB10 : public QObject
 {
     Q_OBJECT
 public:
-    NSRReaderBB10(bb::cascades::Application *app);
-    virtual ~NSRReaderBB10 () {}
+    NSRReaderBB10 (bb::cascades::Application *app);
+    virtual ~NSRReaderBB10 ();
 
 private Q_SLOTS:
     void onFileSelected (const QStringList& files);
@@ -38,6 +38,9 @@ private Q_SLOTS:
 private:
     void updateVisualControls ();
     void disableVisualControls ();
+    void reloadSettings ();
+    void loadSession ();
+    void saveSession ();
 
     NSRReaderCore			*_core;
     NSRImageView			*_imageView;
