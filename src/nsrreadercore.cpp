@@ -57,11 +57,6 @@ NSRReaderCore::openDocument (const QString &path)
 		delete _doc;
 		_doc = NULL;
 	}
-
-	if (_doc == NULL)
-		return;
-
-	loadPage (PAGE_LOAD_CUSTOM, 1);
 }
 
 bool
