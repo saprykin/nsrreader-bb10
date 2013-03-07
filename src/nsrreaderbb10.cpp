@@ -178,6 +178,9 @@ NSRReaderBB10::disableVisualControls ()
 void
 NSRReaderBB10::reloadSettings ()
 {
+	NSRSettings settings;
+
+	_core->reloadSettings (&settings);
 }
 
 void
