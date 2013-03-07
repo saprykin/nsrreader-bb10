@@ -46,6 +46,9 @@ NSRPagesCache::addPage (NSRRenderedPage& page)
 	newSize = page.getSize().width () * page.getSize().height () * 4;
 	inCache = oldPage.isValid ();
 
+	if (newSize > NSR_PAGES_CACHE_MAX_STORAGE)
+		return;
+
 	while (_usedMemory + newSize > NSR_PAGES_CACHE_MAX_STORAGE &&
 	       !_pagesByTime.isEmpty ()) {
 		int deq = _pagesByTime.dequeue ();
