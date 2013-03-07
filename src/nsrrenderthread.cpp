@@ -62,13 +62,16 @@ NSRRenderThread::run ()
 	if (!(page.getNumber () > 0) || page.getNumber () > _doc->getNumberOfPages ())
 		return;
 
-	_doc->renderPage (page.getNumber ());
-	page.setImage (_doc->getCurrentPage ());
+	if (!_doc->isTextOnly ()) {
+		_doc->renderPage (page.getNumber ());
+		page.setImage (_doc->getCurrentPage ());
+	}
 
+	bool textOnly = _doc->isTextOnly ();
 	_doc->setTextOnly (true);
 	_doc->renderPage (page.getNumber ());
 	page.setText (_doc->getText ());
-	_doc->setTextOnly (false);
+	_doc->setTextOnly (textOnly);
 
 	_renderedMutex.lock ();
 	_renderedPages.append (page);
