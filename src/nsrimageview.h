@@ -11,6 +11,7 @@
 #include <bb/cascades/Image>
 #include <bb/cascades/ScrollView>
 #include <bb/cascades/TextArea>
+#include <bb/cascades/TapEvent>
 
 class NSRImageView: public bb::cascades::CustomControl
 {
@@ -32,9 +33,13 @@ public:
 	void setScrollPosition (const QPointF& pos);
 	QPointF getScrollPosition () const;
 
-private slots:
+Q_SIGNALS:
+	void viewTapped ();
+
+private Q_SLOTS:
 	void onWidthChanged (float width);
 	void onHeightChanged (float height);
+	void onTappedGesture (bb::cascades::TapEvent *ev);
 
 private:
 	bb::cascades::ScrollView	*_scrollView;

@@ -8,6 +8,7 @@
 #include <bb/cascades/ImageView>
 #include <bb/cascades/ActionItem>
 #include <bb/cascades/ActivityIndicator>
+#include <bb/cascades/Page>
 
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
@@ -34,6 +35,7 @@ private Q_SLOTS:
     void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
     void onErrorWhileOpening (NSRAbstractDocument::DocumentError error);
     void onSystemLanguageChanged ();
+    void onPageTapped ();
 
 private:
     void updateVisualControls ();
@@ -44,6 +46,7 @@ private:
 
     NSRReaderCore			*_core;
     NSRImageView			*_imageView;
+    bb::cascades::Page			*_page;
     bb::cascades::pickers::FilePicker	*_filePicker;
     bb::cascades::ActionItem		*_openAction;
     bb::cascades::ActionItem		*_prevPageAction;

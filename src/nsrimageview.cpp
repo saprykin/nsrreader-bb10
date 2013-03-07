@@ -2,6 +2,7 @@
 
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/Color>
+#include <bb/cascades/TapHandler>
 
 using namespace bb::cascades;
 
@@ -41,9 +42,15 @@ NSRImageView::NSRImageView (Container *parent) :
 						  TextInputFlag::VirtualKeyboardOff);
 
 	_rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-					    .vertical(VerticalAlignment::Fill);
+					    .vertical(VerticalAlignment::Fill)
+					    .background(Color::Black);
 	_rootContainer->add (_scrollView);
 	_rootContainer->add (_textArea);
+
+	TapHandler *imgTapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
+	TapHandler *txtTapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
+	_scrollView->addGestureHandler (imgTapHandler);
+	_textArea->addGestureHandler (txtTapHandler);
 
 	setRoot (_rootContainer);
 }
@@ -118,4 +125,11 @@ void
 NSRImageView::onWidthChanged (float width)
 {
 	_rootContainer->setPreferredWidth (width);
+}
+
+void
+NSRImageView::onTappedGesture (bb::cascades::TapEvent *ev)
+{
+	ev->accept ();
+	emit viewTapped ();
 }

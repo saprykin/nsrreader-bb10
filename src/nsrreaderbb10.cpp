@@ -25,6 +25,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
 	_core (NULL),
 	_imageView (NULL),
+	_page (NULL),
 	_filePicker (NULL),
 	_openAction (NULL),
 	_prevPageAction (NULL),
@@ -43,30 +44,29 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
 						.vertical(VerticalAlignment::Fill);
 
+	connect (_imageView, SIGNAL (viewTapped ()), this, SLOT (onPageTapped ()));
+
 	rootContainer->add (_imageView);
 	rootContainer->add (_indicator);
 	rootContainer->setBackground (Color::Black);
 
-	Page *page = new Page ();
-	page->setContent (rootContainer);
+	_page = Page::create().actionBarVisibility (ChromeVisibility::Overlay);
+	_page->setContent (rootContainer);
 
 	_openAction = ActionItem::create().title(trUtf8 ("Open")).enabled (false);
 	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
 	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
-	page->addAction (_openAction, ActionBarPlacement::OnBar);
-	page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
-	page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
+	_page->addAction (_openAction, ActionBarPlacement::OnBar);
+	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
+	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
 
 	_openAction->setImageSource (QUrl ("asset:///open.png"));
 	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
 	_nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 
-	connect (_openAction, SIGNAL (triggered ()),
-		 this, SLOT (onOpenActionTriggered ()));
-	connect (_prevPageAction, SIGNAL (triggered ()),
-		 this, SLOT (onPrevPageActionTriggered ()));
-	connect (_nextPageAction, SIGNAL (triggered ()),
-		 this, SLOT (onNextPageActionTriggered ()));
+	connect (_openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
+	connect (_prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
+	connect (_nextPageAction, SIGNAL (triggered ()), this, SLOT (onNextPageActionTriggered ()));
 
 	_filePicker = new FilePicker (this);
 	_filePicker->setTitle (trUtf8 ("Select file"));
@@ -85,7 +85,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::DocumentError)),
 		 this, SLOT (onErrorWhileOpening (NSRAbstractDocument::DocumentError)));
 
-	Application::instance()->setScene (page);
+	Application::instance()->setScene (_page);
 
 	bb::cascades::LocaleHandler *localeHandler = new bb::cascades::LocaleHandler (this);
 	connect (localeHandler, SIGNAL (systemLanguageChanged ()),
@@ -277,4 +277,13 @@ NSRReaderBB10::onSystemLanguageChanged ()
 
 	if (translator.load (filename, "app/native/qm"))
 		QCoreApplication::instance()->installTranslator (&translator);
+}
+
+void
+NSRReaderBB10::onPageTapped ()
+{
+	if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
+		_page->setActionBarVisibility (ChromeVisibility::Overlay);
+	else
+		_page->setActionBarVisibility (ChromeVisibility::Hidden);
 }
