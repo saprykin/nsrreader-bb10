@@ -136,9 +136,10 @@ NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
 		break;
 	}
 
-	if (pageToLoad < 1 || pageToLoad > _doc->getNumberOfPages () ||
-	    pageToLoad == _currentPage.getNumber ())
-		return;
+	if (pageToLoad < 1)
+		pageToLoad = 1;
+	else if (pageToLoad > _doc->getNumberOfPages ())
+		pageToLoad = _doc->getNumberOfPages ();
 
 	if (_cache->isPageExists (pageToLoad)) {
 		_currentPage = _cache->getPage (pageToLoad);
