@@ -95,7 +95,6 @@ void NSRSettings::saveSession(NSRSession *session)
 	setValue("zoom-graphic", session->getZoomGraphic());
 	setValue("fit-to-width", session->isFitToWidth());
 	setValue("position", session->getPosition());
-	setValue("size", session->getSize());
 	setValue("angle", session->getRotation());
 	endGroup();
 
@@ -233,7 +232,6 @@ void NSRSettings::readSession (const QString &name, NSRSession &session)
 	session.setZoomGraphic(value("zoom-graphic", 100).toInt());
 	session.setFitToWidth(value("fit-to-width", false).toBool());
 	session.setPosition(value("position", QPoint (0, 0)).toPoint());
-	session.setSize(value("size", QSize (360, 480)).toSize());
 	session.setRotation(value("angle", 0).toDouble());
 	endGroup();
 }
