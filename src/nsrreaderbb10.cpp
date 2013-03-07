@@ -91,8 +91,13 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (localeHandler, SIGNAL (systemLanguageChanged ()),
 		 this, SLOT (onSystemLanguageChanged ()));
 
+	NSRSettings settings;
+
+	_imageView->setViewMode (settings.isWordWrap () ? NSRImageView::NSR_VIEW_MODE_TEXT
+							: NSRImageView::NSR_VIEW_MODE_GRAPHIC);
+
 	/* Load previously saved session */
-	if (QFile::exists (NSRSettings().getLastSession().getFile ()))
+	if (QFile::exists (settings.getLastSession().getFile ()))
 		loadSession ();
 	else
 		updateVisualControls ();
