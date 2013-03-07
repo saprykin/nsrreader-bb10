@@ -39,8 +39,8 @@ NSRSettings::NSRSettings(QObject *parent) :
 	if (!QDir(_lastOpenDir).exists())
 		_lastOpenDir = defPath;
 
-	if (!QFontDatabase().families().contains(_fontFamily))
-		_fontFamily = defFont;
+	/* TODO: find a way to check if a font from configuration file exists */
+	_fontFamily = defFont;
 
 	if (!getSupportedEncodings().contains(_textEncoding))
 		_textEncoding = QString ("UTF-8");
