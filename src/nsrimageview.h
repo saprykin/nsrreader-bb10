@@ -29,6 +29,8 @@ public:
 	void resetPage ();
 	void setViewMode (NSRImageView::NSRViewMode mode);
 	NSRImageView::NSRViewMode getViewMode () const;
+	void setScrollPosition (const QPointF& pos);
+	QPointF getScrollPosition () const;
 
 private slots:
 	void onWidthChanged (float width);

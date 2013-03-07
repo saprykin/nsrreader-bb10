@@ -97,6 +97,18 @@ NSRImageView::getViewMode () const
 }
 
 void
+NSRImageView::setScrollPosition (const QPointF& pos)
+{
+	_scrollView->scrollToPoint (pos.x (), pos.y ());
+}
+
+QPointF
+NSRImageView::getScrollPosition () const
+{
+	return _scrollView->viewableArea().topLeft ();
+}
+
+void
 NSRImageView::onHeightChanged (float height)
 {
 	_rootContainer->setPreferredHeight (height);
