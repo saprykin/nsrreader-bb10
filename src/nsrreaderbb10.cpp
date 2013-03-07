@@ -50,8 +50,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	rootContainer->add (_indicator);
 	rootContainer->setBackground (Color::Black);
 
-	_page = Page::create().actionBarVisibility (ChromeVisibility::Overlay);
-	_page->setContent (rootContainer);
+	_page = Page::create().content (rootContainer);
 
 	_openAction = ActionItem::create().title(trUtf8 ("Open")).enabled (false);
 	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
@@ -158,6 +157,7 @@ NSRReaderBB10::updateVisualControls ()
 	if (!_core->isDocumentOpened ()) {
 		_prevPageAction->setEnabled (false);
 		_nextPageAction->setEnabled (false);
+		_page->setActionBarVisibility (ChromeVisibility::Visible);
 	} else {
 		int totalPages = _core->getPagesCount ();
 		int currentPage = _core->getCurrentPage().getNumber ();
@@ -282,8 +282,11 @@ NSRReaderBB10::onSystemLanguageChanged ()
 void
 NSRReaderBB10::onPageTapped ()
 {
+	if (!_core->isDocumentOpened ())
+		return;
+
 	if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
-		_page->setActionBarVisibility (ChromeVisibility::Overlay);
+		_page->setActionBarVisibility (ChromeVisibility::Visible);
 	else
 		_page->setActionBarVisibility (ChromeVisibility::Hidden);
 }
