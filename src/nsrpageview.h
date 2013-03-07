@@ -1,5 +1,5 @@
-#ifndef NSRIMAGEVIEW_H_
-#define NSRIMAGEVIEW_H_
+#ifndef NSRPAGEVIEW_H_
+#define NSRPAGEVIEW_H_
 
 #include <QObject>
 
@@ -13,7 +13,7 @@
 #include <bb/cascades/TextArea>
 #include <bb/cascades/TapEvent>
 
-class NSRImageView: public bb::cascades::CustomControl
+class NSRPageView: public bb::cascades::CustomControl
 {
 	Q_OBJECT
 	Q_ENUMS (NSRViewMode)
@@ -23,13 +23,13 @@ public:
 		NSR_VIEW_MODE_TEXT	= 1
 	};
 
-	NSRImageView (bb::cascades::Container *parent = 0);
-	virtual ~NSRImageView ();
+	NSRPageView (bb::cascades::Container *parent = 0);
+	virtual ~NSRPageView ();
 
 	void setPage (const NSRRenderedPage& page);
 	void resetPage ();
-	void setViewMode (NSRImageView::NSRViewMode mode);
-	NSRImageView::NSRViewMode getViewMode () const;
+	void setViewMode (NSRPageView::NSRViewMode mode);
+	NSRPageView::NSRViewMode getViewMode () const;
 	void setScrollPosition (const QPointF& pos);
 	QPointF getScrollPosition () const;
 
@@ -49,4 +49,4 @@ private:
 	NSRViewMode			_viewMode;
 };
 
-#endif /* NSRIMAGEVIEW_H_ */
+#endif /* NSRPAGEVIEW_H_ */

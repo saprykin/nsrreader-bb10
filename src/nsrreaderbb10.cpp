@@ -1,6 +1,4 @@
 #include "nsrreaderbb10.h"
-#include "nsrimageview.h"
-#include "nsrreadercore.h"
 #include "nsrsettings.h"
 #include "nsrsession.h"
 
@@ -24,7 +22,7 @@ using namespace bb::cascades::pickers;
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
 	_core (NULL),
-	_imageView (NULL),
+	_pageView (NULL),
 	_page (NULL),
 	_filePicker (NULL),
 	_openAction (NULL),
@@ -38,15 +36,15 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	rootContainer->setHorizontalAlignment (HorizontalAlignment::Fill);
 	rootContainer->setVerticalAlignment (VerticalAlignment::Fill);
 
-	_imageView = new NSRImageView ();
-	_imageView->setHorizontalAlignment (HorizontalAlignment::Fill);
-	_imageView->setVerticalAlignment (VerticalAlignment::Fill);
+	_pageView = new NSRPageView ();
+	_pageView->setHorizontalAlignment (HorizontalAlignment::Fill);
+	_pageView->setVerticalAlignment (VerticalAlignment::Fill);
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
 						.vertical(VerticalAlignment::Fill);
 
-	connect (_imageView, SIGNAL (viewTapped ()), this, SLOT (onPageTapped ()));
+	connect (_pageView, SIGNAL (viewTapped ()), this, SLOT (onPageTapped ()));
 
-	rootContainer->add (_imageView);
+	rootContainer->add (_pageView);
 	rootContainer->add (_indicator);
 	rootContainer->setBackground (Color::Black);
 
@@ -92,8 +90,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	NSRSettings settings;
 
-	_imageView->setViewMode (settings.isWordWrap () ? NSRImageView::NSR_VIEW_MODE_TEXT
-							: NSRImageView::NSR_VIEW_MODE_GRAPHIC);
+	_pageView->setViewMode (settings.isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
+							: NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 
 	/* Load previously saved session */
 	if (QFile::exists (settings.getLastSession().getFile ()))
@@ -145,7 +143,7 @@ NSRReaderBB10::onPageRendered (int number)
 {
 	Q_UNUSED (number)
 
-	_imageView->setPage (_core->getCurrentPage());
+	_pageView->setPage (_core->getCurrentPage());
 	updateVisualControls ();
 }
 
@@ -264,7 +262,7 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 	toast->setBody (errorStr);
 	toast->show ();
 
-	_imageView->resetPage ();
+	_pageView->resetPage ();
 	updateVisualControls ();
 }
 

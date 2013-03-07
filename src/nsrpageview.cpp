@@ -1,4 +1,4 @@
-#include "nsrimageview.h"
+#include "nsrpageview.h"
 
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/Color>
@@ -8,7 +8,7 @@ using namespace bb::cascades;
 
 #define NSR_LOGO_WELCOME "asset:///nsrlogo-welcome.png"
 
-NSRImageView::NSRImageView (Container *parent) :
+NSRPageView::NSRPageView (Container *parent) :
 	CustomControl (parent),
 	_scrollView (NULL),
 	_imageView (NULL),
@@ -55,26 +55,26 @@ NSRImageView::NSRImageView (Container *parent) :
 	setRoot (_rootContainer);
 }
 
-NSRImageView::~NSRImageView ()
+NSRPageView::~NSRPageView ()
 {
 }
 
 void
-NSRImageView::setPage (const NSRRenderedPage& page)
+NSRPageView::setPage (const NSRRenderedPage& page)
 {
 	_imageView->setImage (page.getImage ());
 	_textArea->setText (page.getText ());
 }
 
 void
-NSRImageView::resetPage ()
+NSRPageView::resetPage ()
 {
 	_imageView->setImageSource (QUrl (NSR_LOGO_WELCOME));
 	_textArea->resetText ();
 }
 
 void
-NSRImageView::setViewMode (NSRImageView::NSRViewMode mode)
+NSRPageView::setViewMode (NSRPageView::NSRViewMode mode)
 {
 	if (_viewMode == mode)
 		return;
@@ -97,38 +97,38 @@ NSRImageView::setViewMode (NSRImageView::NSRViewMode mode)
 	}
 }
 
-NSRImageView::NSRViewMode
-NSRImageView::getViewMode () const
+NSRPageView::NSRViewMode
+NSRPageView::getViewMode () const
 {
 	return _viewMode;
 }
 
 void
-NSRImageView::setScrollPosition (const QPointF& pos)
+NSRPageView::setScrollPosition (const QPointF& pos)
 {
 	_scrollView->scrollToPoint (pos.x (), pos.y ());
 }
 
 QPointF
-NSRImageView::getScrollPosition () const
+NSRPageView::getScrollPosition () const
 {
 	return _scrollView->viewableArea().topLeft ();
 }
 
 void
-NSRImageView::onHeightChanged (float height)
+NSRPageView::onHeightChanged (float height)
 {
 	_rootContainer->setPreferredHeight (height);
 }
 
 void
-NSRImageView::onWidthChanged (float width)
+NSRPageView::onWidthChanged (float width)
 {
 	_rootContainer->setPreferredWidth (width);
 }
 
 void
-NSRImageView::onTappedGesture (bb::cascades::TapEvent *ev)
+NSRPageView::onTappedGesture (bb::cascades::TapEvent *ev)
 {
 	ev->accept ();
 	emit viewTapped ();

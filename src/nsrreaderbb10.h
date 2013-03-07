@@ -1,7 +1,7 @@
 #ifndef NSRREADERBB10_H_
 #define NSRREADERBB10_H_
 
-#include "nsrimageview.h"
+#include "nsrpageview.h"
 #include "nsrreadercore.h"
 
 #include <bb/cascades/pickers/FilePicker>
@@ -45,7 +45,7 @@ private:
     void saveSession ();
 
     NSRReaderCore			*_core;
-    NSRImageView			*_imageView;
+    NSRPageView				*_pageView;
     bb::cascades::Page			*_page;
     bb::cascades::pickers::FilePicker	*_filePicker;
     bb::cascades::ActionItem		*_openAction;
