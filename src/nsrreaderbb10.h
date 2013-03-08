@@ -29,10 +29,12 @@ private Q_SLOTS:
     void onOpenActionTriggered ();
     void onPrevPageActionTriggered ();
     void onNextPageActionTriggered ();
+    void onGotoActionTriggered ();
     void onPageRendered (int number);
     void onIndicatorRequested (bool enabled);
     void onPasswordRequested ();
     void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
+    void onGotoDialogFinished (bb::system::SystemUiResult::Type res);
     void onErrorWhileOpening (NSRAbstractDocument::DocumentError error);
     void onSystemLanguageChanged ();
     void onPageTapped ();
@@ -51,6 +53,7 @@ private:
     bb::cascades::ActionItem		*_openAction;
     bb::cascades::ActionItem		*_prevPageAction;
     bb::cascades::ActionItem		*_nextPageAction;
+    bb::cascades::ActionItem		*_gotoAction;
     bb::cascades::ActivityIndicator	*_indicator;
     bb::system::SystemPrompt		*_prompt;
 };

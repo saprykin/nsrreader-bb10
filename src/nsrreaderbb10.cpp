@@ -53,17 +53,21 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_openAction = ActionItem::create().title(trUtf8 ("Open")).enabled (false);
 	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
 	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
+	_gotoAction = ActionItem::create().title(trUtf8 ("Go to")).enabled (false);
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
+	_page->addAction (_gotoAction, ActionBarPlacement::InOverflow);
 
 	_openAction->setImageSource (QUrl ("asset:///open.png"));
 	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
 	_nextPageAction->setImageSource (QUrl ("asset:///next.png"));
+	_gotoAction->setImageSource (QUrl ("asset:///goto.png"));
 
 	connect (_openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
 	connect (_prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
 	connect (_nextPageAction, SIGNAL (triggered ()), this, SLOT (onNextPageActionTriggered ()));
+	connect (_gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
 
 	_filePicker = new FilePicker (this);
 	_filePicker->setTitle (trUtf8 ("Select file"));
@@ -139,6 +143,31 @@ NSRReaderBB10::onNextPageActionTriggered ()
 }
 
 void
+NSRReaderBB10::onGotoActionTriggered ()
+{
+	if (_prompt != NULL)
+		return;
+
+	_prompt = new SystemPrompt (this);
+
+	_prompt->setTitle (trUtf8 ("Enter page"));
+	_prompt->setBody (trUtf8("Enter page (1 - %1):").arg (_core->getPagesCount ()));
+	_prompt->inputField()->setInputMode (SystemUiInputMode::NumericKeypad);
+	_prompt->setDismissAutomatically (false);
+	_prompt->inputField()->setMaximumLength (QString::number(_core->getPagesCount ()).length ());
+
+	bool res = connect (_prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+			    this, SLOT (onGotoDialogFinished (bb::system::SystemUiResult::Type)));
+
+	if (res)
+		_prompt->exec ();
+	else {
+		_prompt->deleteLater ();
+		_prompt = NULL;
+	}
+}
+
+void
 NSRReaderBB10::onPageRendered (int number)
 {
 	Q_UNUSED (number)
@@ -155,6 +184,7 @@ NSRReaderBB10::updateVisualControls ()
 	if (!_core->isDocumentOpened ()) {
 		_prevPageAction->setEnabled (false);
 		_nextPageAction->setEnabled (false);
+		_gotoAction->setEnabled (false);
 		_page->setActionBarVisibility (ChromeVisibility::Visible);
 	} else {
 		int totalPages = _core->getPagesCount ();
@@ -162,6 +192,7 @@ NSRReaderBB10::updateVisualControls ()
 
 		_prevPageAction->setEnabled (totalPages != 1 && currentPage > 1);
 		_nextPageAction->setEnabled (totalPages != 1 && currentPage != totalPages);
+		_gotoAction->setEnabled (totalPages > 1);
 	}
 }
 
@@ -171,6 +202,7 @@ NSRReaderBB10::disableVisualControls ()
 	_openAction->setEnabled (false);
 	_prevPageAction->setEnabled (false);
 	_nextPageAction->setEnabled (false);
+	_gotoAction->setEnabled (false);
 }
 
 void
@@ -246,6 +278,26 @@ NSRReaderBB10::onPasswordDialogFinished (bb::system::SystemUiResult::Type res)
 
 	_prompt->deleteLater ();
 	_prompt = NULL;
+}
+
+void
+NSRReaderBB10::onGotoDialogFinished (bb::system::SystemUiResult::Type res)
+{
+	int pageNum = 0;
+
+	if (res == SystemUiResult::ConfirmButtonSelection)
+		pageNum = _prompt->inputFieldTextEntry().toInt ();
+
+	_prompt->deleteLater ();
+	_prompt = NULL;
+
+	if (res == SystemUiResult::CancelButtonSelection)
+		return;
+
+	if (pageNum != _core->getCurrentPage().getNumber ()) {
+		disableVisualControls ();
+		_core->loadPage (NSRReaderCore::PAGE_LOAD_CUSTOM, pageNum);
+	}
 }
 
 void
