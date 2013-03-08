@@ -4,8 +4,8 @@
 #include "nsrtiffdocument.h"
 #include "nsrtextdocument.h"
 
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
+#include <QFile>
+#include <QFileInfo>
 
 NSRReaderCore::NSRReaderCore (QObject *parent) :
 	QObject (parent),
