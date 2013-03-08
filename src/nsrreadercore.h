@@ -9,6 +9,7 @@
 #include "nsrpagescache.h"
 #include "nsrsession.h"
 #include "nsrsettings.h"
+#include "nsrpageview.h"
 
 class NSRReaderCore: public QObject
 {
@@ -41,6 +42,7 @@ Q_SIGNALS:
 	void needIndicator (bool enabled);
 	void needPassword ();
 	void errorWhileOpening (NSRAbstractDocument::DocumentError error);
+	void needViewMode (NSRPageView::NSRViewMode mode);
 
 private Q_SLOTS:
 	void onRenderDone ();

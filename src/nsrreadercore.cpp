@@ -166,6 +166,8 @@ NSRReaderCore::isPageRendering () const
 void
 NSRReaderCore::onRenderDone ()
 {
+	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
+
 	_currentPage = _thread->getRenderedPage ();
 
 	if (!_cache->isPageExists (_currentPage.getNumber ()))
@@ -173,6 +175,8 @@ NSRReaderCore::onRenderDone ()
 
 	emit needIndicator (false);
 	emit pageRendered (_currentPage.getNumber ());
+	emit needViewMode (suffix == "txt" ? NSRPageView::NSR_VIEW_MODE_TEXT
+					   : NSRPageView::NSR_VIEW_MODE_PREFERRED);
 }
 
 void

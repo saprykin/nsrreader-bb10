@@ -38,6 +38,7 @@ private Q_SLOTS:
     void onErrorWhileOpening (NSRAbstractDocument::DocumentError error);
     void onSystemLanguageChanged ();
     void onPageTapped ();
+    void onViewModeRequested (NSRPageView::NSRViewMode mode);
 
 private:
     void updateVisualControls ();

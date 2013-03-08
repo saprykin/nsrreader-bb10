@@ -85,6 +85,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_core, SIGNAL (needPassword ()), this, SLOT (onPasswordRequested ()));
 	connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::DocumentError)),
 		 this, SLOT (onErrorWhileOpening (NSRAbstractDocument::DocumentError)));
+	connect (_core, SIGNAL (needViewMode (NSRPageView::NSRViewMode)),
+		 this, SLOT (onViewModeRequested (NSRPageView::NSRViewMode)));
 
 	Application::instance()->setScene (_page);
 
@@ -339,4 +341,18 @@ NSRReaderBB10::onPageTapped ()
 		_page->setActionBarVisibility (ChromeVisibility::Visible);
 	else
 		_page->setActionBarVisibility (ChromeVisibility::Hidden);
+}
+
+void
+NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
+{
+	NSRPageView::NSRViewMode newMode;
+
+	if (mode == NSRPageView::NSR_VIEW_MODE_PREFERRED)
+		newMode = NSRSettings().isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
+						      : NSRPageView::NSR_VIEW_MODE_GRAPHIC;
+	else
+		newMode = mode;
+
+	_pageView->setViewMode (newMode);
 }
