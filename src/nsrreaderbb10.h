@@ -9,6 +9,7 @@
 #include <bb/cascades/ActionItem>
 #include <bb/cascades/ActivityIndicator>
 #include <bb/cascades/Page>
+#include <bb/cascades/NavigationPane>
 
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
@@ -30,6 +31,7 @@ private Q_SLOTS:
     void onPrevPageActionTriggered ();
     void onNextPageActionTriggered ();
     void onGotoActionTriggered ();
+    void onPrefsActionTriggered ();
     void onPageRendered (int number);
     void onIndicatorRequested (bool enabled);
     void onPasswordRequested ();
@@ -39,6 +41,7 @@ private Q_SLOTS:
     void onSystemLanguageChanged ();
     void onPageTapped ();
     void onViewModeRequested (NSRPageView::NSRViewMode mode);
+    void onPopTransitionEnded (bb::cascades::Page *page);
 
 private:
     void updateVisualControls ();
@@ -49,12 +52,14 @@ private:
 
     NSRReaderCore			*_core;
     NSRPageView				*_pageView;
+    bb::cascades::NavigationPane	*_naviPane;
     bb::cascades::Page			*_page;
     bb::cascades::pickers::FilePicker	*_filePicker;
     bb::cascades::ActionItem		*_openAction;
     bb::cascades::ActionItem		*_prevPageAction;
     bb::cascades::ActionItem		*_nextPageAction;
     bb::cascades::ActionItem		*_gotoAction;
+    bb::cascades::ActionItem		*_prefsAction;
     bb::cascades::ActivityIndicator	*_indicator;
     bb::system::SystemPrompt		*_prompt;
 };

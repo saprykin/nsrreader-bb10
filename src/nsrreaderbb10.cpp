@@ -1,6 +1,7 @@
 #include "nsrreaderbb10.h"
 #include "nsrsettings.h"
 #include "nsrsession.h"
+#include "nsrpreferencespage.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
@@ -23,11 +24,14 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
 	_core (NULL),
 	_pageView (NULL),
+	_naviPane (NULL),
 	_page (NULL),
 	_filePicker (NULL),
 	_openAction (NULL),
 	_prevPageAction (NULL),
 	_nextPageAction (NULL),
+	_gotoAction (NULL),
+	_prefsAction (NULL),
 	_indicator (NULL),
 	_prompt (NULL)
 {
@@ -54,20 +58,24 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
 	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
 	_gotoAction = ActionItem::create().title(trUtf8 ("Go to")).enabled (false);
+	_prefsAction = ActionItem::create().title(trUtf8 ("Preferences")).enabled (false);
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_gotoAction, ActionBarPlacement::InOverflow);
+	_page->addAction (_prefsAction, ActionBarPlacement::InOverflow);
 
 	_openAction->setImageSource (QUrl ("asset:///open.png"));
 	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
 	_nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 	_gotoAction->setImageSource (QUrl ("asset:///goto.png"));
+	_prefsAction->setImageSource (QUrl ("asset:///preferences.png"));
 
 	connect (_openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
 	connect (_prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
 	connect (_nextPageAction, SIGNAL (triggered ()), this, SLOT (onNextPageActionTriggered ()));
 	connect (_gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
+	connect (_prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
 
 	_filePicker = new FilePicker (this);
 	_filePicker->setTitle (trUtf8 ("Select file"));
@@ -88,7 +96,9 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_core, SIGNAL (needViewMode (NSRPageView::NSRViewMode)),
 		 this, SLOT (onViewModeRequested (NSRPageView::NSRViewMode)));
 
-	Application::instance()->setScene (_page);
+	_naviPane = NavigationPane::create().add (_page);
+
+	Application::instance()->setScene (_naviPane);
 
 	bb::cascades::LocaleHandler *localeHandler = new bb::cascades::LocaleHandler (this);
 	connect (localeHandler, SIGNAL (systemLanguageChanged ()),
@@ -170,6 +180,17 @@ NSRReaderBB10::onGotoActionTriggered ()
 }
 
 void
+NSRReaderBB10::onPrefsActionTriggered ()
+{
+	NSRPreferencesPage *page = new NSRPreferencesPage ();
+
+	connect (page, SIGNAL (onPopTransitionEnded (bb::cascades::Page *)),
+		 this, SLOT (onPopTransitionEnded (bb::cascades::Page *)));
+
+	_naviPane->push (page);
+}
+
+void
 NSRReaderBB10::onPageRendered (int number)
 {
 	Q_UNUSED (number)
@@ -182,6 +203,7 @@ void
 NSRReaderBB10::updateVisualControls ()
 {
 	_openAction->setEnabled (true);
+	_prefsAction->setEnabled (true);
 
 	if (!_core->isDocumentOpened ()) {
 		_prevPageAction->setEnabled (false);
@@ -205,6 +227,7 @@ NSRReaderBB10::disableVisualControls ()
 	_prevPageAction->setEnabled (false);
 	_nextPageAction->setEnabled (false);
 	_gotoAction->setEnabled (false);
+	_prefsAction->setEnabled (false);
 }
 
 void
@@ -355,4 +378,10 @@ NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
 		newMode = mode;
 
 	_pageView->setViewMode (newMode);
+}
+
+void
+NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
+{
+	delete page;
 }
