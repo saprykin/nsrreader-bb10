@@ -134,6 +134,7 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 	NSRSession	session = settings.getSessionForFile (files.first ());
 
 	/* Save session for opened document */
+	settings.saveLastOpenDir (QFileInfo (files.first ()).absolutePath ());
 	saveSession ();
 
 	_core->loadSession (&session);
@@ -142,6 +143,7 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 void
 NSRReaderBB10::onOpenActionTriggered ()
 {
+	_filePicker->setDirectories (QStringList (NSRSettings().getLastOpenDir ()));
 	_filePicker->open ();
 }
 
