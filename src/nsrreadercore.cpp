@@ -134,8 +134,10 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 	else if (wasTextOnly != settings->isWordWrap ())
 		emit needViewMode (NSRPageView::NSR_VIEW_MODE_PREFERRED);
 
-	if (wasInverted != _doc->isInvertedColors ())
+	if (wasInverted != _doc->isInvertedColors ()) {
+		_cache->clearStorage ();
 		needReload = true;
+	}
 
 	if (needReload)
 		loadPage (PAGE_LOAD_CUSTOM, _currentPage.getNumber ());
