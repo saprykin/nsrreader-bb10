@@ -344,6 +344,7 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 	toast->show ();
 
 	_pageView->resetPage ();
+	_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 	updateVisualControls ();
 }
 
