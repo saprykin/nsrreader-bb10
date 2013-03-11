@@ -7,6 +7,7 @@
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/Label>
 #include <bb/cascades/TitleBar>
+#include <bb/cascades/ScrollView>
 
 using namespace bb::cascades;
 
@@ -111,7 +112,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	rootContainer->add (fourthContainer);
 	rootContainer->add (fifthContainer);
 
-	setContent (rootContainer);
+	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
+						     .vertical(VerticalAlignment::Fill)
+						     .content(rootContainer);
+
+	setContent (scrollView);
 	setTitleBar (TitleBar::create().title (trUtf8 ("Preferences")));
 }
 
