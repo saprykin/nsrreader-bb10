@@ -131,6 +131,8 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 	/* Check whether we need to re-render the page */
 	if (wasTextOnly && !settings->isWordWrap ())
 		needReload = true;
+	else if (wasTextOnly != settings->isWordWrap ())
+		emit needViewMode (NSRPageView::NSR_VIEW_MODE_PREFERRED);
 
 	if (wasInverted != _doc->isInvertedColors ())
 		needReload = true;
