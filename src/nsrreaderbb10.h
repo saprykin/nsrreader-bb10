@@ -62,6 +62,7 @@ private:
     bb::cascades::ActionItem		*_prefsAction;
     bb::cascades::ActivityIndicator	*_indicator;
     bb::system::SystemPrompt		*_prompt;
+    bool				_isFullscreen;
 };
 
 #endif /* NSRREADERBB10_H_ */

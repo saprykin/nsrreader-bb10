@@ -33,7 +33,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_gotoAction (NULL),
 	_prefsAction (NULL),
 	_indicator (NULL),
-	_prompt (NULL)
+	_prompt (NULL),
+	_isFullscreen (false)
 {
 	Container *rootContainer = new Container ();
 	rootContainer->setLayout (DockLayout::create ());
@@ -108,6 +109,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	_pageView->setViewMode (settings.isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
 							: NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+	_isFullscreen = settings.isFullscreenMode ();
 
 	/* Load previously saved session */
 	if (QFile::exists (settings.getLastSession().getFile ()))
@@ -236,6 +238,11 @@ NSRReaderBB10::reloadSettings ()
 	NSRSettings settings;
 
 	_core->reloadSettings (&settings);
+	_pageView->setInvertedColors (settings.isInvertedColors ());
+	_isFullscreen = settings.isFullscreenMode ();
+
+	if (!_isFullscreen)
+		_page->setActionBarVisibility (ChromeVisibility::Visible);
 }
 
 void
@@ -357,7 +364,7 @@ NSRReaderBB10::onSystemLanguageChanged ()
 void
 NSRReaderBB10::onPageTapped ()
 {
-	if (!_core->isDocumentOpened ())
+	if (!_core->isDocumentOpened () || !_isFullscreen)
 		return;
 
 	if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
@@ -383,5 +390,13 @@ NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
 void
 NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 {
-	delete page;
+	if (dynamic_cast<NSRPreferencesPage *> (page) != NULL) {
+		NSRPreferencesPage *prefsPage = dynamic_cast<NSRPreferencesPage *> (page);
+		prefsPage->saveSettings ();
+
+		reloadSettings ();
+	}
+
+	if (page != NULL)
+		delete page;
 }

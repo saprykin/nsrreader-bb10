@@ -33,6 +33,8 @@ public:
 	NSRPageView::NSRViewMode getViewMode () const;
 	void setScrollPosition (const QPointF& pos);
 	QPointF getScrollPosition () const;
+	bool isInvertedColors () const;
+	void setInvertedColors (bool inv);
 
 Q_SIGNALS:
 	void viewTapped ();
@@ -47,7 +49,9 @@ private:
 	bb::cascades::ImageView		*_imageView;
 	bb::cascades::TextArea		*_textArea;
 	bb::cascades::Container		*_rootContainer;
+	bb::cascades::Container		*_textContainer;
 	NSRViewMode			_viewMode;
+	bool				_isInvertedColors;
 };
 
 #endif /* NSRPAGEVIEW_H_ */

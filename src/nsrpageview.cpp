@@ -1,4 +1,5 @@
 #include "nsrpageview.h"
+#include "nsrsettings.h"
 
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/Color>
@@ -14,7 +15,9 @@ NSRPageView::NSRPageView (Container *parent) :
 	_imageView (NULL),
 	_textArea (NULL),
 	_rootContainer (NULL),
-	_viewMode (NSR_VIEW_MODE_GRAPHIC)
+	_textContainer (NULL),
+	_viewMode (NSR_VIEW_MODE_GRAPHIC),
+	_isInvertedColors (false)
 {
 	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Fill)
@@ -29,10 +32,14 @@ NSRPageView::NSRPageView (Container *parent) :
 	container->add (_imageView);
 	_scrollView->setContent (container);
 
+	_textContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					    .vertical(VerticalAlignment::Fill)
+					    .layout(DockLayout::create())
+					    .background(Color::White)
+					    .visible(false);
 	_textArea = TextArea::create().horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Fill)
 				      .editable(false)
-				      .visible(false)
 				      .inputFlags(TextInputFlag::SpellCheckOff |
 						  TextInputFlag::PredictionOff |
 						  TextInputFlag::AutoCapitalizationOff |
@@ -40,19 +47,23 @@ NSRPageView::NSRPageView (Container *parent) :
 						  TextInputFlag::AutoPeriodOff |
 						  TextInputFlag::WordSubstitutionOff |
 						  TextInputFlag::VirtualKeyboardOff);
+	_textContainer->add (_textArea);
 
 	_rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
+					    .layout(DockLayout::create())
 					    .background(Color::Black);
 	_rootContainer->add (_scrollView);
-	_rootContainer->add (_textArea);
+	_rootContainer->add (_textContainer);
 
 	TapHandler *imgTapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
 	TapHandler *txtTapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
 	_scrollView->addGestureHandler (imgTapHandler);
-	_textArea->addGestureHandler (txtTapHandler);
+	_textContainer->addGestureHandler (txtTapHandler);
 
 	setRoot (_rootContainer);
+
+	setInvertedColors (NSRSettings().isInvertedColors ());
 }
 
 NSRPageView::~NSRPageView ()
@@ -81,19 +92,40 @@ NSRPageView::setViewMode (NSRPageView::NSRViewMode mode)
 
 	switch (mode) {
 	case NSR_VIEW_MODE_GRAPHIC:
-		_textArea->setVisible (false);
+		_textContainer->setVisible (false);
 		_scrollView->setVisible (true);
-		_rootContainer->setBackground (Color::Black);
 		_viewMode = mode;
 		break;
 	case NSR_VIEW_MODE_TEXT:
-		_textArea->setVisible (true);
+		_textContainer->setVisible (true);
 		_scrollView->setVisible (false);
-		_rootContainer->setBackground (Color::White);
 		_viewMode = mode;
 		break;
 	default:
 		return;
+	}
+}
+
+bool
+NSRPageView::isInvertedColors () const
+{
+	return _isInvertedColors;
+}
+
+void
+NSRPageView::setInvertedColors (bool inv)
+{
+	if (_isInvertedColors == inv)
+		return;
+
+	_isInvertedColors = inv;
+
+	if (_isInvertedColors) {
+		_textArea->textStyle()->setColor (Color::White);
+		_textContainer->setBackground (Color::Black);
+	} else {
+		_textArea->textStyle()->setColor (Color::Black);
+		_textContainer->setBackground (Color::White);
 	}
 }
 
