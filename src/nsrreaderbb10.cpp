@@ -99,6 +99,9 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	_naviPane = NavigationPane::create().add (_page);
 
+	connect (_naviPane, SIGNAL (popTransitionEnded (bb::cascades::Page *)),
+		 this, SLOT (onPopTransitionEnded (bb::cascades::Page *)));
+
 	Application::instance()->setScene (_naviPane);
 
 	bb::cascades::LocaleHandler *localeHandler = new bb::cascades::LocaleHandler (this);
@@ -184,12 +187,7 @@ NSRReaderBB10::onGotoActionTriggered ()
 void
 NSRReaderBB10::onPrefsActionTriggered ()
 {
-	NSRPreferencesPage *page = new NSRPreferencesPage ();
-
-	connect (page, SIGNAL (onPopTransitionEnded (bb::cascades::Page *)),
-		 this, SLOT (onPopTransitionEnded (bb::cascades::Page *)));
-
-	_naviPane->push (page);
+	_naviPane->push (new NSRPreferencesPage ());
 }
 
 void
