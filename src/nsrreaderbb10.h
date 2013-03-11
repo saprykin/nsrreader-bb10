@@ -3,6 +3,7 @@
 
 #include "nsrpageview.h"
 #include "nsrreadercore.h"
+#include "nsrpagestatus.h"
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/ImageView>
@@ -52,6 +53,7 @@ private:
 
     NSRReaderCore			*_core;
     NSRPageView				*_pageView;
+    NSRPageStatus			*_pageStatus;
     bb::cascades::NavigationPane	*_naviPane;
     bb::cascades::Page			*_page;
     bb::cascades::pickers::FilePicker	*_filePicker;

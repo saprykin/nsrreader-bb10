@@ -12,6 +12,7 @@
 #include <bb/cascades/Page>
 #include <bb/cascades/Color>
 #include <bb/cascades/LocaleHandler>
+#include <bb/cascades/Label>
 
 #include <bb/system/SystemToast>
 #include <bb/system/LocaleHandler>
@@ -24,6 +25,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
 	_core (NULL),
 	_pageView (NULL),
+	_pageStatus (NULL),
 	_naviPane (NULL),
 	_page (NULL),
 	_filePicker (NULL),
@@ -47,10 +49,16 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
 						.vertical(VerticalAlignment::Fill);
 
+	_pageStatus = new NSRPageStatus ();
+	_pageStatus->setHorizontalAlignment(HorizontalAlignment::Left);
+	_pageStatus->setVerticalAlignment(VerticalAlignment::Top);
+	_pageStatus->setStatus (0, 0);
+
 	connect (_pageView, SIGNAL (viewTapped ()), this, SLOT (onPageTapped ()));
 
 	rootContainer->add (_pageView);
 	rootContainer->add (_indicator);
+	rootContainer->add (_pageStatus);
 	rootContainer->setBackground (Color::Black);
 
 	_page = Page::create().content (rootContainer);
@@ -196,6 +204,8 @@ NSRReaderBB10::onPageRendered (int number)
 	Q_UNUSED (number)
 
 	_pageView->setPage (_core->getCurrentPage());
+	_pageStatus->setStatus (_core->getCurrentPage().getNumber (),
+				_core->getPagesCount ());
 	updateVisualControls ();
 }
 
@@ -345,6 +355,7 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 
 	_pageView->resetPage ();
 	_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+	_pageStatus->setStatus (0, 0);
 	updateVisualControls ();
 }
 
@@ -362,7 +373,13 @@ NSRReaderBB10::onSystemLanguageChanged ()
 void
 NSRReaderBB10::onPageTapped ()
 {
-	if (!_core->isDocumentOpened () || !_isFullscreen)
+	if (!_core->isDocumentOpened ())
+		return;
+
+	if (!_pageStatus->isVisible ())
+		_pageStatus->setOnScreen (true);
+
+	if (!_isFullscreen)
 		return;
 
 	if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
