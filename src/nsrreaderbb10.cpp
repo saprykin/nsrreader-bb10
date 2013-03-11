@@ -115,7 +115,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_isFullscreen = settings.isFullscreenMode ();
 
 	/* Load previously saved session */
-	if (QFile::exists (settings.getLastSession().getFile ()))
+	if (QFile::exists (settings.getLastSession().getFile ()) &&
+	    settings.isLoadLastDoc ())
 		loadSession ();
 	else
 		updateVisualControls ();
