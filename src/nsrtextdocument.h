@@ -19,6 +19,7 @@ public:
 	int getMinZoom ();
 	void setTextOnly (bool textOnly);
 	QString getText ();
+	bool isEncodingUsed () const;
 
 private:
 	QString			_text;

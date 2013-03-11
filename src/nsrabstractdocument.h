@@ -83,6 +83,7 @@ public:
 	virtual void setPassword (const QString& passwd) {Q_UNUSED (passwd);}
 	virtual void setEncoding (const QString& enc);
 	virtual QString getEncoding () const {return _encoding;}
+	virtual bool isEncodingUsed () const {return false;}
 
 protected:
 	void setZoomToWidth (bool toWidth) {_zoomToWidth = toWidth;}

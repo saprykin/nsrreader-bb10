@@ -49,6 +49,7 @@ NSRReaderCore::openDocument (const QString &path)
 
 	_doc->setTextOnly (settings.isWordWrap ());
 	_doc->setInvertedColors (settings.isInvertedColors ());
+	_doc->setEncoding (settings.getTextEncoding ());
 
 	if (!_doc->isValid ()) {
 		/* Check if we need password */
@@ -121,12 +122,14 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 	if (_doc == NULL)
 		return;
 
-	bool needReload = false;
-	bool wasTextOnly = _doc->isTextOnly ();
-	bool wasInverted = _doc->isInvertedColors ();
+	bool	needReload = false;
+	bool	wasTextOnly = _doc->isTextOnly ();
+	bool	wasInverted = _doc->isInvertedColors ();
+	QString	wasEncoding = _doc->getEncoding ();
 
 	_doc->setInvertedColors (settings->isInvertedColors ());
 	_doc->setTextOnly (settings->isWordWrap ());
+	_doc->setEncoding (settings->getTextEncoding ());
 
 	/* Check whether we need to re-render the page */
 	if (wasTextOnly && !settings->isWordWrap ())
@@ -138,6 +141,9 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 		_cache->clearStorage ();
 		needReload = true;
 	}
+
+	if (wasEncoding != _doc->getEncoding () && _doc->isEncodingUsed ())
+		needReload = true;
 
 	if (needReload)
 		loadPage (PAGE_LOAD_CUSTOM, _currentPage.getNumber ());

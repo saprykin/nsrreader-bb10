@@ -121,4 +121,10 @@ QString NSRTextDocument::getText ()
 	return _text;
 }
 
+bool NSRTextDocument::isEncodingUsed () const
+{
+	return true;
+}
+
+
 
