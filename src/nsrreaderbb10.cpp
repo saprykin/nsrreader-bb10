@@ -136,7 +136,6 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 	/* Save session for opened document */
 	saveSession ();
 
-	disableVisualControls ();
 	_core->loadSession (&session);
 }
 
@@ -149,14 +148,12 @@ NSRReaderBB10::onOpenActionTriggered ()
 void
 NSRReaderBB10::onPrevPageActionTriggered ()
 {
-	disableVisualControls ();
 	_core->loadPage (NSRReaderCore::PAGE_LOAD_PREV);
 }
 
 void
 NSRReaderBB10::onNextPageActionTriggered ()
 {
-	disableVisualControls ();
 	_core->loadPage (NSRReaderCore::PAGE_LOAD_NEXT);
 }
 
@@ -269,6 +266,7 @@ NSRReaderBB10::saveSession ()
 void
 NSRReaderBB10::onIndicatorRequested (bool enabled)
 {
+	disableVisualControls ();
 	_indicator->setVisible (enabled);
 
 	if (enabled)
@@ -325,10 +323,8 @@ NSRReaderBB10::onGotoDialogFinished (bb::system::SystemUiResult::Type res)
 	if (res == SystemUiResult::CancelButtonSelection)
 		return;
 
-	if (pageNum != _core->getCurrentPage().getNumber ()) {
-		disableVisualControls ();
+	if (pageNum != _core->getCurrentPage().getNumber ())
 		_core->loadPage (NSRReaderCore::PAGE_LOAD_CUSTOM, pageNum);
-	}
 }
 
 void
