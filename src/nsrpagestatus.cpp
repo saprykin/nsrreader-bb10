@@ -18,10 +18,12 @@ NSRPageStatus::NSRPageStatus (Container *parent) :
 
 	setLayout (DockLayout::create ());
 	setBackground (ImagePaint (QUrl ("asset:///border-white.amd")));
+	setOpacity (0.7);
 	setLeftPadding (25);
 	setRightPadding (25);
 	setTopPadding (10);
 	setBottomPadding (10);
+	setLeftMargin (50);
 
 	add (_statusLabel);
 }
