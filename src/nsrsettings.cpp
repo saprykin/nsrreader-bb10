@@ -280,8 +280,15 @@ void NSRSettings::cleanOldFiles ()
 		    !QFile::exists(value(childs.at(i) + "/file", "").toString()))
 			remove(childs.at(i));
 
-	setValue("Global/last-config-clean", lastClean);
+	QStringList docs = value("Global/last-documents", QStringList ()).toStringList ();
+	count = docs.count ();
 
+	for (int i = count - 1; i >= 0; --i)
+		if (!QFile::exists (docs.at (i)))
+			docs.removeAt (i);
+
+	setValue ("Global/last-config-clean", lastClean);
+	setValue ("Global/last-documents", QVariant (docs));
 	sync();
 
 	NSRThumbnailer::cleanOldFiles ();
