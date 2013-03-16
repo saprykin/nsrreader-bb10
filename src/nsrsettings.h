@@ -37,6 +37,7 @@ public:
 
 	static QString getVersion ();
 	static QStringList getSupportedEncodings ();
+	static QString getSettingsDirectory ();
 
 private:
 	QString	formatFileName (const QString& name);

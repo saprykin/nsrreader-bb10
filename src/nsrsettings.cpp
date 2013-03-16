@@ -11,7 +11,7 @@
 #endif
 
 NSRSettings::NSRSettings(QObject *parent) :
-	QSettings (QDir::homePath () + "/"NSR_CONFIG_DIR"/config.ini",
+	QSettings (NSRSettings::getSettingsDirectory() + "/config.ini",
 		   QSettings::IniFormat,
 		   parent)
 {
@@ -219,6 +219,12 @@ QStringList NSRSettings::getSupportedEncodings()
 	       << "Apple Roman" << "WINSAMI2";
 
 	return codecs;
+}
+
+QString
+NSRSettings::getSettingsDirectory ()
+{
+	return QDir::homePath () + "/"NSR_CONFIG_DIR;
 }
 
 QString NSRSettings::formatFileName (const QString &name)
