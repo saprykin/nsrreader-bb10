@@ -93,16 +93,24 @@ NSRRenderThread::run ()
 
 	if (_renderThumbnail &&
 	    !NSRThumbnailer::isThumbnailExists (_doc->getDocumentPath ())) {
-		int wasZoom = _doc->getZoom ();
-		int wasZoomWidth = _doc->getScreenWidth ();
-		bool wasZoomToWidth = _doc->isZoomToWidth ();
+		NSRRenderedPage	thumbPage;
+		int		wasZoom = _doc->getZoom ();
+		int		wasZoomWidth = _doc->getScreenWidth ();
+		bool		wasZoomToWidth = _doc->isZoomToWidth ();
 
 		_doc->zoomToWidth (256);
 		_doc->setTextOnly (false);
 		_doc->renderPage (1);
 
+		thumbPage.setImage (_doc->getCurrentPage ());
+
+		_doc->setTextOnly (true);
+		_doc->renderPage (1);
+
+		thumbPage.setText (_doc->getText ());
+
 		NSRThumbnailer::saveThumbnail (_doc->getDocumentPath (),
-					       _doc->getCurrentPage ());
+					       thumbPage);
 
 		_doc->setTextOnly (textOnly);
 

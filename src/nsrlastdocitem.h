@@ -5,6 +5,7 @@
 #include <bb/cascades/ListItemListener>
 #include <bb/cascades/ImageView>
 #include <bb/cascades/Label>
+#include <bb/cascades/Container>
 
 class NSRLastDocItem : public bb::cascades::CustomControl,
 		       public bb::cascades::ListItemListener
@@ -14,7 +15,9 @@ public:
 	NSRLastDocItem (bb::cascades::Container *parent = 0);
 	virtual ~NSRLastDocItem ();
 
-	void updateItem (const QString& title, const QString &imgPath);
+	void updateItem (const QString& title,
+			 const QString&	imgPath,
+			 const QString&	text);
 
 	/* ListItemListener iface */
 	void select (bool select);
@@ -23,7 +26,9 @@ public:
 
 private:
 	bb::cascades::ImageView	*_imageView;
+	bb::cascades::Label	*_textView;
 	bb::cascades::Label	*_label;
+	bb::cascades::Container	*_viewContainer;
 };
 
 #endif /* NSRLASTDOCITEM_H_ */

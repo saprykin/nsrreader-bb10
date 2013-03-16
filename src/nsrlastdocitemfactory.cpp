@@ -35,7 +35,9 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 	QVariantMap map = data.value<QVariantMap>();
 	NSRLastDocItem *item = static_cast<NSRLastDocItem *> (listItem);
 
-	item->updateItem (map["title"].toString (), map["image"].toString ());
+	item->updateItem (map["title"].toString (),
+			  map["image"].toString (),
+			  map["text"].toString ());
 }
 
 

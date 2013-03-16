@@ -15,12 +15,12 @@ using namespace bb::utility;
 bool
 NSRThumbnailer::isThumbnailExists (const QString& path)
 {
-	return QFile::exists (filePathToThumbnail (path));
+	return QFile::exists (getThumnailPath (path));
 }
 
 void
-NSRThumbnailer::saveThumbnail (const QString&	path,
-                	       bb::ImageData	image)
+NSRThumbnailer::saveThumbnail (const QString&		path,
+			       const NSRRenderedPage&	page)
 {
 	QDir dir;
 	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
@@ -29,29 +29,23 @@ NSRThumbnailer::saveThumbnail (const QString&	path,
 	if (!dir.exists (NSR_THUMBNAILS_DIR))
 		dir.mkpath (NSR_THUMBNAILS_DIR);
 
-	QString fileName = filePathToThumbnail (path);
+	if (page.getImage().isValid ()) {
+		QString fileName = getThumnailPath (path);
 
-	ImageConverter::encode (QUrl::fromLocalFile (fileName),
-				image,
-				50);
+		ImageConverter::encode (QUrl::fromLocalFile (fileName),
+					page.getImage (),
+					50);
+	}
 
-	settings.beginGroup ("Thumbnails");
-	settings.setValue (path, QFileInfo (fileName).fileName ());
+	settings.beginGroup (filePathToGroup (path));
+	settings.setValue ("path", path);
+	settings.setValue ("text", page.getText ());
 	settings.endGroup ();
 	settings.sync ();
 }
 
-bb::ImageData
-NSRThumbnailer::getThumbnail (const QString& path)
-{
-	if (isThumbnailExists (path))
-		return ImageConverter::decode (QUrl::fromLocalFile (filePathToThumbnail (path)));
-	else
-		return bb::ImageData ();
-}
-
 QString
-NSRThumbnailer::filePathToThumbnail (const QString& path)
+NSRThumbnailer::getThumnailPath (const QString& path)
 {
 	QString hash = QCryptographicHash::hash(path.toAscii (), QCryptographicHash::Md5).toHex ();
 
@@ -64,18 +58,42 @@ NSRThumbnailer::cleanOldFiles ()
 	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
 			    QSettings::IniFormat);
 
-	settings.beginGroup ("Thumbnails");
-
-	QStringList files = settings.childKeys ();
+	QStringList files = settings.childGroups ();
 	int count = files.count ();
 
 	for (int i = 0; i < count; ++i) {
-		if (!QFile::exists (files.at (i))) {
-			settings.remove (files.at (i));
-			QFile::remove (filePathToThumbnail (files.at (i)));
+		settings.beginGroup (files.at (i));
+
+		bool needDelete = false;
+		QString filePath = settings.value("path").toString ();
+
+		if (!QFile::exists (filePath)) {
+			QFile::remove (getThumnailPath (filePath));
+			needDelete = true;
 		}
+
+		settings.endGroup ();
+
+		if (needDelete)
+			settings.remove (files.at (i));
 	}
 
 	settings.endGroup ();
 }
+
+QString
+NSRThumbnailer::getThumbnailText (const QString& path)
+{
+	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
+			    QSettings::IniFormat);
+
+	return settings.value(filePathToGroup (path) + "/text", "").toString ();
+}
+
+QString
+NSRThumbnailer::filePathToGroup (const QString& path)
+{
+	return QCryptographicHash::hash(path.toAscii (), QCryptographicHash::Md5).toHex ();
+}
+
 

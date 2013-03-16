@@ -57,7 +57,8 @@ NSRLastDocsPage::loadData ()
 		if (QFile::exists (docs.at (i))) {
 			QVariantMap map;
 			map["title"] = QFileInfo(docs.at (i)).fileName ();
-			map["image"] = NSRThumbnailer::filePathToThumbnail (docs.at (i));
+			map["image"] = NSRThumbnailer::getThumnailPath (docs.at (i));
+			map["text"] = NSRThumbnailer::getThumbnailText (docs.at (i));
 
 			model->append (map);
 		}

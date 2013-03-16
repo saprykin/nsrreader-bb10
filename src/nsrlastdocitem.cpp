@@ -4,15 +4,18 @@
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/StackLayoutProperties>
 #include <bb/cascades/Color>
-#include <bb/cascades/Container>
 #include <bb/cascades/ImagePaint>
+
+#include <QFile>
 
 using namespace bb::cascades;
 
 NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	CustomControl (parent),
 	_imageView (NULL),
-	_label (NULL)
+	_textView (NULL),
+	_label (NULL),
+	_viewContainer (NULL)
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -23,7 +26,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	rootContainer->setTopPadding (10);
 	rootContainer->setBottomPadding (10);
 
-	Container *imgContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+	_viewContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
 					    .layout(DockLayout::create())
 					    .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0));
@@ -31,9 +34,16 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_imageView = ImageView::create().horizontal(HorizontalAlignment::Fill)
 					.vertical(VerticalAlignment::Fill)
 					.scalingMethod(ScalingMethod::Fill);
+	_textView = Label::create().horizontal(HorizontalAlignment::Fill)
+				   .vertical(VerticalAlignment::Fill)
+				   .visible(false);
+	_textView->textStyle()->setFontSize (FontSize::XXSmall);
+	_textView->textStyle()->setColor (Color::Gray);
+	_textView->setMultiline (true);
 
-	imgContainer->setBottomMargin (0);
-	imgContainer->add (_imageView);
+	_viewContainer->setBottomMargin (0);
+	_viewContainer->add (_imageView);
+	_viewContainer->add (_textView);
 
 	_label = Label::create ().horizontal(HorizontalAlignment::Center)
 				 .vertical(VerticalAlignment::Center);
@@ -48,7 +58,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	labelContainer->setTopMargin (0);
 	labelContainer->add (_label);
 
-	rootContainer->add (imgContainer);
+	rootContainer->add (_viewContainer);
 	rootContainer->add (labelContainer);
 
 	setRoot (rootContainer);
@@ -59,10 +69,23 @@ NSRLastDocItem::~NSRLastDocItem ()
 }
 
 void
-NSRLastDocItem::updateItem (const QString& title, const QString& imgPath)
+NSRLastDocItem::updateItem (const QString&	title,
+			    const QString&	imgPath,
+			    const QString&	text)
 {
 	_label->setText (title);
-	_imageView->setImage (Image (imgPath));
+
+	if (QFile::exists (imgPath)) {
+		_textView->setVisible (false);
+		_imageView->setVisible (true);
+		_imageView->setImage (Image (imgPath));
+		_viewContainer->setBottomMargin (0);
+	} else {
+		_imageView->setVisible (false);
+		_textView->setVisible (true);
+		_textView->setText (text);
+		_viewContainer->setBottomMargin (10);
+	}
 }
 
 void
@@ -84,10 +107,13 @@ NSRLastDocItem::activate (bool activate)
 {
 	Container *rootContainer = static_cast<Container *> (root ());
 
-	if (activate)
+	if (activate) {
 		rootContainer->setBackground (Color::fromRGBA (0, 0.66, 0.87, 1.0));
-	else
+		_textView->textStyle()->setColor (Color::Black);
+	} else {
 		rootContainer->setBackground (Color::fromRGBA (0.2, 0.2, 0.2, 1.0));
+		_textView->textStyle()->setColor (Color::Gray);
+	}
 }
 
 
