@@ -17,6 +17,8 @@ NSRReaderCore::NSRReaderCore (QObject *parent) :
 	_cache = new NSRPagesCache (this);
 
 	connect (_thread, SIGNAL (renderDone ()), this, SLOT (onRenderDone ()));
+
+	_thread->setThumbnailRender (true);
 }
 
 NSRReaderCore::~NSRReaderCore ()
@@ -62,6 +64,8 @@ NSRReaderCore::openDocument (const QString &path)
 		delete _doc;
 		_doc = NULL;
 	}
+
+	settings.addLastDocument (path);
 }
 
 bool
