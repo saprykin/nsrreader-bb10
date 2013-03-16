@@ -57,3 +57,25 @@ NSRThumbnailer::filePathToThumbnail (const QString& path)
 
 	return NSR_THUMBNAILS_DIR + "/" + hash + ".png";
 }
+
+void
+NSRThumbnailer::cleanOldFiles ()
+{
+	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
+			    QSettings::IniFormat);
+
+	settings.beginGroup ("Thumbnails");
+
+	QStringList files = settings.childKeys ();
+	int count = files.count ();
+
+	for (int i = 0; i < count; ++i) {
+		if (!QFile::exists (files.at (i))) {
+			settings.remove (files.at (i));
+			QFile::remove (filePathToThumbnail (files.at (i)));
+		}
+	}
+
+	settings.endGroup ();
+}
+

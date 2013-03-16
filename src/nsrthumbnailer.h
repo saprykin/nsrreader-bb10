@@ -13,6 +13,7 @@ public:
 				   bb::ImageData	image);
 	static bb::ImageData getThumbnail (const QString& path);
 	static QString filePathToThumbnail (const QString& path);
+	static void cleanOldFiles ();
 
 private:
 	NSRThumbnailer () {}

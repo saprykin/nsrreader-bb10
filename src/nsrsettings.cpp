@@ -1,6 +1,5 @@
 #include "nsrsettings.h"
-
-#include <QtGui/QFontDatabase>
+#include "nsrthumbnailer.h"
 
 #define NSR_READER_VERSION "1.0.0"
 
@@ -284,4 +283,6 @@ void NSRSettings::cleanOldFiles ()
 	setValue("Global/last-config-clean", lastClean);
 
 	sync();
+
+	NSRThumbnailer::cleanOldFiles ();
 }
