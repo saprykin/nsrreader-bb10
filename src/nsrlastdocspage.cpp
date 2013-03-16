@@ -1,5 +1,7 @@
 #include "nsrlastdocspage.h"
 #include "nsrlastdocitemfactory.h"
+#include "nsrsettings.h"
+#include "nsrthumbnailer.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/ListView>
@@ -12,32 +14,54 @@
 using namespace bb::cascades;
 
 NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
-	Page (parent)
+	Page (parent),
+	_listView (NULL)
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create ());
 
-	ListView *list = ListView::create().horizontal(HorizontalAlignment::Fill)
-					   .vertical(VerticalAlignment::Fill)
-					   .listItemProvider(new NSRLastDocItemFactory ());
+	_listView = ListView::create().horizontal(HorizontalAlignment::Fill)
+				      .vertical(VerticalAlignment::Fill)
+				      .listItemProvider(new NSRLastDocItemFactory ());
 
 	GridListLayout *grid = GridListLayout::create().columnCount(2);
 	grid->setHorizontalCellSpacing (10);
 	grid->setVerticalCellSpacing (10);
 	grid->setCellAspectRatio (0.8);
-	list->setLayout (grid);
+	_listView->setLayout (grid);
 
-	rootContainer->add (list);
+	rootContainer->add (_listView);
 	rootContainer->setBackground(Color::Black);
 	rootContainer->setTopPadding (20);
 	rootContainer->setBottomPadding (20);
 
 	setContent (rootContainer);
 	setTitleBar (TitleBar::create().title(trUtf8 ("Recent documents")));
+
+	loadData ();
 }
 
 NSRLastDocsPage::~NSRLastDocsPage ()
 {
 }
+
+void
+NSRLastDocsPage::loadData ()
+{
+	QVariantListDataModel	*model = new QVariantListDataModel ();
+	QStringList		docs = NSRSettings().getLastDocuments ();
+	int			count = docs.count ();
+
+	for (int i = 0; i < count; ++i) {
+		QVariantMap map;
+		map["title"] = QFileInfo(docs.at (i)).fileName ();
+		map["image"] = NSRThumbnailer::filePathToThumbnail (docs.at (i));
+
+		model->append (map);
+	}
+
+	_listView->setDataModel (model);
+}
+
 
