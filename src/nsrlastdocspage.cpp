@@ -54,11 +54,13 @@ NSRLastDocsPage::loadData ()
 	int			count = docs.count ();
 
 	for (int i = 0; i < count; ++i) {
-		QVariantMap map;
-		map["title"] = QFileInfo(docs.at (i)).fileName ();
-		map["image"] = NSRThumbnailer::filePathToThumbnail (docs.at (i));
+		if (QFile::exists (docs.at (i))) {
+			QVariantMap map;
+			map["title"] = QFileInfo(docs.at (i)).fileName ();
+			map["image"] = NSRThumbnailer::filePathToThumbnail (docs.at (i));
 
-		model->append (map);
+			model->append (map);
+		}
 	}
 
 	_listView->setDataModel (model);
