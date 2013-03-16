@@ -1,10 +1,12 @@
 #include "nsrrenderthread.h"
+#include "nsrthumbnailer.h"
 
 #include <QMutexLocker>
 
 NSRRenderThread::NSRRenderThread (QObject *parent) :
 	QThread (parent),
-	_doc (NULL)
+	_doc (NULL),
+	_renderThumbnail (false)
 {
 }
 
@@ -47,6 +49,18 @@ NSRRenderThread::getRenderedPage ()
 }
 
 void
+NSRRenderThread::setThumbnailRender (bool enabled)
+{
+	_renderThumbnail = enabled;
+}
+
+bool
+NSRRenderThread::isThumbnailRenderEnabled () const
+{
+	return _renderThumbnail;
+}
+
+void
 NSRRenderThread::run ()
 {
 	QMutexLocker locker (&_requestedMutex);
@@ -76,6 +90,27 @@ NSRRenderThread::run ()
 	_renderedMutex.lock ();
 	_renderedPages.append (page);
 	_renderedMutex.unlock ();
+
+	if (_renderThumbnail &&
+	    !NSRThumbnailer::isThumbnailExists (_doc->getDocumentPath ())) {
+		int wasZoom = _doc->getZoom ();
+		int wasZoomWidth = _doc->getScreenWidth ();
+		bool wasZoomToWidth = _doc->isZoomToWidth ();
+
+		_doc->zoomToWidth (256);
+		_doc->setTextOnly (false);
+		_doc->renderPage (1);
+
+		NSRThumbnailer::saveThumbnail (_doc->getDocumentPath (),
+					       _doc->getCurrentPage ());
+
+		_doc->setTextOnly (textOnly);
+
+		if (!wasZoomToWidth)
+			_doc->setZoom (wasZoom);
+		else
+			_doc->zoomToWidth (wasZoomWidth);
+	}
 
 	emit renderDone ();
 }

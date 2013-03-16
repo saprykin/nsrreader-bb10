@@ -20,6 +20,8 @@ public:
 	void addRequest (NSRRenderedPage &page);
 	void cancelRequests ();
 	NSRRenderedPage getRenderedPage ();
+	void setThumbnailRender (bool enabled);
+	bool isThumbnailRenderEnabled () const;
 
 	void run ();
 
@@ -34,6 +36,7 @@ private:
 	QList<NSRRenderedPage>		_renderedPages;
 	QMutex				_requestedMutex;
 	QMutex				_renderedMutex;
+	bool				_renderThumbnail;
 };
 
 #endif // NSRRENDERTHREAD_H
