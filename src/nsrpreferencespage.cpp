@@ -25,17 +25,13 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(StackLayout::create ());
-	rootContainer->setLeftPadding (20);
-	rootContainer->setRightPadding (20);
-	rootContainer->setTopPadding (20);
-	rootContainer->setBottomPadding (20);
 
 	_isSaveLastPos = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isFullscreen = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isTextMode = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isInvertedColors = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill)
-					   .title(trUtf8 ("Text encoding"));
+					   .title(trUtf8 ("Text Encoding"));
 
 	_isSaveLastPos->setChecked (settings.isLoadLastDoc ());
 	_isFullscreen->setChecked (settings.isFullscreenMode ());
@@ -60,64 +56,127 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Container *firstContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .layout(DockLayout::create());
 
-	firstContainer->setTopPadding (20);
-	firstContainer->setBottomPadding (20);
+	firstContainer->setTopPadding (40);
+	firstContainer->setBottomPadding (40);
+	firstContainer->setLeftPadding (20);
+	firstContainer->setRightPadding (20);
 
-	firstContainer->add (Label::create(trUtf8 ("Save last position")).horizontal(HorizontalAlignment::Left));
+	firstContainer->add (Label::create(trUtf8 ("Save Last Position")).horizontal(HorizontalAlignment::Left)
+									 .vertical(VerticalAlignment::Center));
 	firstContainer->add (_isSaveLastPos);
 
 	/* 'Fullscreen mode' option */
 	Container *secondContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							.layout(DockLayout::create());
 
-	secondContainer->setTopPadding (20);
-	secondContainer->setBottomPadding (20);
+	secondContainer->setTopPadding (40);
+	secondContainer->setBottomPadding (40);
+	secondContainer->setLeftPadding (20);
+	secondContainer->setRightPadding (20);
 
-	secondContainer->add (Label::create(trUtf8 ("Fullscreen mode")).horizontal(HorizontalAlignment::Left));
+	secondContainer->add (Label::create(trUtf8 ("Fullscreen Mode")).horizontal(HorizontalAlignment::Left)
+								       .vertical(VerticalAlignment::Center));
 	secondContainer->add (_isFullscreen);
 
 	/* 'Text mode' option */
 	Container *thirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .layout(DockLayout::create());
 
-	thirdContainer->setTopPadding (20);
-	thirdContainer->setBottomPadding (20);
+	thirdContainer->setTopPadding (40);
+	thirdContainer->setBottomPadding (40);
+	thirdContainer->setLeftPadding (20);
+	thirdContainer->setRightPadding (20);
 
-	thirdContainer->add (Label::create(trUtf8 ("Column view")).horizontal(HorizontalAlignment::Left));
+	thirdContainer->add (Label::create(trUtf8 ("Column View")).horizontal(HorizontalAlignment::Left)
+								  .vertical(VerticalAlignment::Center));
 	thirdContainer->add (_isTextMode);
 
 	/* 'Invert colors' option */
 	Container *fourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							.layout(DockLayout::create());
 
-	fourthContainer->setTopPadding (20);
-	fourthContainer->setBottomPadding (20);
+	fourthContainer->setTopPadding (40);
+	fourthContainer->setBottomPadding (40);
+	fourthContainer->setLeftPadding (20);
+	fourthContainer->setRightPadding (20);
 
-	fourthContainer->add (Label::create(trUtf8 ("Invert colors")).horizontal(HorizontalAlignment::Left));
+	fourthContainer->add (Label::create(trUtf8 ("Invert Colors")).horizontal(HorizontalAlignment::Left)
+								     .vertical(VerticalAlignment::Center));
 	fourthContainer->add (_isInvertedColors);
 
 	/* 'Text encoding' drop down list */
 	Container *fifthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						       .layout(DockLayout::create());
+						       .layout(StackLayout::create());
+	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for pure text files. "
+						    "None other format supports encoding selection."))
+				     .horizontal(HorizontalAlignment::Fill)
+				     .vertical(VerticalAlignment::Center);
+	encodingInfo->textStyle()->setFontSize (FontSize::XSmall);
+	encodingInfo->setMultiline (true);
 
-	fifthContainer->setTopPadding (20);
-	fifthContainer->setBottomPadding (20);
+	fifthContainer->setTopPadding (40);
+	fifthContainer->setBottomPadding (40);
+	fifthContainer->setLeftPadding (20);
+	fifthContainer->setRightPadding (20);
 
 	fifthContainer->add (_encodingsList);
+	fifthContainer->add (encodingInfo);
 
 	/* Add all options to root layout */
+	Container *zeroLine = Container::create().horizontal(HorizontalAlignment::Fill)
+						 .vertical(VerticalAlignment::Fill)
+						 .background(Color::Gray);
+	zeroLine->setMaxHeight (1);
+	zeroLine->setPreferredHeight (1);
+
+	Container *firstLine = Container::create().horizontal(HorizontalAlignment::Fill)
+						  .vertical(VerticalAlignment::Fill)
+						  .background(Color::Gray);
+	firstLine->setMaxHeight (1);
+	firstLine->setPreferredHeight (1);
+
+	Container *secondLine = Container::create().horizontal(HorizontalAlignment::Fill)
+						   .vertical(VerticalAlignment::Fill)
+						   .background(Color::Gray);
+	secondLine->setMaxHeight (1);
+	secondLine->setPreferredHeight (1);
+
+	Container *thirdLine = Container::create().horizontal(HorizontalAlignment::Fill)
+						  .vertical(VerticalAlignment::Fill)
+						  .background(Color::Gray);
+	thirdLine->setMaxHeight (1);
+	thirdLine->setPreferredHeight (1);
+
+	Container *fourthLine = Container::create().horizontal(HorizontalAlignment::Fill)
+						   .vertical(VerticalAlignment::Fill)
+						   .background(Color::Gray);
+	fourthLine->setMaxHeight (1);
+	fourthLine->setPreferredHeight (1);
+
+	Container *fifthLine = Container::create().horizontal(HorizontalAlignment::Fill)
+						  .vertical(VerticalAlignment::Fill)
+						  .background(Color::Gray);
+	fifthLine->setMaxHeight (1);
+	fifthLine->setPreferredHeight (1);
+
+	rootContainer->add (zeroLine);
 	rootContainer->add (firstContainer);
+	rootContainer->add (firstLine);
 	rootContainer->add (secondContainer);
+	rootContainer->add (secondLine);
 	rootContainer->add (thirdContainer);
+	rootContainer->add (thirdLine);
 	rootContainer->add (fourthContainer);
+	rootContainer->add (fourthLine);
 	rootContainer->add (fifthContainer);
+	rootContainer->add (fifthLine);
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 						     .vertical(VerticalAlignment::Fill)
 						     .content(rootContainer);
 
 	setContent (scrollView);
-	setTitleBar (TitleBar::create().title (trUtf8 ("Preferences")));
+	setTitleBar (TitleBar::create().title (trUtf8 ("Settings")));
 }
 
 NSRPreferencesPage::~NSRPreferencesPage ()
