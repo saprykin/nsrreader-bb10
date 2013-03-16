@@ -7,15 +7,15 @@
 #include <bb/cascades/ListView>
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/Color>
-#include <bb/cascades/QListDataModel>
-#include <bb/cascades/GridListLayout>
 #include <bb/cascades/TitleBar>
+#include <bb/cascades/QListDataModel>
 
 using namespace bb::cascades;
 
 NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	Page (parent),
-	_listView (NULL)
+	_listView (NULL),
+	_listLayout (NULL)
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -25,11 +25,17 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 				      .vertical(VerticalAlignment::Fill)
 				      .listItemProvider(new NSRLastDocItemFactory ());
 
-	GridListLayout *grid = GridListLayout::create().columnCount(2);
-	grid->setHorizontalCellSpacing (10);
-	grid->setVerticalCellSpacing (10);
-	grid->setCellAspectRatio (0.8);
-	_listView->setLayout (grid);
+	_listLayout = GridListLayout::create();
+
+	if (OrientationSupport::instance()->orientation () == UIOrientation::Portrait)
+		_listLayout->setColumnCount (2);
+	else
+		_listLayout->setColumnCount (3);
+
+	_listLayout->setHorizontalCellSpacing (10);
+	_listLayout->setVerticalCellSpacing (10);
+	_listLayout->setCellAspectRatio (0.8);
+	_listView->setLayout (_listLayout);
 
 	rootContainer->add (_listView);
 	rootContainer->setBackground(Color::Black);
@@ -40,10 +46,24 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	setTitleBar (TitleBar::create().title(trUtf8 ("Recent Documents")));
 
 	loadData ();
+
+	connect (OrientationSupport::instance (),
+		 SIGNAL (orientationAboutToChange (bb::cascades::UIOrientation::Type)),
+		 this,
+		 SLOT (onOrientationAboutToChange (bb::cascades::UIOrientation::Type)));
 }
 
 NSRLastDocsPage::~NSRLastDocsPage ()
 {
+}
+
+void
+NSRLastDocsPage::onOrientationAboutToChange (bb::cascades::UIOrientation::Type type)
+{
+	if (type == UIOrientation::Portrait)
+		_listLayout->setColumnCount (2);
+	else
+		_listLayout->setColumnCount (3);
 }
 
 void
