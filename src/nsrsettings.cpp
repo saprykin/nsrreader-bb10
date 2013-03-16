@@ -35,6 +35,7 @@ NSRSettings::NSRSettings(QObject *parent) :
 	_isNewsShown = (value("news-shown-version", "1.0.0").toString() == NSR_READER_VERSION);
 	_fontFamily = value("font-family", "Nokia Sans S60").toString();
 	_textEncoding = value("text-encoding", "UTF-8").toString();
+	_lastDocuments = value("last-documents", QStringList ()).toStringList();
 
 	if (!QDir(_lastOpenDir).exists())
 		_lastOpenDir = defPath;
@@ -236,6 +237,27 @@ void NSRSettings::readSession (const QString &name, NSRSession &session)
 	session.setPosition(value("position", QPoint (0, 0)).toPoint());
 	session.setRotation(value("angle", 0).toDouble());
 	endGroup();
+}
+
+QStringList
+NSRSettings::getLastDocuments () const
+{
+	return _lastDocuments;
+}
+
+void
+NSRSettings::addLastDocument (const QString& path)
+{
+	if (_lastDocuments.contains (path))
+		_lastDocuments.removeAll (path);
+
+	_lastDocuments.prepend (path);
+
+	beginGroup ("Global");
+	setValue ("last-documents", QVariant (_lastDocuments));
+	endGroup ();
+
+	sync ();
 }
 
 void NSRSettings::cleanOldFiles ()

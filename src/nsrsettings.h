@@ -7,7 +7,7 @@
 
 class NSRSettings : public QSettings
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 	explicit NSRSettings (QObject *parent = 0);
 	void saveSession (NSRSession *session);
@@ -32,6 +32,8 @@ public:
 	void saveFontFamily (const QString& ff);
 	QString getTextEncoding () const {return _textEncoding;}
 	void saveTextEncoding (const QString& textEnc);
+	QStringList getLastDocuments () const;
+	void addLastDocument (const QString& path);
 
 	static QString getVersion ();
 	static QStringList getSupportedEncodings ();
@@ -41,15 +43,16 @@ private:
 	void	readSession (const QString& name, NSRSession& session);
 	void	cleanOldFiles ();
 
-	bool	_isLoadLastDoc;
-	bool	_isFullscreenMode;
-	bool	_isWordWrap;
-	bool	_isTextModeNoted;
-	bool	_isInvertedColors;
-	bool	_isNewsShown;
-	QString	_lastOpenDir;
-	QString	_fontFamily;
-	QString	_textEncoding;
+	bool		_isLoadLastDoc;
+	bool		_isFullscreenMode;
+	bool		_isWordWrap;
+	bool		_isTextModeNoted;
+	bool		_isInvertedColors;
+	bool		_isNewsShown;
+	QString		_lastOpenDir;
+	QString		_fontFamily;
+	QString		_textEncoding;
+	QStringList	_lastDocuments;
 };
 
 #endif // NSRSETTINGS_H
