@@ -388,10 +388,12 @@ bb::ImageData NSRDjVuDocument::getCurrentPage()
 				*(image + rowSize * i + j * 4) = 255 - *(_imgData + i * _imgSize.width() * 3 + j * 3 + 2);
 				*(image + rowSize * i + j * 4 + 1) = 255 - *(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
 				*(image + rowSize * i + j * 4 + 2) = 255 - *(_imgData + i * _imgSize.width() * 3 + j * 3);
+				*(image + rowSize * i + j * 4 + 3) = 255;
 			} else {
 				*(image + rowSize * i + j * 4) = *(_imgData + i * _imgSize.width() * 3 + j * 3 + 2);
 				*(image + rowSize * i + j * 4 + 1) = *(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
 				*(image + rowSize * i + j * 4 + 2) = *(_imgData + i * _imgSize.width() * 3 + j * 3);
+				*(image + rowSize * i + j * 4 + 3) = 255;
 			}
 		}
 
