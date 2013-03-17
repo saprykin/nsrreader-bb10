@@ -79,7 +79,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
 	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
 	_gotoAction = ActionItem::create().title(trUtf8 ("Go to")).enabled (false);
-	_prefsAction = ActionItem::create().title(trUtf8 ("Preferences")).enabled (false);
+	_prefsAction = ActionItem::create().title(trUtf8 ("Settings")).enabled (false);
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
