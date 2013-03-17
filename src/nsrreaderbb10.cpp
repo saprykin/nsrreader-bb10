@@ -26,6 +26,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_core (NULL),
 	_pageView (NULL),
 	_pageStatus (NULL),
+	_readProgress (NULL),
 	_naviPane (NULL),
 	_page (NULL),
 	_filePicker (NULL),
@@ -60,8 +61,19 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	rootContainer->add (_indicator);
 	rootContainer->add (_pageStatus);
 	rootContainer->setBackground (Color::Black);
+	rootContainer->setLayoutProperties (StackLayoutProperties::create().spaceQuota(1.0));
 
-	_page = Page::create().content (rootContainer);
+	_readProgress = new NSRReadProgress ();
+
+	Container *mainContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						      .vertical(VerticalAlignment::Fill)
+						      .layout(StackLayout::create ())
+						      .background(Color::Black);
+
+	mainContainer->add (rootContainer);
+	mainContainer->add (_readProgress);
+
+	_page = Page::create().content (mainContainer);
 
 	_openAction = ActionItem::create().title(trUtf8 ("Open")).enabled (false);
 	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
@@ -206,6 +218,8 @@ NSRReaderBB10::onPageRendered (int number)
 	_pageView->setPage (_core->getCurrentPage());
 	_pageStatus->setStatus (_core->getCurrentPage().getNumber (),
 				_core->getPagesCount ());
+	_readProgress->setCurrentPage (_core->getCurrentPage().getNumber ());
+	_readProgress->setPagesCount (_core->getPagesCount ());
 	updateVisualControls ();
 }
 
@@ -356,6 +370,8 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 	_pageView->resetPage ();
 	_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 	_pageStatus->setStatus (0, 0);
+	_readProgress->setPagesCount (0);
+	_readProgress->setCurrentPage (0);
 	updateVisualControls ();
 }
 
