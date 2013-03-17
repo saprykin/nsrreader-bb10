@@ -50,8 +50,6 @@ NSRPageStatus::setStatus (int page, int totalPages)
 
 	_statusLabel->setText (QString("%1/%2").arg(region.locale().toString (page))
 					       .arg (region.locale().toString (totalPages)));
-
-	setOnScreen (true);
 }
 
 void
