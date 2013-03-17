@@ -12,16 +12,17 @@ NSRPageStatus::NSRPageStatus (Container *parent) :
 	_statusLabel (NULL),
 	_timerId (-1)
 {
-	_statusLabel = Label::create().horizontal(HorizontalAlignment::Center)
+	_statusLabel = Label::create().horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Center);
 	_statusLabel->textStyle()->setColor (Color::White);
+	_statusLabel->textStyle()->setFontSize (FontSize::Small);
 
 	setLayout (DockLayout::create ());
 	setBackground (ImagePaint (QUrl ("asset:///border-white.amd")));
-	setOpacity (0.7);
-	setLeftPadding (25);
-	setRightPadding (25);
-	setTopPadding (10);
+	setOpacity (0.6);
+	setLeftPadding (10);
+	setRightPadding (10);
+	setTopPadding (5);
 	setBottomPadding (10);
 	setLeftMargin (50);
 
