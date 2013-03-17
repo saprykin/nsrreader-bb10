@@ -15,7 +15,8 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_imageView (NULL),
 	_textView (NULL),
 	_label (NULL),
-	_viewContainer (NULL)
+	_viewContainer (NULL),
+	_imgTracker (NULL)
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -61,6 +62,10 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	rootContainer->add (_viewContainer);
 	rootContainer->add (labelContainer);
 
+	_imgTracker = new ImageTracker (this);
+	connect (_imgTracker, SIGNAL (stateChanged (bb::cascades::ResourceState::Type)),
+		 this, SLOT (onImageStateChanged (bb::cascades::ResourceState::Type)));
+
 	setRoot (rootContainer);
 }
 
@@ -78,7 +83,7 @@ NSRLastDocItem::updateItem (const QString&	title,
 	if (QFile::exists (imgPath)) {
 		_textView->setVisible (false);
 		_imageView->setVisible (true);
-		_imageView->setImage (Image (imgPath));
+		_imgTracker->setImageSource (QUrl::fromLocalFile (imgPath));
 		_viewContainer->setBottomMargin (0);
 	} else {
 		_imageView->setVisible (false);
@@ -115,5 +120,13 @@ NSRLastDocItem::activate (bool activate)
 		_textView->textStyle()->setColor (Color::Gray);
 	}
 }
+
+void
+NSRLastDocItem::onImageStateChanged (bb::cascades::ResourceState::Type state)
+{
+	if (state == ResourceState::Loaded)
+		_imageView->setImage (_imgTracker->image ());
+}
+
 
 
