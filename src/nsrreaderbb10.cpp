@@ -14,6 +14,7 @@
 #include <bb/cascades/Color>
 #include <bb/cascades/LocaleHandler>
 #include <bb/cascades/Label>
+#include <bb/cascades/Menu>
 
 #include <bb/system/SystemToast>
 #include <bb/system/LocaleHandler>
@@ -87,7 +88,6 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_gotoAction, ActionBarPlacement::InOverflow);
-	_page->addAction (_prefsAction, ActionBarPlacement::InOverflow);
 	_page->addAction (_recentDocsAction, ActionBarPlacement::InOverflow);
 
 	_openAction->setImageSource (QUrl ("asset:///open.png"));
@@ -103,6 +103,10 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
 	connect (_prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
 	connect (_recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
+
+	Menu *menu = new Menu ();
+	menu->addAction (_prefsAction);
+	Application::instance()->setMenu (menu);
 
 	_filePicker = new FilePicker (this);
 	_filePicker->setTitle (trUtf8 ("Select file"));
@@ -213,6 +217,7 @@ NSRReaderBB10::onGotoActionTriggered ()
 void
 NSRReaderBB10::onPrefsActionTriggered ()
 {
+	_prefsAction->setEnabled (false);
 	_naviPane->push (new NSRPreferencesPage ());
 }
 
@@ -445,6 +450,8 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 		prefsPage->saveSettings ();
 
 		reloadSettings ();
+
+		_prefsAction->setEnabled (true);
 	}
 
 	if (page != NULL)
