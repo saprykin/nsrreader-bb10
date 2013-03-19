@@ -22,7 +22,7 @@ NSRPageStatus::NSRPageStatus (Container *parent) :
 	setOpacity (0.6);
 	setLeftPadding (10);
 	setRightPadding (10);
-	setTopPadding (5);
+	setTopPadding (6);
 	setBottomPadding (10);
 	setLeftMargin (50);
 
