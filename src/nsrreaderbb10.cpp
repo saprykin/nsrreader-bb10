@@ -2,6 +2,7 @@
 #include "nsrsettings.h"
 #include "nsrsession.h"
 #include "nsrpreferencespage.h"
+#include "nsrlastdocspage.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
@@ -35,6 +36,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_nextPageAction (NULL),
 	_gotoAction (NULL),
 	_prefsAction (NULL),
+	_recentDocsAction (NULL),
 	_indicator (NULL),
 	_prompt (NULL),
 	_isFullscreen (false)
@@ -80,23 +82,27 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
 	_gotoAction = ActionItem::create().title(trUtf8 ("Go to")).enabled (false);
 	_prefsAction = ActionItem::create().title(trUtf8 ("Settings")).enabled (false);
+	_recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_gotoAction, ActionBarPlacement::InOverflow);
 	_page->addAction (_prefsAction, ActionBarPlacement::InOverflow);
+	_page->addAction (_recentDocsAction, ActionBarPlacement::InOverflow);
 
 	_openAction->setImageSource (QUrl ("asset:///open.png"));
 	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
 	_nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 	_gotoAction->setImageSource (QUrl ("asset:///goto.png"));
 	_prefsAction->setImageSource (QUrl ("asset:///preferences.png"));
+	_recentDocsAction->setImage (QUrl ("asset:///recent-documents.png"));
 
 	connect (_openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
 	connect (_prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
 	connect (_nextPageAction, SIGNAL (triggered ()), this, SLOT (onNextPageActionTriggered ()));
 	connect (_gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
 	connect (_prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
+	connect (_recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
 
 	_filePicker = new FilePicker (this);
 	_filePicker->setTitle (trUtf8 ("Select file"));
@@ -211,6 +217,17 @@ NSRReaderBB10::onPrefsActionTriggered ()
 }
 
 void
+NSRReaderBB10::onRecentDocsTriggered ()
+{
+	NSRLastDocsPage *page = new NSRLastDocsPage ();
+
+	connect (page, SIGNAL (requestDocument (QString)),
+		 this, SLOT (onLastDocumentRequested (QString)));
+
+	_naviPane->push (page);
+}
+
+void
 NSRReaderBB10::onPageRendered (int number)
 {
 	Q_UNUSED (number)
@@ -228,6 +245,7 @@ NSRReaderBB10::updateVisualControls ()
 {
 	_openAction->setEnabled (true);
 	_prefsAction->setEnabled (true);
+	_recentDocsAction->setEnabled (true);
 
 	if (!_core->isDocumentOpened ()) {
 		_prevPageAction->setEnabled (false);
@@ -252,6 +270,7 @@ NSRReaderBB10::disableVisualControls ()
 	_nextPageAction->setEnabled (false);
 	_gotoAction->setEnabled (false);
 	_prefsAction->setEnabled (false);
+	_recentDocsAction->setEnabled (false);
 }
 
 void
@@ -430,4 +449,12 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 
 	if (page != NULL)
 		delete page;
+}
+
+void
+NSRReaderBB10::onLastDocumentRequested (const QString& path)
+{
+	_naviPane->pop ();
+
+	onFileSelected (QStringList (path));
 }

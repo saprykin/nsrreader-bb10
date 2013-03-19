@@ -51,6 +51,8 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 		 SIGNAL (orientationAboutToChange (bb::cascades::UIOrientation::Type)),
 		 this,
 		 SLOT (onOrientationAboutToChange (bb::cascades::UIOrientation::Type)));
+	connect (_listView, SIGNAL (triggered (QVariantList)),
+		 this, SLOT (onListItemTriggered (QVariantList)));
 }
 
 NSRLastDocsPage::~NSRLastDocsPage ()
@@ -67,6 +69,14 @@ NSRLastDocsPage::onOrientationAboutToChange (bb::cascades::UIOrientation::Type t
 }
 
 void
+NSRLastDocsPage::onListItemTriggered (QVariantList indexPath)
+{
+	QVariantMap map = _listView->dataModel()->data(indexPath).toMap ();
+
+	emit requestDocument (map["path"].toString ());
+}
+
+void
 NSRLastDocsPage::loadData ()
 {
 	QVariantListDataModel	*model = new QVariantListDataModel ();
@@ -79,6 +89,7 @@ NSRLastDocsPage::loadData ()
 			map["title"] = QFileInfo(docs.at (i)).fileName ();
 			map["image"] = NSRThumbnailer::getThumnailPath (docs.at (i));
 			map["text"] = NSRThumbnailer::getThumbnailText (docs.at (i));
+			map["path"] = docs.at (i);
 
 			model->append (map);
 		}
