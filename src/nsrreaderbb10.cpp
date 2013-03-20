@@ -38,6 +38,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_gotoAction (NULL),
 	_prefsAction (NULL),
 	_recentDocsAction (NULL),
+	_fitToWidthAction (NULL),
 	_indicator (NULL),
 	_prompt (NULL),
 	_isFullscreen (false)
@@ -84,18 +85,21 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_gotoAction = ActionItem::create().title(trUtf8 ("Go to")).enabled (false);
 	_prefsAction = ActionItem::create().title(trUtf8 ("Settings")).enabled (false);
 	_recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
+	_fitToWidthAction = ActionItem::create().title(trUtf8 ("Fit to Width")).enabled (false);
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_gotoAction, ActionBarPlacement::InOverflow);
 	_page->addAction (_recentDocsAction, ActionBarPlacement::InOverflow);
+	_page->addAction (_fitToWidthAction, ActionBarPlacement::InOverflow);
 
 	_openAction->setImageSource (QUrl ("asset:///open.png"));
 	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
 	_nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 	_gotoAction->setImageSource (QUrl ("asset:///goto.png"));
 	_prefsAction->setImageSource (QUrl ("asset:///preferences.png"));
-	_recentDocsAction->setImage (QUrl ("asset:///recent-documents.png"));
+	_recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
+	_fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
 
 	connect (_openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
 	connect (_prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
@@ -103,6 +107,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
 	connect (_prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
 	connect (_recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
+	connect (_fitToWidthAction, SIGNAL (triggered ()), this, SLOT (onFitToWidthTriggered ()));
 
 	Menu *menu = new Menu ();
 	menu->addAction (_prefsAction);
@@ -233,6 +238,12 @@ NSRReaderBB10::onRecentDocsTriggered ()
 }
 
 void
+NSRReaderBB10::onFitToWidthTriggered ()
+{
+	_core->fitToWidth (_pageView->getSize().width ());
+}
+
+void
 NSRReaderBB10::onPageRendered (int number)
 {
 	Q_UNUSED (number)
@@ -251,6 +262,7 @@ NSRReaderBB10::updateVisualControls ()
 	_openAction->setEnabled (true);
 	_prefsAction->setEnabled (true);
 	_recentDocsAction->setEnabled (true);
+	_fitToWidthAction->setEnabled (true);
 
 	if (!_core->isDocumentOpened ()) {
 		_prevPageAction->setEnabled (false);
@@ -276,6 +288,7 @@ NSRReaderBB10::disableVisualControls ()
 	_gotoAction->setEnabled (false);
 	_prefsAction->setEnabled (false);
 	_recentDocsAction->setEnabled (false);
+	_fitToWidthAction->setEnabled (false);
 }
 
 void

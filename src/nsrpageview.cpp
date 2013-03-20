@@ -4,6 +4,7 @@
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/Color>
 #include <bb/cascades/TapHandler>
+#include <bb/cascades/LayoutUpdateHandler>
 
 using namespace bb::cascades;
 
@@ -62,6 +63,9 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textContainer->addGestureHandler (txtTapHandler);
 
 	setRoot (_rootContainer);
+
+	LayoutUpdateHandler::create(_rootContainer).onLayoutFrameChanged (this,
+							       SLOT (onLayoutFrameChanged (QRectF)));
 
 	setInvertedColors (NSRSettings().isInvertedColors ());
 }
@@ -129,6 +133,12 @@ NSRPageView::setInvertedColors (bool inv)
 	}
 }
 
+QSize
+NSRPageView::getSize () const
+{
+	return _size;
+}
+
 NSRPageView::NSRViewMode
 NSRPageView::getViewMode () const
 {
@@ -164,4 +174,11 @@ NSRPageView::onTappedGesture (bb::cascades::TapEvent *ev)
 {
 	ev->accept ();
 	emit viewTapped ();
+}
+
+void
+NSRPageView::onLayoutFrameChanged (const QRectF& rect)
+{
+	_size = QSize ((int) rect.width (),
+		       (int) rect.height ());
 }

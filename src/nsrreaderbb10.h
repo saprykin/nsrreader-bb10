@@ -35,6 +35,7 @@ private Q_SLOTS:
     void onGotoActionTriggered ();
     void onPrefsActionTriggered ();
     void onRecentDocsTriggered ();
+    void onFitToWidthTriggered ();
     void onPageRendered (int number);
     void onIndicatorRequested (bool enabled);
     void onPasswordRequested ();
@@ -67,6 +68,7 @@ private:
     bb::cascades::ActionItem		*_gotoAction;
     bb::cascades::ActionItem		*_prefsAction;
     bb::cascades::ActionItem		*_recentDocsAction;
+    bb::cascades::ActionItem		*_fitToWidthAction;
     bb::cascades::ActivityIndicator	*_indicator;
     bb::system::SystemPrompt		*_prompt;
     bool				_isFullscreen;

@@ -178,6 +178,24 @@ NSRReaderCore::isPageRendering () const
 }
 
 void
+NSRReaderCore::fitToWidth (int width)
+{
+	if (width <= 0)
+		return;
+
+	if (_doc == NULL || !_doc->isValid ())
+		return;
+
+	if (_doc->isZoomToWidth() && _doc->getScreenWidth () == width)
+		return;
+
+	_cache->clearStorage ();
+	_doc->zoomToWidth (width);
+
+	loadPage (PAGE_LOAD_CUSTOM, _currentPage.getNumber ());
+}
+
+void
 NSRReaderCore::onRenderDone ()
 {
 	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();

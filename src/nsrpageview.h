@@ -2,6 +2,7 @@
 #define NSRPAGEVIEW_H_
 
 #include <QObject>
+#include <QSizeF>
 
 #include "nsrrenderedpage.h"
 
@@ -35,6 +36,7 @@ public:
 	QPointF getScrollPosition () const;
 	bool isInvertedColors () const;
 	void setInvertedColors (bool inv);
+	QSize getSize () const;
 
 Q_SIGNALS:
 	void viewTapped ();
@@ -43,6 +45,7 @@ private Q_SLOTS:
 	void onWidthChanged (float width);
 	void onHeightChanged (float height);
 	void onTappedGesture (bb::cascades::TapEvent *ev);
+	void onLayoutFrameChanged (const QRectF& rect);
 
 private:
 	bb::cascades::ScrollView	*_scrollView;
@@ -51,6 +54,7 @@ private:
 	bb::cascades::Container		*_rootContainer;
 	bb::cascades::Container		*_textContainer;
 	NSRViewMode			_viewMode;
+	QSize				_size;
 	bool				_isInvertedColors;
 };
 

@@ -36,6 +36,7 @@ public:
 	void reloadSettings (const NSRSettings *settings);
 	void loadSession (const NSRSession *session);
 	bool isPageRendering () const;
+	void fitToWidth (int width);
 
 Q_SIGNALS:
 	void pageRendered (int number);
