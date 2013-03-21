@@ -5,6 +5,7 @@ NSRSession::NSRSession () :
 	_page (0),
 	_zoomText (100),
 	_zoomGraphic (100),
+	_zoomScreenWidth (720),
 	_isFitToWidth (false),
 	_pos (QPoint (0, 0)),
 	_angle (0)
