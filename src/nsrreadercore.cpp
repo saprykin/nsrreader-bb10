@@ -166,6 +166,10 @@ NSRReaderCore::loadSession (const NSRSession *session)
 
 		if (isDocumentOpened ()) {
 			_doc->setRotation (session->getRotation ());
+
+			if (session->isFitToWidth ())
+				_doc->zoomToWidth (session->getZoomScreenWidth ());
+
 			loadPage (PAGE_LOAD_CUSTOM, session->getPage ());
 		}
 	}

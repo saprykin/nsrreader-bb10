@@ -54,6 +54,10 @@ NSRPageView::NSRPageView (Container *parent) :
 					    .vertical(VerticalAlignment::Fill)
 					    .layout(DockLayout::create())
 					    .background(Color::Black);
+
+	LayoutUpdateHandler::create(_rootContainer).onLayoutFrameChanged (this,
+							       SLOT (onLayoutFrameChanged (QRectF)));
+
 	_rootContainer->add (_scrollView);
 	_rootContainer->add (_textContainer);
 
@@ -63,9 +67,6 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textContainer->addGestureHandler (txtTapHandler);
 
 	setRoot (_rootContainer);
-
-	LayoutUpdateHandler::create(_rootContainer).onLayoutFrameChanged (this,
-							       SLOT (onLayoutFrameChanged (QRectF)));
 
 	setInvertedColors (NSRSettings().isInvertedColors ());
 }

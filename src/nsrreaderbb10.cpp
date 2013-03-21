@@ -19,9 +19,12 @@
 #include <bb/system/SystemToast>
 #include <bb/system/LocaleHandler>
 
+#include <bb/device/DisplayInfo>
+
 using namespace bb::system;
 using namespace bb::cascades;
 using namespace bb::cascades::pickers;
+using namespace bb::device;
 
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
@@ -150,7 +153,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_isFullscreen = settings.isFullscreenMode ();
 
 	/* Load previously saved session */
-	if (QFile::exists (settings.getLastSession().getFile ()) &&
+	if (QFile::exists (settings.getLastSession ().getFile ()) &&
 	    settings.isLoadLastDoc ())
 		loadSession ();
 	else
@@ -307,8 +310,19 @@ NSRReaderBB10::reloadSettings ()
 void
 NSRReaderBB10::loadSession ()
 {
-	NSRSession session = NSRSettings().getLastSession ();
+	NSRSession	session = NSRSettings().getLastSession ();
+	int		width = _pageView->getSize().width ();
 
+	if (width <= 0) {
+		QSize displaySize = DisplayInfo().pixelSize ();
+
+		if (OrientationSupport::instance()->orientation () == UIOrientation::Portrait)
+			width = displaySize.width ();
+		else
+			width = displaySize.height ();
+	}
+
+	session.setZoomScreenWidth (width);
 	_core->loadSession (&session);
 }
 
