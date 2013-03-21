@@ -79,7 +79,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	_page = Page::create().content (mainContainer);
 
-	_openAction = ActionItem::create().title(trUtf8 ("Open")).enabled (false);
+	_openAction = ActionItem::create().title(trUtf8 ("Open")).enabled (true);
 	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
 	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
 	_gotoAction = ActionItem::create().title(trUtf8 ("Go to")).enabled (false);
