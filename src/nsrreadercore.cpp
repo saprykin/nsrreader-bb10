@@ -195,6 +195,15 @@ NSRReaderCore::fitToWidth (int width)
 	loadPage (PAGE_LOAD_CUSTOM, _currentPage.getNumber ());
 }
 
+bool
+NSRReaderCore::isFitToWidth () const
+{
+	if (_doc == NULL || !_doc->isValid ())
+		return false;
+
+	return _doc->isZoomToWidth ();
+}
+
 void
 NSRReaderCore::onRenderDone ()
 {

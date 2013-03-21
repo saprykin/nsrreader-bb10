@@ -37,6 +37,7 @@ public:
 	void loadSession (const NSRSession *session);
 	bool isPageRendering () const;
 	void fitToWidth (int width);
+	bool isFitToWidth () const;
 
 Q_SIGNALS:
 	void pageRendered (int number);
