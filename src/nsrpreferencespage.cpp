@@ -81,28 +81,50 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	/* 'Text mode' option */
 	Container *thirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .layout(DockLayout::create());
-
-	thirdContainer->setTopPadding (40);
-	thirdContainer->setBottomPadding (40);
-	thirdContainer->setLeftPadding (20);
-	thirdContainer->setRightPadding (20);
+	Container *outerThirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+							    .layout(StackLayout::create());
+	Label *columnInfo = Label::create (trUtf8 ("Use Column View to read documents with "
+						   "large amount of text data."))
+				   .horizontal(HorizontalAlignment::Fill)
+				   .vertical(VerticalAlignment::Center);
+	columnInfo->textStyle()->setFontSize (FontSize::XSmall);
+	columnInfo->setMultiline (true);
 
 	thirdContainer->add (Label::create(trUtf8 ("Column View")).horizontal(HorizontalAlignment::Left)
 								  .vertical(VerticalAlignment::Center));
 	thirdContainer->add (_isTextMode);
 
+	outerThirdContainer->setTopPadding (40);
+	outerThirdContainer->setBottomPadding (40);
+	outerThirdContainer->setLeftPadding (20);
+	outerThirdContainer->setRightPadding (20);
+
+	outerThirdContainer->add (thirdContainer);
+	outerThirdContainer->add (columnInfo);
+
 	/* 'Invert colors' option */
 	Container *fourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							.layout(DockLayout::create());
-
-	fourthContainer->setTopPadding (40);
-	fourthContainer->setBottomPadding (40);
-	fourthContainer->setLeftPadding (20);
-	fourthContainer->setRightPadding (20);
+	Container *outerFourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+							     .layout(StackLayout::create());
+	Label *invertInfo = Label::create (trUtf8 ("Inverted colors can save power with "
+						   "OLED display and help to read at dark."))
+				   .horizontal(HorizontalAlignment::Fill)
+				   .vertical(VerticalAlignment::Center);
+	invertInfo->textStyle()->setFontSize (FontSize::XSmall);
+	invertInfo->setMultiline (true);
 
 	fourthContainer->add (Label::create(trUtf8 ("Invert Colors")).horizontal(HorizontalAlignment::Left)
 								     .vertical(VerticalAlignment::Center));
 	fourthContainer->add (_isInvertedColors);
+
+	outerFourthContainer->setTopPadding (40);
+	outerFourthContainer->setBottomPadding (40);
+	outerFourthContainer->setLeftPadding (20);
+	outerFourthContainer->setRightPadding (20);
+
+	outerFourthContainer->add (fourthContainer);
+	outerFourthContainer->add (invertInfo);
 
 	/* 'Text encoding' drop down list */
 	Container *fifthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -164,9 +186,9 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	rootContainer->add (firstLine);
 	rootContainer->add (secondContainer);
 	rootContainer->add (secondLine);
-	rootContainer->add (thirdContainer);
+	rootContainer->add (outerThirdContainer);
 	rootContainer->add (thirdLine);
-	rootContainer->add (fourthContainer);
+	rootContainer->add (outerFourthContainer);
 	rootContainer->add (fourthLine);
 	rootContainer->add (fifthContainer);
 	rootContainer->add (fifthLine);
