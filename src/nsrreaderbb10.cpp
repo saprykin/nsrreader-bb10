@@ -86,7 +86,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
 	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
 	_gotoAction = ActionItem::create().title(trUtf8 ("Go to")).enabled (false);
-	_prefsAction = ActionItem::create().title(trUtf8 ("Settings")).enabled (false);
+	_prefsAction = SettingsActionItem::create().title(trUtf8 ("Settings")).enabled (false);
 	_recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
 	_fitToWidthAction = ActionItem::create().title(trUtf8 ("Fit to Width")).enabled (false);
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
@@ -100,7 +100,6 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
 	_nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 	_gotoAction->setImageSource (QUrl ("asset:///goto.png"));
-	_prefsAction->setImageSource (QUrl ("asset:///preferences.png"));
 	_recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
 	_fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
 
@@ -113,7 +112,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_fitToWidthAction, SIGNAL (triggered ()), this, SLOT (onFitToWidthTriggered ()));
 
 	Menu *menu = new Menu ();
-	menu->addAction (_prefsAction);
+	menu->setSettingsAction (_prefsAction);
 	Application::instance()->setMenu (menu);
 
 	_filePicker = new FilePicker (this);

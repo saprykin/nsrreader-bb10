@@ -12,6 +12,7 @@
 #include <bb/cascades/ActivityIndicator>
 #include <bb/cascades/Page>
 #include <bb/cascades/NavigationPane>
+#include <bb/cascades/SettingsActionItem>
 
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
@@ -66,7 +67,7 @@ private:
     bb::cascades::ActionItem		*_prevPageAction;
     bb::cascades::ActionItem		*_nextPageAction;
     bb::cascades::ActionItem		*_gotoAction;
-    bb::cascades::ActionItem		*_prefsAction;
+    bb::cascades::SettingsActionItem	*_prefsAction;
     bb::cascades::ActionItem		*_recentDocsAction;
     bb::cascades::ActionItem		*_fitToWidthAction;
     bb::cascades::ActivityIndicator	*_indicator;
