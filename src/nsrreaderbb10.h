@@ -13,6 +13,7 @@
 #include <bb/cascades/Page>
 #include <bb/cascades/NavigationPane>
 #include <bb/cascades/SettingsActionItem>
+#include <bb/cascades/HelpActionItem>
 
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
@@ -37,6 +38,7 @@ private Q_SLOTS:
     void onPrefsActionTriggered ();
     void onRecentDocsTriggered ();
     void onFitToWidthTriggered ();
+    void onHelpActionTriggered ();
     void onPageRendered (int number);
     void onIndicatorRequested (bool enabled);
     void onPasswordRequested ();
@@ -70,6 +72,7 @@ private:
     bb::cascades::SettingsActionItem	*_prefsAction;
     bb::cascades::ActionItem		*_recentDocsAction;
     bb::cascades::ActionItem		*_fitToWidthAction;
+    bb::cascades::HelpActionItem	*_helpAction;
     bb::cascades::ActivityIndicator	*_indicator;
     bb::system::SystemPrompt		*_prompt;
     bool				_isFullscreen;

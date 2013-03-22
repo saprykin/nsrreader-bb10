@@ -3,6 +3,7 @@
 #include "nsrsession.h"
 #include "nsrpreferencespage.h"
 #include "nsrlastdocspage.h"
+#include "nsraboutpage.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
@@ -42,6 +43,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_prefsAction (NULL),
 	_recentDocsAction (NULL),
 	_fitToWidthAction (NULL),
+	_helpAction (NULL),
 	_indicator (NULL),
 	_prompt (NULL),
 	_isFullscreen (false)
@@ -86,9 +88,10 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
 	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
 	_gotoAction = ActionItem::create().title(trUtf8 ("Go to")).enabled (false);
-	_prefsAction = SettingsActionItem::create().title(trUtf8 ("Settings")).enabled (false);
+	_prefsAction = SettingsActionItem::create().title(trUtf8 ("Settings"));
 	_recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
 	_fitToWidthAction = ActionItem::create().title(trUtf8 ("Fit to Width")).enabled (false);
+	_helpAction = HelpActionItem::create().title(trUtf8 ("About"));
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
@@ -110,9 +113,11 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
 	connect (_recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
 	connect (_fitToWidthAction, SIGNAL (triggered ()), this, SLOT (onFitToWidthTriggered ()));
+	connect (_helpAction, SIGNAL (triggered ()), this, SLOT (onHelpActionTriggered ()));
 
 	Menu *menu = new Menu ();
 	menu->setSettingsAction (_prefsAction);
+	menu->setHelpAction (_helpAction);
 	Application::instance()->setMenu (menu);
 
 	_filePicker = new FilePicker (this);
@@ -243,6 +248,12 @@ void
 NSRReaderBB10::onFitToWidthTriggered ()
 {
 	_core->fitToWidth (_pageView->getSize().width ());
+}
+
+void
+NSRReaderBB10::onHelpActionTriggered ()
+{
+	_naviPane->push (new NSRAboutPage ());
 }
 
 void
