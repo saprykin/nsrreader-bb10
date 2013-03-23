@@ -1,6 +1,5 @@
 *.o
 moc_*.cpp
-Makefile
 arm
 x86
 *.user
