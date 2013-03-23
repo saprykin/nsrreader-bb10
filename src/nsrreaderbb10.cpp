@@ -84,14 +84,19 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	_page = Page::create().content (mainContainer);
 
-	_openAction = ActionItem::create().title(trUtf8 ("Open")).enabled (true);
-	_prevPageAction = ActionItem::create().title(trUtf8 ("Previous")).enabled (false);
-	_nextPageAction = ActionItem::create().title(trUtf8 ("Next")).enabled (false);
-	_gotoAction = ActionItem::create().title(trUtf8 ("Go to")).enabled (false);
+	_openAction = ActionItem::create().enabled (true);
+	_openAction->setTitle (trUtf8 ("Open", "Open document"));
+	_prevPageAction = ActionItem::create().enabled (false);
+	_prevPageAction->setTitle (trUtf8 ("Previous", "Previous page"));
+	_nextPageAction = ActionItem::create().enabled (false);
+	_nextPageAction->setTitle (trUtf8 ("Next", "Next page"));
+	_gotoAction = ActionItem::create().enabled (false);
+	_gotoAction->setTitle (trUtf8 ("Go to", "Go to page"));
 	_prefsAction = SettingsActionItem::create().title(trUtf8 ("Settings"));
 	_recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
-	_fitToWidthAction = ActionItem::create().title(trUtf8 ("Fit to Width")).enabled (false);
-	_helpAction = HelpActionItem::create().title(trUtf8 ("About"));
+	_fitToWidthAction = ActionItem::create().enabled (false);
+	_fitToWidthAction->setTitle (trUtf8 ("Fit to Width", "Fit document to screen width"));
+	_helpAction = HelpActionItem::create().title(trUtf8 ("About", "About a program, window title"));
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
@@ -121,7 +126,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	Application::instance()->setMenu (menu);
 
 	_filePicker = new FilePicker (this);
-	_filePicker->setTitle (trUtf8 ("Select file"));
+	_filePicker->setTitle (trUtf8 ("Select File", "Open file window"));
 	_filePicker->setMode (FilePickerMode::Picker);
 	_filePicker->setType (FileType::Other);
 	_filePicker->setFilter (QStringList ("*.pdf") << "*.djvu" <<
@@ -209,7 +214,7 @@ NSRReaderBB10::onGotoActionTriggered ()
 
 	_prompt = new SystemPrompt (this);
 
-	_prompt->setTitle (trUtf8 ("Enter page"));
+	_prompt->setTitle (trUtf8 ("Enter Page", "Enter page number"));
 	_prompt->setBody (trUtf8("Enter page (1 - %1):").arg (_core->getPagesCount ()));
 	_prompt->inputField()->setInputMode (SystemUiInputMode::NumericKeypad);
 	_prompt->setDismissAutomatically (false);
@@ -259,7 +264,7 @@ NSRReaderBB10::onHelpActionTriggered ()
 void
 NSRReaderBB10::onPageRendered (int number)
 {
-	Q_UNUSED (number)
+	Q_UNUSED (number);
 
 	_pageView->setPage (_core->getCurrentPage());
 	_pageStatus->setStatus (_core->getCurrentPage().getNumber (),
@@ -371,7 +376,7 @@ NSRReaderBB10::onPasswordRequested ()
 
 	_prompt = new SystemPrompt (this);
 
-	_prompt->setTitle (trUtf8 ("Enter password"));
+	_prompt->setTitle (trUtf8 ("Enter Password"));
 	_prompt->setBody (trUtf8 ("Enter password:"));
 	_prompt->inputField()->setInputMode (SystemUiInputMode::Password);
 	_prompt->setDismissAutomatically (false);
@@ -421,9 +426,14 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 	QString errorStr;
 
 	if (error == NSRAbstractDocument::NSR_DOCUMENT_ERROR_PASSWD)
-		errorStr = trUtf8 ("Seems that entered password is wrong.");
+		errorStr = trUtf8 ("Seems that entered password is wrong.\n"
+				   "Please do not blame hard NSR Reader for "
+				   "that because it is only a piece of "
+				   "software :)");
 	else
-		errorStr = trUtf8 ("Unknown error! Maybe file is broken.");
+		errorStr = trUtf8 ("Unknown error! Maybe file is broken.\n"
+				   "NSR Reader tried open this file, but it can't :( "
+				   "Please check this file on desktop computer.");
 
 	SystemToast *toast = new SystemToast (this);
 	toast->setBody (errorStr);

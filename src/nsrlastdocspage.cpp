@@ -43,7 +43,9 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	rootContainer->setBottomPadding (20);
 
 	setContent (rootContainer);
-	setTitleBar (TitleBar::create().title(trUtf8 ("Recent Documents")));
+	setTitleBar (TitleBar::create().title(trUtf8 ("Recent Documents",
+						      "Title for window with recently "
+						      "opened documents")));
 
 	loadData ();
 

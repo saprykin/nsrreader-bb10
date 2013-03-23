@@ -20,7 +20,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_encodingsList (NULL)
 {
 	NSRSettings	settings;
-	QString		defEncoding = trUtf8 ("UTF-8");
+	QString		defEncoding ("UTF-8");
 
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -31,7 +31,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isTextMode = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isInvertedColors = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill)
-					   .title(trUtf8 ("Text Encoding"));
+					   .title(trUtf8 ("Text Encoding", "Option in preferences, "
+							   	   	   "selects text encoding"));
 
 	_isSaveLastPos->setChecked (settings.isLoadLastDoc ());
 	_isFullscreen->setChecked (settings.isFullscreenMode ());
@@ -61,8 +62,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	firstContainer->setLeftPadding (20);
 	firstContainer->setRightPadding (20);
 
-	firstContainer->add (Label::create(trUtf8 ("Save Last Position")).horizontal(HorizontalAlignment::Left)
-									 .vertical(VerticalAlignment::Center));
+	firstContainer->add (Label::create(trUtf8 ("Save Last Position",
+						   "Option in preferences, "
+						   "saves last position of the document"))
+				    .horizontal(HorizontalAlignment::Left)
+				    .vertical(VerticalAlignment::Center));
 	firstContainer->add (_isSaveLastPos);
 
 	/* 'Fullscreen mode' option */
@@ -74,8 +78,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	secondContainer->setLeftPadding (20);
 	secondContainer->setRightPadding (20);
 
-	secondContainer->add (Label::create(trUtf8 ("Fullscreen Mode")).horizontal(HorizontalAlignment::Left)
-								       .vertical(VerticalAlignment::Center));
+	secondContainer->add (Label::create(trUtf8 ("Fullscreen Mode",
+						    "Option in preferences"))
+				     .horizontal(HorizontalAlignment::Left)
+				     .vertical(VerticalAlignment::Center));
 	secondContainer->add (_isFullscreen);
 
 	/* 'Text mode' option */
@@ -90,8 +96,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	columnInfo->textStyle()->setFontSize (FontSize::XSmall);
 	columnInfo->setMultiline (true);
 
-	thirdContainer->add (Label::create(trUtf8 ("Column View")).horizontal(HorizontalAlignment::Left)
-								  .vertical(VerticalAlignment::Center));
+	thirdContainer->add (Label::create(trUtf8 ("Column View",
+						   "Option in preferences, "
+						   "reflows PDF in single column"))
+				    .horizontal(HorizontalAlignment::Left)
+				    .vertical(VerticalAlignment::Center));
 	thirdContainer->add (_isTextMode);
 
 	outerThirdContainer->setTopPadding (40);
@@ -114,8 +123,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	invertInfo->textStyle()->setFontSize (FontSize::XSmall);
 	invertInfo->setMultiline (true);
 
-	fourthContainer->add (Label::create(trUtf8 ("Invert Colors")).horizontal(HorizontalAlignment::Left)
-								     .vertical(VerticalAlignment::Center));
+	fourthContainer->add (Label::create(trUtf8 ("Invert Colors",
+						    "Option in preferences"))
+				     .horizontal(HorizontalAlignment::Left)
+				     .vertical(VerticalAlignment::Center));
 	fourthContainer->add (_isInvertedColors);
 
 	outerFourthContainer->setTopPadding (40);

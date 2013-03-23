@@ -14,7 +14,7 @@ using namespace bb::cascades;
 NSRAboutPage::NSRAboutPage (QObject *parent) :
 	Page (parent)
 {
-	setTitleBar (TitleBar::create().title(trUtf8 ("About", "About program")));
+	setTitleBar (TitleBar::create().title(trUtf8 ("About", "About a program, window title")));
 
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -44,7 +44,8 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 					     .text(trUtf8 ("If you have any questions or suggestions "
 							   "(or even want to know what does NSR mean), "
 							   "do not hesitate to write me: "
-							   "<a href='mailto:nsr.reader@gmail.com'>nsr.reader@gmail.com</a>"));
+							   "<a href='mailto:nsr.reader@gmail.com'>"
+							   "nsr.reader@gmail.com</a>"));
 	contactsInfo->textStyle()->setFontSize (FontSize::XSmall);
 	contactsInfo->setMultiline (true);
 	contactsInfo->setTextFormat (TextFormat::Html);
@@ -72,7 +73,8 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 	ImageView *twitterImage = ImageView::create().imageSource(QUrl ("asset:///twitter.png"));
 	Label *twitterInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					    .vertical(VerticalAlignment::Center)
-					    .text("<a href='http://www.twitter.com/NSRReader'>www.twitter.com/NSRReader</a>")
+					    .text("<a href='http://www.twitter.com/NSRReader'>"
+						  "www.twitter.com/NSRReader</a>")
 					    .format(TextFormat::Html);
 	twitterInfo->textStyle()->setFontSize (FontSize::XSmall);
 	twitterInfo->content()->setFlags (TextContentFlag::ActiveText);
