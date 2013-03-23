@@ -48,6 +48,7 @@ NSRPageView::NSRPageView (Container *parent) :
 						  TextInputFlag::AutoPeriodOff |
 						  TextInputFlag::WordSubstitutionOff |
 						  TextInputFlag::VirtualKeyboardOff);
+	_textArea->textStyle()->setColor (Color::Black);
 	_textContainer->add (_textArea);
 
 	_rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
