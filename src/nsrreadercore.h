@@ -14,7 +14,7 @@
 class NSRReaderCore: public QObject
 {
 	Q_OBJECT
-	Q_ENUMS (PageLoad)
+	Q_ENUMS (PageLoad);
 public:
 	enum PageLoad {
 		PAGE_LOAD_PREV		= 0,
@@ -38,6 +38,10 @@ public:
 	bool isPageRendering () const;
 	void fitToWidth (int width);
 	bool isFitToWidth () const;
+	int getZoom () const;
+	int getMinZoom () const;
+	int getMaxZoom () const;
+	void setZoom (int zoom);
 
 Q_SIGNALS:
 	void pageRendered (int number);

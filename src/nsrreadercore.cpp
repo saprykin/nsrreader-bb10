@@ -208,6 +208,49 @@ NSRReaderCore::isFitToWidth () const
 	return _doc->isZoomToWidth ();
 }
 
+int
+NSRReaderCore::getZoom () const
+{
+	if (_doc == NULL || !_doc->isValid ())
+		return 0;
+
+	return _doc->getZoom ();
+}
+
+int
+NSRReaderCore::getMinZoom () const
+{
+	if (_doc == NULL || !_doc->isValid ())
+		return 0;
+
+	return _doc->getMinZoom ();
+}
+
+int
+NSRReaderCore::getMaxZoom () const
+{
+	if (_doc == NULL || !_doc->isValid ())
+		return 0;
+
+	return _doc->getMaxZoom ();
+}
+
+void
+NSRReaderCore::setZoom (int zoom)
+{
+	if (zoom <= 0)
+		return;
+
+	if (_doc->getZoom () == zoom)
+		return;
+
+	_cache->clearStorage ();
+	_doc->setZoom (zoom);
+
+	if (!_doc->isTextOnly ())
+		loadPage (PAGE_LOAD_CUSTOM, _currentPage.getNumber ());
+}
+
 void
 NSRReaderCore::onRenderDone ()
 {
