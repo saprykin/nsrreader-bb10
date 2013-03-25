@@ -79,6 +79,7 @@ NSRRenderThread::run ()
 	if (!_doc->isTextOnly ()) {
 		_doc->renderPage (page.getNumber ());
 		page.setImage (_doc->getCurrentPage ());
+		page.setZoom (_doc->getZoom ());
 	}
 
 	bool textOnly = _doc->isTextOnly ();
@@ -102,6 +103,7 @@ NSRRenderThread::run ()
 		_doc->setTextOnly (false);
 		_doc->renderPage (1);
 
+		thumbPage.setZoom (_doc->getZoom ());
 		thumbPage.setImage (_doc->getCurrentPage ());
 
 		_doc->setTextOnly (true);

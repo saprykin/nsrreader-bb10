@@ -2,7 +2,8 @@
 
 NSRRenderedPage::NSRRenderedPage (QObject *parent) :
 	QObject (parent),
-	_number (0)
+	_number (0),
+	_zoom (0)
 {
 }
 
@@ -17,6 +18,7 @@ NSRRenderedPage::NSRRenderedPage (const NSRRenderedPage& page) :
 {
 	_image = page._image;
 	_number = page._number;
+	_zoom = page._zoom;
 	_text = page._text;
 }
 
@@ -30,6 +32,7 @@ NSRRenderedPage::operator = (const NSRRenderedPage& page)
 	if (this != &page) {
 		_image = page._image;
 		_number = page._number;
+		_zoom = page._zoom;
 		_text = page._text;
 	}
 
@@ -40,6 +43,12 @@ int
 NSRRenderedPage::getNumber () const
 {
 	return _number;
+}
+
+int
+NSRRenderedPage::getZoom () const
+{
+	return _zoom;
 }
 
 QSize
@@ -70,6 +79,15 @@ void
 NSRRenderedPage::setNumber (int number)
 {
 	_number = number;
+}
+
+void
+NSRRenderedPage::setZoom (int zoom)
+{
+	if (zoom < 0)
+		zoom = 0;
+
+	_zoom = zoom;
 }
 
 void
