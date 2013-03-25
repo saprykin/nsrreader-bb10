@@ -6,18 +6,18 @@
 
 #include "nsrrenderedpage.h"
 
-#include <bb/cascades/CustomControl>
 #include <bb/cascades/Container>
 #include <bb/cascades/ImageView>
 #include <bb/cascades/Image>
 #include <bb/cascades/ScrollView>
 #include <bb/cascades/TextArea>
 #include <bb/cascades/TapEvent>
+#include <bb/cascades/PinchEvent>
 
-class NSRPageView: public bb::cascades::CustomControl
+class NSRPageView: public bb::cascades::Container
 {
 	Q_OBJECT
-	Q_ENUMS (NSRViewMode)
+	Q_ENUMS (NSRViewMode);
 public:
 	enum NSRViewMode {
 		NSR_VIEW_MODE_GRAPHIC	= 0,
@@ -37,15 +37,19 @@ public:
 	bool isInvertedColors () const;
 	void setInvertedColors (bool inv);
 	QSize getSize () const;
+	void setZoomRange (int minZoom, int maxZoom);
 
 Q_SIGNALS:
 	void viewTapped ();
+	void zoomChanged (int zoom);
 
 private Q_SLOTS:
-	void onWidthChanged (float width);
-	void onHeightChanged (float height);
 	void onTappedGesture (bb::cascades::TapEvent *ev);
 	void onLayoutFrameChanged (const QRectF& rect);
+	void onPinchStarted (bb::cascades::PinchEvent *event);
+	void onPinchUpdated (bb::cascades::PinchEvent *event);
+	void onPinchEnded (bb::cascades::PinchEvent *event);
+	void onPinchCancelled ();
 
 private:
 	bb::cascades::ScrollView	*_scrollView;
@@ -55,6 +59,10 @@ private:
 	bb::cascades::Container		*_textContainer;
 	NSRViewMode			_viewMode;
 	QSize				_size;
+	QSize				_initialScaleSize;
+	int				_currentZoom;
+	int				_minZoom;
+	int				_maxZoom;
 	bool				_isInvertedColors;
 };
 

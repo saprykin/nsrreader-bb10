@@ -2,34 +2,40 @@
 #include "nsrsettings.h"
 
 #include <bb/cascades/DockLayout>
+#include <bb/cascades/StackLayout>
 #include <bb/cascades/Color>
 #include <bb/cascades/TapHandler>
 #include <bb/cascades/LayoutUpdateHandler>
+#include <bb/cascades/PinchHandler>
 
 using namespace bb::cascades;
 
 #define NSR_LOGO_WELCOME "asset:///nsrlogo-welcome.png"
 
 NSRPageView::NSRPageView (Container *parent) :
-	CustomControl (parent),
+	Container (parent),
 	_scrollView (NULL),
 	_imageView (NULL),
 	_textArea (NULL),
 	_rootContainer (NULL),
 	_textContainer (NULL),
 	_viewMode (NSR_VIEW_MODE_GRAPHIC),
+	_currentZoom (0),
+	_minZoom (0),
+	_maxZoom (0),
 	_isInvertedColors (false)
 {
 	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Fill)
-					  .scrollMode (ScrollMode::Both);
+					  .scrollMode(ScrollMode::Both);
 	_imageView = ImageView::create().horizontal(HorizontalAlignment::Center)
 					.vertical(VerticalAlignment::Center);
 	_imageView->setImageSource (QUrl (NSR_LOGO_WELCOME));
 
 	Container *container = Container::create().horizontal(HorizontalAlignment::Fill)
 						  .vertical(VerticalAlignment::Fill)
-						  .layout(DockLayout::create ());
+						  .layout(DockLayout::create ())
+						  .background(Color::Black);
 	container->add (_imageView);
 	_scrollView->setContent (container);
 
@@ -51,23 +57,23 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textArea->textStyle()->setColor (Color::Black);
 	_textContainer->add (_textArea);
 
-	_rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-					    .vertical(VerticalAlignment::Fill)
-					    .layout(DockLayout::create())
-					    .background(Color::Black);
-
-	LayoutUpdateHandler::create(_rootContainer).onLayoutFrameChanged (this,
+	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
 							       SLOT (onLayoutFrameChanged (QRectF)));
-
-	_rootContainer->add (_scrollView);
-	_rootContainer->add (_textContainer);
 
 	TapHandler *imgTapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
 	TapHandler *txtTapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
 	_scrollView->addGestureHandler (imgTapHandler);
 	_textContainer->addGestureHandler (txtTapHandler);
 
-	setRoot (_rootContainer);
+	PinchHandler *pinchHandler = PinchHandler::create().onPinch (this,
+						   SLOT (onPinchStarted (bb::cascades::PinchEvent *)),
+						   SLOT (onPinchUpdated (bb::cascades::PinchEvent *)),
+						   SLOT (onPinchEnded (bb::cascades::PinchEvent *)),
+						   SLOT (onPinchCancelled ()));
+	_scrollView->addGestureHandler (pinchHandler);
+
+	add (_scrollView);
+	add (_textContainer);
 
 	setInvertedColors (NSRSettings().isInvertedColors ());
 }
@@ -79,8 +85,12 @@ NSRPageView::~NSRPageView ()
 void
 NSRPageView::setPage (const NSRRenderedPage& page)
 {
-	_imageView->setImage (page.getImage ());
 	_textArea->setText (page.getText ());
+	_imageView->setImage (page.getImage ());
+	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
+	_currentZoom = page.getZoom ();
+
+	setScrollPosition (QPointF (0.0, 0.0));
 }
 
 void
@@ -141,6 +151,19 @@ NSRPageView::getSize () const
 	return _size;
 }
 
+void
+NSRPageView::setZoomRange (int minZoom, int maxZoom)
+{
+	if (minZoom < 0)
+		minZoom = 0;
+
+	if (maxZoom < minZoom)
+		maxZoom = minZoom;
+
+	_minZoom = minZoom;
+	_maxZoom = maxZoom;
+}
+
 NSRPageView::NSRViewMode
 NSRPageView::getViewMode () const
 {
@@ -160,18 +183,6 @@ NSRPageView::getScrollPosition () const
 }
 
 void
-NSRPageView::onHeightChanged (float height)
-{
-	_rootContainer->setPreferredHeight (height);
-}
-
-void
-NSRPageView::onWidthChanged (float width)
-{
-	_rootContainer->setPreferredWidth (width);
-}
-
-void
 NSRPageView::onTappedGesture (bb::cascades::TapEvent *ev)
 {
 	ev->accept ();
@@ -184,3 +195,47 @@ NSRPageView::onLayoutFrameChanged (const QRectF& rect)
 	_size = QSize ((int) rect.width (),
 		       (int) rect.height ());
 }
+
+void
+NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
+{
+	_initialScaleSize = QSize (_imageView->preferredWidth(),
+				   _imageView->preferredHeight());
+
+	event->accept ();
+}
+
+void
+NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
+{
+	double scale = event->pinchRatio ();
+
+	if (scale * _currentZoom < _minZoom)
+		scale = ((double) _minZoom) / _currentZoom;
+	else if (scale * _currentZoom > _maxZoom)
+		scale = (double) _maxZoom / _currentZoom;
+
+	_imageView->setPreferredSize (_initialScaleSize.width () * scale,
+				      _initialScaleSize.height () * scale);
+
+	event->accept ();
+}
+
+void
+NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
+{
+	double scale = _imageView->preferredWidth () / _initialScaleSize.width ();
+
+	_currentZoom *= scale;
+
+	emit zoomChanged (_currentZoom);
+	event->accept ();
+}
+
+void
+NSRPageView::onPinchCancelled ()
+{
+	_imageView->setPreferredSize (_initialScaleSize.width (),
+				      _initialScaleSize.height ());
+}
+

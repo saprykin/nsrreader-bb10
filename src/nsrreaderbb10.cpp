@@ -167,6 +167,9 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 		loadSession ();
 	else
 		updateVisualControls ();
+
+	QObject::connect (_pageView, SIGNAL (zoomChanged (int)),
+			  this, SLOT (onZoomChanged (int)));
 }
 
 NSRReaderBB10::~NSRReaderBB10 ()
@@ -266,7 +269,8 @@ NSRReaderBB10::onPageRendered (int number)
 {
 	Q_UNUSED (number);
 
-	_pageView->setPage (_core->getCurrentPage());
+	_pageView->setZoomRange (_core->getMinZoom (), _core->getMaxZoom ());
+	_pageView->setPage (_core->getCurrentPage ());
 	_pageStatus->setStatus (_core->getCurrentPage().getNumber (),
 				_core->getPagesCount ());
 	_readProgress->setCurrentPage (_core->getCurrentPage().getNumber ());
@@ -512,4 +516,10 @@ NSRReaderBB10::onLastDocumentRequested (const QString& path)
 	_naviPane->pop ();
 
 	onFileSelected (QStringList (path));
+}
+
+void
+NSRReaderBB10::onZoomChanged (int zoom)
+{
+	_core->setZoom (zoom);
 }
