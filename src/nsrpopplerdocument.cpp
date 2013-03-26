@@ -219,7 +219,8 @@ void NSRPopplerDocument::setPassword(const QString &passwd)
 	if (_doc != NULL)
 		return;
 
-	createInternalDoc(passwd);
+	NSRAbstractDocument::setPassword (passwd);
+	createInternalDoc (passwd);
 }
 
 void NSRPopplerDocument::createInternalDoc(QString passwd)

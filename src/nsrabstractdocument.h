@@ -80,7 +80,8 @@ public:
 	void setInvertedColors (bool isInverted) {_invertedColors = isInverted;}
 	bool isInvertedColors () const {return _invertedColors;}
 	DocumentError getLastError () const {return _lastError;}
-	virtual void setPassword (const QString& passwd) {Q_UNUSED (passwd);}
+	virtual void setPassword (const QString& passwd) {_password = passwd;}
+	virtual QString getPassword () const {return _password;}
 	virtual void setEncoding (const QString& enc);
 	virtual QString getEncoding () const {return _encoding;}
 	virtual bool isEncodingUsed () const {return false;}
@@ -92,6 +93,7 @@ protected:
 
 private:
 	QString		_docPath;
+	QString		_password;
 	int		_zoom;
 	int		_screenWidth;
 	bool		_zoomToWidth;
