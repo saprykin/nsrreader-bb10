@@ -7,6 +7,7 @@
 
 class NSRTextDocument : public NSRAbstractDocument
 {
+	Q_OBJECT
 public:
 	NSRTextDocument(const QString& file, QObject *parent = 0);
 	~NSRTextDocument();

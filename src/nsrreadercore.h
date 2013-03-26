@@ -14,7 +14,7 @@
 class NSRReaderCore: public QObject
 {
 	Q_OBJECT
-	Q_ENUMS (PageLoad);
+	Q_ENUMS (PageLoad)
 public:
 	enum PageLoad {
 		PAGE_LOAD_PREV		= 0,

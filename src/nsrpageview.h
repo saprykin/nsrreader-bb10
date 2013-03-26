@@ -17,7 +17,7 @@
 class NSRPageView: public bb::cascades::Container
 {
 	Q_OBJECT
-	Q_ENUMS (NSRViewMode);
+	Q_ENUMS (NSRViewMode)
 public:
 	enum NSRViewMode {
 		NSR_VIEW_MODE_GRAPHIC	= 0,
