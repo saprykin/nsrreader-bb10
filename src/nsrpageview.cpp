@@ -90,7 +90,8 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
 	_currentZoom = page.getZoom ();
 
-	setScrollPosition (QPointF (0.0, 0.0));
+	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION)
+		setScrollPosition (QPointF (0.0, 0.0));
 }
 
 void
