@@ -31,10 +31,10 @@ public:
 	QString getDocumentPaht () const;
 	NSRRenderedPage getCurrentPage () const;
 	int getPagesCount () const;
-	void loadPage (PageLoad dir, int pageNumber = 0);
 	void setPassword (const QString &pass);
 	void reloadSettings (const NSRSettings *settings);
 	void loadSession (const NSRSession *session);
+	void navigateToPage (PageLoad dir, int pageNumber = 0);
 	bool isPageRendering () const;
 	void fitToWidth (int width);
 	bool isFitToWidth () const;
@@ -54,6 +54,10 @@ private Q_SLOTS:
 	void onRenderDone ();
 
 private:
+	void loadPage (PageLoad				dir,
+		       NSRRenderedPage::NSRRenderReason	reason,
+		       int				pageNumber = 0);
+
 	NSRAbstractDocument	*_doc;
 	NSRRenderThread		*_thread;
 	NSRPagesCache		*_cache;

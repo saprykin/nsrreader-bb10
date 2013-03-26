@@ -200,13 +200,13 @@ NSRReaderBB10::onOpenActionTriggered ()
 void
 NSRReaderBB10::onPrevPageActionTriggered ()
 {
-	_core->loadPage (NSRReaderCore::PAGE_LOAD_PREV);
+	_core->navigateToPage (NSRReaderCore::PAGE_LOAD_PREV);
 }
 
 void
 NSRReaderBB10::onNextPageActionTriggered ()
 {
-	_core->loadPage (NSRReaderCore::PAGE_LOAD_NEXT);
+	_core->navigateToPage (NSRReaderCore::PAGE_LOAD_NEXT);
 }
 
 void
@@ -421,7 +421,7 @@ NSRReaderBB10::onGotoDialogFinished (bb::system::SystemUiResult::Type res)
 		return;
 
 	if (pageNum != _core->getCurrentPage().getNumber ())
-		_core->loadPage (NSRReaderCore::PAGE_LOAD_CUSTOM, pageNum);
+		_core->navigateToPage (NSRReaderCore::PAGE_LOAD_CUSTOM, pageNum);
 }
 
 void

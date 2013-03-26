@@ -150,7 +150,9 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 		needReload = true;
 
 	if (needReload)
-		loadPage (PAGE_LOAD_CUSTOM, _currentPage.getNumber ());
+		loadPage (PAGE_LOAD_CUSTOM,
+			  NSRRenderedPage::NSR_RENDER_REASON_SETTINGS,
+			  _currentPage.getNumber ());
 }
 
 void
@@ -170,10 +172,19 @@ NSRReaderCore::loadSession (const NSRSession *session)
 			if (session->isFitToWidth ())
 				_doc->zoomToWidth (session->getZoomScreenWidth ());
 
-			loadPage (PAGE_LOAD_CUSTOM, session->getPage ());
+			loadPage (PAGE_LOAD_CUSTOM,
+				  NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION,
+				  session->getPage ());
 		}
 	}
 }
+
+void
+NSRReaderCore::navigateToPage (PageLoad dir, int pageNumber)
+{
+	loadPage (dir, NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION, pageNumber);
+}
+
 
 bool
 NSRReaderCore::isPageRendering () const
@@ -196,7 +207,9 @@ NSRReaderCore::fitToWidth (int width)
 	_cache->clearStorage ();
 	_doc->zoomToWidth (width);
 
-	loadPage (PAGE_LOAD_CUSTOM, _currentPage.getNumber ());
+	loadPage (PAGE_LOAD_CUSTOM,
+		  NSRRenderedPage::NSR_RENDER_REASON_ZOOM,
+		  _currentPage.getNumber ());
 }
 
 bool
@@ -248,7 +261,9 @@ NSRReaderCore::setZoom (int zoom)
 	_doc->setZoom (zoom);
 
 	if (!_doc->isTextOnly ())
-		loadPage (PAGE_LOAD_CUSTOM, _currentPage.getNumber ());
+		loadPage (PAGE_LOAD_CUSTOM,
+			  NSRRenderedPage::NSR_RENDER_REASON_ZOOM,
+			  _currentPage.getNumber ());
 }
 
 void
@@ -268,7 +283,9 @@ NSRReaderCore::onRenderDone ()
 }
 
 void
-NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
+NSRReaderCore::loadPage (PageLoad				dir,
+			 NSRRenderedPage::NSRRenderReason	reason,
+			 int					pageNumber)
 {
 	if (_doc == NULL || _thread->isRunning ())
 		return;
@@ -302,6 +319,7 @@ NSRReaderCore::loadPage (PageLoad dir, int pageNumber)
 	}
 
 	NSRRenderedPage request (pageToLoad);
+	request.setRenderReason (reason);
 
 	emit needIndicator (true);
 
