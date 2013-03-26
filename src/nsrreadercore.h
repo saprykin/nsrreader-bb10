@@ -52,14 +52,19 @@ Q_SIGNALS:
 
 private Q_SLOTS:
 	void onRenderDone ();
+	void onZoomRenderDone ();
 
 private:
 	void loadPage (PageLoad				dir,
 		       NSRRenderedPage::NSRRenderReason	reason,
 		       int				pageNumber = 0);
+	NSRAbstractDocument * copyDocument (const NSRAbstractDocument *doc);
+	NSRAbstractDocument * documentByPath (const QString& path);
 
 	NSRAbstractDocument	*_doc;
+	NSRAbstractDocument	*_zoomDoc;
 	NSRRenderThread		*_thread;
+	NSRRenderThread		*_zoomThread;
 	NSRPagesCache		*_cache;
 	NSRRenderedPage		_currentPage;
 };

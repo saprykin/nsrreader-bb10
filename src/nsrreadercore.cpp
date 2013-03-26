@@ -10,44 +10,46 @@
 NSRReaderCore::NSRReaderCore (QObject *parent) :
 	QObject (parent),
 	_doc (NULL),
+	_zoomDoc (NULL),
 	_thread (NULL),
+	_zoomThread (NULL),
 	_cache (NULL)
 {
-	_thread = new NSRRenderThread (this);
-	_cache = new NSRPagesCache (this);
+	_thread		= new NSRRenderThread (this);
+	_zoomThread	= new NSRRenderThread (this);
+	_cache		= new NSRPagesCache (this);
 
 	connect (_thread, SIGNAL (renderDone ()), this, SLOT (onRenderDone ()));
+	connect (_zoomThread, SIGNAL (renderDone ()), this, SLOT (onZoomRenderDone ()));
 
 	_thread->setThumbnailRender (true);
+	_zoomThread->setThumbnailRender (false);
 }
 
 NSRReaderCore::~NSRReaderCore ()
 {
 	if (_doc != NULL)
 		closeDocument ();
+
+	/* Force zoom thread termination */
+	if (_zoomDoc != NULL && _zoomThread->isRunning ()) {
+		_zoomThread->terminate ();
+		delete _zoomDoc;
+	}
 }
 
 void
 NSRReaderCore::openDocument (const QString &path)
 {
-	QFileInfo	fileInfo (path);
-	NSRSettings	settings;
-
-	if (!fileInfo.exists ())
-		return;
+	NSRSettings settings;
 
 	closeDocument ();
 
-	QString suffix = fileInfo.suffix().toLower ();
 
-	if (suffix == "pdf")
-		_doc = new NSRPopplerDocument (path);
-	else if (suffix == "djvu")
-		_doc = new NSRDjVuDocument (path);
-	else if (suffix == "tiff" || suffix == "tif")
-		_doc = new NSRTIFFDocument (path);
-	else
-		_doc = new NSRTextDocument (path);
+	_doc = documentByPath (path);
+
+	if (_doc == NULL)
+		return;
 
 	_doc->setTextOnly (settings.isWordWrap ());
 	_doc->setInvertedColors (settings.isInvertedColors ());
@@ -64,6 +66,10 @@ NSRReaderCore::openDocument (const QString &path)
 		delete _doc;
 		_doc = NULL;
 	}
+
+	/* We need only graphic mode to render page on zooming */
+	_zoomDoc = copyDocument (_doc);
+	_zoomDoc->setTextOnly (false);
 
 	settings.addLastDocument (path);
 }
@@ -83,6 +89,12 @@ NSRReaderCore::closeDocument ()
 	if (_doc != NULL) {
 		delete _doc;
 		_doc = NULL;
+	}
+
+	/* Check whether we can delete zoom document */
+	if (_zoomDoc != NULL && !_zoomThread->isRunning ()) {
+		delete _zoomDoc;
+		_zoomDoc = NULL;
 	}
 
 	_currentPage = NSRRenderedPage ();
@@ -135,6 +147,9 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 	_doc->setTextOnly (settings->isWordWrap ());
 	_doc->setEncoding (settings->getTextEncoding ());
 
+	if (_zoomDoc != NULL)
+		_zoomDoc->setInvertedColors (settings->isInvertedColors ());
+
 	/* Check whether we need to re-render the page */
 	if (wasTextOnly && !settings->isWordWrap ())
 		needReload = true;
@@ -169,6 +184,9 @@ NSRReaderCore::loadSession (const NSRSession *session)
 		if (isDocumentOpened ()) {
 			_doc->setRotation (session->getRotation ());
 
+			if (_zoomDoc != NULL)
+				_zoomDoc->setRotation (session->getRotation ());
+
 			if (session->isFitToWidth ())
 				_doc->zoomToWidth (session->getZoomScreenWidth ());
 
@@ -201,7 +219,7 @@ NSRReaderCore::fitToWidth (int width)
 	if (_doc == NULL || !_doc->isValid ())
 		return;
 
-	if (_doc->isZoomToWidth() && _doc->getScreenWidth () == width)
+	if (_doc->isZoomToWidth () && _doc->getScreenWidth () == width)
 		return;
 
 	_cache->clearStorage ();
@@ -259,6 +277,7 @@ NSRReaderCore::setZoom (int zoom)
 
 	_cache->clearStorage ();
 	_doc->setZoom (zoom);
+	_zoomDoc->setZoom (zoom);
 
 	if (!_doc->isTextOnly ())
 		loadPage (PAGE_LOAD_CUSTOM,
@@ -280,6 +299,20 @@ NSRReaderCore::onRenderDone ()
 	emit pageRendered (_currentPage.getNumber ());
 	emit needViewMode (suffix == "txt" ? NSRPageView::NSR_VIEW_MODE_TEXT
 					   : NSRPageView::NSR_VIEW_MODE_PREFERRED);
+}
+
+void
+NSRReaderCore::onZoomRenderDone ()
+{
+	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
+
+	/* TODO: check whether we need to drop outdated page */
+	_currentPage = _zoomThread->getRenderedPage ();
+
+	if (!_cache->isPageExists (_currentPage.getNumber ()))
+		_cache->addPage (_currentPage);
+
+	emit pageRendered (_currentPage.getNumber ());
 }
 
 void
@@ -321,9 +354,65 @@ NSRReaderCore::loadPage (PageLoad				dir,
 	NSRRenderedPage request (pageToLoad);
 	request.setRenderReason (reason);
 
-	emit needIndicator (true);
+	if (reason == NSRRenderedPage::NSR_RENDER_REASON_ZOOM) {
+		_zoomThread->setRenderContext (_zoomDoc);
+		_zoomThread->addRequest (request);
+		_zoomThread->start ();
+	} else {
+		emit needIndicator (true);
 
-	_thread->setRenderContext (_doc);
-	_thread->addRequest (request);
-	_thread->start ();
+		_thread->setRenderContext (_doc);
+		_thread->addRequest (request);
+		_thread->start ();
+	}
 }
+
+NSRAbstractDocument*
+NSRReaderCore::copyDocument (const NSRAbstractDocument* doc)
+{
+	NSRAbstractDocument *res;
+
+	if (doc == NULL || !doc->isValid ())
+		return NULL;
+
+	res = documentByPath (doc->getDocumentPath ());
+
+	if (res == NULL)
+		return NULL;
+
+	res->setTextOnly (doc->isTextOnly ());
+	res->setInvertedColors (doc->isInvertedColors ());
+	res->setEncoding (doc->getEncoding ());
+	res->setPassword (doc->getPassword ());
+
+	if (!res->isValid ()) {
+		delete res;
+		res = NULL;
+	}
+
+	return res;
+}
+
+NSRAbstractDocument*
+NSRReaderCore::documentByPath (const QString& path)
+{
+	NSRAbstractDocument	*res = NULL;
+	QFileInfo		fileInfo (path);
+	QString			suffix = fileInfo.suffix().toLower ();
+
+	if (!QFile::exists (path))
+		return NULL;
+
+	if (suffix == "pdf")
+		res = new NSRPopplerDocument (path);
+	else if (suffix == "djvu")
+		res = new NSRDjVuDocument (path);
+	else if (suffix == "tiff" || suffix == "tif")
+		res = new NSRTIFFDocument (path);
+	else
+		res = new NSRTextDocument (path);
+
+	return res;
+}
+
+
