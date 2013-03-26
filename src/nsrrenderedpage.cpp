@@ -2,6 +2,7 @@
 
 NSRRenderedPage::NSRRenderedPage (QObject *parent) :
 	QObject (parent),
+	_reason (NSR_RENDER_REASON_NONE),
 	_number (0),
 	_zoom (0)
 {
@@ -9,6 +10,7 @@ NSRRenderedPage::NSRRenderedPage (QObject *parent) :
 
 NSRRenderedPage::NSRRenderedPage (int number, QObject *parent) :
 	QObject (parent),
+	_reason (NSR_RENDER_REASON_NONE),
 	_number (number)
 {
 }
@@ -16,10 +18,11 @@ NSRRenderedPage::NSRRenderedPage (int number, QObject *parent) :
 NSRRenderedPage::NSRRenderedPage (const NSRRenderedPage& page) :
 	QObject (page.parent ())
 {
-	_image = page._image;
-	_number = page._number;
-	_zoom = page._zoom;
-	_text = page._text;
+	_reason	= page._reason;
+	_image	= page._image;
+	_number	= page._number;
+	_zoom	= page._zoom;
+	_text	= page._text;
 }
 
 NSRRenderedPage::~NSRRenderedPage ()
@@ -30,13 +33,20 @@ NSRRenderedPage&
 NSRRenderedPage::operator = (const NSRRenderedPage& page)
 {
 	if (this != &page) {
-		_image = page._image;
-		_number = page._number;
-		_zoom = page._zoom;
-		_text = page._text;
+		_reason	= page._reason;
+		_image	= page._image;
+		_number	= page._number;
+		_zoom	= page._zoom;
+		_text	= page._text;
 	}
 
 	return *this;
+}
+
+NSRRenderedPage::NSRRenderReason
+NSRRenderedPage::getRenderReason () const
+{
+	return _reason;
 }
 
 int
@@ -73,6 +83,12 @@ bool
 NSRRenderedPage::isValid () const
 {
 	return _number > 0 && _image.isValid ();
+}
+
+void
+NSRRenderedPage::setRenderReason (NSRRenderedPage::NSRRenderReason reason)
+{
+	_reason = reason;
 }
 
 void
