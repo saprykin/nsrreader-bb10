@@ -5,6 +5,7 @@
 
 #include "nsrabstractdocument.h"
 #include "nsrrenderthread.h"
+#include "nsrrenderzoomthread.h"
 #include "nsrrenderedpage.h"
 #include "nsrpagescache.h"
 #include "nsrsession.h"
@@ -53,6 +54,7 @@ Q_SIGNALS:
 private Q_SLOTS:
 	void onRenderDone ();
 	void onZoomRenderDone ();
+	void onZoomThreadFinished ();
 
 private:
 	void loadPage (PageLoad				dir,
@@ -64,7 +66,7 @@ private:
 	NSRAbstractDocument	*_doc;
 	NSRAbstractDocument	*_zoomDoc;
 	NSRRenderThread		*_thread;
-	NSRRenderThread		*_zoomThread;
+	NSRRenderZoomThread	*_zoomThread;
 	NSRPagesCache		*_cache;
 	NSRRenderedPage		_currentPage;
 };

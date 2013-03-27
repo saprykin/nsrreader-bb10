@@ -23,14 +23,14 @@ public:
 	void setThumbnailRender (bool enabled);
 	bool isThumbnailRenderEnabled () const;
 
-	void run ();
+	virtual void run ();
 
 Q_SIGNALS:
 	void renderDone ();
 
 public Q_SLOTS:
 
-private:
+protected:
 	NSRAbstractDocument		*_doc;
 	QList<NSRRenderedPage>		_requestedPages;
 	QList<NSRRenderedPage>		_renderedPages;

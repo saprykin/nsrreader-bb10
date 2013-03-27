@@ -63,19 +63,29 @@ NSRRenderThread::isThumbnailRenderEnabled () const
 void
 NSRRenderThread::run ()
 {
-	QMutexLocker locker (&_requestedMutex);
-
-	if (_doc == NULL || _requestedPages.isEmpty ()) {
+	if (_doc == NULL) {
 		emit renderDone ();
 		return;
 	}
 
-	NSRRenderedPage page = _requestedPages.takeFirst ();
-	locker.unlock ();
-
-	if (!(page.getNumber () > 0) || page.getNumber () > _doc->getNumberOfPages ())
+	/* Does we have new pages to render? */
+	_requestedMutex.lock ();
+	if (_requestedPages.isEmpty ()) {
+		_requestedMutex.unlock ();
+		emit renderDone ();
 		return;
+	}
 
+	NSRRenderedPage page = _requestedPages.takeLast ();
+	_requestedMutex.unlock ();
+
+	if (page.getNumber () <= 0 ||
+	    page.getNumber () > _doc->getNumberOfPages ()) {
+		emit renderDone ();
+		return;
+	}
+
+	/* Render image only if we are in graphic mode */
 	if (!_doc->isTextOnly ()) {
 		_doc->renderPage (page.getNumber ());
 		page.setImage (_doc->getCurrentPage ());
@@ -87,10 +97,6 @@ NSRRenderThread::run ()
 	_doc->renderPage (page.getNumber ());
 	page.setText (_doc->getText ());
 	_doc->setTextOnly (textOnly);
-
-	_renderedMutex.lock ();
-	_renderedPages.append (page);
-	_renderedMutex.unlock ();
 
 	if (_renderThumbnail &&
 	    !NSRThumbnailer::isThumbnailExists (_doc->getDocumentPath ())) {
@@ -112,7 +118,7 @@ NSRRenderThread::run ()
 		thumbPage.setText (_doc->getText ());
 
 		NSRThumbnailer::saveThumbnail (_doc->getDocumentPath (),
-					       thumbPage);
+				thumbPage);
 
 		_doc->setTextOnly (textOnly);
 
@@ -121,6 +127,10 @@ NSRRenderThread::run ()
 		else
 			_doc->zoomToWidth (wasZoomWidth);
 	}
+
+	_renderedMutex.lock ();
+	_renderedPages.append (page);
+	_renderedMutex.unlock ();
 
 	emit renderDone ();
 }

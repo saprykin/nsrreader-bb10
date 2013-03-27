@@ -16,14 +16,14 @@ NSRReaderCore::NSRReaderCore (QObject *parent) :
 	_cache (NULL)
 {
 	_thread		= new NSRRenderThread (this);
-	_zoomThread	= new NSRRenderThread (this);
+	_zoomThread	= new NSRRenderZoomThread (this);
 	_cache		= new NSRPagesCache (this);
 
 	connect (_thread, SIGNAL (renderDone ()), this, SLOT (onRenderDone ()));
 	connect (_zoomThread, SIGNAL (renderDone ()), this, SLOT (onZoomRenderDone ()));
+	connect (_zoomThread, SIGNAL (finished ()), this, SLOT (onZoomThreadFinished ()));
 
 	_thread->setThumbnailRender (true);
-	_zoomThread->setThumbnailRender (false);
 }
 
 NSRReaderCore::~NSRReaderCore ()
@@ -44,7 +44,6 @@ NSRReaderCore::openDocument (const QString &path)
 	NSRSettings settings;
 
 	closeDocument ();
-
 
 	_doc = documentByPath (path);
 
@@ -67,9 +66,14 @@ NSRReaderCore::openDocument (const QString &path)
 		_doc = NULL;
 	}
 
+	_thread->setRenderContext (_doc);
+
 	/* We need only graphic mode to render page on zooming */
-	_zoomDoc = copyDocument (_doc);
-	_zoomDoc->setTextOnly (false);
+	if (_zoomDoc == NULL) {
+		_zoomDoc = copyDocument (_doc);
+		_zoomDoc->setTextOnly (false);
+		_zoomThread->setRenderContext (_zoomDoc);
+	}
 
 	settings.addLastDocument (path);
 }
@@ -89,12 +93,19 @@ NSRReaderCore::closeDocument ()
 	if (_doc != NULL) {
 		delete _doc;
 		_doc = NULL;
+		_thread->setRenderContext (NULL);
 	}
 
 	/* Check whether we can delete zoom document */
-	if (_zoomDoc != NULL && !_zoomThread->isRunning ()) {
-		delete _zoomDoc;
-		_zoomDoc = NULL;
+	if (_zoomDoc != NULL) {
+		if (!_zoomThread->isRunning ()) {
+			delete _zoomDoc;
+			_zoomDoc = NULL;
+			_zoomThread->setRenderContext (NULL);
+		} else {
+			_zoomThread->setDocumentChanged (true);
+			_zoomThread->cancelRequests ();
+		}
 	}
 
 	_currentPage = NSRRenderedPage ();
@@ -275,14 +286,16 @@ NSRReaderCore::setZoom (int zoom)
 	if (_doc->getZoom () == zoom)
 		return;
 
+	if (_doc->isTextOnly ())
+		return;
+
 	_cache->clearStorage ();
 	_doc->setZoom (zoom);
 	_zoomDoc->setZoom (zoom);
 
-	if (!_doc->isTextOnly ())
-		loadPage (PAGE_LOAD_CUSTOM,
-			  NSRRenderedPage::NSR_RENDER_REASON_ZOOM,
-			  _currentPage.getNumber ());
+	loadPage (PAGE_LOAD_CUSTOM,
+		  NSRRenderedPage::NSR_RENDER_REASON_ZOOM,
+		  _currentPage.getNumber ());
 }
 
 void
@@ -305,14 +318,33 @@ void
 NSRReaderCore::onZoomRenderDone ()
 {
 	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
+	NSRRenderedPage page = _zoomThread->getRenderedPage ();
 
-	/* TODO: check whether we need to drop outdated page */
-	_currentPage = _zoomThread->getRenderedPage ();
+	if (!page.isValid ())
+		return;
+
+	_currentPage = page;
 
 	if (!_cache->isPageExists (_currentPage.getNumber ()))
 		_cache->addPage (_currentPage);
 
 	emit pageRendered (_currentPage.getNumber ());
+}
+
+void
+NSRReaderCore::onZoomThreadFinished ()
+{
+	if (_zoomThread->isDocumentChanged ()) {
+		/* All requests must be cancelled on document opening */
+		delete _zoomDoc;
+		_zoomDoc = copyDocument (_doc);
+		_zoomDoc->setTextOnly (false);
+		_zoomThread->setRenderContext (_zoomDoc);
+		_zoomThread->setDocumentChanged (false);
+	}
+
+	if (_zoomThread->hasRequestedPages ())
+		_zoomThread->start ();
 }
 
 void
@@ -355,13 +387,13 @@ NSRReaderCore::loadPage (PageLoad				dir,
 	request.setRenderReason (reason);
 
 	if (reason == NSRRenderedPage::NSR_RENDER_REASON_ZOOM) {
-		_zoomThread->setRenderContext (_zoomDoc);
 		_zoomThread->addRequest (request);
-		_zoomThread->start ();
+
+		if (!_zoomThread->isRunning ())
+			_zoomThread->start ();
 	} else {
 		emit needIndicator (true);
 
-		_thread->setRenderContext (_doc);
 		_thread->addRequest (request);
 		_thread->start ();
 	}
