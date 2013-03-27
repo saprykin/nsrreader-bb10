@@ -1,7 +1,9 @@
 #include "nsrrenderzoomthread.h"
 
+#include <QMutexLocker>
+
 NSRRenderZoomThread::NSRRenderZoomThread (QObject *parent) :
-	NSRRenderThread (parent),
+	NSRAbstractRenderThread (parent),
 	_documentChanged (false)
 {
 }
@@ -13,58 +15,45 @@ NSRRenderZoomThread::~NSRRenderZoomThread ()
 void
 NSRRenderZoomThread::run ()
 {
-	bool hasPage;
-	bool docChanged;
+	NSRAbstractDocument	*doc = getRenderContext ();
+	bool			hasPage;
+	bool			docChanged;
 
-	if (_doc == NULL)
+	if (doc == NULL)
 		return;
 
 	do {
 		/* Does we have new pages to render? */
-		_requestedMutex.lock ();
-		if (_requestedPages.isEmpty () || _documentChanged) {
-			_requestedMutex.unlock ();
+		if (isDocumentChanged ())
 			return;
-		}
+
+		NSRRenderedPage page = getRequest ();
+
+		if (page.getNumber () < 1 ||
+		    page.getNumber () > doc->getNumberOfPages ())
+			return;
 
 		/* Last page is only one that is actual, so clear
 		 * all other */
-		NSRRenderedPage page = _requestedPages.takeLast ();
-		_requestedPages.clear ();
-		_requestedMutex.unlock ();
-
-		/* There is a quite small probability that a new
-		 * page will be requested after checking condition
-		 * below and we willn't render it */
-		if (page.getNumber () <= 0 ||
-		    page.getNumber () > _doc->getNumberOfPages ()) {
-			hasPage = true;
-			continue;
-		}
+		cancelRequests ();
 
 		/* Render image only if we are in graphic mode */
-		if (!_doc->isTextOnly ()) {
-			_doc->renderPage (page.getNumber ());
-			page.setImage (_doc->getCurrentPage ());
-			page.setZoom (_doc->getZoom ());
+		if (!doc->isTextOnly ()) {
+			doc->renderPage (page.getNumber ());
+			page.setImage (doc->getCurrentPage ());
+			page.setZoom (doc->getZoom ());
 		}
 
-		_requestedMutex.lock ();
-		hasPage = !_requestedPages.isEmpty ();
-		docChanged = _documentChanged;
-		_requestedMutex.unlock ();
-
-		if (docChanged)
+		if (isDocumentChanged ())
 			return;
+
+		hasPage = hasRequests ();
 
 		/* We need this page only if there is no more
 		 * pages requested. If there are more pages
 		 * requested than current page is outdated */
-		if (!hasPage) {
-			_renderedMutex.lock ();
-			_renderedPages.append (page);
-			_renderedMutex.unlock ();
-
+		if (!hasRequests ()) {
+			completeRequest (page);
 			emit renderDone ();
 		}
 	} while (hasPage);
@@ -73,26 +62,14 @@ NSRRenderZoomThread::run ()
 void
 NSRRenderZoomThread::setDocumentChanged (bool changed)
 {
-	_requestedMutex.lock ();
+	QMutexLocker locker (&_documentMutex);
 	_documentChanged = changed;
-	_requestedMutex.unlock ();
 }
 
 bool
 NSRRenderZoomThread::isDocumentChanged ()
 {
-	QMutexLocker locker (&_requestedMutex);
+	QMutexLocker locker (&_documentMutex);
 	return _documentChanged;
 }
-
-bool
-NSRRenderZoomThread::hasRequestedPages ()
-{
-	QMutexLocker locker (&_requestedMutex);
-	return !_requestedPages.isEmpty ();
-}
-
-
-
-
 

@@ -6,20 +6,15 @@
 #include <QHash>
 #include <QMutex>
 
-#include "nsrabstractdocument.h"
-#include "nsrrenderedpage.h"
+#include "nsrabstractrenderthread.h"
 
-class NSRRenderThread : public QThread
+class NSRRenderThread : public NSRAbstractRenderThread
 {
 	Q_OBJECT
 public:
 	explicit NSRRenderThread (QObject *parent = 0);
-	~NSRRenderThread ();
+	virtual ~NSRRenderThread ();
 
-	void setRenderContext (NSRAbstractDocument *doc);
-	void addRequest (NSRRenderedPage &page);
-	void cancelRequests ();
-	NSRRenderedPage getRenderedPage ();
 	void setThumbnailRender (bool enabled);
 	bool isThumbnailRenderEnabled () const;
 
@@ -28,15 +23,8 @@ public:
 Q_SIGNALS:
 	void renderDone ();
 
-public Q_SLOTS:
-
-protected:
-	NSRAbstractDocument		*_doc;
-	QList<NSRRenderedPage>		_requestedPages;
-	QList<NSRRenderedPage>		_renderedPages;
-	QMutex				_requestedMutex;
-	QMutex				_renderedMutex;
-	bool				_renderThumbnail;
+private:
+	bool _renderThumbnail;
 };
 
 #endif // NSRRENDERTHREAD_H

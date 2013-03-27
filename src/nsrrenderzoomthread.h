@@ -1,9 +1,9 @@
 #ifndef NSRRENDERZOOMTHREAD_H_
 #define NSRRENDERZOOMTHREAD_H_
 
-#include "nsrrenderthread.h"
+#include "nsrabstractrenderthread.h"
 
-class NSRRenderZoomThread : public NSRRenderThread
+class NSRRenderZoomThread : public NSRAbstractRenderThread
 {
 	Q_OBJECT
 public:
@@ -13,13 +13,12 @@ public:
 	virtual void run ();
 	void setDocumentChanged (bool changed);
 	bool isDocumentChanged ();
-	bool hasRequestedPages ();
+
+Q_SIGNALS:
+	void renderDone ();
 
 private:
-	/* Disable thumbnailer features */
-	void setThumbnailRender (bool enabled) {Q_UNUSED (enabled)}
-	bool isThumbnailRenderEnabled () const {return false;}
-
+	QMutex	_documentMutex;
 	bool	_documentChanged;
 };
 

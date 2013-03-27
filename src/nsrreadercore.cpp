@@ -343,7 +343,7 @@ NSRReaderCore::onZoomThreadFinished ()
 		_zoomThread->setDocumentChanged (false);
 	}
 
-	if (_zoomThread->hasRequestedPages ())
+	if (_zoomThread->hasRequests ())
 		_zoomThread->start ();
 }
 
