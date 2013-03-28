@@ -51,6 +51,7 @@ private Q_SLOTS:
     void onPopTransitionEnded (bb::cascades::Page *page);
     void onLastDocumentRequested (const QString& path);
     void onZoomChanged (int zoom, bool toWidth);
+    void onManualExit ();
 
 private:
     void updateVisualControls ();

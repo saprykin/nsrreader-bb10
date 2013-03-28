@@ -168,13 +168,16 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	else
 		updateVisualControls ();
 
-	QObject::connect (_pageView, SIGNAL (zoomChanged (int)),
-			  this, SLOT (onZoomChanged (int)));
+	connect (_pageView, SIGNAL (zoomChanged (int, bool)),
+		 this, SLOT (onZoomChanged (int, bool)));
+
+	Application::instance()->setAutoExit (false);
+	connect (Application::instance (), SIGNAL (manualExit ()),
+		 this, SLOT (onManualExit ()));
 }
 
 NSRReaderBB10::~NSRReaderBB10 ()
 {
-	saveSession ();
 }
 
 void
@@ -526,3 +529,11 @@ NSRReaderBB10::onZoomChanged (int zoom, bool toWidth)
 
 	_core->setZoom (zoom, toWidth);
 }
+
+void
+NSRReaderBB10::onManualExit ()
+{
+	saveSession ();
+	Application::instance()->quit ();
+}
+
