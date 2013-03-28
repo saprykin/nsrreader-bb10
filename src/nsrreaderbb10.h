@@ -50,7 +50,7 @@ private Q_SLOTS:
     void onViewModeRequested (NSRPageView::NSRViewMode mode);
     void onPopTransitionEnded (bb::cascades::Page *page);
     void onLastDocumentRequested (const QString& path);
-    void onZoomChanged (int zoom);
+    void onZoomChanged (int zoom, bool toWidth);
 
 private:
     void updateVisualControls ();

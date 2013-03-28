@@ -37,12 +37,12 @@ public:
 	void loadSession (const NSRSession *session);
 	void navigateToPage (PageLoad dir, int pageNumber = 0);
 	bool isPageRendering () const;
-	void fitToWidth (int width);
+	void setScreenWidth (int width);
 	bool isFitToWidth () const;
 	int getZoom () const;
 	int getMinZoom () const;
 	int getMaxZoom () const;
-	void setZoom (int zoom);
+	void setZoom (int zoom, bool toWidth);
 
 Q_SIGNALS:
 	void pageRendered (int number);

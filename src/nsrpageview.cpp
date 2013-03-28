@@ -174,6 +174,23 @@ NSRPageView::setZoomRange (int minZoom, int maxZoom)
 	_maxZoom = maxZoom;
 }
 
+void
+NSRPageView::fitToWidth () {
+	if (_viewMode != NSR_VIEW_MODE_GRAPHIC)
+		return;
+
+	if (_imageView->image().isNull ())
+		return;
+
+	double scale = _size.width () / _imageView->preferredWidth ();
+
+	_imageView->setPreferredSize (_imageView->preferredWidth () * scale,
+				      _imageView->preferredHeight () * scale);
+	_currentZoom *= scale;
+
+	emit zoomChanged (_currentZoom, true);
+}
+
 NSRPageView::NSRViewMode
 NSRPageView::getViewMode () const
 {
@@ -245,7 +262,7 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 
 	_currentZoom *= scale;
 
-	emit zoomChanged (_currentZoom);
+	emit zoomChanged (_currentZoom, false);
 	event->accept ();
 }
 

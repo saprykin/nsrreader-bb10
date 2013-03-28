@@ -222,7 +222,7 @@ NSRReaderCore::isPageRendering () const
 }
 
 void
-NSRReaderCore::fitToWidth (int width)
+NSRReaderCore::setScreenWidth (int width)
 {
 	if (width <= 0)
 		return;
@@ -233,12 +233,7 @@ NSRReaderCore::fitToWidth (int width)
 	if (_doc->isZoomToWidth () && _doc->getScreenWidth () == width)
 		return;
 
-	_cache->clearStorage ();
 	_doc->zoomToWidth (width);
-
-	loadPage (PAGE_LOAD_CUSTOM,
-		  NSRRenderedPage::NSR_RENDER_REASON_ZOOM,
-		  _currentPage.getNumber ());
 }
 
 bool
@@ -278,24 +273,29 @@ NSRReaderCore::getMaxZoom () const
 }
 
 void
-NSRReaderCore::setZoom (int zoom)
+NSRReaderCore::setZoom (int zoom, bool toWidth)
 {
 	if (zoom <= 0)
 		return;
 
-	if (_doc->getZoom () == zoom)
+	if (!toWidth && _doc->getZoom () == zoom)
 		return;
 
 	if (_doc->isTextOnly ())
 		return;
 
 	_cache->clearStorage ();
-	_doc->setZoom (zoom);
+
+	if (!toWidth)
+		_doc->setZoom (zoom);
+
 	_zoomDoc->setZoom (zoom);
 
-	loadPage (PAGE_LOAD_CUSTOM,
-		  NSRRenderedPage::NSR_RENDER_REASON_ZOOM,
-		  _currentPage.getNumber ());
+	NSRRenderedPage::NSRRenderReason reason;
+	reason = toWidth ? NSRRenderedPage::NSR_RENDER_REASON_ZOOM_TO_WIDTH
+			 : NSRRenderedPage::NSR_RENDER_REASON_ZOOM;
+
+	loadPage (PAGE_LOAD_CUSTOM, reason, _currentPage.getNumber ());
 }
 
 void
@@ -386,7 +386,8 @@ NSRReaderCore::loadPage (PageLoad				dir,
 	NSRRenderedPage request (pageToLoad);
 	request.setRenderReason (reason);
 
-	if (reason == NSRRenderedPage::NSR_RENDER_REASON_ZOOM) {
+	if (reason == NSRRenderedPage::NSR_RENDER_REASON_ZOOM ||
+	    reason == NSRRenderedPage::NSR_RENDER_REASON_ZOOM_TO_WIDTH) {
 		_zoomThread->addRequest (request);
 
 		if (!_zoomThread->isRunning ())

@@ -255,7 +255,7 @@ NSRReaderBB10::onRecentDocsTriggered ()
 void
 NSRReaderBB10::onFitToWidthTriggered ()
 {
-	_core->fitToWidth (_pageView->getSize().width ());
+	_pageView->fitToWidth ();
 }
 
 void
@@ -519,7 +519,10 @@ NSRReaderBB10::onLastDocumentRequested (const QString& path)
 }
 
 void
-NSRReaderBB10::onZoomChanged (int zoom)
+NSRReaderBB10::onZoomChanged (int zoom, bool toWidth)
 {
-	_core->setZoom (zoom);
+	if (toWidth)
+		_core->setScreenWidth (_pageView->getSize().width ());
+
+	_core->setZoom (zoom, toWidth);
 }

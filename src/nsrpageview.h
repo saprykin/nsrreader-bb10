@@ -39,10 +39,11 @@ public:
 	void setInvertedColors (bool inv);
 	QSize getSize () const;
 	void setZoomRange (int minZoom, int maxZoom);
+	void fitToWidth ();
 
 Q_SIGNALS:
 	void viewTapped ();
-	void zoomChanged (int zoom);
+	void zoomChanged (int zoom, bool toWidth);
 
 private Q_SLOTS:
 	void onTappedGesture (bb::cascades::TapEvent *ev);
