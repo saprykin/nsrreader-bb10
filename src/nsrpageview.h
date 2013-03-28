@@ -34,6 +34,7 @@ public:
 	NSRPageView::NSRViewMode getViewMode () const;
 	void setScrollPosition (const QPointF& pos);
 	QPointF getScrollPosition () const;
+	void setScrollPositionOnLoad (const QPointF& pos);
 	bool isInvertedColors () const;
 	void setInvertedColors (bool inv);
 	QSize getSize () const;
@@ -60,10 +61,12 @@ private:
 	NSRViewMode			_viewMode;
 	QSize				_size;
 	QSize				_initialScaleSize;
+	QPointF				_delayedScrollPos;
 	int				_currentZoom;
 	int				_minZoom;
 	int				_maxZoom;
 	bool				_isInvertedColors;
+	bool				_useDelayedScroll;
 };
 
 #endif /* NSRPAGEVIEW_H_ */

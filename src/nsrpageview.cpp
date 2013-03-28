@@ -23,7 +23,8 @@ NSRPageView::NSRPageView (Container *parent) :
 	_currentZoom (0),
 	_minZoom (0),
 	_maxZoom (0),
-	_isInvertedColors (false)
+	_isInvertedColors (false),
+	_useDelayedScroll (false)
 {
 	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Fill)
@@ -90,7 +91,10 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
 	_currentZoom = page.getZoom ();
 
-	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION)
+	if (_useDelayedScroll) {
+		_useDelayedScroll = false;
+		setScrollPosition (_delayedScrollPos);
+	} else if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION)
 		setScrollPosition (QPointF (0.0, 0.0));
 }
 
@@ -181,6 +185,13 @@ QPointF
 NSRPageView::getScrollPosition () const
 {
 	return _scrollView->viewableArea().topLeft ();
+}
+
+void
+NSRPageView::setScrollPositionOnLoad (const QPointF& pos)
+{
+	_useDelayedScroll = true;
+	_delayedScrollPos = pos;
 }
 
 void
