@@ -7,6 +7,7 @@
 #include <bb/cascades/TapHandler>
 #include <bb/cascades/LayoutUpdateHandler>
 #include <bb/cascades/PinchHandler>
+#include <bb/cascades/ImageTracker>
 
 using namespace bb::cascades;
 
@@ -101,8 +102,12 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 void
 NSRPageView::resetPage ()
 {
-	_imageView->setImageSource (QUrl (NSR_LOGO_WELCOME));
+	ImageTracker tracker (QUrl (NSR_LOGO_WELCOME));
+
+	_imageView->setImageSource (tracker.imageSource ());
+	_imageView->setPreferredSize (tracker.width (), tracker.height ());
 	_textArea->resetText ();
+	_currentZoom = 100;
 }
 
 void
