@@ -345,6 +345,7 @@ NSRReaderBB10::loadSession ()
 	}
 
 	session.setZoomScreenWidth (width);
+	_pageView->setScrollPositionOnLoad (session.getPosition ());
 	_core->loadSession (&session);
 }
 
@@ -361,6 +362,7 @@ NSRReaderBB10::saveSession ()
 	session.setPage (_core->getCurrentPage().getNumber ());
 	session.setFitToWidth (_core->isFitToWidth ());
 	session.setZoomGraphic (_core->getZoom ());
+	session.setPosition (_pageView->getScrollPosition().toPoint ());
 	settings.saveSession (&session);
 }
 
