@@ -360,6 +360,7 @@ NSRReaderBB10::saveSession ()
 	session.setFile (_core->getDocumentPaht ());
 	session.setPage (_core->getCurrentPage().getNumber ());
 	session.setFitToWidth (_core->isFitToWidth ());
+	session.setZoomGraphic (_core->getZoom ());
 	settings.saveSession (&session);
 }
 

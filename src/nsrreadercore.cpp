@@ -194,6 +194,7 @@ NSRReaderCore::loadSession (const NSRSession *session)
 
 		if (isDocumentOpened ()) {
 			_doc->setRotation (session->getRotation ());
+			_doc->setZoom (session->getZoomGraphic ());
 
 			if (_zoomDoc != NULL)
 				_zoomDoc->setRotation (session->getRotation ());
