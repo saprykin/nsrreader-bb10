@@ -63,16 +63,13 @@ NSRPageView::NSRPageView (Container *parent) :
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
 							       SLOT (onLayoutFrameChanged (QRectF)));
 
-	TapHandler *imgTapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
-	TapHandler *txtTapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
-	_scrollView->addGestureHandler (imgTapHandler);
-	_textContainer->addGestureHandler (txtTapHandler);
-
+	TapHandler *tapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
 	PinchHandler *pinchHandler = PinchHandler::create().onPinch (this,
 						   SLOT (onPinchStarted (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchUpdated (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchEnded (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchCancelled ()));
+	this->addGestureHandler (tapHandler);
 	this->addGestureHandler (pinchHandler);
 
 	setLayout (DockLayout::create ());
