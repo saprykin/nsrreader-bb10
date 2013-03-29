@@ -186,6 +186,13 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 	NSRSettings	settings;
 	NSRSession	session = settings.getSessionForFile (files.first ());
 
+	if (_core->getDocumentPaht () == files.first ()) {
+		SystemToast *toast = new SystemToast (this);
+		toast->setBody (trUtf8 ("Selected file is already opened."));
+		toast->show ();
+		return;
+	}
+
 	/* Save session for opened document */
 	settings.saveLastOpenDir (QFileInfo (files.first ()).absolutePath ());
 	saveSession ();
