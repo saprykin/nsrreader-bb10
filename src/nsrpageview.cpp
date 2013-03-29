@@ -88,6 +88,10 @@ NSRPageView::~NSRPageView ()
 void
 NSRPageView::setPage (const NSRRenderedPage& page)
 {
+	/* Do not accept page if we are zooming now */
+	if (_isZooming)
+		return;
+
 	_textArea->setText (page.getText ());
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
@@ -269,9 +273,9 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 	double scale = _imageView->preferredWidth () / _initialScaleSize.width ();
 
 	_currentZoom *= scale;
-	emit zoomChanged (_currentZoom, false);
 	_isZooming = false;
 
+	emit zoomChanged (_currentZoom, false);
 	event->accept ();
 }
 
