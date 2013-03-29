@@ -22,6 +22,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textContainer (NULL),
 	_viewMode (NSR_VIEW_MODE_GRAPHIC),
 	_currentZoom (0),
+	_initialFontSize (100),
 	_minZoom (0),
 	_maxZoom (0),
 	_isInvertedColors (false),
@@ -59,6 +60,7 @@ NSRPageView::NSRPageView (Container *parent) :
 						  TextInputFlag::VirtualKeyboardOff);
 	_textArea->textStyle()->setColor (Color::Black);
 	_textContainer->add (_textArea);
+	_initialFontSize = (int) _textArea->textStyle()->fontSize ();
 
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
 							       SLOT (onLayoutFrameChanged (QRectF)));
@@ -178,7 +180,8 @@ NSRPageView::setZoomRange (int minZoom, int maxZoom)
 }
 
 void
-NSRPageView::fitToWidth () {
+NSRPageView::fitToWidth ()
+{
 	if (_viewMode != NSR_VIEW_MODE_GRAPHIC)
 		return;
 
@@ -192,6 +195,20 @@ NSRPageView::fitToWidth () {
 	_currentZoom *= scale;
 
 	emit zoomChanged (_currentZoom, true);
+}
+
+int
+NSRPageView::getTextZoom () const
+{
+	return (int) _textArea->textStyle()->fontSize ();
+}
+
+void
+NSRPageView::setTextZoom (int fontSize)
+{
+	fontSize = qBound ((int) FontSize::XXSmall,  fontSize, (int) FontSize::XXLarge);
+	fontSize = (fontSize / 10) * 10;
+	_textArea->textStyle()->setFontSize ((FontSize::Type) fontSize);
 }
 
 NSRPageView::NSRViewMode
@@ -222,8 +239,8 @@ NSRPageView::setScrollPositionOnLoad (const QPointF& pos)
 void
 NSRPageView::onTappedGesture (bb::cascades::TapEvent *ev)
 {
-	ev->accept ();
 	emit viewTapped ();
+	ev->accept ();
 }
 
 void
@@ -236,13 +253,17 @@ NSRPageView::onLayoutFrameChanged (const QRectF& rect)
 void
 NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 {
-	if (_imageView->imageSource().path () == NSR_LOGO_WELCOME)
-		return;
+	if (_viewMode == NSR_VIEW_MODE_TEXT)
+		_initialFontSize = (int) _textArea->textStyle()->fontSize ();
+	else {
+		if (_imageView->imageSource().path () == NSR_LOGO_WELCOME)
+			return;
 
-	_initialScaleSize = QSize (_imageView->preferredWidth(),
-				   _imageView->preferredHeight());
+		_initialScaleSize = QSize (_imageView->preferredWidth (),
+					   _imageView->preferredHeight ());
+	}
+
 	_isZooming = true;
-
 	event->accept ();
 }
 
@@ -253,14 +274,21 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 		return;
 
 	double scale = event->pinchRatio ();
+	if (scale < 1.0)
+		scale = -(1 / scale);
 
-	if (scale * _currentZoom < _minZoom)
-		scale = ((double) _minZoom) / _currentZoom;
-	else if (scale * _currentZoom > _maxZoom)
-		scale = (double) _maxZoom / _currentZoom;
+	if (_viewMode == NSR_VIEW_MODE_TEXT) {
+		int newSize = (int) (_initialFontSize + scale * 10);
+		setTextZoom (newSize);
+	} else {
+		if (scale * _currentZoom < _minZoom)
+			scale = ((double) _minZoom) / _currentZoom;
+		else if (scale * _currentZoom > _maxZoom)
+			scale = (double) _maxZoom / _currentZoom;
 
-	_imageView->setPreferredSize (_initialScaleSize.width () * scale,
-				      _initialScaleSize.height () * scale);
+		_imageView->setPreferredSize (_initialScaleSize.width () * scale,
+					      _initialScaleSize.height () * scale);
+	}
 
 	event->accept ();
 }
@@ -268,12 +296,15 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 void
 NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 {
-	double scale = _imageView->preferredWidth () / _initialScaleSize.width ();
-
-	_currentZoom *= scale;
 	_isZooming = false;
 
-	emit zoomChanged (_currentZoom, false);
+	if (_viewMode == NSR_VIEW_MODE_GRAPHIC) {
+		double scale = _imageView->preferredWidth () / _initialScaleSize.width ();
+		_currentZoom *= scale;
+
+		emit zoomChanged (_currentZoom, false);
+	}
+
 	event->accept ();
 }
 

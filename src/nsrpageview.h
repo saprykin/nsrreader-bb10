@@ -40,6 +40,8 @@ public:
 	QSize getSize () const;
 	void setZoomRange (int minZoom, int maxZoom);
 	void fitToWidth ();
+	int getTextZoom () const;
+	void setTextZoom (int fontSize);
 
 Q_SIGNALS:
 	void viewTapped ();
@@ -64,6 +66,7 @@ private:
 	QSize				_initialScaleSize;
 	QPointF				_delayedScrollPos;
 	int				_currentZoom;
+	int				_initialFontSize;
 	int				_minZoom;
 	int				_maxZoom;
 	bool				_isInvertedColors;
