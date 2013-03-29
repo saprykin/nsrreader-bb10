@@ -32,7 +32,7 @@ NSRSettings::NSRSettings(QObject *parent) :
 	_isInvertedColors = value("inverted-colors", false).toBool();
 	_lastOpenDir = value("last-open-dir", "C:").toString();
 	_isNewsShown = (value("news-shown-version", "1.0.0").toString() == NSR_READER_VERSION);
-	_fontFamily = value("font-family", "Nokia Sans S60").toString();
+	_fontFamily = value("font-family", "Sans Serif").toString();
 	_textEncoding = value("text-encoding", "UTF-8").toString();
 	_lastDocuments = value("last-documents", QStringList ()).toStringList();
 
