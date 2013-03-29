@@ -68,6 +68,7 @@ private:
 	int				_maxZoom;
 	bool				_isInvertedColors;
 	bool				_useDelayedScroll;
+	bool				_isZooming;
 };
 
 #endif /* NSRPAGEVIEW_H_ */

@@ -25,7 +25,8 @@ NSRPageView::NSRPageView (Container *parent) :
 	_minZoom (0),
 	_maxZoom (0),
 	_isInvertedColors (false),
-	_useDelayedScroll (false)
+	_useDelayedScroll (false),
+	_isZooming (false)
 {
 	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Fill)
@@ -233,8 +234,12 @@ NSRPageView::onLayoutFrameChanged (const QRectF& rect)
 void
 NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 {
+	if (_imageView->imageSource().path () == NSR_LOGO_WELCOME)
+		return;
+
 	_initialScaleSize = QSize (_imageView->preferredWidth(),
 				   _imageView->preferredHeight());
+	_isZooming = true;
 
 	event->accept ();
 }
@@ -242,6 +247,9 @@ NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 void
 NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 {
+	if (!_isZooming)
+		return;
+
 	double scale = event->pinchRatio ();
 
 	if (scale * _currentZoom < _minZoom)
@@ -261,8 +269,9 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 	double scale = _imageView->preferredWidth () / _initialScaleSize.width ();
 
 	_currentZoom *= scale;
-
 	emit zoomChanged (_currentZoom, false);
+	_isZooming = false;
+
 	event->accept ();
 }
 
@@ -271,5 +280,6 @@ NSRPageView::onPinchCancelled ()
 {
 	_imageView->setPreferredSize (_initialScaleSize.width (),
 				      _initialScaleSize.height ());
+	_isZooming = false;
 }
 
