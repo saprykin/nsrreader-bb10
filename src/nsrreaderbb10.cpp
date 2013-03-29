@@ -287,7 +287,7 @@ NSRReaderBB10::updateVisualControls ()
 	_openAction->setEnabled (true);
 	_prefsAction->setEnabled (true);
 	_recentDocsAction->setEnabled (true);
-	_fitToWidthAction->setEnabled (true);
+	_fitToWidthAction->setEnabled (_core->isDocumentOpened ());
 
 	if (!_core->isDocumentOpened ()) {
 		_prevPageAction->setEnabled (false);
