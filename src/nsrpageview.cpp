@@ -73,8 +73,9 @@ NSRPageView::NSRPageView (Container *parent) :
 						   SLOT (onPinchUpdated (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchEnded (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchCancelled ()));
-	_scrollView->addGestureHandler (pinchHandler);
+	this->addGestureHandler (pinchHandler);
 
+	setLayout (DockLayout::create ());
 	add (_scrollView);
 	add (_textContainer);
 
