@@ -3,6 +3,8 @@
 
 #include "nsrabstractrenderthread.h"
 
+#include <QAtomicInt>
+
 class NSRRenderZoomThread : public NSRAbstractRenderThread
 {
 	Q_OBJECT
@@ -18,8 +20,7 @@ Q_SIGNALS:
 	void renderDone ();
 
 private:
-	QMutex	_documentMutex;
-	bool	_documentChanged;
+	QAtomicInt	_documentChanged;
 };
 
 #endif /* NSRRENDERZOOMTHREAD_H_ */

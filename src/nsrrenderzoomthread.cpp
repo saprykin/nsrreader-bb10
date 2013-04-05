@@ -3,8 +3,7 @@
 #include <QMutexLocker>
 
 NSRRenderZoomThread::NSRRenderZoomThread (QObject *parent) :
-	NSRAbstractRenderThread (parent),
-	_documentChanged (false)
+	NSRAbstractRenderThread (parent)
 {
 }
 
@@ -61,14 +60,12 @@ NSRRenderZoomThread::run ()
 void
 NSRRenderZoomThread::setDocumentChanged (bool changed)
 {
-	QMutexLocker locker (&_documentMutex);
-	_documentChanged = changed;
+	_documentChanged = changed ? 1 : 0;
 }
 
 bool
 NSRRenderZoomThread::isDocumentChanged ()
 {
-	QMutexLocker locker (&_documentMutex);
-	return _documentChanged;
+	return (_documentChanged == 1);
 }
 
