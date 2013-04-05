@@ -10,6 +10,7 @@ class NSRSettings : public QSettings
 	Q_OBJECT
 public:
 	explicit NSRSettings (QObject *parent = 0);
+	virtual ~NSRSettings () {}
 	void saveSession (NSRSession *session);
 	NSRSession getLastSession ();
 	NSRSession getSessionForFile (const QString& file);
