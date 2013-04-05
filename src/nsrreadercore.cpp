@@ -324,6 +324,11 @@ NSRReaderCore::onZoomRenderDone ()
 	if (!page.isValid ())
 		return;
 
+	/* We do not need to reset document changed flag because it would be
+	 * done almost immediately in onZoomThreadFinished() slot */
+	if (_zoomThread->isDocumentChanged ())
+		return;
+
 	_currentPage = page;
 
 	if (!_cache->isPageExists (_currentPage.getNumber ()))
