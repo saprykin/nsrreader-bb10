@@ -17,7 +17,6 @@ NSRRenderZoomThread::run ()
 {
 	NSRAbstractDocument	*doc = getRenderContext ();
 	bool			hasPage;
-	bool			docChanged;
 
 	if (doc == NULL)
 		return;
