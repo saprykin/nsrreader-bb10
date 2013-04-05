@@ -27,7 +27,8 @@ NSRPageView::NSRPageView (Container *parent) :
 	_maxZoom (0),
 	_isInvertedColors (false),
 	_useDelayedScroll (false),
-	_isZooming (false)
+	_isZooming (false),
+	_isZoomingEnabled (true)
 {
 	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Fill)
@@ -211,6 +212,18 @@ NSRPageView::setTextZoom (int fontSize)
 	_textArea->textStyle()->setFontSize ((FontSize::Type) fontSize);
 }
 
+void
+NSRPageView::setZoomEnabled (bool enabled)
+{
+	_isZoomingEnabled = enabled;
+}
+
+bool
+NSRPageView::isZoomEnabled () const
+{
+	return _isZoomingEnabled;
+}
+
 NSRPageView::NSRViewMode
 NSRPageView::getViewMode () const
 {
@@ -253,6 +266,9 @@ NSRPageView::onLayoutFrameChanged (const QRectF& rect)
 void
 NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 {
+	if (!_isZoomingEnabled)
+		return;
+
 	if (_viewMode == NSR_VIEW_MODE_TEXT)
 		_initialFontSize = (int) _textArea->textStyle()->fontSize ();
 	else {
@@ -270,7 +286,7 @@ NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 void
 NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 {
-	if (!_isZooming)
+	if (!_isZooming || !_isZoomingEnabled)
 		return;
 
 	double scale = event->pinchRatio ();
@@ -296,6 +312,9 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 void
 NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 {
+	if (!_isZoomingEnabled)
+		return;
+
 	_isZooming = false;
 
 	if (_viewMode == NSR_VIEW_MODE_GRAPHIC) {
@@ -311,6 +330,9 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 void
 NSRPageView::onPinchCancelled ()
 {
+	if (!_isZoomingEnabled)
+		return;
+
 	_imageView->setPreferredSize (_initialScaleSize.width (),
 				      _initialScaleSize.height ());
 	_isZooming = false;

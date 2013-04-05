@@ -42,6 +42,8 @@ public:
 	void fitToWidth ();
 	int getTextZoom () const;
 	void setTextZoom (int fontSize);
+	void setZoomEnabled (bool enabled);
+	bool isZoomEnabled () const;
 
 Q_SIGNALS:
 	void viewTapped ();
@@ -72,6 +74,7 @@ private:
 	bool				_isInvertedColors;
 	bool				_useDelayedScroll;
 	bool				_isZooming;
+	bool				_isZoomingEnabled;
 };
 
 #endif /* NSRPAGEVIEW_H_ */

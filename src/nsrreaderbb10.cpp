@@ -380,6 +380,7 @@ NSRReaderBB10::onIndicatorRequested (bool enabled)
 {
 	disableVisualControls ();
 	_indicator->setVisible (enabled);
+	_pageView->setZoomEnabled (!enabled);
 
 	if (enabled)
 		_indicator->start ();
