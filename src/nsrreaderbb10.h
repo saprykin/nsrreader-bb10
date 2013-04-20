@@ -17,6 +17,7 @@
 
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
+#include <bb/system/SystemToast>
 
 #include <QObject>
 
@@ -77,6 +78,7 @@ private:
     bb::cascades::HelpActionItem	*_helpAction;
     bb::cascades::ActivityIndicator	*_indicator;
     bb::system::SystemPrompt		*_prompt;
+    bb::system::SystemToast		*_toast;
     bool				_isFullscreen;
 };
 

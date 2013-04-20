@@ -46,12 +46,15 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_helpAction (NULL),
 	_indicator (NULL),
 	_prompt (NULL),
+	_toast (NULL),
 	_isFullscreen (false)
 {
 	Container *rootContainer = new Container ();
 	rootContainer->setLayout (DockLayout::create ());
 	rootContainer->setHorizontalAlignment (HorizontalAlignment::Fill);
 	rootContainer->setVerticalAlignment (VerticalAlignment::Fill);
+
+	_toast = new SystemToast (this);
 
 	_pageView = new NSRPageView ();
 	_pageView->setHorizontalAlignment (HorizontalAlignment::Fill);
@@ -187,9 +190,8 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 	NSRSession	session = settings.getSessionForFile (files.first ());
 
 	if (_core->getDocumentPaht () == files.first ()) {
-		SystemToast *toast = new SystemToast (this);
-		toast->setBody (trUtf8 ("Selected file is already opened."));
-		toast->show ();
+		_toast->setBody (trUtf8 ("Selected file is already opened."));
+		_toast->show ();
 		return;
 	}
 
@@ -339,16 +341,15 @@ NSRReaderBB10::reloadSettings ()
 	/* Check whether we have noted user about text mode */
 	if (settings.isWordWrap () && !settings.isTextModeNoted ()) {
 		settings.saveTextModeNoted ();
-		SystemToast *toast = new SystemToast (this);
-		toast->setBody (trUtf8 ("You are using text reflow the first time. Note that "
-					"document formatting may be differ than in original one, "
-					"no images displayed and page can be empty if there is "
-					"no text in the document. Also text may not be displayed "
-					"properly if appropriate language is not supported by phone.",
-					"Text reflow is a view mode of PDF/DjVu document when "
-					"only text information without images is displayed with "
-					"word wrap feature enabled."));
-		toast->show ();
+		_toast->setBody (trUtf8 ("You are using text reflow the first time. Note that "
+					 "document formatting may be differ than in original one, "
+					 "no images displayed and page can be empty if there is "
+					 "no text in the document. Also text may not be displayed "
+					 "properly if appropriate language is not supported by phone.",
+					 "Text reflow is a view mode of PDF/DjVu document when "
+					 "only text information without images is displayed with "
+					 "word wrap feature enabled."));
+		_toast->show ();
 	}
 }
 
@@ -471,9 +472,8 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 				   "NSR Reader tried open this file, but it can't :( "
 				   "Please check this file on desktop computer.");
 
-	SystemToast *toast = new SystemToast (this);
-	toast->setBody (errorStr);
-	toast->show ();
+	_toast->setBody (errorStr);
+	_toast->show ();
 
 	_pageView->resetPage ();
 	_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
