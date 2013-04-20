@@ -12,6 +12,7 @@
 #include <bb/cascades/ScrollView>
 #include <bb/cascades/TextArea>
 #include <bb/cascades/TapEvent>
+#include <bb/cascades/DoubleTapEvent>
 #include <bb/cascades/PinchEvent>
 
 class NSRPageView: public bb::cascades::Container
@@ -48,9 +49,13 @@ public:
 Q_SIGNALS:
 	void viewTapped ();
 	void zoomChanged (int zoom, bool toWidth);
+	void nextPageRequested ();
+	void prevPageRequested ();
+	void fitToWidthRequested ();
 
 private Q_SLOTS:
 	void onTappedGesture (bb::cascades::TapEvent *ev);
+	void onDoubleTappedGesture (bb::cascades::DoubleTapEvent *ev);
 	void onLayoutFrameChanged (const QRectF& rect);
 	void onPinchStarted (bb::cascades::PinchEvent *event);
 	void onPinchUpdated (bb::cascades::PinchEvent *event);

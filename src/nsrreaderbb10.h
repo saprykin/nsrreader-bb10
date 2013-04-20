@@ -53,6 +53,9 @@ private Q_SLOTS:
     void onLastDocumentRequested (const QString& path);
     void onZoomChanged (int zoom, bool toWidth);
     void onManualExit ();
+    void onPrevPageRequested ();
+    void onNextPageRequested ();
+    void onFitToWidthRequested ();
 
 private:
     void updateVisualControls ();

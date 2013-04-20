@@ -62,6 +62,10 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
 						.vertical(VerticalAlignment::Fill);
 
+	connect (_pageView, SIGNAL (prevPageRequested ()), this, SLOT (onPrevPageRequested ()));
+	connect (_pageView, SIGNAL (nextPageRequested ()), this, SLOT (onNextPageRequested ()));
+	connect (_pageView, SIGNAL (fitToWidthRequested ()), this, SLOT (onFitToWidthRequested ()));
+
 	_pageStatus = new NSRPageStatus ();
 	_pageStatus->setHorizontalAlignment(HorizontalAlignment::Left);
 	_pageStatus->setVerticalAlignment(VerticalAlignment::Top);
@@ -569,3 +573,23 @@ NSRReaderBB10::onManualExit ()
 	Application::instance()->quit ();
 }
 
+void
+NSRReaderBB10::onPrevPageRequested ()
+{
+	if (_prevPageAction->isEnabled ())
+		onPrevPageActionTriggered ();
+}
+
+void
+NSRReaderBB10::onNextPageRequested ()
+{
+	if (_nextPageAction->isEnabled ())
+		onNextPageActionTriggered ();
+}
+
+void
+NSRReaderBB10::onFitToWidthRequested ()
+{
+	if (_fitToWidthAction->isEnabled ())
+		onFitToWidthTriggered ();
+}

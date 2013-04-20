@@ -5,6 +5,7 @@
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/Color>
 #include <bb/cascades/TapHandler>
+#include <bb/cascades/DoubleTapHandler>
 #include <bb/cascades/LayoutUpdateHandler>
 #include <bb/cascades/PinchHandler>
 #include <bb/cascades/ImageTracker>
@@ -66,12 +67,16 @@ NSRPageView::NSRPageView (Container *parent) :
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
 							       SLOT (onLayoutFrameChanged (QRectF)));
 
-	TapHandler *tapHandler = TapHandler::create().onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
+	TapHandler *tapHandler = TapHandler::create()
+				.onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
+	DoubleTapHandler *dtapHandler = DoubleTapHandler::create()
+				.onDoubleTapped (this, SLOT (onDoubleTappedGesture (bb::cascades::DoubleTapEvent*)));
 	PinchHandler *pinchHandler = PinchHandler::create().onPinch (this,
 						   SLOT (onPinchStarted (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchUpdated (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchEnded (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchCancelled ()));
+	this->addGestureHandler (dtapHandler);
 	this->addGestureHandler (tapHandler);
 	this->addGestureHandler (pinchHandler);
 
@@ -253,6 +258,19 @@ void
 NSRPageView::onTappedGesture (bb::cascades::TapEvent *ev)
 {
 	emit viewTapped ();
+	ev->accept ();
+}
+
+void
+NSRPageView::onDoubleTappedGesture (bb::cascades::DoubleTapEvent* ev)
+{
+	if (ev->x () < _size.width () / 3.0)
+		emit prevPageRequested ();
+	else if (ev->x () > _size.width () * 2 / 3)
+		emit nextPageRequested ();
+	else
+		emit fitToWidthRequested ();
+
 	ev->accept ();
 }
 
