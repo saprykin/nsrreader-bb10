@@ -89,16 +89,16 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 						       .layout(DockLayout::create());
 	Container *outerThirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							    .layout(StackLayout::create());
-	Label *columnInfo = Label::create (trUtf8 ("Use Column View to read documents with "
+	Label *columnInfo = Label::create (trUtf8 ("Use Text Reflow to read documents with "
 						   "large amount of text data."))
 				   .horizontal(HorizontalAlignment::Fill)
 				   .vertical(VerticalAlignment::Center);
 	columnInfo->textStyle()->setFontSize (FontSize::XSmall);
 	columnInfo->setMultiline (true);
 
-	thirdContainer->add (Label::create(trUtf8 ("Column View",
+	thirdContainer->add (Label::create(trUtf8 ("Text Reflow",
 						   "Option in preferences, "
-						   "reflows PDF in single column"))
+						   "reflows PDF in single text column"))
 				    .horizontal(HorizontalAlignment::Left)
 				    .vertical(VerticalAlignment::Center));
 	thirdContainer->add (_isTextMode);
