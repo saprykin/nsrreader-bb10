@@ -191,6 +191,7 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 
 	if (_core->getDocumentPaht () == files.first ()) {
 		_toast->setBody (trUtf8 ("Selected file is already opened."));
+		_toast->resetButton ();
 		_toast->show ();
 		return;
 	}
@@ -349,6 +350,7 @@ NSRReaderBB10::reloadSettings ()
 					 "Text reflow is a view mode of PDF/DjVu document when "
 					 "only text information without images is displayed with "
 					 "word wrap feature enabled."));
+		_toast->button()->setLabel ("OK");
 		_toast->show ();
 	}
 }
@@ -473,6 +475,7 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 				   "Please check this file on desktop computer.");
 
 	_toast->setBody (errorStr);
+	_toast->button()->setLabel ("OK");
 	_toast->show ();
 
 	_pageView->resetPage ();
