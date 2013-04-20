@@ -384,8 +384,12 @@ NSRReaderCore::loadPage (PageLoad				dir,
 		pageToLoad = _doc->getNumberOfPages ();
 
 	if (_cache->isPageExists (pageToLoad)) {
+		QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
+
 		_currentPage = _cache->getPage (pageToLoad);
 		emit pageRendered (pageToLoad);
+		emit needViewMode (suffix == "txt" ? NSRPageView::NSR_VIEW_MODE_TEXT
+						   : NSRPageView::NSR_VIEW_MODE_PREFERRED);
 		return;
 	}
 
