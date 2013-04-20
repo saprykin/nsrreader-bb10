@@ -335,6 +335,21 @@ NSRReaderBB10::reloadSettings ()
 
 	if (!_isFullscreen)
 		_page->setActionBarVisibility (ChromeVisibility::Visible);
+
+	/* Check whether we have noted user about text mode */
+	if (settings.isWordWrap () && !settings.isTextModeNoted ()) {
+		settings.saveTextModeNoted ();
+		SystemToast *toast = new SystemToast (this);
+		toast->setBody (trUtf8 ("You are using text reflow the first time. Note that "
+					"document formatting may be differ than in original one, "
+					"no images displayed and page can be empty if there is "
+					"no text in the document. Also text may not be displayed "
+					"properly if appropriate language is not supported by phone.",
+					"Text reflow is a view mode of PDF/DjVu document when "
+					"only text information without images is displayed with "
+					"word wrap feature enabled."));
+		toast->show ();
+	}
 }
 
 void
