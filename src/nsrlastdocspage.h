@@ -3,6 +3,7 @@
 
 #include <bb/cascades/Page>
 #include <bb/cascades/ListView>
+#include <bb/cascades/Label>
 #include <bb/cascades/GridListLayout>
 #include <bb/cascades/OrientationSupport>
 
@@ -25,6 +26,7 @@ private:
 
 	bb::cascades::ListView		*_listView;
 	bb::cascades::GridListLayout	*_listLayout;
+	bb::cascades::Label		*_emptyLabel;
 };
 
 #endif /* NSRLASTDOCSPAGE_H_ */

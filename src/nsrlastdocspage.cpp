@@ -37,7 +37,14 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	_listLayout->setCellAspectRatio (0.8);
 	_listView->setLayout (_listLayout);
 
+	_emptyLabel = Label::create().horizontal(HorizontalAlignment::Center)
+				     .vertical(VerticalAlignment::Center)
+				     .text(trUtf8 ("No recent documents",
+						   "List of recently used files is empty"))
+				     .visible(false);
+
 	rootContainer->add (_listView);
+	rootContainer->add (_emptyLabel);
 	rootContainer->setBackground(Color::Black);
 	rootContainer->setTopPadding (20);
 	rootContainer->setBottomPadding (20);
@@ -98,6 +105,11 @@ NSRLastDocsPage::loadData ()
 	}
 
 	_listView->setDataModel (model);
+
+	if (count == 0) {
+		_listView->setVisible (false);
+		_emptyLabel->setVisible (true);
+	}
 }
 
 
