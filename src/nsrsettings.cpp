@@ -237,7 +237,7 @@ void NSRSettings::readSession (const QString &name, NSRSession &session)
 	session.setFile(value("file", "").toString());
 	session.setPage(value("page", 0).toInt());
 	session.setZoomText(value("zoom-text", 90).toInt());
-	session.setZoomGraphic(value("zoom-graphic", 100).toInt());
+	session.setZoomGraphic(value("zoom-graphic", 100.0).toDouble());
 	session.setFitToWidth(value("fit-to-width", false).toBool());
 	session.setPosition(value("position", QPoint (0, 0)).toPoint());
 	session.setRotation(value("angle", 0).toDouble());

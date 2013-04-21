@@ -51,7 +51,7 @@ private Q_SLOTS:
     void onViewModeRequested (NSRPageView::NSRViewMode mode);
     void onPopTransitionEnded (bb::cascades::Page *page);
     void onLastDocumentRequested (const QString& path);
-    void onZoomChanged (int zoom, bool toWidth);
+    void onZoomChanged (double zoom, bool toWidth);
     void onManualExit ();
     void onPrevPageRequested ();
     void onNextPageRequested ();

@@ -80,7 +80,7 @@ void NSRTIFFDocument::renderPage(int page)
 
 	if (isZoomToWidth()) {
 		double wZoom = ((double) getScreenWidth() / (double) w * 100.0);
-		setZoomSilent((int) wZoom);
+		setZoomSilent(wZoom);
 	}
 
 	if (getZoom() > getMaxZoom())
@@ -133,7 +133,7 @@ void NSRTIFFDocument::renderPage(int page)
 	}
 }
 
-int NSRTIFFDocument::getMaxZoom()
+double NSRTIFFDocument::getMaxZoom()
 {
 	if (_tiff == NULL)
 		return 0;
@@ -144,10 +144,10 @@ int NSRTIFFDocument::getMaxZoom()
 	/* Each pixel needs 4 bytes (RGBA) of memory */
 	double pageSize = _cachedPageSize.width() * _cachedPageSize.height() * 4;
 
-	return (int) (sqrt (NSR_DOCUMENT_MAX_HEAP / pageSize - 1) * 100 + 0.5);
+	return (sqrt (NSR_DOCUMENT_MAX_HEAP / pageSize - 1) * 100 + 0.5);
 }
 
-int NSRTIFFDocument::getMinZoom()
+double NSRTIFFDocument::getMinZoom()
 {
 	if (_cachedPageSize == QSize (0, 0))
 		return 25;

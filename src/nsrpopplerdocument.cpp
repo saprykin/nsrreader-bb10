@@ -21,8 +21,8 @@ NSRPopplerDocument::NSRPopplerDocument(const QString& file, QObject *parent) :
 	_dpiy (72),
 	_readyForLoad (false),
 	_cachedPageSize (QSize (0, 0)),
-	_cachedMinZoom (25),
-	_cachedMaxZoom (100)
+	_cachedMinZoom (25.0),
+	_cachedMaxZoom (100.0)
 {
 	mutex.lock();
 	if (_refcount == 0)
@@ -99,7 +99,7 @@ void NSRPopplerDocument::renderPage(int page)
 
 	if (isZoomToWidth()) {
 		double wZoom = ((double) getScreenWidth() / (double) _page->getCropWidth() * 100.0);
-		setZoomSilent((int) wZoom);
+		setZoomSilent(wZoom);
 	}
 
 	if (getZoom() > getMaxZoom())
@@ -118,7 +118,7 @@ void NSRPopplerDocument::renderPage(int page)
 	_readyForLoad = true;
 }
 
-int NSRPopplerDocument::getMaxZoom()
+double NSRPopplerDocument::getMaxZoom()
 {
 	if (_page == NULL)
 		return 0;
@@ -128,13 +128,13 @@ int NSRPopplerDocument::getMaxZoom()
 
 	/* Each pixel needs 4 bytes (RGBA) of memory */
 	double pageSize = _page->getCropWidth() * _page->getCropHeight() * 4;
-	_cachedMaxZoom = (int) (sqrt (NSR_DOCUMENT_MAX_HEAP * 72 * 72 / pageSize ) / 72 * 100 + 0.5);
+	_cachedMaxZoom = (sqrt (NSR_DOCUMENT_MAX_HEAP * 72 * 72 / pageSize ) / 72 * 100 + 0.5);
 	_cachedPageSize = QSize (_page->getCropWidth(), _page->getCropHeight());
 
 	return _cachedMaxZoom;
 }
 
-int NSRPopplerDocument::getMinZoom()
+double NSRPopplerDocument::getMinZoom()
 {
 	if (_page == NULL)
 		return 0;

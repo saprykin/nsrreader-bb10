@@ -28,7 +28,7 @@ public:
 	Q_PROPERTY (bool isValid
 		    READ isValid
 		    CONSTANT)
-	Q_PROPERTY (int zoom
+	Q_PROPERTY (double zoom
 		    READ getZoom
 		    WRITE setZoom)
 	Q_PROPERTY (bool zoomToWidth
@@ -59,14 +59,11 @@ public:
 	virtual void renderPage (int page)		= 0;
 	virtual bb::ImageData getCurrentPage ()		= 0;
 	virtual bool isValid ()	const			= 0;
-	virtual int ZoomIn ();
-	virtual int ZoomOut ();
-	int getZoom () const {return _zoom;}
-	void setZoom (int zoom);
-        void setZoomSilent (int zoom) {_zoom = zoom;}
-	virtual int getMaxZoom ()			= 0;
-	virtual int getMinZoom ()			= 0;
-	virtual int getZoomStep () const;
+	double getZoom () const {return _zoom;}
+	void setZoom (double zoom);
+        void setZoomSilent (double zoom) {_zoom = zoom;}
+	virtual double getMaxZoom ()			= 0;
+	virtual double getMinZoom ()			= 0;
 	virtual void zoomToWidth (int screenWidth);
 	bool isZoomToWidth () const {return _zoomToWidth;}
 	int getScreenWidth () const {return _screenWidth;}
@@ -94,7 +91,7 @@ protected:
 private:
 	QString		_docPath;
 	QString		_password;
-	int		_zoom;
+	double		_zoom;
 	int		_screenWidth;
 	bool		_zoomToWidth;
 	bool		_textOnly;

@@ -22,10 +22,10 @@ NSRPageView::NSRPageView (Container *parent) :
 	_rootContainer (NULL),
 	_textContainer (NULL),
 	_viewMode (NSR_VIEW_MODE_GRAPHIC),
-	_currentZoom (0),
+	_currentZoom (0.0),
+	_minZoom (0.0),
+	_maxZoom (0.0),
 	_initialFontSize (100),
-	_minZoom (0),
-	_maxZoom (0),
 	_isInvertedColors (false),
 	_useDelayedScroll (false),
 	_isZooming (false),
@@ -173,7 +173,7 @@ NSRPageView::getSize () const
 }
 
 void
-NSRPageView::setZoomRange (int minZoom, int maxZoom)
+NSRPageView::setZoomRange (double minZoom, double maxZoom)
 {
 	if (minZoom < 0)
 		minZoom = 0;

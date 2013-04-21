@@ -39,10 +39,10 @@ public:
 	bool isPageRendering () const;
 	void setScreenWidth (int width);
 	bool isFitToWidth () const;
-	int getZoom () const;
-	int getMinZoom () const;
-	int getMaxZoom () const;
-	void setZoom (int zoom, bool toWidth);
+	double getZoom () const;
+	double getMinZoom () const;
+	double getMaxZoom () const;
+	void setZoom (double zoom, bool toWidth);
 
 Q_SIGNALS:
 	void pageRendered (int number);

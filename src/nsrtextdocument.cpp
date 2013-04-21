@@ -100,12 +100,12 @@ bool NSRTextDocument::isValid () const
 	return info.exists();
 }
 
-int NSRTextDocument::getMaxZoom ()
+double NSRTextDocument::getMaxZoom ()
 {
 	return NSR_TEXT_MAX_ZOOM;
 }
 
-int NSRTextDocument::getMinZoom ()
+double NSRTextDocument::getMinZoom ()
 {
 	return NSR_TEXT_MAX_ZOOM;
 }

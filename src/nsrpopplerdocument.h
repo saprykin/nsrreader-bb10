@@ -23,8 +23,8 @@ public:
 	void renderPage(int page);
 	bb::ImageData getCurrentPage ();
 	bool isValid() const;
-	int getMaxZoom();
-	int getMinZoom();
+	double getMaxZoom();
+	double getMinZoom();
 	QString getText();
 	void setPassword(const QString &passwd);
 
@@ -40,8 +40,8 @@ private:
 	int		_dpiy;
 	bool		_readyForLoad;
 	QSize		_cachedPageSize;
-	int		_cachedMinZoom;
-	int		_cachedMaxZoom;
+	double		_cachedMinZoom;
+	double		_cachedMaxZoom;
 	QString		_text;
 };
 

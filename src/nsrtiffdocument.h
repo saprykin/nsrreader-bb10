@@ -14,8 +14,8 @@ public:
 	void renderPage(int page);
 	bb::ImageData getCurrentPage ();
 	bool isValid() const;
-	int getMaxZoom();
-	int getMinZoom();
+	double getMaxZoom();
+	double getMinZoom();
 
 private:
 	TIFF			*_tiff;

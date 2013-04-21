@@ -175,8 +175,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	else
 		updateVisualControls ();
 
-	connect (_pageView, SIGNAL (zoomChanged (int, bool)),
-		 this, SLOT (onZoomChanged (int, bool)));
+	connect (_pageView, SIGNAL (zoomChanged (double, bool)),
+		 this, SLOT (onZoomChanged (double, bool)));
 
 	Application::instance()->setAutoExit (false);
 	connect (Application::instance (), SIGNAL (manualExit ()),
@@ -558,7 +558,7 @@ NSRReaderBB10::onLastDocumentRequested (const QString& path)
 }
 
 void
-NSRReaderBB10::onZoomChanged (int zoom, bool toWidth)
+NSRReaderBB10::onZoomChanged (double zoom, bool toWidth)
 {
 	if (toWidth)
 		_core->setScreenWidth (_pageView->getSize().width ());

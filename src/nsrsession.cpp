@@ -2,13 +2,13 @@
 
 NSRSession::NSRSession () :
 	_file (QString()),
+	_pos (QPoint (0, 0)),
+	_zoomGraphic (100.0),
+	_angle (0.0),
 	_page (0),
 	_zoomText (100),
-	_zoomGraphic (100),
 	_zoomScreenWidth (720),
-	_isFitToWidth (false),
-	_pos (QPoint (0, 0)),
-	_angle (0)
+	_isFitToWidth (false)
 {
 
 }
@@ -16,16 +16,16 @@ NSRSession::NSRSession () :
 NSRSession::NSRSession (const QString& file,
 			int page,
 			int zoomText,
-			int zoomGraphic,
+			double zoomGraphic,
 			bool isFitToWidth,
 			const QPoint& pos,
 			double angle) :
 	_file (file),
+	_pos (pos),
+	_zoomGraphic (zoomGraphic),
+	_angle (angle),
 	_page (page),
 	_zoomText (zoomText),
-	_zoomGraphic (zoomGraphic),
-	_isFitToWidth (isFitToWidth),
-	_pos (pos),
-	_angle (angle)
+	_isFitToWidth (isFitToWidth)
 {
 }

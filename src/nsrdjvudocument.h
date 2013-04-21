@@ -29,10 +29,10 @@ public:
 	void renderPage(int page);
 	bb::ImageData getCurrentPage ();
 	bool isValid() const;
-	int getMaxZoom();
-	int getMinZoom();
+	double getMaxZoom();
+	double getMinZoom();
 	QString getText();
-	void setZoom(int zoom);
+	void setZoom(double zoom);
 
 private:
 	void handleEvents (ddjvu_context_t* context, bool wait, NSRDjVuError *error);
@@ -47,8 +47,8 @@ private:
 	ddjvu_render_mode_t	_renderMode;
 	bool			_readyForLoad;
 	QSize			_cachedPageSize;
-	int			_cachedMinZoom;
-	int			_cachedMaxZoom;
+	double			_cachedMinZoom;
+	double			_cachedMaxZoom;
 	int			_cachedResolution;
 	int			_pageCount;
 	char			*_imgData;

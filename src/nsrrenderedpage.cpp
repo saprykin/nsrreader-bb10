@@ -3,8 +3,8 @@
 NSRRenderedPage::NSRRenderedPage (QObject *parent) :
 	QObject (parent),
 	_reason (NSR_RENDER_REASON_NONE),
-	_number (0),
-	_zoom (0)
+	_zoom (0),
+	_number (0)
 {
 }
 
@@ -20,8 +20,8 @@ NSRRenderedPage::NSRRenderedPage (const NSRRenderedPage& page) :
 {
 	_reason	= page._reason;
 	_image	= page._image;
-	_number	= page._number;
 	_zoom	= page._zoom;
+	_number	= page._number;
 	_text	= page._text;
 }
 
@@ -35,8 +35,8 @@ NSRRenderedPage::operator = (const NSRRenderedPage& page)
 	if (this != &page) {
 		_reason	= page._reason;
 		_image	= page._image;
-		_number	= page._number;
 		_zoom	= page._zoom;
+		_number	= page._number;
 		_text	= page._text;
 	}
 
@@ -55,7 +55,7 @@ NSRRenderedPage::getNumber () const
 	return _number;
 }
 
-int
+double
 NSRRenderedPage::getZoom () const
 {
 	return _zoom;
@@ -98,7 +98,7 @@ NSRRenderedPage::setNumber (int number)
 }
 
 void
-NSRRenderedPage::setZoom (int zoom)
+NSRRenderedPage::setZoom (double zoom)
 {
 	if (zoom < 0)
 		zoom = 0;

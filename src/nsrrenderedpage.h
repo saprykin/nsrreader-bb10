@@ -27,7 +27,7 @@ public:
 
 	NSRRenderedPage::NSRRenderReason getRenderReason () const;
 	int getNumber () const;
-	int getZoom () const;
+	double getZoom () const;
 	QSize getSize () const;
 	bb::ImageData getImage () const;
 	QString getText () const;
@@ -35,7 +35,7 @@ public:
 
 	void setRenderReason (NSRRenderedPage::NSRRenderReason reason);
 	void setNumber (int number);
-	void setZoom (int zoom);
+	void setZoom (double zoom);
 	void setImage (bb::ImageData img);
 	void setText (const QString &text);
 
@@ -43,8 +43,8 @@ private:
 	NSRRenderReason		_reason;
 	bb::ImageData		_image;
 	QString			_text;
+	double			_zoom;
 	int			_number;
-	int			_zoom;
 };
 
 #endif /* NSRRENDEREDPAGE_H_ */

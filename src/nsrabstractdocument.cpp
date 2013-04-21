@@ -2,12 +2,10 @@
 
 #include <QTextCodec>
 
-#define NSR_DOCUMENT_ZOOM_STEP	25
-
 NSRAbstractDocument::NSRAbstractDocument(const QString& file, QObject *parent) :
 	QObject (parent),
 	_docPath (file),
-	_zoom (100),
+	_zoom (100.0),
 	_screenWidth (360),
 	_zoomToWidth (false),
 	_textOnly (false),
@@ -21,48 +19,6 @@ NSRAbstractDocument::NSRAbstractDocument(const QString& file, QObject *parent) :
 NSRAbstractDocument::~NSRAbstractDocument()
 {
 
-}
-
-int NSRAbstractDocument::ZoomIn()
-{
-	if (!isValid())
-		return _zoom;
-
-	if (_zoom == getMaxZoom())
-		return _zoom;
-
-	if (_zoom % getZoomStep() != 0)
-		_zoom = ((_zoom / getZoomStep()) + 1) * getZoomStep();
-	else
-		_zoom += getZoomStep();
-
-	if (_zoom > getMaxZoom())
-		_zoom = getMaxZoom();
-
-	_zoomToWidth = false;
-
-	return _zoom;
-}
-
-int NSRAbstractDocument::ZoomOut()
-{
-	if (!isValid())
-		return _zoom;
-
-	if (_zoom == getMinZoom())
-		return _zoom;
-
-	if (_zoom % getZoomStep() != 0)
-		_zoom = (_zoom / getZoomStep()) * getZoomStep();
-	else
-		_zoom -= getZoomStep();
-
-	if (_zoom < getMinZoom())
-		_zoom = getMinZoom();
-
-	_zoomToWidth = false;
-
-	return _zoom;
 }
 
 void NSRAbstractDocument::zoomToWidth(int screenWidth)
@@ -104,7 +60,7 @@ void NSRAbstractDocument::setEncoding(const QString &enc)
 		_encoding = enc;
 }
 
-void NSRAbstractDocument::setZoom(int zoom)
+void NSRAbstractDocument::setZoom(double zoom)
 {
 	if (zoom > getMaxZoom())
 		zoom = getMaxZoom();
@@ -113,11 +69,6 @@ void NSRAbstractDocument::setZoom(int zoom)
 
 	_zoom = zoom;
 	_zoomToWidth = false;
-}
-
-int NSRAbstractDocument::getZoomStep() const
-{
-	return NSR_DOCUMENT_ZOOM_STEP;
 }
 
 QString NSRAbstractDocument::processText(const QString &text)

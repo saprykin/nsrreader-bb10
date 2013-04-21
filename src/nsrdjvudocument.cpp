@@ -80,8 +80,8 @@ NSRDjVuDocument::NSRDjVuDocument(const QString& file, QObject *parent) :
 	_renderMode (DDJVU_RENDER_COLOR),
 	_readyForLoad (false),
 	_cachedPageSize (QSize (0, 0)),
-	_cachedMinZoom (25),
-	_cachedMaxZoom (100),
+	_cachedMinZoom (25.0),
+	_cachedMaxZoom (100.0),
 	_cachedResolution (72),
 	_pageCount (0),
 	_imgData (NULL)
@@ -291,7 +291,7 @@ void NSRDjVuDocument::renderPage(int page)
 
 	if (isZoomToWidth()) {
 		double wZoom = ((double) getScreenWidth() / ((double) width * resFactor) * 100.0);
-		setZoomSilent((int) wZoom);
+		setZoomSilent(wZoom);
 	}
 
 	if (getZoom() > getMaxZoom())
@@ -331,7 +331,7 @@ void NSRDjVuDocument::renderPage(int page)
 	_readyForLoad = true;
 }
 
-int NSRDjVuDocument::getMaxZoom()
+double NSRDjVuDocument::getMaxZoom()
 {
 	if (_doc == NULL)
 		return 0;
@@ -342,15 +342,15 @@ int NSRDjVuDocument::getMaxZoom()
 	/* Each pixel needs 3 bytes (RGB) of memory */
 	double resFactor = 72.0 / _cachedResolution;
 	double pageSize = _cachedPageSize.width() * _cachedPageSize.height() * 3  * resFactor / 2;
-	_cachedMaxZoom = (int) (sqrt (NSR_DOCUMENT_MAX_HEAP * 72 * 72 / pageSize) / 72 * 100 + 0.5);
+	_cachedMaxZoom = (sqrt (NSR_DOCUMENT_MAX_HEAP * 72 * 72 / pageSize) / 72 * 100 + 0.5);
 
-	if (_cachedMaxZoom > 400)
-		_cachedMaxZoom = 400;
+	if (_cachedMaxZoom > 400.0)
+		_cachedMaxZoom = 400.0;
 
 	return _cachedMaxZoom;
 }
 
-int NSRDjVuDocument::getMinZoom()
+double NSRDjVuDocument::getMinZoom()
 {
 	if (_cachedPageSize == QSize (0, 0))
 		return 25;
@@ -496,7 +496,7 @@ QSize NSRDjVuDocument::getPageSize(int page)
 	return QSize (info.width * 72 / _cachedResolution, info.height * 72 / _cachedResolution);
 }
 
-void NSRDjVuDocument::setZoom(int zoom)
+void NSRDjVuDocument::setZoom(double zoom)
 {
 	NSRAbstractDocument::setZoom(zoom);
 	NSRAbstractDocument::setZoomSilent(zoom / 72 * _cachedResolution);

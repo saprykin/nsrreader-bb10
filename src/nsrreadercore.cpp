@@ -246,7 +246,7 @@ NSRReaderCore::isFitToWidth () const
 	return _doc->isZoomToWidth ();
 }
 
-int
+double
 NSRReaderCore::getZoom () const
 {
 	if (_doc == NULL || !_doc->isValid ())
@@ -255,7 +255,7 @@ NSRReaderCore::getZoom () const
 	return _doc->getZoom ();
 }
 
-int
+double
 NSRReaderCore::getMinZoom () const
 {
 	if (_doc == NULL || !_doc->isValid ())
@@ -264,7 +264,7 @@ NSRReaderCore::getMinZoom () const
 	return _doc->getMinZoom ();
 }
 
-int
+double
 NSRReaderCore::getMaxZoom () const
 {
 	if (_doc == NULL || !_doc->isValid ())
@@ -274,7 +274,7 @@ NSRReaderCore::getMaxZoom () const
 }
 
 void
-NSRReaderCore::setZoom (int zoom, bool toWidth)
+NSRReaderCore::setZoom (double zoom, bool toWidth)
 {
 	if (zoom <= 0)
 		return;

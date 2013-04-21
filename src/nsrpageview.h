@@ -39,7 +39,7 @@ public:
 	bool isInvertedColors () const;
 	void setInvertedColors (bool inv);
 	QSize getSize () const;
-	void setZoomRange (int minZoom, int maxZoom);
+	void setZoomRange (double minZoom, double maxZoom);
 	void fitToWidth ();
 	int getTextZoom () const;
 	void setTextZoom (int fontSize);
@@ -48,7 +48,7 @@ public:
 
 Q_SIGNALS:
 	void viewTapped ();
-	void zoomChanged (int zoom, bool toWidth);
+	void zoomChanged (double zoom, bool toWidth);
 	void nextPageRequested ();
 	void prevPageRequested ();
 	void fitToWidthRequested ();
@@ -72,10 +72,10 @@ private:
 	QSize				_size;
 	QSize				_initialScaleSize;
 	QPointF				_delayedScrollPos;
-	int				_currentZoom;
+	double				_currentZoom;
+	double				_minZoom;
+	double				_maxZoom;
 	int				_initialFontSize;
-	int				_minZoom;
-	int				_maxZoom;
 	bool				_isInvertedColors;
 	bool				_useDelayedScroll;
 	bool				_isZooming;
