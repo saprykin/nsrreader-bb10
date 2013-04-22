@@ -300,6 +300,34 @@ NSRReaderCore::setZoom (double zoom, bool toWidth)
 }
 
 void
+NSRReaderCore::zoomIn ()
+{
+	if (_doc == NULL || !_doc->isValid ())
+		return;
+
+	double newZoom = _doc->getZoom () + 25.0;
+
+	if (newZoom > _doc->getMaxZoom ())
+		newZoom = _doc->getMaxZoom ();
+
+	setZoom (newZoom, false);
+}
+
+void
+NSRReaderCore::zoomOut ()
+{
+	if (_doc == NULL || !_doc->isValid ())
+			return;
+
+	double newZoom = _doc->getZoom () - 25.0;
+
+	if (newZoom < _doc->getMinZoom ())
+		newZoom = _doc->getMinZoom ();
+
+	setZoom (newZoom, false);
+}
+
+void
 NSRReaderCore::onRenderDone ()
 {
 	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();

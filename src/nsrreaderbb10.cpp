@@ -16,6 +16,7 @@
 #include <bb/cascades/LocaleHandler>
 #include <bb/cascades/Label>
 #include <bb/cascades/Menu>
+#include <bb/cascades/SystemShortcut>
 
 #include <bb/system/SystemToast>
 #include <bb/system/LocaleHandler>
@@ -117,6 +118,19 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_gotoAction->setImageSource (QUrl ("asset:///goto.png"));
 	_recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
 	_fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
+
+	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
+	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
+	SystemShortcut *zoomInShortcut = SystemShortcut::create (SystemShortcuts::ZoomIn);
+	SystemShortcut *zoomOutShortcut = SystemShortcut::create (SystemShortcuts::ZoomOut);
+
+	connect (prevShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
+	connect (nextShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
+	connect (zoomInShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
+	connect (zoomOutShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
+
+	_prevPageAction->addShortcut (prevShortcut);
+	_nextPageAction->addShortcut (nextShortcut);
 
 	connect (_openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
 	connect (_prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
@@ -399,6 +413,30 @@ NSRReaderBB10::saveSession ()
 }
 
 void
+NSRReaderBB10::zoomIn ()
+{
+	if (!_core->isDocumentOpened () || _indicator->isVisible ())
+		return;
+
+	if (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_GRAPHIC)
+		_core->zoomIn ();
+	else
+		_pageView->setTextZoom (_pageView->getTextZoom () + 10);
+}
+
+void
+NSRReaderBB10::zoomOut ()
+{
+	if (!_core->isDocumentOpened () || _indicator->isVisible ())
+		return;
+
+	if (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_GRAPHIC)
+		_core->zoomOut ();
+	else
+		_pageView->setTextZoom (_pageView->getTextZoom () - 10);
+}
+
+void
 NSRReaderBB10::onIndicatorRequested (bool enabled)
 {
 	disableVisualControls ();
@@ -592,4 +630,29 @@ NSRReaderBB10::onFitToWidthRequested ()
 {
 	if (_fitToWidthAction->isEnabled ())
 		onFitToWidthTriggered ();
+}
+
+void
+NSRReaderBB10::onSystemShortcutTriggered ()
+{
+	SystemShortcut *shortcut = static_cast<SystemShortcut *> (sender ());
+
+	switch (shortcut->type ()) {
+	case SystemShortcuts::PreviousSection:
+		if (_prevPageAction->isEnabled ())
+			onPrevPageActionTriggered ();
+		break;
+	case SystemShortcuts::NextSection:
+		if (_nextPageAction->isEnabled ())
+			onNextPageActionTriggered ();
+		break;
+	case SystemShortcuts::ZoomIn:
+		zoomIn ();
+		break;
+	case SystemShortcuts::ZoomOut:
+		zoomOut ();
+		break;
+	default:
+		break;
+	}
 }

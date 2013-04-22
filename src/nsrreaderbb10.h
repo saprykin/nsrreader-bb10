@@ -56,6 +56,7 @@ private Q_SLOTS:
     void onPrevPageRequested ();
     void onNextPageRequested ();
     void onFitToWidthRequested ();
+    void onSystemShortcutTriggered ();
 
 private:
     void updateVisualControls ();
@@ -63,6 +64,8 @@ private:
     void reloadSettings ();
     void loadSession ();
     void saveSession ();
+    void zoomIn ();
+    void zoomOut ();
 
     NSRReaderCore			*_core;
     NSRPageView				*_pageView;

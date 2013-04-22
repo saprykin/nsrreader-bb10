@@ -43,6 +43,8 @@ public:
 	double getMinZoom () const;
 	double getMaxZoom () const;
 	void setZoom (double zoom, bool toWidth);
+	void zoomIn ();
+	void zoomOut ();
 
 Q_SIGNALS:
 	void pageRendered (int number);
