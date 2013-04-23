@@ -518,7 +518,8 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 	QString errorStr;
 
 	if (error == NSRAbstractDocument::NSR_DOCUMENT_ERROR_PASSWD)
-		errorStr = trUtf8 ("Seems that entered password is wrong.\n"
+		errorStr = trUtf8 ("Seems that entered password is wrong or "
+				   "encryption algorithm is not supported.\n"
 				   "Please do not blame hard NSR Reader for "
 				   "that because it is only a piece of "
 				   "software :)");
