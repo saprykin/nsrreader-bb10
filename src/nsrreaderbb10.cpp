@@ -34,6 +34,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_pageView (NULL),
 	_pageStatus (NULL),
 	_readProgress (NULL),
+	_welcomeView (NULL),
 	_naviPane (NULL),
 	_page (NULL),
 	_filePicker (NULL),
@@ -76,11 +77,17 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	connect (_pageView, SIGNAL (viewTapped ()), this, SLOT (onPageTapped ()));
 
+	_welcomeView = new NSRWelcomeView ();
+
+	connect (_welcomeView, SIGNAL (openDocumentRequested ()), this, SLOT (onOpenActionTriggered ()));
+	connect (_welcomeView, SIGNAL (recentDocumentsRequested ()), this, SLOT (onRecentDocsTriggered ()));
+
 	rootContainer->add (_pageView);
+	rootContainer->add (_welcomeView);
 	rootContainer->add (_indicator);
 	rootContainer->add (_pageStatus);
 	rootContainer->setBackground (Color::Black);
-	rootContainer->setLayoutProperties (StackLayoutProperties::create().spaceQuota(1.0));
+	rootContainer->setLayoutProperties (StackLayoutProperties::create().spaceQuota (1.0));
 
 	_readProgress = new NSRReadProgress ();
 
@@ -319,6 +326,8 @@ NSRReaderBB10::updateVisualControls ()
 	_recentDocsAction->setEnabled (true);
 	_fitToWidthAction->setEnabled (_core->isDocumentOpened () &&
 				       _pageView->getViewMode() == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+	_pageView->setVisible (_core->isDocumentOpened ());
+	_welcomeView->setVisible (!_core->isDocumentOpened ());
 
 	if (!_core->isDocumentOpened ()) {
 		_prevPageAction->setEnabled (false);

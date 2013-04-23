@@ -5,6 +5,7 @@
 #include "nsrreadercore.h"
 #include "nsrpagestatus.h"
 #include "nsrreadprogress.h"
+#include "nsrwelcomeview.h"
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/ImageView>
@@ -71,6 +72,7 @@ private:
     NSRPageView				*_pageView;
     NSRPageStatus			*_pageStatus;
     NSRReadProgress			*_readProgress;
+    NSRWelcomeView			*_welcomeView;
     bb::cascades::NavigationPane	*_naviPane;
     bb::cascades::Page			*_page;
     bb::cascades::pickers::FilePicker	*_filePicker;
