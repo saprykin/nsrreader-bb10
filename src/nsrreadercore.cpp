@@ -64,6 +64,7 @@ NSRReaderCore::openDocument (const QString &path)
 		emit errorWhileOpening (_doc->getLastError ());
 		delete _doc;
 		_doc = NULL;
+		return;
 	}
 
 	_thread->setRenderContext (_doc);
