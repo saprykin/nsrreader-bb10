@@ -60,8 +60,10 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_pageView = new NSRPageView ();
 	_pageView->setHorizontalAlignment (HorizontalAlignment::Fill);
 	_pageView->setVerticalAlignment (VerticalAlignment::Fill);
+	_pageView->setVisible (false);
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
-						.vertical(VerticalAlignment::Fill);
+						.vertical(VerticalAlignment::Fill)
+						.visible(false);
 
 	connect (_pageView, SIGNAL (prevPageRequested ()), this, SLOT (onPrevPageRequested ()));
 	connect (_pageView, SIGNAL (nextPageRequested ()), this, SLOT (onNextPageRequested ()));
