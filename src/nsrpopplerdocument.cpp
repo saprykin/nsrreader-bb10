@@ -180,14 +180,14 @@ bb::ImageData NSRPopplerDocument::getCurrentPage()
 
 		for (int j = 0; j < bw; ++j) {
 			if (isInvertedColors ()) {
-				addr[j * 4 + 0] = 255 - inAddr[j * 3 + 2];
+				addr[j * 4 + 0] = 255 - inAddr[j * 3 + 0];
 				addr[j * 4 + 1] = 255 - inAddr[j * 3 + 1];
-				addr[j * 4 + 2] = 255 - inAddr[j * 3 + 0];
+				addr[j * 4 + 2] = 255 - inAddr[j * 3 + 2];
 				addr[j * 4 + 3] = 255;
 			} else {
-				addr[j * 4 + 0] = inAddr[j * 3 + 2];
+				addr[j * 4 + 0] = inAddr[j * 3 + 0];
 				addr[j * 4 + 1] = inAddr[j * 3 + 1];
-				addr[j * 4 + 2] = inAddr[j * 3 + 0];
+				addr[j * 4 + 2] = inAddr[j * 3 + 2];
 				addr[j * 4 + 3] = 255;
 			}
 		}
