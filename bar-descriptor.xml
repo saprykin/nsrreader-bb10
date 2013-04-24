@@ -101,7 +101,6 @@
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
-    <asset path="assets/720x720/nsrreader-splash.png">nsrreader-splash.png</asset>
     <asset path="assets/nsrreader-splash-720x720.png">nsrreader-splash-720x720.png</asset>
     <asset path="assets/nsrreader-splash-768x1280.png">nsrreader-splash-768x1280.png</asset>
     <asset path="assets/nsrreader-splash-1280x768.png">nsrreader-splash-1280x768.png</asset>
