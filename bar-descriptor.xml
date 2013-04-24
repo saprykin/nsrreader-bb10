@@ -66,7 +66,9 @@
     <category>core.games</category>
     <splashScreens>
        <image/>
-       <image>nsrreader-splash.png</image>
+       <image>nsrreader-splash-720x720.png</image>
+       <image>nsrreader-splash-768x1280.png</image>
+       <image>nsrreader-splash-1280x768.png</image>
     </splashScreens>
     <name>NSR Reader</name>
     <configuration name="Device-Debug">
@@ -100,6 +102,9 @@
         <include name="*.qm"/>
     </asset>
     <asset path="assets/720x720/nsrreader-splash.png">nsrreader-splash.png</asset>
+    <asset path="assets/nsrreader-splash-720x720.png">nsrreader-splash-720x720.png</asset>
+    <asset path="assets/nsrreader-splash-768x1280.png">nsrreader-splash-768x1280.png</asset>
+    <asset path="assets/nsrreader-splash-1280x768.png">nsrreader-splash-1280x768.png</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
