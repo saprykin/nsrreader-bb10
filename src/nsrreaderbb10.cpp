@@ -23,10 +23,13 @@
 
 #include <bb/device/DisplayInfo>
 
+#include <bb/multimedia/MediaKeyWatcher>
+
 using namespace bb::system;
 using namespace bb::cascades;
 using namespace bb::cascades::pickers;
 using namespace bb::device;
+using namespace bb::multimedia;
 
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
@@ -180,6 +183,14 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 		 this, SLOT (onPopTransitionEnded (bb::cascades::Page *)));
 
 	Application::instance()->setScene (_naviPane);
+
+	MediaKeyWatcher *volumeUpWatcher = new MediaKeyWatcher (MediaKey::VolumeUp, this);
+	MediaKeyWatcher *volumeDownWatcher = new MediaKeyWatcher (MediaKey::VolumeDown, this);
+
+	connect (volumeUpWatcher, SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
+		 this, SLOT (onPrevPageRequested ()));
+	connect (volumeDownWatcher, SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
+		 this, SLOT (onNextPageRequested ()));
 
 	bb::cascades::LocaleHandler *localeHandler = new bb::cascades::LocaleHandler (this);
 	connect (localeHandler, SIGNAL (systemLanguageChanged ()),

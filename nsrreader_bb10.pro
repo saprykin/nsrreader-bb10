@@ -19,5 +19,6 @@ LIBS += -lbbsystem
 LIBS += -lbbutilityi18n
 LIBS += -lbbutility
 LIBS += -lbbdevice
+LIBS += -lbbmultimedia
 
 include(config.pri)
