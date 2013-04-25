@@ -58,6 +58,7 @@ private Q_SLOTS:
     void onNextPageRequested ();
     void onFitToWidthRequested ();
     void onSystemShortcutTriggered ();
+    void onStartGuideRequested ();
 
 private:
     void updateVisualControls ();

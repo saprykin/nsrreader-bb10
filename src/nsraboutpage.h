@@ -11,6 +11,12 @@ class NSRAboutPage : public bb::cascades::Page
 public:
 	NSRAboutPage (QObject *parent = 0);
 	virtual ~NSRAboutPage ();
+
+Q_SIGNALS:
+	void startGuideRequested ();
+
+private Q_SLOTS:
+	void onGuideButtonClicked ();
 };
 
 #endif /* NSRABOUTPAGE_H_ */

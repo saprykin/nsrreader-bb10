@@ -8,6 +8,7 @@
 #include <bb/cascades/Label>
 #include <bb/cascades/ImageView>
 #include <bb/cascades/ScrollView>
+#include <bb/cascades/Button>
 
 using namespace bb::cascades;
 
@@ -66,6 +67,21 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 	secondLine->setMaxHeight (1);
 	secondLine->setPreferredHeight (1);
 
+	Button *guideButton = Button::create().horizontal(HorizontalAlignment::Center)
+					      .vertical(VerticalAlignment::Center)
+					      .text(trUtf8 ("Quick Start Guide",
+							    "Manual for program usage"));
+	guideButton->setTopMargin (30);
+	guideButton->setBottomMargin (40);
+
+	connect (guideButton, SIGNAL (clicked ()), this, SLOT (onGuideButtonClicked ()));
+
+	Container *thirdLine = Container::create().horizontal(HorizontalAlignment::Fill)
+						  .vertical(VerticalAlignment::Fill)
+						  .background(Color::Gray);
+	thirdLine->setMaxHeight (1);
+	thirdLine->setPreferredHeight (1);
+
 	Container *twitterContainer = Container::create().horizontal(HorizontalAlignment::Center)
 							 .vertical(VerticalAlignment::Fill)
 							 .layout(StackLayout::create()
@@ -96,13 +112,16 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 				       .format(TextFormat::Html);
 	fbInfo->textStyle()->setFontSize (FontSize::XSmall);
 	fbInfo->content()->setFlags (TextContentFlag::ActiveText);
+	fbInfo->setLeftMargin (40);
 
 	fbContainer->setLeftPadding (40);
 	fbContainer->setRightPadding (40);
+	fbContainer->setBottomPadding (40);
 	fbContainer->add (fbImage);
 	fbContainer->add (fbInfo);
 
 	rootContainer->setTopPadding (40);
+	rootContainer->setBottomPadding (40);
 
 	rootContainer->add (logoView);
 	rootContainer->add (versionInfo);
@@ -112,6 +131,8 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 	rootContainer->add (secondLine);
 	rootContainer->add (twitterContainer);
 	rootContainer->add (fbContainer);
+	rootContainer->add (thirdLine);
+	rootContainer->add (guideButton);
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 						     .vertical(VerticalAlignment::Fill)
@@ -122,4 +143,11 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 NSRAboutPage::~NSRAboutPage ()
 {
 }
+
+void
+NSRAboutPage::onGuideButtonClicked ()
+{
+	emit startGuideRequested ();
+}
+
 

@@ -319,7 +319,10 @@ NSRReaderBB10::onFitToWidthTriggered ()
 void
 NSRReaderBB10::onHelpActionTriggered ()
 {
-	_naviPane->push (new NSRAboutPage ());
+	NSRAboutPage *aboutPage = new NSRAboutPage ();
+	connect (aboutPage, SIGNAL (startGuideRequested ()), this, SLOT (onStartGuideRequested ()));
+
+	_naviPane->push (aboutPage);
 }
 
 void
@@ -690,4 +693,11 @@ NSRReaderBB10::onSystemShortcutTriggered ()
 	default:
 		break;
 	}
+}
+
+void
+NSRReaderBB10::onStartGuideRequested ()
+{
+	_naviPane->pop ();
+	loadSession (QUrl::fromLocalFile (NSR_QUICK_GUIDE).path ());
 }
