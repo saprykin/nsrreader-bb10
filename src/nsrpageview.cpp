@@ -308,10 +308,11 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 		return;
 
 	double scale = event->pinchRatio ();
-	if (scale < 1.0)
-		scale = -(1 / scale);
 
 	if (_viewMode == NSR_VIEW_MODE_TEXT) {
+		if (scale < 1.0)
+			scale = -(1 / scale);
+
 		int newSize = (int) (_initialFontSize + scale * 10);
 		setTextZoom (newSize);
 	} else {
