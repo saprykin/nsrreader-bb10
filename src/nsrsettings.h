@@ -35,6 +35,8 @@ public:
 	void saveTextEncoding (const QString& textEnc);
 	QStringList getLastDocuments () const;
 	void addLastDocument (const QString& path);
+	bool isFirstStart () const {return _isFirstStart;}
+	void saveFirstStart ();
 
 	static QString getVersion ();
 	static QStringList getSupportedEncodings ();
@@ -51,6 +53,7 @@ private:
 	bool		_isTextModeNoted;
 	bool		_isInvertedColors;
 	bool		_isNewsShown;
+	bool		_isFirstStart;
 	QString		_lastOpenDir;
 	QString		_fontFamily;
 	QString		_textEncoding;

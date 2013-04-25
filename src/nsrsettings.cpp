@@ -35,6 +35,7 @@ NSRSettings::NSRSettings(QObject *parent) :
 	_fontFamily = value("font-family", "Sans Serif").toString();
 	_textEncoding = value("text-encoding", "UTF-8").toString();
 	_lastDocuments = value("last-documents", QStringList ()).toStringList();
+	_isFirstStart = value("first-start", true).toBool();
 
 	if (!QDir(_lastOpenDir).exists())
 		_lastOpenDir = defPath;
@@ -261,6 +262,17 @@ NSRSettings::addLastDocument (const QString& path)
 
 	beginGroup ("Global");
 	setValue ("last-documents", QVariant (_lastDocuments));
+	endGroup ();
+
+	sync ();
+}
+
+void NSRSettings::saveFirstStart ()
+{
+	_isFirstStart = false;
+
+	beginGroup ("Global");
+	setValue ("first-start", _isFirstStart);
 	endGroup ();
 
 	sync ();

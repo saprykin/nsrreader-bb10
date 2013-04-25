@@ -31,6 +31,8 @@ using namespace bb::cascades::pickers;
 using namespace bb::device;
 using namespace bb::multimedia;
 
+#define NSR_QUICK_GUIDE "app/native/assets/Welcome to NSR Reader.pdf"
+
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
 	_core (NULL),
@@ -202,12 +204,17 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 							: NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 	_isFullscreen = settings.isFullscreenMode ();
 
-	/* Load previously saved session */
-	if (QFile::exists (settings.getLastSession ().getFile ()) &&
-	    settings.isLoadLastDoc ())
-		loadSession ();
-	else
-		updateVisualControls ();
+	if (settings.isFirstStart ()) {
+		settings.saveFirstStart ();
+		loadSession (QUrl::fromLocalFile (NSR_QUICK_GUIDE).path ());
+	} else {
+		/* Load previously saved session */
+		if (QFile::exists (settings.getLastSession ().getFile ()) &&
+				settings.isLoadLastDoc ())
+			loadSession ();
+		else
+			updateVisualControls ();
+	}
 
 	connect (_pageView, SIGNAL (zoomChanged (double, bool)),
 		 this, SLOT (onZoomChanged (double, bool)));
@@ -396,10 +403,15 @@ NSRReaderBB10::reloadSettings ()
 }
 
 void
-NSRReaderBB10::loadSession ()
+NSRReaderBB10::loadSession (const QString& path)
 {
-	NSRSession	session = NSRSettings().getLastSession ();
+	NSRSession	session;
 	int		width = _pageView->getSize().width ();
+
+	if (path.isEmpty ())
+		session = NSRSettings().getLastSession ();
+	else
+		session = NSRSettings().getSessionForFile (path);
 
 	if (width <= 0) {
 		QSize displaySize = DisplayInfo().pixelSize ();

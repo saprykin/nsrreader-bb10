@@ -63,7 +63,7 @@ private:
     void updateVisualControls ();
     void disableVisualControls ();
     void reloadSettings ();
-    void loadSession ();
+    void loadSession (const QString& path = "");
     void saveSession ();
     void zoomIn ();
     void zoomOut ();
