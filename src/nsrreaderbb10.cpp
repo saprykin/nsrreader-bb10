@@ -118,7 +118,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
 	_fitToWidthAction = ActionItem::create().enabled (false);
 	_fitToWidthAction->setTitle (trUtf8 ("Fit to Width", "Fit document to screen width"));
-	_helpAction = HelpActionItem::create().title(trUtf8 ("About", "About a program, window title"));
+	_helpAction = ActionItem::create().title(trUtf8 ("About", "About a program, window title"));
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
@@ -132,6 +132,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_gotoAction->setImageSource (QUrl ("asset:///goto.png"));
 	_recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
 	_fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
+	_helpAction->setImageSource (QUrl ("asset:///about.png"));
 
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
@@ -157,7 +158,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	Menu *menu = new Menu ();
 	menu->setSettingsAction (_prefsAction);
-	menu->setHelpAction (_helpAction);
+	menu->addAction (_helpAction);
 	Application::instance()->setMenu (menu);
 
 	_filePicker = new FilePicker (this);

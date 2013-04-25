@@ -14,7 +14,6 @@
 #include <bb/cascades/Page>
 #include <bb/cascades/NavigationPane>
 #include <bb/cascades/SettingsActionItem>
-#include <bb/cascades/HelpActionItem>
 
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
@@ -84,7 +83,7 @@ private:
     bb::cascades::SettingsActionItem	*_prefsAction;
     bb::cascades::ActionItem		*_recentDocsAction;
     bb::cascades::ActionItem		*_fitToWidthAction;
-    bb::cascades::HelpActionItem	*_helpAction;
+    bb::cascades::ActionItem		*_helpAction;
     bb::cascades::ActivityIndicator	*_indicator;
     bb::system::SystemPrompt		*_prompt;
     bb::system::SystemToast		*_toast;
