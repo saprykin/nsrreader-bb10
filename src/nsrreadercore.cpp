@@ -477,7 +477,7 @@ NSRReaderCore::documentByPath (const QString& path)
 
 	if (suffix == "pdf")
 		res = new NSRPopplerDocument (path);
-	else if (suffix == "djvu")
+	else if (suffix == "djvu" || suffix == "djv")
 		res = new NSRDjVuDocument (path);
 	else if (suffix == "tiff" || suffix == "tif")
 		res = new NSRTIFFDocument (path);

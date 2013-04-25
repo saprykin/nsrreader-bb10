@@ -162,7 +162,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_filePicker->setTitle (trUtf8 ("Select File", "Open file window"));
 	_filePicker->setMode (FilePickerMode::Picker);
 	_filePicker->setType (FileType::Other);
-	_filePicker->setFilter (QStringList ("*.pdf") << "*.djvu" <<
+	_filePicker->setFilter (QStringList ("*.pdf") << "*.djvu" << "*.djv" <<
 					     "*.tiff" << "*.tif" << "*.txt");
 
 	_core = new NSRReaderCore (this);
