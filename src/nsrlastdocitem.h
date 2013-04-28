@@ -19,12 +19,14 @@ public:
 
 	void updateItem (const QString& title,
 			 const QString&	imgPath,
-			 const QString&	text);
+			 const QString&	text,
+			 const QString& path);
 
 	/* ListItemListener iface */
 	void select (bool select);
 	void reset (bool selected, bool activated);
 	void activate (bool activate);
+	QString getDocumentPath () const;
 
 private Q_SLOTS:
 	void onImageStateChanged (bb::cascades::ResourceState::Type state);
@@ -35,6 +37,7 @@ private:
 	bb::cascades::Label		*_label;
 	bb::cascades::Container		*_viewContainer;
 	bb::cascades::ImageTracker	*_imgTracker;
+	QString				_path;
 };
 
 #endif /* NSRLASTDOCITEM_H_ */

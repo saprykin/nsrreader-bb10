@@ -76,9 +76,11 @@ NSRLastDocItem::~NSRLastDocItem ()
 void
 NSRLastDocItem::updateItem (const QString&	title,
 			    const QString&	imgPath,
-			    const QString&	text)
+			    const QString&	text,
+			    const QString&	path)
 {
 	_label->setText (title);
+	_path = path;
 
 	if (QFile::exists (imgPath)) {
 		_textView->setVisible (false);
@@ -119,6 +121,12 @@ NSRLastDocItem::activate (bool activate)
 		rootContainer->setBackground (Color::fromRGBA (0.2, 0.2, 0.2, 1.0));
 		_textView->textStyle()->setColor (Color::Gray);
 	}
+}
+
+QString
+NSRLastDocItem::getDocumentPath () const
+{
+	return _path;
 }
 
 void
