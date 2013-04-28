@@ -34,6 +34,7 @@ public:
 	QString getTextEncoding () const {return _textEncoding;}
 	void saveTextEncoding (const QString& textEnc);
 	QStringList getLastDocuments () const;
+	void removeLastDocument (const QString& path);
 	void addLastDocument (const QString& path);
 	bool isFirstStart () const {return _isFirstStart;}
 	void saveFirstStart ();

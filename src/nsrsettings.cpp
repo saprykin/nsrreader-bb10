@@ -253,11 +253,21 @@ NSRSettings::getLastDocuments () const
 }
 
 void
+NSRSettings::removeLastDocument (const QString& path)
+{
+	_lastDocuments.removeAll (path);
+
+	beginGroup ("Global");
+	setValue ("last-documents", QVariant (_lastDocuments));
+	endGroup ();
+
+	sync ();
+}
+
+void
 NSRSettings::addLastDocument (const QString& path)
 {
-	if (_lastDocuments.contains (path))
-		_lastDocuments.removeAll (path);
-
+	_lastDocuments.removeAll (path);
 	_lastDocuments.prepend (path);
 
 	beginGroup ("Global");
