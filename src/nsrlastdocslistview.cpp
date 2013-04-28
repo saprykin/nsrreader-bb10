@@ -4,10 +4,17 @@
 
 #include <bb/cascades/QListDataModel>
 
+#include <bb/system/InvokeManager>
+#include <bb/system/InvokeRequest>
+
+#include <QFileInfo>
+
 using namespace bb::cascades;
+using namespace bb::system;
 
 NSRLastDocsListView::NSRLastDocsListView (bb::cascades::Container *parent) :
-	ListView (parent)
+	ListView (parent),
+	_invokeTargetReply (NULL)
 {
 }
 
@@ -47,6 +54,32 @@ NSRLastDocsListView::onOpenActionTriggered ()
 void
 NSRLastDocsListView::onShareActionTriggered ()
 {
+	if (sender()->userData (0) == NULL)
+		return;
+
+	NSRLastDocItem	*item = (NSRLastDocItem *) (sender()->userData (0));
+	QString		extension = QFileInfo(item->getDocumentPath ()).suffix().toLower ();
+	QString		mimeType;
+	InvokeManager	invokeManager;
+	InvokeRequest	invokeRequest;
+
+	if (extension == "pdf")
+		mimeType = "application/pdf";
+	else if (extension == "djvu" || extension == "djv")
+		mimeType = "image/vnd.djvu";
+	else if (extension == "tiff" || extension == "tif")
+		mimeType = "image/tiff";
+	else
+		mimeType = "text/plain";
+
+	invokeRequest.setMimeType (mimeType);
+	invokeRequest.setUri (QUrl::fromLocalFile (item->getDocumentPath ()));
+	invokeRequest.setAction ("bb.action.SHARE");
+
+	_invokeTargetReply = invokeManager.invoke (invokeRequest);
+
+	if (_invokeTargetReply != NULL) {
+		_invokeTargetReply->setParent (this);
+		connect (_invokeTargetReply, SIGNAL (finished ()), _invokeTargetReply, SLOT (deleteLater ()));
+	}
 }
-
-

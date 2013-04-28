@@ -4,6 +4,8 @@
 #include <bb/cascades/ListView>
 #include <bb/cascades/Container>
 
+#include <bb/system/InvokeTargetReply>
+
 #include <QObject>
 
 class NSRLastDocsListView : public bb::cascades::ListView
@@ -20,6 +22,9 @@ public Q_SLOTS:
 	void onRemoveActionTriggered ();
 	void onOpenActionTriggered ();
 	void onShareActionTriggered ();
+
+private:
+	bb::system::InvokeTargetReply	*_invokeTargetReply;
 };
 
 #endif /* NSRLASTDOCSLISTVIEW_H_ */
