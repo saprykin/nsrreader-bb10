@@ -21,11 +21,12 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create ());
 
-	_listView = ListView::create().horizontal(HorizontalAlignment::Fill)
-				      .vertical(VerticalAlignment::Fill)
-				      .listItemProvider(new NSRLastDocItemFactory ());
+	_listView = new NSRLastDocsListView ();
+	_listView->setVerticalAlignment (VerticalAlignment::Fill);
+	_listView->setHorizontalAlignment (HorizontalAlignment::Fill);
+	_listView->setListItemProvider (new NSRLastDocItemFactory ());
 
-	_listLayout = GridListLayout::create();
+	_listLayout = GridListLayout::create ();
 
 	if (OrientationSupport::instance()->orientation () == UIOrientation::Portrait)
 		_listLayout->setColumnCount (2);
@@ -62,6 +63,8 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 		 SLOT (onOrientationAboutToChange (bb::cascades::UIOrientation::Type)));
 	connect (_listView, SIGNAL (triggered (QVariantList)),
 		 this, SLOT (onListItemTriggered (QVariantList)));
+	connect (_listView, SIGNAL (documentRequested (QString)),
+		 this, SIGNAL (requestDocument (QString)));
 }
 
 NSRLastDocsPage::~NSRLastDocsPage ()

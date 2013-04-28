@@ -2,10 +2,11 @@
 #define NSRLASTDOCSPAGE_H_
 
 #include <bb/cascades/Page>
-#include <bb/cascades/ListView>
 #include <bb/cascades/Label>
 #include <bb/cascades/GridListLayout>
 #include <bb/cascades/OrientationSupport>
+
+#include "nsrlastdocslistview.h"
 
 class NSRLastDocsPage : public bb::cascades::Page
 {
@@ -24,7 +25,7 @@ private Q_SLOTS:
 private:
 	void loadData ();
 
-	bb::cascades::ListView		*_listView;
+	NSRLastDocsListView		*_listView;
 	bb::cascades::GridListLayout	*_listLayout;
 	bb::cascades::Label		*_emptyLabel;
 };
