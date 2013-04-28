@@ -27,6 +27,7 @@ public:
 	void reset (bool selected, bool activated);
 	void activate (bool activate);
 	QString getDocumentPath () const;
+	QString getDocumentTitle () const;
 
 private Q_SLOTS:
 	void onImageStateChanged (bb::cascades::ResourceState::Type state);

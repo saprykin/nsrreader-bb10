@@ -129,6 +129,12 @@ NSRLastDocItem::getDocumentPath () const
 	return _path;
 }
 
+QString
+NSRLastDocItem::getDocumentTitle () const
+{
+	return _label->text ();
+}
+
 void
 NSRLastDocItem::onImageStateChanged (bb::cascades::ResourceState::Type state)
 {
