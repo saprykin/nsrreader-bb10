@@ -40,6 +40,7 @@ private Q_SLOTS:
     void onRecentDocsTriggered ();
     void onFitToWidthTriggered ();
     void onHelpActionTriggered ();
+    void onShareActionTriggered ();
     void onPageRendered (int number);
     void onIndicatorRequested (bool enabled);
     void onPasswordRequested ();
@@ -84,6 +85,7 @@ private:
     bb::cascades::ActionItem		*_recentDocsAction;
     bb::cascades::ActionItem		*_fitToWidthAction;
     bb::cascades::ActionItem		*_helpAction;
+    bb::cascades::ActionItem		*_shareAction;
     bb::cascades::ActivityIndicator	*_indicator;
     bb::system::SystemPrompt		*_prompt;
     bb::system::SystemToast		*_toast;

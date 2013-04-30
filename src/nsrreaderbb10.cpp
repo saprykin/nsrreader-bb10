@@ -4,6 +4,7 @@
 #include "nsrpreferencespage.h"
 #include "nsrlastdocspage.h"
 #include "nsraboutpage.h"
+#include "nsrfilesharer.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
@@ -51,6 +52,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_recentDocsAction (NULL),
 	_fitToWidthAction (NULL),
 	_helpAction (NULL),
+	_shareAction (NULL),
 	_indicator (NULL),
 	_prompt (NULL),
 	_toast (NULL),
@@ -118,13 +120,17 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
 	_fitToWidthAction = ActionItem::create().enabled (false);
 	_fitToWidthAction->setTitle (trUtf8 ("Fit to Width", "Fit document to screen width"));
-	_helpAction = ActionItem::create().title(trUtf8 ("About", "About a program, window title"));
+	_helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
+	_shareAction = ActionItem::create().enabled (false);
+	_shareAction->setTitle (trUtf8 ("Share", "Share document between users"));
+
 	_page->addAction (_openAction, ActionBarPlacement::OnBar);
 	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (_gotoAction, ActionBarPlacement::InOverflow);
 	_page->addAction (_recentDocsAction, ActionBarPlacement::InOverflow);
 	_page->addAction (_fitToWidthAction, ActionBarPlacement::InOverflow);
+	_page->addAction (_shareAction, ActionBarPlacement::InOverflow);
 
 	_openAction->setImageSource (QUrl ("asset:///open.png"));
 	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
@@ -133,6 +139,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
 	_fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
 	_helpAction->setImageSource (QUrl ("asset:///about.png"));
+	_shareAction->setImageSource (QUrl ("asset:///share.png"));
 
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
@@ -155,6 +162,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	connect (_recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
 	connect (_fitToWidthAction, SIGNAL (triggered ()), this, SLOT (onFitToWidthTriggered ()));
 	connect (_helpAction, SIGNAL (triggered ()), this, SLOT (onHelpActionTriggered ()));
+	connect (_shareAction, SIGNAL (triggered ()), this, SLOT (onShareActionTriggered ()));
 
 	Menu *menu = new Menu ();
 	menu->setSettingsAction (_prefsAction);
@@ -327,6 +335,15 @@ NSRReaderBB10::onHelpActionTriggered ()
 }
 
 void
+NSRReaderBB10::onShareActionTriggered ()
+{
+	if (!_core->isDocumentOpened ())
+		return;
+
+	NSRFileSharer::getInstance()->shareFile (_core->getDocumentPaht ());
+}
+
+void
 NSRReaderBB10::onPageRendered (int number)
 {
 	Q_UNUSED (number);
@@ -348,6 +365,7 @@ NSRReaderBB10::updateVisualControls ()
 	_recentDocsAction->setEnabled (true);
 	_fitToWidthAction->setEnabled (_core->isDocumentOpened () &&
 				       _pageView->getViewMode() == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+	_shareAction->setEnabled (_core->isDocumentOpened ());
 	_pageView->setVisible (_core->isDocumentOpened ());
 	_welcomeView->setVisible (!_core->isDocumentOpened ());
 
@@ -376,6 +394,7 @@ NSRReaderBB10::disableVisualControls ()
 	_prefsAction->setEnabled (false);
 	_recentDocsAction->setEnabled (false);
 	_fitToWidthAction->setEnabled (false);
+	_shareAction->setEnabled (false);
 }
 
 void
