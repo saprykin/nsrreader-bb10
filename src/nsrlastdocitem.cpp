@@ -34,7 +34,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 
 	_imageView = ImageView::create().horizontal(HorizontalAlignment::Fill)
 					.vertical(VerticalAlignment::Fill)
-					.scalingMethod(ScalingMethod::Fill);
+					.scalingMethod(ScalingMethod::AspectFill);
 	_textView = Label::create().horizontal(HorizontalAlignment::Fill)
 				   .vertical(VerticalAlignment::Fill)
 				   .visible(false);
@@ -138,8 +138,19 @@ NSRLastDocItem::getDocumentTitle () const
 void
 NSRLastDocItem::onImageStateChanged (bb::cascades::ResourceState::Type state)
 {
-	if (state == ResourceState::Loaded)
+	if (state == ResourceState::Loaded) {
 		_imageView->setImage (_imgTracker->image ());
+
+		if ((double) _imgTracker->height () / _imgTracker->width () < 1.2) {
+			_imageView->setScalingMethod (ScalingMethod::AspectFit);
+			_imageView->setVerticalAlignment (VerticalAlignment::Fill);
+			_imageView->setHorizontalAlignment (HorizontalAlignment::Fill);
+		} else {
+			_imageView->setScalingMethod (ScalingMethod::AspectFill);
+			_imageView->setVerticalAlignment (VerticalAlignment::Fill);
+			_imageView->setHorizontalAlignment (HorizontalAlignment::Fill);
+		}
+	}
 }
 
 
