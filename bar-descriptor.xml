@@ -26,7 +26,7 @@
 
     <!-- A universally unique application identifier. Must be unique across all BlackBerry Tablet OS applications.
          Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-    <id>com.example.nsrreader_bb10</id>
+    <id>com.gmail.nsrreader</id>
 
     <!-- The name that is displayed in the BlackBerry Tablet OS application installer. 
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
@@ -50,8 +50,8 @@
     <!-- <copyright></copyright> -->
 
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
-    <author>Example Inc.</author>
-    <description>PDF, DjVu, TIFF and TXT reader for BB10</description>
+    <author>Alexander Saprykin</author>
+    <description>Powerful PDF, DjVu, TIFF and TXT reader for BlackBerry 10. Has plenty of features like text reflow, pinch zooming, password protected documents support, sharing, inverted colors mode and more. Easy to use everywhere.</description>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
     <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
@@ -63,7 +63,6 @@
     </initialWindow>
     
     <!--  The category where the application appears. Either core.games or core.media. -->
-    <category>core.games</category>
     <splashScreens>
        <image/>
        <image>nsrreader-splash-720x720.png</image>
