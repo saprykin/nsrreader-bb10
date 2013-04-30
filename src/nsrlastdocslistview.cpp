@@ -1,20 +1,14 @@
 #include "nsrlastdocslistview.h"
 #include "nsrlastdocitem.h"
 #include "nsrsettings.h"
+#include "nsrfilesharer.h"
 
 #include <bb/cascades/QListDataModel>
 
-#include <bb/system/InvokeManager>
-#include <bb/system/InvokeRequest>
-
-#include <QFileInfo>
-
 using namespace bb::cascades;
-using namespace bb::system;
 
 NSRLastDocsListView::NSRLastDocsListView (bb::cascades::Container *parent) :
-	ListView (parent),
-	_invokeTargetReply (NULL)
+	ListView (parent)
 {
 }
 
@@ -29,7 +23,7 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 		return;
 
 	NSRLastDocItem		*item = (NSRLastDocItem *) (sender()->userData (0));
-	QVariantListDataModel	*model = static_cast<QVariantListDataModel *> (dataModel ());
+	QVariantListDataModel	*model = static_cast < QVariantListDataModel * > (dataModel ());
 
 	int count = model->size ();
 	for (int i = 0; i < count; ++i)
@@ -58,28 +52,5 @@ NSRLastDocsListView::onShareActionTriggered ()
 		return;
 
 	NSRLastDocItem	*item = (NSRLastDocItem *) (sender()->userData (0));
-	QString		extension = QFileInfo(item->getDocumentPath ()).suffix().toLower ();
-	QString		mimeType;
-	InvokeManager	invokeManager;
-	InvokeRequest	invokeRequest;
-
-	if (extension == "pdf")
-		mimeType = "application/pdf";
-	else if (extension == "djvu" || extension == "djv")
-		mimeType = "image/vnd.djvu";
-	else if (extension == "tiff" || extension == "tif")
-		mimeType = "image/tiff";
-	else
-		mimeType = "text/plain";
-
-	invokeRequest.setMimeType (mimeType);
-	invokeRequest.setUri (QUrl::fromLocalFile (item->getDocumentPath ()));
-	invokeRequest.setAction ("bb.action.SHARE");
-
-	_invokeTargetReply = invokeManager.invoke (invokeRequest);
-
-	if (_invokeTargetReply != NULL) {
-		_invokeTargetReply->setParent (this);
-		connect (_invokeTargetReply, SIGNAL (finished ()), _invokeTargetReply, SLOT (deleteLater ()));
-	}
+	NSRFileSharer::getInstance()->shareFile (item->getDocumentPath ());
 }
