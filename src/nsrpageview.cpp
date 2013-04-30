@@ -98,7 +98,9 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_isZooming)
 		return;
 
-	_textArea->setText (page.getText ());
+	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION)
+		_textArea->setText (page.getText ());
+
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
 	_currentZoom = page.getZoom ();
