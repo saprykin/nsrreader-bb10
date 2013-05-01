@@ -71,14 +71,17 @@ NSRPageView::NSRPageView (Container *parent) :
 				.onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
 	DoubleTapHandler *dtapHandler = DoubleTapHandler::create()
 				.onDoubleTapped (this, SLOT (onDoubleTappedGesture (bb::cascades::DoubleTapEvent*)));
+	DoubleTapHandler *dtaptHandler = DoubleTapHandler::create()
+				.onDoubleTapped (this, SLOT (onDoubleTappedGesture (bb::cascades::DoubleTapEvent*)));
 	PinchHandler *pinchHandler = PinchHandler::create().onPinch (this,
 						   SLOT (onPinchStarted (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchUpdated (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchEnded (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchCancelled ()));
-	this->addGestureHandler (dtapHandler);
 	this->addGestureHandler (tapHandler);
 	this->addGestureHandler (pinchHandler);
+	_imageView->addGestureHandler (dtapHandler);
+	_textArea->addGestureHandler (dtaptHandler);
 
 	setLayout (DockLayout::create ());
 	add (_scrollView);
