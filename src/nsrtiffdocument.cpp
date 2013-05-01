@@ -16,7 +16,7 @@ NSRTIFFDocument::NSRTIFFDocument(const QString& file, QObject *parent) :
 		++_pageCount;
 
 	if ((_pageCount > 0 && TIFFSetDirectory (_tiff, 0) != 0) || _pageCount == 0) {
-		uint32 w, h;
+		uint32 w = 0, h = 0;
 
 		TIFFGetField (_tiff, TIFFTAG_IMAGEWIDTH, &w);
 		TIFFGetField (_tiff, TIFFTAG_IMAGELENGTH, &h);
@@ -55,7 +55,7 @@ bool NSRTIFFDocument::isValid() const
 
 void NSRTIFFDocument::renderPage(int page)
 {
-	uint32	w, h;
+	uint32	w = 0, h = 0;
 	size_t	npixels;
 	char	*imgBuf;
 	QImage	*img;
