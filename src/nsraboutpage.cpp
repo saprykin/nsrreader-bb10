@@ -32,7 +32,7 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 
 	Label *authorInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Fill)
-					   .text(QString ("© 2013 Alexander Saprykin"));
+					   .text(QString ("© 2011-2013 Alexander Saprykin"));
 
 	Container *firstLine = Container::create().horizontal(HorizontalAlignment::Fill)
 						  .vertical(VerticalAlignment::Fill)
