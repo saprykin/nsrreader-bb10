@@ -180,25 +180,25 @@ bb::ImageData NSRTIFFDocument::getCurrentPage()
 	int rowBytes = _image.bytesPerLine ();
 	unsigned char *dataPtr = _image.bits ();
 
+	addr += (bh - 1) * stride;
 	for (int i = 0; i < bh; ++i) {
 		unsigned char *inAddr = (unsigned char *) (dataPtr + i * rowBytes);
 
 		for (int j = 0; j < bw; ++j) {
 			if (isInvertedColors ()) {
 				addr[j * 4 + 3] = 255;
-				addr[j * 4 + 2] = 255 - inAddr[j * 3 + 2];
-				addr[j * 4 + 1] = 255 - inAddr[j * 3 + 1];
-				addr[j * 4 + 0] = 255 - inAddr[j * 3 + 0];
+				addr[j * 4 + 2] = 255 - inAddr[j * 4 + 2];
+				addr[j * 4 + 1] = 255 - inAddr[j * 4 + 1];
+				addr[j * 4 + 0] = 255 - inAddr[j * 4 + 0];
 			} else {
 				addr[j * 4 + 3] = 255;
-				addr[j * 4 + 2] = inAddr[j * 3 + 2];
-				addr[j * 4 + 1] = inAddr[j * 3 + 1];
-				addr[j * 4 + 0] = inAddr[j * 3 + 0];
+				addr[j * 4 + 2] = inAddr[j * 4 + 2];
+				addr[j * 4 + 1] = inAddr[j * 4 + 1];
+				addr[j * 4 + 0] = inAddr[j * 4 + 0];
 			}
-
 		}
 
-		addr += stride;
+		addr -= stride;
 	}
 
 	return imgData;
