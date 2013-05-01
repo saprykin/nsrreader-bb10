@@ -42,6 +42,7 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 					   .vertical(VerticalAlignment::Center);
 	startLabel->textStyle()->setFontSize (FontSize::XLarge);
 	startLabel->textStyle()->setFontStyle (FontStyle::Italic);
+	startLabel->textStyle()->setColor (Color::White);
 	startLabel->setBottomMargin (60);
 
 	rootContainer->add (startLabel);
