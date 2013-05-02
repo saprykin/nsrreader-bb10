@@ -4,7 +4,7 @@
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/Color>
-#include <bb/cascades/LongPressHandler>
+#include <bb/cascades/TapHandler>
 #include <bb/cascades/DoubleTapHandler>
 #include <bb/cascades/LayoutUpdateHandler>
 #include <bb/cascades/PinchHandler>
@@ -23,9 +23,11 @@ NSRPageView::NSRPageView (Container *parent) :
 	_rootContainer (NULL),
 	_textContainer (NULL),
 	_viewMode (NSR_VIEW_MODE_GRAPHIC),
+	_lastTapTime (QTime::currentTime ()),
 	_currentZoom (0.0),
 	_minZoom (0.0),
 	_maxZoom (0.0),
+	_lastTapTimer (-1),
 	_initialFontSize (100),
 	_isInvertedColors (false),
 	_useDelayedScroll (false),
@@ -73,8 +75,8 @@ NSRPageView::NSRPageView (Container *parent) :
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
 							       SLOT (onLayoutFrameChanged (QRectF)));
 
-	LongPressHandler *tapHandler = LongPressHandler::create()
-				.onLongPressed (this, SLOT (onLongPressGesture (bb::cascades::LongPressEvent *)));
+	TapHandler *tapHandler = TapHandler::create()
+					.onTapped (this, SLOT (onTapGesture (bb::cascades::TapEvent *)));
 	DoubleTapHandler *dtapHandler = DoubleTapHandler::create()
 				.onDoubleTapped (this, SLOT (onDoubleTappedGesture (bb::cascades::DoubleTapEvent*)));
 	DoubleTapHandler *dtaptHandler = DoubleTapHandler::create()
@@ -84,10 +86,11 @@ NSRPageView::NSRPageView (Container *parent) :
 						   SLOT (onPinchUpdated (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchEnded (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchCancelled ()));
-	_imageView->addGestureHandler (dtapHandler);
-	_textArea->addGestureHandler (dtaptHandler);
+
 	this->addGestureHandler (tapHandler);
 	this->addGestureHandler (pinchHandler);
+	_imageView->addGestureHandler (dtapHandler);
+	_textArea->addGestureHandler (dtaptHandler);
 
 	setLayout (DockLayout::create ());
 	add (_scrollView);
@@ -267,16 +270,42 @@ NSRPageView::setScrollPositionOnLoad (const QPointF& pos)
 	_delayedScrollPos = pos;
 }
 
-void
-NSRPageView::onLongPressGesture (bb::cascades::LongPressEvent *ev)
+void NSRPageView::timerEvent (QTimerEvent* ev)
 {
-	emit viewTapped ();
+	killTimer (ev->timerId ());
+
+	if (_lastTapTimer != -1 && _lastTapTime.msecsTo (QTime::currentTime ()) > 640)
+		emit viewTapped ();
+
+	_lastTapTimer = -1;
+}
+
+void
+NSRPageView::onTapGesture (bb::cascades::TapEvent *ev)
+{
+	if (_lastTapTimer != -1) {
+		killTimer (_lastTapTimer);
+		_lastTapTimer = -1;
+	}
+
+	if (_lastTapTime.msecsTo (QTime::currentTime ()) > 650) {
+		_lastTapTime = QTime::currentTime ();
+		_lastTapTimer = startTimer (650);
+	}
+
 	ev->accept ();
 }
 
 void
 NSRPageView::onDoubleTappedGesture (bb::cascades::DoubleTapEvent* ev)
 {
+	_lastTapTime = QTime::currentTime ();
+
+	if (_lastTapTimer != -1) {
+		killTimer (_lastTapTimer);
+		_lastTapTimer = -1;
+	}
+
 	if (ev->x () < _size.width () / 3.0)
 		emit prevPageRequested ();
 	else if (ev->x () > _size.width () * 2 / 3)

@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QSizeF>
+#include <QTime>
+#include <QTimerEvent>
 
 #include "nsrrenderedpage.h"
 
@@ -11,7 +13,7 @@
 #include <bb/cascades/Image>
 #include <bb/cascades/ScrollView>
 #include <bb/cascades/TextArea>
-#include <bb/cascades/LongPressEvent>
+#include <bb/cascades/TapEvent>
 #include <bb/cascades/DoubleTapEvent>
 #include <bb/cascades/PinchEvent>
 
@@ -53,8 +55,11 @@ Q_SIGNALS:
 	void prevPageRequested ();
 	void fitToWidthRequested ();
 
+protected:
+	void timerEvent (QTimerEvent *ev);
+
 private Q_SLOTS:
-	void onLongPressGesture (bb::cascades::LongPressEvent *ev);
+	void onTapGesture (bb::cascades::TapEvent *ev);
 	void onDoubleTappedGesture (bb::cascades::DoubleTapEvent *ev);
 	void onLayoutFrameChanged (const QRectF& rect);
 	void onPinchStarted (bb::cascades::PinchEvent *event);
@@ -73,9 +78,11 @@ private:
 	QSize				_size;
 	QSize				_initialScaleSize;
 	QPointF				_delayedScrollPos;
+	QTime				_lastTapTime;
 	double				_currentZoom;
 	double				_minZoom;
 	double				_maxZoom;
+	int				_lastTapTimer;
 	int				_initialFontSize;
 	bool				_isInvertedColors;
 	bool				_useDelayedScroll;
