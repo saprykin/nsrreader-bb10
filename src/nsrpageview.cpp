@@ -4,7 +4,7 @@
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/Color>
-#include <bb/cascades/TapHandler>
+#include <bb/cascades/LongPressHandler>
 #include <bb/cascades/DoubleTapHandler>
 #include <bb/cascades/LayoutUpdateHandler>
 #include <bb/cascades/PinchHandler>
@@ -73,8 +73,8 @@ NSRPageView::NSRPageView (Container *parent) :
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
 							       SLOT (onLayoutFrameChanged (QRectF)));
 
-	TapHandler *tapHandler = TapHandler::create()
-				.onTapped (this, SLOT (onTappedGesture (bb::cascades::TapEvent *)));
+	LongPressHandler *tapHandler = LongPressHandler::create()
+				.onLongPressed (this, SLOT (onLongPressGesture (bb::cascades::LongPressEvent *)));
 	DoubleTapHandler *dtapHandler = DoubleTapHandler::create()
 				.onDoubleTapped (this, SLOT (onDoubleTappedGesture (bb::cascades::DoubleTapEvent*)));
 	DoubleTapHandler *dtaptHandler = DoubleTapHandler::create()
@@ -84,10 +84,10 @@ NSRPageView::NSRPageView (Container *parent) :
 						   SLOT (onPinchUpdated (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchEnded (bb::cascades::PinchEvent *)),
 						   SLOT (onPinchCancelled ()));
-	this->addGestureHandler (tapHandler);
-	this->addGestureHandler (pinchHandler);
 	_imageView->addGestureHandler (dtapHandler);
 	_textArea->addGestureHandler (dtaptHandler);
+	this->addGestureHandler (tapHandler);
+	this->addGestureHandler (pinchHandler);
 
 	setLayout (DockLayout::create ());
 	add (_scrollView);
@@ -268,7 +268,7 @@ NSRPageView::setScrollPositionOnLoad (const QPointF& pos)
 }
 
 void
-NSRPageView::onTappedGesture (bb::cascades::TapEvent *ev)
+NSRPageView::onLongPressGesture (bb::cascades::LongPressEvent *ev)
 {
 	emit viewTapped ();
 	ev->accept ();

@@ -11,7 +11,7 @@
 #include <bb/cascades/Image>
 #include <bb/cascades/ScrollView>
 #include <bb/cascades/TextArea>
-#include <bb/cascades/TapEvent>
+#include <bb/cascades/LongPressEvent>
 #include <bb/cascades/DoubleTapEvent>
 #include <bb/cascades/PinchEvent>
 
@@ -54,7 +54,7 @@ Q_SIGNALS:
 	void fitToWidthRequested ();
 
 private Q_SLOTS:
-	void onTappedGesture (bb::cascades::TapEvent *ev);
+	void onLongPressGesture (bb::cascades::LongPressEvent *ev);
 	void onDoubleTappedGesture (bb::cascades::DoubleTapEvent *ev);
 	void onLayoutFrameChanged (const QRectF& rect);
 	void onPinchStarted (bb::cascades::PinchEvent *event);
