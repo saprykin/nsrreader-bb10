@@ -24,7 +24,7 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 	NSRLastDocsListView *listView = static_cast<NSRLastDocsListView *> (list);
 	NSRLastDocItem *item = new NSRLastDocItem ();
 
-	ActionSet *actionSet = ActionSet::create ();
+	ActionSet *actionSet = ActionSet::create().subtitle (trUtf8 ("File"));
 
 	ActionItem *openAction = ActionItem::create().title (trUtf8 ("Open"));
 	ActionItem *shareAction = ActionItem::create().title (trUtf8 ("Share"));

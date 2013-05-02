@@ -39,6 +39,10 @@
         <source>Remove from List</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRLastDocsPage</name>
