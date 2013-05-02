@@ -64,6 +64,7 @@ private Q_SLOTS:
 
 private:
 	bb::cascades::ScrollView	*_scrollView;
+	bb::cascades::ScrollView	*_textScrollView;
 	bb::cascades::ImageView		*_imageView;
 	bb::cascades::TextArea		*_textArea;
 	bb::cascades::Container		*_rootContainer;

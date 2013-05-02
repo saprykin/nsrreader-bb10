@@ -17,6 +17,7 @@ using namespace bb::cascades;
 NSRPageView::NSRPageView (Container *parent) :
 	Container (parent),
 	_scrollView (NULL),
+	_textScrollView (NULL),
 	_imageView (NULL),
 	_textArea (NULL),
 	_rootContainer (NULL),
@@ -34,6 +35,9 @@ NSRPageView::NSRPageView (Container *parent) :
 	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Fill)
 					  .scrollMode(ScrollMode::Both);
+	_textScrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
+					      .vertical(VerticalAlignment::Fill)
+					      .scrollMode(ScrollMode::Vertical);
 	_imageView = ImageView::create().horizontal(HorizontalAlignment::Center)
 					.vertical(VerticalAlignment::Center);
 	_imageView->setImageSource (QUrl (NSR_LOGO_WELCOME));
@@ -48,8 +52,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
 					    .layout(DockLayout::create())
-					    .background(Color::White)
-					    .visible(false);
+					    .background(Color::White);
 	_textArea = TextArea::create().horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Fill)
 				      .editable(false)
@@ -62,6 +65,9 @@ NSRPageView::NSRPageView (Container *parent) :
 						  TextInputFlag::VirtualKeyboardOff);
 	_textArea->textStyle()->setColor (Color::Black);
 	_textContainer->add (_textArea);
+	_textScrollView->setContent (_textContainer);
+	_textScrollView->setVisible (false);
+
 	_initialFontSize = (int) _textArea->textStyle()->fontSize ();
 
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
@@ -85,7 +91,7 @@ NSRPageView::NSRPageView (Container *parent) :
 
 	setLayout (DockLayout::create ());
 	add (_scrollView);
-	add (_textContainer);
+	add (_textScrollView);
 
 	setInvertedColors (NSRSettings().isInvertedColors ());
 }
@@ -101,8 +107,10 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_isZooming)
 		return;
 
-	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION)
+	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION) {
 		_textArea->setText (page.getText ());
+		_textScrollView->scrollToPoint (0, 0);
+	}
 
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
@@ -134,12 +142,12 @@ NSRPageView::setViewMode (NSRPageView::NSRViewMode mode)
 
 	switch (mode) {
 	case NSR_VIEW_MODE_GRAPHIC:
-		_textContainer->setVisible (false);
+		_textScrollView->setVisible (false);
 		_scrollView->setVisible (true);
 		_viewMode = mode;
 		break;
 	case NSR_VIEW_MODE_TEXT:
-		_textContainer->setVisible (true);
+		_textScrollView->setVisible (true);
 		_scrollView->setVisible (false);
 		_viewMode = mode;
 		break;
