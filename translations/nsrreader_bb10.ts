@@ -17,6 +17,10 @@
         <comment>Manual for program usage</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>for BlackBerry%1 10</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRAbstractDocument</name>

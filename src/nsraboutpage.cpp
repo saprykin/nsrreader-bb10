@@ -29,6 +29,10 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 					    .vertical(VerticalAlignment::Fill)
 					    .text(QString ("NSR Reader ").append (NSRSettings().getVersion ()));
 	versionInfo->textStyle()->setFontSize (FontSize::Large);
+	Label *versionPlatform = Label::create().horizontal(HorizontalAlignment::Center)
+						.vertical(VerticalAlignment::Fill)
+						.text(trUtf8("for BlackBerry%1 10").arg (QString::fromUtf8 ("\u00AE")));
+	versionPlatform->textStyle()->setFontSize (FontSize::Small);
 
 	Label *authorInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Fill)
@@ -125,6 +129,7 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 
 	rootContainer->add (logoView);
 	rootContainer->add (versionInfo);
+	rootContainer->add (versionPlatform);
 	rootContainer->add (authorInfo);
 	rootContainer->add (firstLine);
 	rootContainer->add (contactsContainer);
