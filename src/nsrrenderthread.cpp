@@ -63,9 +63,11 @@ NSRRenderThread::run ()
 		int		wasZoom = doc->getZoom ();
 		int		wasZoomWidth = doc->getScreenWidth ();
 		bool		wasZoomToWidth = doc->isZoomToWidth ();
+		bool		wasInverted = doc->isInvertedColors ();
 
 		doc->zoomToWidth (256);
 		doc->setTextOnly (false);
+		doc->setInvertedColors (false);
 		doc->renderPage (1);
 
 		thumbPage.setZoom (doc->getZoom ());
@@ -85,6 +87,7 @@ NSRRenderThread::run ()
 			doc->setZoom (wasZoom);
 		else
 			doc->zoomToWidth (wasZoomWidth);
+		doc->setInvertedColors (wasInverted);
 	}
 
 	completeRequest (page);
