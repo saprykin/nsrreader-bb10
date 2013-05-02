@@ -2,8 +2,11 @@
 #include "nsrlastdocitem.h"
 #include "nsrsettings.h"
 #include "nsrfilesharer.h"
+#include "nsrthumbnailer.h"
 
 #include <bb/cascades/QListDataModel>
+
+#include <QFile>
 
 using namespace bb::cascades;
 
@@ -29,6 +32,7 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 	for (int i = 0; i < count; ++i)
 		if (model->value(i).toMap()["path"].toString () == item->getDocumentPath ()) {
 			NSRSettings().removeLastDocument (item->getDocumentPath ());
+			QFile::remove (NSRThumbnailer::getThumnailPath (item->getDocumentPath ()));
 			model->removeAt (i);
 			break;
 		}
