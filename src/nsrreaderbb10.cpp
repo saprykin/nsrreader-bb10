@@ -365,7 +365,8 @@ NSRReaderBB10::updateVisualControls ()
 	_recentDocsAction->setEnabled (true);
 	_fitToWidthAction->setEnabled (_core->isDocumentOpened () &&
 				       _pageView->getViewMode() == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
-	_shareAction->setEnabled (_core->isDocumentOpened ());
+	_shareAction->setEnabled (_core->isDocumentOpened () &&
+				  _core->getDocumentPaht () != QUrl::fromLocalFile(NSR_QUICK_GUIDE).path ());
 	_pageView->setVisible (_core->isDocumentOpened ());
 	_welcomeView->setVisible (!_core->isDocumentOpened ());
 

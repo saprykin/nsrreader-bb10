@@ -7,6 +7,8 @@
 
 using namespace bb::cascades;
 
+#define NSR_QUICK_GUIDE "app/native/assets/Welcome to NSR Reader.pdf"
+
 NSRLastDocItemFactory::NSRLastDocItemFactory ()
 {
 }
@@ -67,6 +69,10 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 
 	if (item->actionSetCount () > 0)
 		item->actionSetAt(0)->setTitle (map["title"].toString ());
+
+	/* FIXME: Proper disable non-sharable items */
+	if (map["path"].toString () == QUrl::fromLocalFile(NSR_QUICK_GUIDE).path ())
+		item->actionSetAt(0)->at(1)->setEnabled (false);
 
 	item->updateItem (map["title"].toString (),
 			  map["image"].toString (),
