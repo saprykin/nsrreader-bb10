@@ -89,7 +89,7 @@ NSRPageView::NSRPageView (Container *parent) :
 
 	this->addGestureHandler (tapHandler);
 	this->addGestureHandler (pinchHandler);
-	_imageView->addGestureHandler (dtapHandler);
+	_scrollView->addGestureHandler (dtapHandler);
 	_textArea->addGestureHandler (dtaptHandler);
 
 	setLayout (DockLayout::create ());
