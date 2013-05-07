@@ -17,7 +17,12 @@
 #include <bb/cascades/LocaleHandler>
 #include <bb/cascades/Label>
 #include <bb/cascades/Menu>
+
+#include <bbndk.h>
+
+#ifdef BBNDK_VERSION_AT_LEAST
 #include <bb/cascades/SystemShortcut>
+#endif
 
 #include <bb/system/SystemToast>
 #include <bb/system/LocaleHandler>
@@ -141,6 +146,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_helpAction->setImageSource (QUrl ("asset:///about.png"));
 	_shareAction->setImageSource (QUrl ("asset:///share.png"));
 
+#ifdef BBNDK_VERSION_AT_LEAST
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
 	SystemShortcut *zoomInShortcut = SystemShortcut::create (SystemShortcuts::ZoomIn);
@@ -153,6 +159,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	_prevPageAction->addShortcut (prevShortcut);
 	_nextPageAction->addShortcut (nextShortcut);
+#endif
 
 	connect (_openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
 	connect (_prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
@@ -694,6 +701,7 @@ NSRReaderBB10::onFitToWidthRequested ()
 void
 NSRReaderBB10::onSystemShortcutTriggered ()
 {
+#ifdef BBNDK_VERSION_AT_LEAST
 	SystemShortcut *shortcut = static_cast<SystemShortcut *> (sender ());
 
 	switch (shortcut->type ()) {
@@ -714,6 +722,7 @@ NSRReaderBB10::onSystemShortcutTriggered ()
 	default:
 		break;
 	}
+#endif
 }
 
 void
