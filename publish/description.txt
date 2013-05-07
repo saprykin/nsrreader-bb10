@@ -1,0 +1,21 @@
+Powerful reader for PDF, DjVu, TIFF and TXT files
+
+NSR Reader is a handy and powerful reader for PDF, DjVu, TIFF and TXT files. You can read documents from desktop right on the phone without any conversion. NSR Reader is a native BlackBerry® app based on Cascades™ framework: it has consistent look-n-feel and integrates nicely into your phone.
+
+Plenty of features will make reading comfortable everywhere:
+- high-quality PDF and DjVu rendering;
+- multipage TIFF files support;
+- opens plain text files with encoding selection option and breaks them into pages;
+- supports password protected PDFs (except latest Adobe® Reader® X encryption);
+- saves last reading position;
+- inverted colors mode helps to save power and read at dark;
+- text reflow mode makes reading huge text-enabled PDF and DjVu files easy;
+- nice preview of recently opened documents;
+- share your documents through BBM service;
+- fast and responsive user interface.
+
+Made for users with love :)
+
+If you have any questions or suggestions - please contact me because any feedback is welcomed and important for future improvements.
+
+pdf reader, pdf viewer, djvu reader, djvu viewer, pdf, djvu, tiff, tif, documents, text
