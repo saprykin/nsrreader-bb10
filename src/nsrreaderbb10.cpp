@@ -225,7 +225,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 		loadSession (QUrl::fromLocalFile (NSR_QUICK_GUIDE).path ());
 	} else {
 		/* Load previously saved session */
-		if (QFile::exists (settings.getLastSession ().getFile ()) &&
+		if (QFile::exists (settings.getLastSession().getFile ()) &&
 				settings.isLoadLastDoc ())
 			loadSession ();
 		else
@@ -261,6 +261,7 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 	settings.saveLastOpenDir (QFileInfo (files.first ()).absolutePath ());
 	saveSession ();
 
+	session.setZoomScreenWidth (_pageView->getSize().width ());
 	_core->loadSession (&session);
 }
 

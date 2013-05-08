@@ -53,9 +53,8 @@ NSRSettings::NSRSettings(QObject *parent) :
 
 NSRSession NSRSettings::getLastSession()
 {
-	NSRSession session;
-
-	QString lastSession = value("Global/last-session", "").toString();
+	NSRSession	session;
+	QString		lastSession = value("Global/last-session", "").toString();
 
 	if (!childGroups().contains(lastSession))
 		return session;
@@ -240,7 +239,7 @@ void NSRSettings::readSession (const QString &name, NSRSession &session)
 	session.setPage(value("page", 1).toInt());
 	session.setZoomText(value("zoom-text", 90).toInt());
 	session.setZoomGraphic(value("zoom-graphic", 100.0).toDouble());
-	session.setFitToWidth(value("fit-to-width", false).toBool());
+	session.setFitToWidth(value("fit-to-width", true).toBool());
 	session.setPosition(value("position", QPoint (0, 0)).toPoint());
 	session.setRotation(value("angle", 0).toDouble());
 	endGroup();
