@@ -9,16 +9,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>for BlackBerry%1 10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>If you have any questions or suggestions (or even want to know what does NSR mean), do not hesitate to write me: &lt;a href=&apos;mailto:nsr.reader@gmail.com&apos;&gt;nsr.reader@gmail.com&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Quick Start Guide</source>
         <comment>Manual for program usage</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>for BlackBerry%1 10</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -32,6 +32,10 @@
 <context>
     <name>NSRLastDocItemFactory</name>
     <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
@@ -41,10 +45,6 @@
     </message>
     <message>
         <source>Remove from List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
