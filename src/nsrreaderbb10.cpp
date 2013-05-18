@@ -248,7 +248,6 @@ void
 NSRReaderBB10::onFileSelected (const QStringList &files)
 {
 	NSRSettings	settings;
-	NSRSession	session = settings.getSessionForFile (files.first ());
 
 	if (_core->getDocumentPaht () == files.first ()) {
 		_toast->setBody (trUtf8 ("Selected file is already opened."));
@@ -259,10 +258,9 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 
 	/* Save session for opened document */
 	settings.saveLastOpenDir (QFileInfo (files.first ()).absolutePath ());
-	saveSession ();
 
-	session.setZoomScreenWidth (_pageView->getSize().width ());
-	_core->loadSession (&session);
+	saveSession ();
+	loadSession (files.first ());
 }
 
 void
