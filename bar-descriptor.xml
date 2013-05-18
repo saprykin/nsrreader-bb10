@@ -108,5 +108,28 @@
     <permission system="true">run_native</permission>
     <permission>access_shared</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
+    
+    <invoke-target id="com.gmail.reader.nsr">
+        <invoke-target-type>application</invoke-target-type>
+        <invoke-target-name>NSR Reader</invoke-target-name>
+        <filter>
+            <action>bb.action.OPEN</action>
+            <mime-type>application/pdf</mime-type>
+            <mime-type>image/vnd.djvu</mime-type>
+            <mime-type>image/x-djvu</mime-type>
+            <mime-type>image/tiff</mime-type>
+            <mime-type>text/plain</mime-type>
+            <property var="uris" value="file://"/>
+        </filter>
+        <filter>
+            <action>bb.action.OPEN</action>
+            <mime-type>*</mime-type>
+            <property var="uris" value="file://"/>
+            <property var="exts" value="pdf,djvu,djv,tiff,tif,txt"/>
+        </filter>
+        <icon>
+            <image>icon.png</image>
+        </icon>
+    </invoke-target>
 
 </qnx>

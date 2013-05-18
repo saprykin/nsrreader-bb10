@@ -61,7 +61,26 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_indicator (NULL),
 	_prompt (NULL),
 	_toast (NULL),
+	_invokeManager (NULL),
+	_startMode (ApplicationStartupMode::LaunchApplication),
 	_isFullscreen (false)
+{
+	_invokeManager = new InvokeManager (this);
+
+	connect (_invokeManager, SIGNAL (invoked (const bb::system::InvokeRequest&)),
+		 this, SLOT (onInvoke (const bb::system::InvokeRequest&)));
+
+	_startMode = _invokeManager->startupMode ();
+
+	initFullUI ();
+}
+
+NSRReaderBB10::~NSRReaderBB10 ()
+{
+}
+
+void
+NSRReaderBB10::initFullUI ()
 {
 	Container *rootContainer = new Container ();
 	rootContainer->setLayout (DockLayout::create ());
@@ -220,6 +239,24 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 							: NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 	_isFullscreen = settings.isFullscreenMode ();
 
+	connect (_pageView, SIGNAL (zoomChanged (double, bool)),
+		 this, SLOT (onZoomChanged (double, bool)));
+
+	Application::instance()->setAutoExit (false);
+	connect (Application::instance (), SIGNAL (manualExit ()),
+		 this, SLOT (onManualExit ()));
+
+	/* Initial loading logic:
+	 *   - if we are launching from invoke request, wait for further request;
+	 *   - in case of first start load quick start guide;
+	 *   - in other cases try to load previous session. */
+
+	if (_startMode == ApplicationStartupMode::InvokeApplication ||
+	    _startMode == ApplicationStartupMode::InvokeCard) {
+		updateVisualControls ();
+		return;
+	}
+
 	if (settings.isFirstStart ()) {
 		settings.saveFirstStart ();
 		loadSession (QUrl::fromLocalFile (NSR_QUICK_GUIDE).path ());
@@ -231,17 +268,6 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 		else
 			updateVisualControls ();
 	}
-
-	connect (_pageView, SIGNAL (zoomChanged (double, bool)),
-		 this, SLOT (onZoomChanged (double, bool)));
-
-	Application::instance()->setAutoExit (false);
-	connect (Application::instance (), SIGNAL (manualExit ()),
-		 this, SLOT (onManualExit ()));
-}
-
-NSRReaderBB10::~NSRReaderBB10 ()
-{
 }
 
 void
@@ -433,7 +459,7 @@ NSRReaderBB10::reloadSettings ()
 }
 
 void
-NSRReaderBB10::loadSession (const QString& path)
+NSRReaderBB10::loadSession (const QString& path, int page)
 {
 	NSRSession	session;
 	int		width = _pageView->getSize().width ();
@@ -443,6 +469,11 @@ NSRReaderBB10::loadSession (const QString& path)
 	else
 		session = NSRSettings().getSessionForFile (path);
 
+	if (page != -1)
+		session.setPage (page);
+
+	/* Since we can load session when UI is not built properly
+	 * we must use device parameters */
 	if (width <= 0) {
 		QSize displaySize = DisplayInfo().pixelSize ();
 
@@ -729,4 +760,21 @@ NSRReaderBB10::onStartGuideRequested ()
 {
 	_naviPane->pop ();
 	loadSession (QUrl::fromLocalFile (NSR_QUICK_GUIDE).path ());
+}
+
+void
+NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
+{
+	QString	target = req.target ();
+	QString	file = req.uri().toLocalFile ();
+	bool	ok;
+	int	page = req.data().toInt (&ok);
+
+	if (!ok)
+		page = -1;
+
+	if (target == "com.gmail.reader.nsr") {
+		saveSession ();
+		loadSession (file, page);
+	}
 }

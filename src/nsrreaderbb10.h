@@ -18,6 +18,8 @@
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
 #include <bb/system/SystemToast>
+#include <bb/system/InvokeManager>
+#include <bb/system/InvokeRequest>
 
 #include <QObject>
 
@@ -59,37 +61,41 @@ private Q_SLOTS:
     void onFitToWidthRequested ();
     void onSystemShortcutTriggered ();
     void onStartGuideRequested ();
+    void onInvoke (const bb::system::InvokeRequest& req);
 
 private:
+    void initFullUI ();
     void updateVisualControls ();
     void disableVisualControls ();
     void reloadSettings ();
-    void loadSession (const QString& path = "");
+    void loadSession (const QString& path = "", int page = -1);
     void saveSession ();
     void zoomIn ();
     void zoomOut ();
 
-    NSRReaderCore			*_core;
-    NSRPageView				*_pageView;
-    NSRPageStatus			*_pageStatus;
-    NSRReadProgress			*_readProgress;
-    NSRWelcomeView			*_welcomeView;
-    bb::cascades::NavigationPane	*_naviPane;
-    bb::cascades::Page			*_page;
-    bb::cascades::pickers::FilePicker	*_filePicker;
-    bb::cascades::ActionItem		*_openAction;
-    bb::cascades::ActionItem		*_prevPageAction;
-    bb::cascades::ActionItem		*_nextPageAction;
-    bb::cascades::ActionItem		*_gotoAction;
-    bb::cascades::SettingsActionItem	*_prefsAction;
-    bb::cascades::ActionItem		*_recentDocsAction;
-    bb::cascades::ActionItem		*_fitToWidthAction;
-    bb::cascades::ActionItem		*_helpAction;
-    bb::cascades::ActionItem		*_shareAction;
-    bb::cascades::ActivityIndicator	*_indicator;
-    bb::system::SystemPrompt		*_prompt;
-    bb::system::SystemToast		*_toast;
-    bool				_isFullscreen;
+    NSRReaderCore				*_core;
+    NSRPageView					*_pageView;
+    NSRPageStatus				*_pageStatus;
+    NSRReadProgress				*_readProgress;
+    NSRWelcomeView				*_welcomeView;
+    bb::cascades::NavigationPane		*_naviPane;
+    bb::cascades::Page				*_page;
+    bb::cascades::pickers::FilePicker		*_filePicker;
+    bb::cascades::ActionItem			*_openAction;
+    bb::cascades::ActionItem			*_prevPageAction;
+    bb::cascades::ActionItem			*_nextPageAction;
+    bb::cascades::ActionItem			*_gotoAction;
+    bb::cascades::SettingsActionItem		*_prefsAction;
+    bb::cascades::ActionItem			*_recentDocsAction;
+    bb::cascades::ActionItem			*_fitToWidthAction;
+    bb::cascades::ActionItem			*_helpAction;
+    bb::cascades::ActionItem			*_shareAction;
+    bb::cascades::ActivityIndicator		*_indicator;
+    bb::system::SystemPrompt			*_prompt;
+    bb::system::SystemToast			*_toast;
+    bb::system::InvokeManager			*_invokeManager;
+    bb::system::ApplicationStartupMode::Type	_startMode;
+    bool					_isFullscreen;
 };
 
 #endif /* NSRREADERBB10_H_ */
