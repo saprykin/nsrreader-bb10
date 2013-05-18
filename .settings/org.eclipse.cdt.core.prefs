@@ -15,6 +15,14 @@ environment/project/com.qnx.qcc.toolChain.1994855771/EXCLUDE_VARIANTLIST/operati
 environment/project/com.qnx.qcc.toolChain.1994855771/EXCLUDE_VARIANTLIST/value=r
 environment/project/com.qnx.qcc.toolChain.1994855771/append=true
 environment/project/com.qnx.qcc.toolChain.1994855771/appendContributed=true
+environment/project/com.qnx.qcc.toolChain.2068025142.298237307/CPULIST/delimiter=,
+environment/project/com.qnx.qcc.toolChain.2068025142.298237307/CPULIST/operation=append
+environment/project/com.qnx.qcc.toolChain.2068025142.298237307/CPULIST/value=x86
+environment/project/com.qnx.qcc.toolChain.2068025142.298237307/VARIANTLIST/delimiter=,
+environment/project/com.qnx.qcc.toolChain.2068025142.298237307/VARIANTLIST/operation=append
+environment/project/com.qnx.qcc.toolChain.2068025142.298237307/VARIANTLIST/value=g
+environment/project/com.qnx.qcc.toolChain.2068025142.298237307/append=true
+environment/project/com.qnx.qcc.toolChain.2068025142.298237307/appendContributed=true
 environment/project/com.qnx.qcc.toolChain.2068025142/CPULIST/delimiter=,
 environment/project/com.qnx.qcc.toolChain.2068025142/CPULIST/operation=append
 environment/project/com.qnx.qcc.toolChain.2068025142/CPULIST/value=x86
