@@ -56,3 +56,9 @@ NSRFileSharer::shareFile (const QString& path)
 		connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
 	}
 }
+
+bool
+NSRFileSharer::isSharable (const QString& path)
+{
+	return path.startsWith ("app/native/assets", Qt::CaseSensitive);
+}

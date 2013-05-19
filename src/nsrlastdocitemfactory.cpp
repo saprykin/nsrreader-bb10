@@ -1,13 +1,12 @@
 #include "nsrlastdocitemfactory.h"
 #include "nsrlastdocitem.h"
 #include "nsrlastdocslistview.h"
+#include "nsrfilesharer.h"
 
 #include <bb/cascades/ActionItem>
 #include <bb/cascades/ActionSet>
 
 using namespace bb::cascades;
-
-#define NSR_QUICK_GUIDE "app/native/assets/Welcome to NSR Reader.pdf"
 
 NSRLastDocItemFactory::NSRLastDocItemFactory ()
 {
@@ -70,8 +69,7 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 	if (item->actionSetCount () > 0)
 		item->actionSetAt(0)->setTitle (map["title"].toString ());
 
-	/* FIXME: Proper disable non-sharable items */
-	if (map["path"].toString () == QUrl::fromLocalFile(NSR_QUICK_GUIDE).path ())
+	if (NSRFileSharer::isSharable (map["path"].toString ()))
 		item->actionSetAt(0)->at(1)->setEnabled (false);
 
 	item->updateItem (map["title"].toString (),

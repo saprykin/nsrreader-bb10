@@ -406,7 +406,7 @@ NSRReaderBB10::updateVisualControls ()
 				       	     _pageView->getViewMode() == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 	_actionAggregator->setActionEnabled ("share",
 				       	     _core->isDocumentOpened () &&
-				       	     _core->getDocumentPaht () != QUrl::fromLocalFile(NSR_QUICK_GUIDE).path ());
+				       	     NSRFileSharer::isSharable (_core->getDocumentPaht ()));
 	_pageView->setVisible (_core->isDocumentOpened ());
 	_welcomeView->setVisible (!_core->isDocumentOpened ());
 

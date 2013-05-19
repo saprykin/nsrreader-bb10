@@ -10,6 +10,8 @@ public:
 	static NSRFileSharer * getInstance ();
 	void shareFile (const QString& path);
 
+	static bool isSharable (const QString& path);
+
 private:
 	NSRFileSharer ();
 };
