@@ -6,14 +6,13 @@
 #include "nsrpagestatus.h"
 #include "nsrreadprogress.h"
 #include "nsrwelcomeview.h"
+#include "nsractionaggregator.h"
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/ImageView>
-#include <bb/cascades/ActionItem>
 #include <bb/cascades/ActivityIndicator>
 #include <bb/cascades/Page>
 #include <bb/cascades/NavigationPane>
-#include <bb/cascades/SettingsActionItem>
 
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
@@ -78,18 +77,10 @@ private:
     NSRPageStatus				*_pageStatus;
     NSRReadProgress				*_readProgress;
     NSRWelcomeView				*_welcomeView;
+    NSRActionAggregator				*_actionAggregator;
     bb::cascades::NavigationPane		*_naviPane;
     bb::cascades::Page				*_page;
     bb::cascades::pickers::FilePicker		*_filePicker;
-    bb::cascades::ActionItem			*_openAction;
-    bb::cascades::ActionItem			*_prevPageAction;
-    bb::cascades::ActionItem			*_nextPageAction;
-    bb::cascades::ActionItem			*_gotoAction;
-    bb::cascades::SettingsActionItem		*_prefsAction;
-    bb::cascades::ActionItem			*_recentDocsAction;
-    bb::cascades::ActionItem			*_fitToWidthAction;
-    bb::cascades::ActionItem			*_helpAction;
-    bb::cascades::ActionItem			*_shareAction;
     bb::cascades::ActivityIndicator		*_indicator;
     bb::system::SystemPrompt			*_prompt;
     bb::system::SystemToast			*_toast;

@@ -17,6 +17,8 @@
 #include <bb/cascades/LocaleHandler>
 #include <bb/cascades/Label>
 #include <bb/cascades/Menu>
+#include <bb/cascades/ActionItem>
+#include <bb/cascades/SettingsActionItem>
 
 #include <bbndk.h>
 
@@ -46,18 +48,10 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_pageStatus (NULL),
 	_readProgress (NULL),
 	_welcomeView (NULL),
+	_actionAggregator (NULL),
 	_naviPane (NULL),
 	_page (NULL),
 	_filePicker (NULL),
-	_openAction (NULL),
-	_prevPageAction (NULL),
-	_nextPageAction (NULL),
-	_gotoAction (NULL),
-	_prefsAction (NULL),
-	_recentDocsAction (NULL),
-	_fitToWidthAction (NULL),
-	_helpAction (NULL),
-	_shareAction (NULL),
 	_indicator (NULL),
 	_prompt (NULL),
 	_toast (NULL),
@@ -131,39 +125,50 @@ NSRReaderBB10::initFullUI ()
 	mainContainer->add (_readProgress);
 
 	_page = Page::create().content (mainContainer);
+	_actionAggregator = new NSRActionAggregator (this);
 
-	_openAction = ActionItem::create().enabled (true);
-	_openAction->setTitle (trUtf8 ("Open", "Open document"));
-	_prevPageAction = ActionItem::create().enabled (false);
-	_prevPageAction->setTitle (trUtf8 ("Previous", "Previous page"));
-	_nextPageAction = ActionItem::create().enabled (false);
-	_nextPageAction->setTitle (trUtf8 ("Next", "Next page"));
-	_gotoAction = ActionItem::create().enabled (false);
-	_gotoAction->setTitle (trUtf8 ("Go to", "Go to page"));
-	_prefsAction = SettingsActionItem::create().title(trUtf8 ("Settings"));
-	_recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
-	_fitToWidthAction = ActionItem::create().enabled (false);
-	_fitToWidthAction->setTitle (trUtf8 ("Fit to Width", "Fit document to screen width"));
-	_helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
-	_shareAction = ActionItem::create().enabled (false);
-	_shareAction->setTitle (trUtf8 ("Share", "Share document between users"));
+	ActionItem *openAction = ActionItem::create().enabled (true);
+	openAction->setTitle (trUtf8 ("Open", "Open document"));
+	ActionItem *prevPageAction = ActionItem::create().enabled (false);
+	prevPageAction->setTitle (trUtf8 ("Previous", "Previous page"));
+	ActionItem *nextPageAction = ActionItem::create().enabled (false);
+	nextPageAction->setTitle (trUtf8 ("Next", "Next page"));
+	ActionItem *gotoAction = ActionItem::create().enabled (false);
+	gotoAction->setTitle (trUtf8 ("Go to", "Go to page"));
+	SettingsActionItem *prefsAction = SettingsActionItem::create().title(trUtf8 ("Settings"));
+	ActionItem *recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
+	ActionItem *fitToWidthAction = ActionItem::create().enabled (false);
+	fitToWidthAction->setTitle (trUtf8 ("Fit to Width", "Fit document to screen width"));
+	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
+	ActionItem *shareAction = ActionItem::create().enabled (false);
+	shareAction->setTitle (trUtf8 ("Share", "Share document between users"));
 
-	_page->addAction (_openAction, ActionBarPlacement::OnBar);
-	_page->addAction (_prevPageAction, ActionBarPlacement::OnBar);
-	_page->addAction (_nextPageAction, ActionBarPlacement::OnBar);
-	_page->addAction (_gotoAction, ActionBarPlacement::InOverflow);
-	_page->addAction (_recentDocsAction, ActionBarPlacement::InOverflow);
-	_page->addAction (_fitToWidthAction, ActionBarPlacement::InOverflow);
-	_page->addAction (_shareAction, ActionBarPlacement::InOverflow);
+	_page->addAction (openAction, ActionBarPlacement::OnBar);
+	_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
+	_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
+	_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
+	_page->addAction (recentDocsAction, ActionBarPlacement::InOverflow);
+	_page->addAction (fitToWidthAction, ActionBarPlacement::InOverflow);
+	_page->addAction (shareAction, ActionBarPlacement::InOverflow);
 
-	_openAction->setImageSource (QUrl ("asset:///open.png"));
-	_prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
-	_nextPageAction->setImageSource (QUrl ("asset:///next.png"));
-	_gotoAction->setImageSource (QUrl ("asset:///goto.png"));
-	_recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
-	_fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
-	_helpAction->setImageSource (QUrl ("asset:///about.png"));
-	_shareAction->setImageSource (QUrl ("asset:///share.png"));
+	_actionAggregator->addAction ("open", openAction);
+	_actionAggregator->addAction ("prev", prevPageAction);
+	_actionAggregator->addAction ("next", nextPageAction);
+	_actionAggregator->addAction ("goto", gotoAction);
+	_actionAggregator->addAction ("recent-docs", recentDocsAction);
+	_actionAggregator->addAction ("fit-to-width", fitToWidthAction);
+	_actionAggregator->addAction ("share", shareAction);
+	_actionAggregator->addAction ("prefs", prefsAction);
+	_actionAggregator->addAction ("help", helpAction);
+
+	openAction->setImageSource (QUrl ("asset:///open.png"));
+	prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
+	nextPageAction->setImageSource (QUrl ("asset:///next.png"));
+	gotoAction->setImageSource (QUrl ("asset:///goto.png"));
+	recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
+	fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
+	helpAction->setImageSource (QUrl ("asset:///about.png"));
+	shareAction->setImageSource (QUrl ("asset:///share.png"));
 
 #ifdef BBNDK_VERSION_AT_LEAST
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
@@ -176,23 +181,23 @@ NSRReaderBB10::initFullUI ()
 	connect (zoomInShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
 	connect (zoomOutShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
 
-	_prevPageAction->addShortcut (prevShortcut);
-	_nextPageAction->addShortcut (nextShortcut);
+	prevPageAction->addShortcut (prevShortcut);
+	nextPageAction->addShortcut (nextShortcut);
 #endif
 
-	connect (_openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
-	connect (_prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
-	connect (_nextPageAction, SIGNAL (triggered ()), this, SLOT (onNextPageActionTriggered ()));
-	connect (_gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
-	connect (_prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
-	connect (_recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
-	connect (_fitToWidthAction, SIGNAL (triggered ()), this, SLOT (onFitToWidthTriggered ()));
-	connect (_helpAction, SIGNAL (triggered ()), this, SLOT (onHelpActionTriggered ()));
-	connect (_shareAction, SIGNAL (triggered ()), this, SLOT (onShareActionTriggered ()));
+	connect (openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
+	connect (prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
+	connect (nextPageAction, SIGNAL (triggered ()), this, SLOT (onNextPageActionTriggered ()));
+	connect (gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
+	connect (prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
+	connect (recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
+	connect (fitToWidthAction, SIGNAL (triggered ()), this, SLOT (onFitToWidthTriggered ()));
+	connect (helpAction, SIGNAL (triggered ()), this, SLOT (onHelpActionTriggered ()));
+	connect (shareAction, SIGNAL (triggered ()), this, SLOT (onShareActionTriggered ()));
 
 	Menu *menu = new Menu ();
-	menu->setSettingsAction (_prefsAction);
-	menu->addAction (_helpAction);
+	menu->setSettingsAction (prefsAction);
+	menu->addAction (helpAction);
 	Application::instance()->setMenu (menu);
 
 	_filePicker = new FilePicker (this);
@@ -336,7 +341,7 @@ NSRReaderBB10::onGotoActionTriggered ()
 void
 NSRReaderBB10::onPrefsActionTriggered ()
 {
-	_prefsAction->setEnabled (false);
+	_actionAggregator->setActionEnabled ("prefs", false);
 	_naviPane->push (new NSRPreferencesPage ());
 }
 
@@ -392,42 +397,38 @@ NSRReaderBB10::onPageRendered (int number)
 void
 NSRReaderBB10::updateVisualControls ()
 {
-	_openAction->setEnabled (true);
-	_prefsAction->setEnabled (true);
-	_recentDocsAction->setEnabled (true);
-	_fitToWidthAction->setEnabled (_core->isDocumentOpened () &&
-				       _pageView->getViewMode() == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
-	_shareAction->setEnabled (_core->isDocumentOpened () &&
-				  _core->getDocumentPaht () != QUrl::fromLocalFile(NSR_QUICK_GUIDE).path ());
+	_actionAggregator->setActionEnabled ("open", true);
+	_actionAggregator->setActionEnabled ("prefs", true);
+	_actionAggregator->setActionEnabled ("help", true);
+	_actionAggregator->setActionEnabled ("recent-docs", true);
+	_actionAggregator->setActionEnabled ("fit-to-width",
+				       	     _core->isDocumentOpened () &&
+				       	     _pageView->getViewMode() == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+	_actionAggregator->setActionEnabled ("share",
+				       	     _core->isDocumentOpened () &&
+				       	     _core->getDocumentPaht () != QUrl::fromLocalFile(NSR_QUICK_GUIDE).path ());
 	_pageView->setVisible (_core->isDocumentOpened ());
 	_welcomeView->setVisible (!_core->isDocumentOpened ());
 
 	if (!_core->isDocumentOpened ()) {
-		_prevPageAction->setEnabled (false);
-		_nextPageAction->setEnabled (false);
-		_gotoAction->setEnabled (false);
+		_actionAggregator->setActionEnabled ("prev", false);
+		_actionAggregator->setActionEnabled ("next", false);
+		_actionAggregator->setActionEnabled ("goto", false);
 		_page->setActionBarVisibility (ChromeVisibility::Visible);
 	} else {
 		int totalPages = _core->getPagesCount ();
 		int currentPage = _core->getCurrentPage().getNumber ();
 
-		_prevPageAction->setEnabled (totalPages != 1 && currentPage > 1);
-		_nextPageAction->setEnabled (totalPages != 1 && currentPage != totalPages);
-		_gotoAction->setEnabled (totalPages > 1);
+		_actionAggregator->setActionEnabled ("prev", totalPages != 1 && currentPage > 1);
+		_actionAggregator->setActionEnabled ("next", totalPages != 1 && currentPage != totalPages);
+		_actionAggregator->setActionEnabled ("goto", totalPages > 1);
 	}
 }
 
 void
 NSRReaderBB10::disableVisualControls ()
 {
-	_openAction->setEnabled (false);
-	_prevPageAction->setEnabled (false);
-	_nextPageAction->setEnabled (false);
-	_gotoAction->setEnabled (false);
-	_prefsAction->setEnabled (false);
-	_recentDocsAction->setEnabled (false);
-	_fitToWidthAction->setEnabled (false);
-	_shareAction->setEnabled (false);
+	_actionAggregator->setAllEnabled (false);
 }
 
 void
@@ -675,8 +676,7 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 		prefsPage->saveSettings ();
 
 		reloadSettings ();
-
-		_prefsAction->setEnabled (true);
+		updateVisualControls ();
 	}
 
 	if (page != NULL)
@@ -710,21 +710,21 @@ NSRReaderBB10::onManualExit ()
 void
 NSRReaderBB10::onPrevPageRequested ()
 {
-	if (_prevPageAction->isEnabled ())
+	if (_actionAggregator->isActionEnabled ("prev"))
 		onPrevPageActionTriggered ();
 }
 
 void
 NSRReaderBB10::onNextPageRequested ()
 {
-	if (_nextPageAction->isEnabled ())
+	if (_actionAggregator->isActionEnabled ("next"))
 		onNextPageActionTriggered ();
 }
 
 void
 NSRReaderBB10::onFitToWidthRequested ()
 {
-	if (_fitToWidthAction->isEnabled ())
+	if (_actionAggregator->isActionEnabled ("fit-to-width"))
 		onFitToWidthTriggered ();
 }
 
@@ -736,11 +736,11 @@ NSRReaderBB10::onSystemShortcutTriggered ()
 
 	switch (shortcut->type ()) {
 	case SystemShortcuts::PreviousSection:
-		if (_prevPageAction->isEnabled ())
+		if (_actionAggregator->isActionEnabled ("prev"))
 			onPrevPageActionTriggered ();
 		break;
 	case SystemShortcuts::NextSection:
-		if (_nextPageAction->isEnabled ())
+		if (_actionAggregator->isActionEnabled ("next"))
 			onNextPageActionTriggered ();
 		break;
 	case SystemShortcuts::ZoomIn:
