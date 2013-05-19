@@ -37,9 +37,16 @@ NSRThumbnailer::saveThumbnail (const QString&		path,
 					50);
 	}
 
+	QString pageText = page.getText().left (600);
+	int lastIndex = pageText.lastIndexOf (QRegExp ("\\S\\s"));
+
+	/* Do not truncate the whole string */
+	if (lastIndex > 500)
+		pageText = pageText.left (lastIndex + 1) + "...";
+
 	settings.beginGroup (filePathToGroup (path));
 	settings.setValue ("path", path);
-	settings.setValue ("text", page.getText ());
+	settings.setValue ("text", pageText);
 	settings.endGroup ();
 	settings.sync ();
 }
