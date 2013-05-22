@@ -5,9 +5,7 @@
 
 #include <QObject>
 #include <QHash>
-#include <QQueue>
-
-#include <bb/cascades/Image>
+#include <QList>
 
 class NSRPagesCache : public QObject
 {
@@ -23,7 +21,7 @@ public:
 
 private:
 	QHash<int, NSRRenderedPage>	_hash;
-	QQueue<int>			_pagesByTime;
+	QList<int>			_pages;
 	qint64				_usedMemory;
 };
 

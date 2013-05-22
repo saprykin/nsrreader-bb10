@@ -3,8 +3,6 @@
 /* Maximum cache size in bytes (~100 MB by default) */
 #define NSR_PAGES_CACHE_MAX_STORAGE 104857600
 
-using namespace bb::cascades;
-
 NSRPagesCache::NSRPagesCache (QObject *parent) :
 		QObject (parent),
 		_usedMemory (0)
@@ -14,7 +12,7 @@ NSRPagesCache::NSRPagesCache (QObject *parent) :
 NSRPagesCache::~NSRPagesCache ()
 {
 	_hash.clear ();
-	_pagesByTime.clear ();
+	_pages.clear ();
 	_usedMemory = 0;
 }
 
@@ -33,33 +31,37 @@ NSRPagesCache::getPage (int number)
 void
 NSRPagesCache::addPage (NSRRenderedPage& page)
 {
-	NSRRenderedPage	oldPage;
 	qint64		newSize;
-	bool		inCache;
+	int		deqPage;
+	int		boundedPage;
 
 	if (!page.isValid ())
 		return;
 
-	oldPage = _hash.value (page.getNumber ());
 	newSize = page.getSize().width () * page.getSize().height () * 4;
-	inCache = oldPage.isValid ();
 
 	if (newSize > NSR_PAGES_CACHE_MAX_STORAGE)
 		return;
 
-	while (_usedMemory + newSize > NSR_PAGES_CACHE_MAX_STORAGE &&
-	       !_pagesByTime.isEmpty ()) {
-		int deq = _pagesByTime.dequeue ();
-		NSRRenderedPage rpage = _hash.take (deq);
+	_hash.take (page.getNumber ());
+	_pages.removeAll (page.getNumber ());
 
-		if (deq == rpage.getNumber ())
-			inCache = false;
+	while (_usedMemory + newSize > NSR_PAGES_CACHE_MAX_STORAGE &&
+	       !_pages.isEmpty ()) {
+		boundedPage = qBound (_pages.first (), page.getNumber (), _pages.last ());
+
+		if (boundedPage < (_pages.first () - _pages.last () + 1) / 2.0)
+			deqPage = _pages.takeLast ();
+		else
+			deqPage = _pages.takeFirst ();
+
+		NSRRenderedPage rpage = _hash.take (deqPage);
 
 		_usedMemory -= (rpage.getSize().width () * rpage.getSize().height () * 4);
 	}
 
-	if (!inCache)
-		_pagesByTime.enqueue (page.getNumber ());
+	_pages.append (page.getNumber ());
+	qSort (_pages);
 
 	_hash.insert (page.getNumber (), page);
 	_usedMemory += newSize;
@@ -68,9 +70,6 @@ NSRPagesCache::addPage (NSRRenderedPage& page)
 void NSRPagesCache::clearStorage ()
 {
 	_hash.clear ();
-	_pagesByTime.clear ();
+	_pages.clear ();
 	_usedMemory = 0;
 }
-
-
-
