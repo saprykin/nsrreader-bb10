@@ -2,7 +2,8 @@
 
 NSRSession::NSRSession () :
 	_file (QString()),
-	_pos (QPoint (0, 0)),
+	_pos (QPointF (0, 0)),
+	_textPos (QPointF (0, 0)),
 	_zoomGraphic (100.0),
 	_angle (0.0),
 	_page (0),
@@ -18,10 +19,12 @@ NSRSession::NSRSession (const QString& file,
 			int zoomText,
 			double zoomGraphic,
 			bool isFitToWidth,
-			const QPoint& pos,
+			const QPointF& pos,
+			const QPointF& textPos,
 			double angle) :
 	_file (file),
 	_pos (pos),
+	_textPos (_textPos),
 	_zoomGraphic (zoomGraphic),
 	_angle (angle),
 	_page (page),

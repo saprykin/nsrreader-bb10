@@ -35,9 +35,9 @@ public:
 	void resetPage ();
 	void setViewMode (NSRPageView::NSRViewMode mode);
 	NSRPageView::NSRViewMode getViewMode () const;
-	void setScrollPosition (const QPointF& pos);
-	QPointF getScrollPosition () const;
-	void setScrollPositionOnLoad (const QPointF& pos);
+	void setScrollPosition (const QPointF& pos, NSRPageView::NSRViewMode mode);
+	QPointF getScrollPosition (NSRPageView::NSRViewMode mode) const;
+	void setScrollPositionOnLoad (const QPointF& pos, NSRPageView::NSRViewMode mode);
 	bool isInvertedColors () const;
 	void setInvertedColors (bool inv);
 	QSize getSize () const;
@@ -78,6 +78,7 @@ private:
 	QSize				_size;
 	QSize				_initialScaleSize;
 	QPointF				_delayedScrollPos;
+	QPointF				_delayedTextScrollPos;
 	QTime				_lastTapTime;
 	double				_currentZoom;
 	double				_minZoom;
@@ -85,7 +86,6 @@ private:
 	int				_lastTapTimer;
 	int				_initialFontSize;
 	bool				_isInvertedColors;
-	bool				_useDelayedScroll;
 	bool				_isZooming;
 	bool				_isZoomingEnabled;
 };

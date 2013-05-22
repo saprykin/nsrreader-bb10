@@ -486,7 +486,10 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 
 	session.setZoomScreenWidth (width);
 	_pageView->setTextZoom (session.getZoomText ());
-	_pageView->setScrollPositionOnLoad (session.getPosition ());
+	_pageView->setScrollPositionOnLoad (session.getPosition (),
+					    NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+	_pageView->setScrollPositionOnLoad (session.getTextPosition (),
+					    NSRPageView::NSR_VIEW_MODE_TEXT);
 	_core->loadSession (&session);
 }
 
@@ -504,7 +507,8 @@ NSRReaderBB10::saveSession ()
 	session.setFitToWidth (_core->isFitToWidth ());
 	session.setZoomGraphic (_core->getZoom ());
 	session.setZoomText (_pageView->getTextZoom ());
-	session.setPosition (_pageView->getScrollPosition().toPoint ());
+	session.setPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_GRAPHIC));
+	session.setTextPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_TEXT));
 	settings.saveSession (&session);
 }
 

@@ -30,7 +30,6 @@ NSRPageView::NSRPageView (Container *parent) :
 	_lastTapTimer (-1),
 	_initialFontSize (100),
 	_isInvertedColors (false),
-	_useDelayedScroll (false),
 	_isZooming (false),
 	_isZoomingEnabled (true)
 {
@@ -112,18 +111,19 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 
 	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION) {
 		_textArea->setText (page.getText ());
-		_textScrollView->scrollToPoint (0, 0);
+		setScrollPosition (_delayedTextScrollPos, NSR_VIEW_MODE_TEXT);
 	}
 
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
 	_currentZoom = page.getZoom ();
 
-	if (_useDelayedScroll) {
-		_useDelayedScroll = false;
-		setScrollPosition (_delayedScrollPos);
-	} else if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION)
-		setScrollPosition (QPointF (0.0, 0.0));
+	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION ||
+	    !_delayedScrollPos.isNull ())
+		setScrollPosition (_delayedScrollPos, NSR_VIEW_MODE_GRAPHIC);
+
+	_delayedScrollPos = QPointF (0, 0);
+	_delayedTextScrollPos = QPointF (0, 0);
 }
 
 void
@@ -252,22 +252,49 @@ NSRPageView::getViewMode () const
 }
 
 void
-NSRPageView::setScrollPosition (const QPointF& pos)
+NSRPageView::setScrollPosition (const QPointF& pos, NSRPageView::NSRViewMode mode)
 {
-	_scrollView->scrollToPoint (pos.x (), pos.y ());
+	switch (mode) {
+	case NSR_VIEW_MODE_GRAPHIC:
+		_scrollView->scrollToPoint (pos.x (), pos.y ());
+		break;
+	case NSR_VIEW_MODE_TEXT:
+		_textScrollView->scrollToPoint (pos.x (), pos.y ());
+		break;
+	case NSR_VIEW_MODE_PREFERRED:
+	default:
+		break;
+	}
 }
 
 QPointF
-NSRPageView::getScrollPosition () const
+NSRPageView::getScrollPosition (NSRPageView::NSRViewMode mode) const
 {
-	return _scrollView->viewableArea().topLeft ();
+	switch (mode) {
+	case NSR_VIEW_MODE_GRAPHIC:
+		return _scrollView->viewableArea().topLeft ();
+	case NSR_VIEW_MODE_TEXT:
+		return _textScrollView->viewableArea().topLeft ();
+	case NSR_VIEW_MODE_PREFERRED:
+	default:
+		return QPointF (0, 0);
+	}
 }
 
 void
-NSRPageView::setScrollPositionOnLoad (const QPointF& pos)
+NSRPageView::setScrollPositionOnLoad (const QPointF& pos, NSRPageView::NSRViewMode mode)
 {
-	_useDelayedScroll = true;
-	_delayedScrollPos = pos;
+	switch (mode) {
+	case NSR_VIEW_MODE_GRAPHIC:
+		_delayedScrollPos = pos;
+		break;
+	case NSR_VIEW_MODE_TEXT:
+		_delayedTextScrollPos = pos;
+		break;
+	case NSR_VIEW_MODE_PREFERRED:
+	default:
+		break;
+	}
 }
 
 void NSRPageView::timerEvent (QTimerEvent* ev)
