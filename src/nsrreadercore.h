@@ -29,7 +29,7 @@ public:
 	void openDocument (const QString &path);
 	bool isDocumentOpened () const;
 	void closeDocument ();
-	QString getDocumentPaht () const;
+	QString getDocumentPath () const;
 	NSRRenderedPage getCurrentPage () const;
 	int getPagesCount () const;
 	void setPassword (const QString &pass);

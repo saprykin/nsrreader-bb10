@@ -114,7 +114,7 @@ NSRReaderCore::closeDocument ()
 }
 
 QString
-NSRReaderCore::getDocumentPaht () const
+NSRReaderCore::getDocumentPath () const
 {
 	if (_doc == NULL)
 		return QString ();

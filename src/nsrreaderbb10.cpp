@@ -280,7 +280,7 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 {
 	NSRSettings	settings;
 
-	if (_core->getDocumentPaht () == files.first ()) {
+	if (_core->getDocumentPath () == files.first ()) {
 		_toast->setBody (trUtf8 ("Selected file is already opened."));
 		_toast->resetButton ();
 		_toast->show ();
@@ -377,7 +377,7 @@ NSRReaderBB10::onShareActionTriggered ()
 	if (!_core->isDocumentOpened ())
 		return;
 
-	NSRFileSharer::getInstance()->shareFile (_core->getDocumentPaht ());
+	NSRFileSharer::getInstance()->shareFile (_core->getDocumentPath ());
 }
 
 void
@@ -406,7 +406,7 @@ NSRReaderBB10::updateVisualControls ()
 				       	     _pageView->getViewMode() == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 	_actionAggregator->setActionEnabled ("share",
 				       	     _core->isDocumentOpened () &&
-				       	     NSRFileSharer::isSharable (_core->getDocumentPaht ()));
+				       	     NSRFileSharer::isSharable (_core->getDocumentPath ()));
 	_pageView->setVisible (_core->isDocumentOpened ());
 	_welcomeView->setVisible (!_core->isDocumentOpened ());
 
@@ -502,7 +502,7 @@ NSRReaderBB10::saveSession ()
 	if (!_core->isDocumentOpened () || _core->isPageRendering ())
 		return;
 
-	session.setFile (_core->getDocumentPaht ());
+	session.setFile (_core->getDocumentPath ());
 	session.setPage (_core->getCurrentPage().getNumber ());
 	session.setFitToWidth (_core->isFitToWidth ());
 	session.setZoomGraphic (_core->getZoom ());
