@@ -670,6 +670,8 @@ NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
 		newMode = mode;
 
 	_pageView->setViewMode (newMode);
+	_actionAggregator->setActionEnabled ("fit-to-width", _core->isDocumentOpened () &&
+							     newMode == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 }
 
 void
@@ -680,7 +682,8 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 		prefsPage->saveSettings ();
 
 		reloadSettings ();
-		updateVisualControls ();
+
+		_actionAggregator->setActionEnabled ("prefs", true);
 	}
 
 	if (page != NULL)
