@@ -60,5 +60,5 @@ NSRFileSharer::shareFile (const QString& path)
 bool
 NSRFileSharer::isSharable (const QString& path)
 {
-	return path.startsWith ("app/native/assets", Qt::CaseSensitive);
+	return !path.startsWith ("app/native/assets", Qt::CaseSensitive);
 }
