@@ -75,6 +75,11 @@
         <source>Page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Fit to Width</source>
+        <comment>Fit document to screen width</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRPreferencesPage</name>
@@ -148,11 +153,6 @@
     </message>
     <message>
         <source>Recent Documents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fit to Width</source>
-        <comment>Fit document to screen width</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>

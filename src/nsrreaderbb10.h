@@ -39,7 +39,6 @@ private Q_SLOTS:
     void onGotoActionTriggered ();
     void onPrefsActionTriggered ();
     void onRecentDocsTriggered ();
-    void onFitToWidthTriggered ();
     void onHelpActionTriggered ();
     void onShareActionTriggered ();
     void onPageRendered (int number);

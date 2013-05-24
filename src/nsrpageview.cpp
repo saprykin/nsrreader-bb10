@@ -98,13 +98,19 @@ NSRPageView::NSRPageView (Container *parent) :
 	rotateLeftAction->setImageSource (QUrl ("asset:///rotate-left.png"));
 	ActionItem *rotateRightAction = ActionItem::create().title (trUtf8 ("Rotate Right"));
 	rotateRightAction->setImageSource (QUrl ("asset:///rotate-right.png"));
+	ActionItem *fitToWidthAction = ActionItem::create().title (trUtf8 ("Fit to Width",
+								  	   "Fit document to screen width"));
+	fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
+
 
 	_actionSet = ActionSet::create().title(trUtf8 ("Page")).subtitle ("Graphical Mode");
+	_actionSet->add (fitToWidthAction);
 	_actionSet->add (rotateLeftAction);
 	_actionSet->add (rotateRightAction);
 
 	connect (rotateLeftAction, SIGNAL (triggered ()), this, SIGNAL (rotateLeftRequested ()));
 	connect (rotateRightAction, SIGNAL (triggered ()), this, SIGNAL (rotateRightRequested ()));
+	connect (fitToWidthAction, SIGNAL (triggered ()), this, SIGNAL (fitToWidthRequested ()));
 
 	_scrollView->addActionSet (_actionSet);
 

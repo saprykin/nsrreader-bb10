@@ -139,8 +139,6 @@ NSRReaderBB10::initFullUI ()
 	gotoAction->setTitle (trUtf8 ("Go to", "Go to page"));
 	SettingsActionItem *prefsAction = SettingsActionItem::create().title(trUtf8 ("Settings"));
 	ActionItem *recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
-	ActionItem *fitToWidthAction = ActionItem::create().enabled (false);
-	fitToWidthAction->setTitle (trUtf8 ("Fit to Width", "Fit document to screen width"));
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share document between users"));
@@ -150,7 +148,6 @@ NSRReaderBB10::initFullUI ()
 	_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
 	_page->addAction (recentDocsAction, ActionBarPlacement::InOverflow);
-	_page->addAction (fitToWidthAction, ActionBarPlacement::InOverflow);
 	_page->addAction (shareAction, ActionBarPlacement::InOverflow);
 
 	_actionAggregator->addAction ("open", openAction);
@@ -158,7 +155,6 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("next", nextPageAction);
 	_actionAggregator->addAction ("goto", gotoAction);
 	_actionAggregator->addAction ("recent-docs", recentDocsAction);
-	_actionAggregator->addAction ("fit-to-width", fitToWidthAction);
 	_actionAggregator->addAction ("share", shareAction);
 	_actionAggregator->addAction ("prefs", prefsAction);
 	_actionAggregator->addAction ("help", helpAction);
@@ -168,7 +164,6 @@ NSRReaderBB10::initFullUI ()
 	nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 	gotoAction->setImageSource (QUrl ("asset:///goto.png"));
 	recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
-	fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
 
@@ -193,7 +188,6 @@ NSRReaderBB10::initFullUI ()
 	connect (gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
 	connect (prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
 	connect (recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
-	connect (fitToWidthAction, SIGNAL (triggered ()), this, SLOT (onFitToWidthTriggered ()));
 	connect (helpAction, SIGNAL (triggered ()), this, SLOT (onHelpActionTriggered ()));
 	connect (shareAction, SIGNAL (triggered ()), this, SLOT (onShareActionTriggered ()));
 
@@ -359,12 +353,6 @@ NSRReaderBB10::onRecentDocsTriggered ()
 }
 
 void
-NSRReaderBB10::onFitToWidthTriggered ()
-{
-	_pageView->fitToWidth ();
-}
-
-void
 NSRReaderBB10::onHelpActionTriggered ()
 {
 	NSRAboutPage *aboutPage = new NSRAboutPage ();
@@ -403,9 +391,6 @@ NSRReaderBB10::updateVisualControls ()
 	_actionAggregator->setActionEnabled ("prefs", true);
 	_actionAggregator->setActionEnabled ("help", true);
 	_actionAggregator->setActionEnabled ("recent-docs", true);
-	_actionAggregator->setActionEnabled ("fit-to-width",
-				       	     _core->isDocumentOpened () &&
-				       	     _pageView->getViewMode() == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 	_actionAggregator->setActionEnabled ("share",
 				       	     _core->isDocumentOpened () &&
 				       	     NSRFileSharer::isSharable (_core->getDocumentPath ()));
@@ -673,8 +658,6 @@ NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
 		newMode = mode;
 
 	_pageView->setViewMode (newMode);
-	_actionAggregator->setActionEnabled ("fit-to-width", _core->isDocumentOpened () &&
-							     newMode == NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 }
 
 void
@@ -734,8 +717,7 @@ NSRReaderBB10::onNextPageRequested ()
 void
 NSRReaderBB10::onFitToWidthRequested ()
 {
-	if (_actionAggregator->isActionEnabled ("fit-to-width"))
-		onFitToWidthTriggered ();
+	_pageView->fitToWidth ();
 }
 
 void
