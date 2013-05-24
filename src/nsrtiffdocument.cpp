@@ -12,6 +12,8 @@ NSRTIFFDocument::NSRTIFFDocument(const QString& file, QObject *parent) :
 	if ((_tiff = TIFFOpen (file.toUtf8().data(), "r")) == NULL)
 		return;
 
+	_pageCount = 1;
+
 	while (TIFFReadDirectory (_tiff))
 		++_pageCount;
 
