@@ -7,6 +7,8 @@
 #include <QFile>
 #include <QFileInfo>
 
+#include <float.h>
+
 NSRReaderCore::NSRReaderCore (QObject *parent) :
 	QObject (parent),
 	_doc (NULL),
@@ -330,6 +332,44 @@ NSRReaderCore::zoomOut ()
 }
 
 void
+NSRReaderCore::rotate (double rot)
+{
+	if (_doc == NULL || !_doc->isValid ())
+		return;
+
+	int newRot = (int) normalizeAngle (_doc->getRotation () + rot);
+
+	if (newRot == _doc->getRotation ())
+		return;
+
+	_doc->setRotation (newRot);
+
+	if (_zoomDoc != NULL) {
+		_zoomDoc->setRotation (_doc->getRotation ());
+
+		if (_zoomThread != NULL && _zoomThread->isRunning ()) {
+			_zoomThread->setDocumentChanged (true);
+			_zoomThread->cancelRequests ();
+		}
+	}
+
+	_cache->clearStorage ();
+
+	loadPage (PAGE_LOAD_CUSTOM,
+		  NSRRenderedPage::NSR_RENDER_REASON_ROTATION,
+		  _currentPage.getNumber ());
+}
+
+double
+NSRReaderCore::getRotation () const
+{
+	if (_doc == NULL || !_doc->isValid ())
+		return 0;
+
+	return _doc->getRotation ();
+}
+
+void
 NSRReaderCore::onRenderDone ()
 {
 	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
@@ -487,5 +527,20 @@ NSRReaderCore::documentByPath (const QString& path)
 
 	return res;
 }
+
+double
+NSRReaderCore::normalizeAngle (double angle) const
+{
+	if (qAbs (angle) / 360.0 > 1.0)
+		angle -= ((long) (angle / 360.0) * 360);
+
+	if (angle < 0)
+		angle += 360.0;
+	else if (qAbs (angle - 360.0) <= DBL_EPSILON)
+		angle = 0.0;
+
+	return angle;
+}
+
 
 

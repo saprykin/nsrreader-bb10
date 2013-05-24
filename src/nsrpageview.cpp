@@ -9,6 +9,7 @@
 #include <bb/cascades/LayoutUpdateHandler>
 #include <bb/cascades/PinchHandler>
 #include <bb/cascades/ImageTracker>
+#include <bb/cascades/ActionItem>
 
 using namespace bb::cascades;
 
@@ -22,6 +23,8 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textArea (NULL),
 	_rootContainer (NULL),
 	_textContainer (NULL),
+	_imageContainer (NULL),
+	_actionSet (NULL),
 	_viewMode (NSR_VIEW_MODE_GRAPHIC),
 	_lastTapTime (QTime::currentTime ()),
 	_currentZoom (0.0),
@@ -43,12 +46,12 @@ NSRPageView::NSRPageView (Container *parent) :
 					.vertical(VerticalAlignment::Center);
 	_imageView->setImageSource (QUrl (NSR_LOGO_WELCOME));
 
-	Container *container = Container::create().horizontal(HorizontalAlignment::Fill)
-						  .vertical(VerticalAlignment::Fill)
-						  .layout(DockLayout::create ())
-						  .background(Color::Black);
-	container->add (_imageView);
-	_scrollView->setContent (container);
+	_imageContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					     .vertical(VerticalAlignment::Fill)
+					     .layout(DockLayout::create ())
+					     .background(Color::Black);
+	_imageContainer->add (_imageView);
+	_scrollView->setContent (_imageContainer);
 
 	_textContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
@@ -91,6 +94,20 @@ NSRPageView::NSRPageView (Container *parent) :
 	_scrollView->addGestureHandler (dtapHandler);
 	_textArea->addGestureHandler (dtaptHandler);
 
+	ActionItem *rotateLeftAction = ActionItem::create().title (trUtf8 ("Rotate Left"));
+	rotateLeftAction->setImageSource (QUrl ("asset:///rotate-left.png"));
+	ActionItem *rotateRightAction = ActionItem::create().title (trUtf8 ("Rotate Right"));
+	rotateRightAction->setImageSource (QUrl ("asset:///rotate-right.png"));
+
+	_actionSet = ActionSet::create().title(trUtf8 ("Page")).subtitle ("Graphical Mode");
+	_actionSet->add (rotateLeftAction);
+	_actionSet->add (rotateRightAction);
+
+	connect (rotateLeftAction, SIGNAL (triggered ()), this, SIGNAL (rotateLeftRequested ()));
+	connect (rotateRightAction, SIGNAL (triggered ()), this, SIGNAL (rotateRightRequested ()));
+
+	_scrollView->addActionSet (_actionSet);
+
 	setLayout (DockLayout::create ());
 	add (_scrollView);
 	add (_textScrollView);
@@ -109,18 +126,24 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_isZooming)
 		return;
 
+	if (_scrollView->actionSetCount () == 0)
+		_scrollView->addActionSet (_actionSet);
+
 	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION) {
 		_textArea->setText (page.getText ());
 		setScrollPosition (_delayedTextScrollPos, NSR_VIEW_MODE_TEXT);
 	}
 
-	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
+	_imageView->setImage (page.getImage ());
 	_currentZoom = page.getZoom ();
 
 	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION ||
 	    !_delayedScrollPos.isNull ())
 		setScrollPosition (_delayedScrollPos, NSR_VIEW_MODE_GRAPHIC);
+
+	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_ROTATION)
+		setScrollPosition (QPointF (0, 0), NSR_VIEW_MODE_GRAPHIC);
 
 	_delayedScrollPos = QPointF (0, 0);
 	_delayedTextScrollPos = QPointF (0, 0);
@@ -133,6 +156,8 @@ NSRPageView::resetPage ()
 
 	_imageView->setImageSource (tracker.imageSource ());
 	_imageView->setPreferredSize (tracker.width (), tracker.height ());
+	_imageView->setRotationZ (0.0);
+	_scrollView->removeAllActionSets ();
 	_textArea->resetText ();
 	_currentZoom = 100;
 }

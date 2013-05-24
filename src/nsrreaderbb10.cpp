@@ -94,6 +94,8 @@ NSRReaderBB10::initFullUI ()
 	connect (_pageView, SIGNAL (prevPageRequested ()), this, SLOT (onPrevPageRequested ()));
 	connect (_pageView, SIGNAL (nextPageRequested ()), this, SLOT (onNextPageRequested ()));
 	connect (_pageView, SIGNAL (fitToWidthRequested ()), this, SLOT (onFitToWidthRequested ()));
+	connect (_pageView, SIGNAL (rotateLeftRequested ()), this, SLOT (onRotateLeftRequested ()));
+	connect (_pageView, SIGNAL (rotateRightRequested ()), this, SLOT (onRotateRightRequested ()));
 
 	_pageStatus = new NSRPageStatus ();
 	_pageStatus->setHorizontalAlignment(HorizontalAlignment::Left);
@@ -506,6 +508,7 @@ NSRReaderBB10::saveSession ()
 	session.setPage (_core->getCurrentPage().getNumber ());
 	session.setFitToWidth (_core->isFitToWidth ());
 	session.setZoomGraphic (_core->getZoom ());
+	session.setRotation (_core->getRotation ());
 	session.setZoomText (_pageView->getTextZoom ());
 	session.setPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_GRAPHIC));
 	session.setTextPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_TEXT));
@@ -785,3 +788,18 @@ NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
 		loadSession (file, page);
 	}
 }
+
+void
+NSRReaderBB10::onRotateLeftRequested ()
+{
+	if (_core->isDocumentOpened ())
+		_core->rotate (-90);
+}
+
+void
+NSRReaderBB10::onRotateRightRequested ()
+{
+	if (_core->isDocumentOpened ())
+		_core->rotate (90);
+}
+

@@ -62,6 +62,21 @@
     </message>
 </context>
 <context>
+    <name>NSRPageView</name>
+    <message>
+        <source>Rotate Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>NSRPreferencesPage</name>
     <message>
         <source>Text Encoding</source>

@@ -61,6 +61,8 @@ private Q_SLOTS:
     void onSystemShortcutTriggered ();
     void onStartGuideRequested ();
     void onInvoke (const bb::system::InvokeRequest& req);
+    void onRotateLeftRequested ();
+    void onRotateRightRequested ();
 
 private:
     void initFullUI ();

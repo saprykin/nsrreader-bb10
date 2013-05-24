@@ -45,6 +45,8 @@ public:
 	void setZoom (double zoom, bool toWidth);
 	void zoomIn ();
 	void zoomOut ();
+	void rotate (double rot);
+	double getRotation () const;
 
 Q_SIGNALS:
 	void pageRendered (int number);
@@ -64,6 +66,7 @@ private:
 		       int				pageNumber = 0);
 	NSRAbstractDocument * copyDocument (const NSRAbstractDocument *doc);
 	NSRAbstractDocument * documentByPath (const QString& path);
+	double normalizeAngle (double angle) const;
 
 	NSRAbstractDocument	*_doc;
 	NSRAbstractDocument	*_zoomDoc;

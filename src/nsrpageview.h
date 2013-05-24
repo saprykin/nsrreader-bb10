@@ -16,6 +16,7 @@
 #include <bb/cascades/TapEvent>
 #include <bb/cascades/DoubleTapEvent>
 #include <bb/cascades/PinchEvent>
+#include <bb/cascades/ActionSet>
 
 class NSRPageView: public bb::cascades::Container
 {
@@ -54,6 +55,8 @@ Q_SIGNALS:
 	void nextPageRequested ();
 	void prevPageRequested ();
 	void fitToWidthRequested ();
+	void rotateLeftRequested ();
+	void rotateRightRequested ();
 
 protected:
 	void timerEvent (QTimerEvent *ev);
@@ -74,6 +77,8 @@ private:
 	bb::cascades::TextArea		*_textArea;
 	bb::cascades::Container		*_rootContainer;
 	bb::cascades::Container		*_textContainer;
+	bb::cascades::Container		*_imageContainer;
+	bb::cascades::ActionSet		*_actionSet;
 	NSRViewMode			_viewMode;
 	QSize				_size;
 	QSize				_initialScaleSize;
