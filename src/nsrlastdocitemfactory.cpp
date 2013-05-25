@@ -31,9 +31,9 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 	ActionItem *shareAction = ActionItem::create().title (trUtf8 ("Share"));
 	ActionItem *removeAction = ActionItem::create().title (trUtf8 ("Remove from List"));
 
-	openAction->setUserData (0, (QObjectUserData *) item);
-	shareAction->setUserData (0, (QObjectUserData *) item);
-	removeAction->setUserData (0, (QObjectUserData *) item);
+	openAction->setProperty ("document-path", item->getDocumentPath ());
+	shareAction->setProperty ("document-path", item->getDocumentPath ());
+	removeAction->setProperty ("document-path", item->getDocumentPath ());
 
 	openAction->setImageSource (QUrl ("asset:///open.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
@@ -66,11 +66,12 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 	QVariantMap map = data.value<QVariantMap> ();
 	NSRLastDocItem *item = static_cast<NSRLastDocItem *> (listItem);
 
-	if (item->actionSetCount () > 0)
+	if (item->actionSetCount () > 0) {
 		item->actionSetAt(0)->setTitle (map["title"].toString ());
 
-	if (NSRFileSharer::isSharable (map["path"].toString ()))
-		item->actionSetAt(0)->at(1)->setEnabled (false);
+		if (NSRFileSharer::isSharable (map["path"].toString ()))
+			item->actionSetAt(0)->at(1)->setEnabled (false);
+	}
 
 	item->updateItem (map["title"].toString (),
 			  map["image"].toString (),

@@ -22,17 +22,20 @@ NSRLastDocsListView::~NSRLastDocsListView ()
 void
 NSRLastDocsListView::onRemoveActionTriggered ()
 {
-	if (sender()->userData (0) == NULL)
+	if (sender ()== NULL)
 		return;
 
-	NSRLastDocItem		*item = (NSRLastDocItem *) (sender()->userData (0));
+	QString			docPath = sender()->property("document-path").toString ();
 	QVariantListDataModel	*model = static_cast < QVariantListDataModel * > (dataModel ());
+
+	if (docPath.isEmpty ())
+		return;
 
 	int count = model->size ();
 	for (int i = 0; i < count; ++i)
-		if (model->value(i).toMap()["path"].toString () == item->getDocumentPath ()) {
-			NSRSettings().removeLastDocument (item->getDocumentPath ());
-			QFile::remove (NSRThumbnailer::getThumnailPath (item->getDocumentPath ()));
+		if (model->value(i).toMap()["path"].toString () == docPath) {
+			NSRSettings().removeLastDocument (docPath);
+			QFile::remove (NSRThumbnailer::getThumnailPath (docPath));
 			model->removeAt (i);
 			break;
 		}
@@ -41,20 +44,27 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 void
 NSRLastDocsListView::onOpenActionTriggered ()
 {
-	if (sender()->userData (0) == NULL)
+	if (sender () == NULL)
 		return;
 
-	NSRLastDocItem *item = (NSRLastDocItem *) (sender()->userData (0));
+	QString docPath = sender()->property("document-path").toString ();
 
-	emit documentRequested (item->getDocumentPath ());
+	if (docPath.isEmpty ())
+		return;
+
+	emit documentRequested (docPath);
 }
 
 void
 NSRLastDocsListView::onShareActionTriggered ()
 {
-	if (sender()->userData (0) == NULL)
+	if (sender () == NULL)
 		return;
 
-	NSRLastDocItem	*item = (NSRLastDocItem *) (sender()->userData (0));
-	NSRFileSharer::getInstance()->shareFile (item->getDocumentPath ());
+	QString docPath = sender()->property("document-path").toString ();
+
+	if (docPath.isEmpty ())
+		return;
+
+	NSRFileSharer::getInstance()->shareFile (docPath);
 }
