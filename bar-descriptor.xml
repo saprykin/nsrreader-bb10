@@ -72,7 +72,7 @@
     <name>NSR Reader</name>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/nsrreader-bb10" entry="true" type="Qnx/Elf">nsrreader-bb10</asset>
+       <asset path="arm/o.le-v7-g/nsrreader_bb10" entry="true" type="Qnx/Elf">nsrreader_bb10</asset>
     </configuration>
     <configuration name="Device-Release">
        <entryPointType>Qnx/Cascades</entryPointType>
