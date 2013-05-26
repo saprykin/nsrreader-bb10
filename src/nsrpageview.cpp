@@ -405,6 +405,7 @@ NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 
 		_initialScaleSize = QSize (_imageView->preferredWidth (),
 					   _imageView->preferredHeight ());
+		_initialScalePos = _scrollView->viewableArea().center ();
 	}
 
 	_isZooming = true;
@@ -431,9 +432,15 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 		else if (scale * _currentZoom > _maxZoom)
 			scale = (double) _maxZoom / _currentZoom;
 
-		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >= 4)
+		QPointF center = _initialScalePos * scale;
+
+		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >= 4) {
 			_imageView->setPreferredSize (_initialScaleSize.width () * scale,
 						      _initialScaleSize.height () * scale);
+			_scrollView->scrollToPoint (center.x () - _size.width () / 2,
+						    center.y () - _size.height () / 2,
+						    ScrollAnimation::None);
+		}
 	}
 
 	event->accept ();

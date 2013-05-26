@@ -84,6 +84,7 @@ private:
 	QSize				_initialScaleSize;
 	QPointF				_delayedScrollPos;
 	QPointF				_delayedTextScrollPos;
+	QPointF				_initialScalePos;
 	QTime				_lastTapTime;
 	double				_currentZoom;
 	double				_minZoom;
