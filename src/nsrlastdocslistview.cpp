@@ -22,7 +22,7 @@ NSRLastDocsListView::~NSRLastDocsListView ()
 void
 NSRLastDocsListView::onRemoveActionTriggered ()
 {
-	if (sender ()== NULL)
+	if (sender () == NULL)
 		return;
 
 	QString			docPath = sender()->property("document-path").toString ();
