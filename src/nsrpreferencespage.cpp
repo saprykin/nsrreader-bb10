@@ -210,6 +210,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	setContent (scrollView);
 	setTitleBar (TitleBar::create().title (trUtf8 ("Settings")));
+
+	connect (_isFullscreen, SIGNAL (checkedChanged (bool)), this, SIGNAL (switchFullscreen (bool)));
 }
 
 NSRPreferencesPage::~NSRPreferencesPage ()

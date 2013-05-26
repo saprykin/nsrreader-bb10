@@ -14,6 +14,9 @@ public:
 
 	void saveSettings ();
 
+Q_SIGNALS:
+	void switchFullscreen (bool isFullscreen);
+
 private:
 	bb::cascades::ToggleButton	*_isSaveLastPos;
 	bb::cascades::ToggleButton	*_isFullscreen;

@@ -62,6 +62,7 @@ private Q_SLOTS:
     void onInvoke (const bb::system::InvokeRequest& req);
     void onRotateLeftRequested ();
     void onRotateRightRequested ();
+    void onFullscreenSwitchRequested (bool isFullscreen);
 
 private:
     void initFullUI ();

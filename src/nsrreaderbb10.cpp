@@ -338,7 +338,13 @@ void
 NSRReaderBB10::onPrefsActionTriggered ()
 {
 	_actionAggregator->setActionEnabled ("prefs", false);
-	_naviPane->push (new NSRPreferencesPage ());
+
+	NSRPreferencesPage *prefsPage = new NSRPreferencesPage ();
+
+	connect (prefsPage, SIGNAL (switchFullscreen (bool)),
+		 this, SLOT (onFullscreenSwitchRequested (bool)));
+
+	_naviPane->push (prefsPage);
 }
 
 void
@@ -425,10 +431,10 @@ NSRReaderBB10::reloadSettings ()
 
 	_core->reloadSettings (&settings);
 	_pageView->setInvertedColors (settings.isInvertedColors ());
-	_isFullscreen = settings.isFullscreenMode ();
-
-	if (!_isFullscreen)
-		_page->setActionBarVisibility (ChromeVisibility::Visible);
+//	_isFullscreen = settings.isFullscreenMode ();
+//
+//	if (!_isFullscreen)
+//		_page->setActionBarVisibility (ChromeVisibility::Visible);
 
 	/* Check whether we have noted user about text mode */
 	if (settings.isWordWrap () && !settings.isTextModeNoted ()) {
@@ -641,7 +647,7 @@ NSRReaderBB10::onPageTapped ()
 		return;
 
 	if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
-		_page->setActionBarVisibility (ChromeVisibility::Visible);
+		_page->setActionBarVisibility (ChromeVisibility::Overlay);
 	else
 		_page->setActionBarVisibility (ChromeVisibility::Hidden);
 }
@@ -785,3 +791,16 @@ NSRReaderBB10::onRotateRightRequested ()
 		_core->rotate (90);
 }
 
+void
+NSRReaderBB10::onFullscreenSwitchRequested (bool isFullscreen)
+{
+	if (isFullscreen == _isFullscreen)
+		return;
+
+	_isFullscreen = isFullscreen;
+
+	if (!_isFullscreen)
+		_page->setActionBarVisibility (ChromeVisibility::Hidden);
+	else
+		_page->setActionBarVisibility (ChromeVisibility::Visible);
+}
