@@ -243,6 +243,16 @@ NSRPageView::fitToWidth ()
 
 	double scale = _size.width () / _imageView->preferredWidth ();
 
+	_imageView->setImplicitLayoutAnimationsEnabled (false);
+	_scrollView->setImplicitLayoutAnimationsEnabled (false);
+	_imageContainer->setImplicitLayoutAnimationsEnabled (false);
+
+	_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
+
+	_imageView->setImplicitLayoutAnimationsEnabled (true);
+	_scrollView->setImplicitLayoutAnimationsEnabled (true);
+	_imageContainer->setImplicitLayoutAnimationsEnabled (true);
+
 	_imageView->setPreferredSize (_imageView->preferredWidth () * scale,
 				      _imageView->preferredHeight () * scale);
 	_currentZoom *= scale;
@@ -421,8 +431,9 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 		else if (scale * _currentZoom > _maxZoom)
 			scale = (double) _maxZoom / _currentZoom;
 
-		_imageView->setPreferredSize (_initialScaleSize.width () * scale,
-					      _initialScaleSize.height () * scale);
+		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >= 4)
+			_imageView->setPreferredSize (_initialScaleSize.width () * scale,
+						      _initialScaleSize.height () * scale);
 	}
 
 	event->accept ();
