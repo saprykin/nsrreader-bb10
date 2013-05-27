@@ -9,13 +9,17 @@
 
 #include <float.h>
 
-NSRReaderCore::NSRReaderCore (QObject *parent) :
+using namespace bb::system;
+
+NSRReaderCore::NSRReaderCore (bb::system::ApplicationStartupMode::Type startMode,
+			      QObject *parent) :
 	QObject (parent),
 	_doc (NULL),
 	_zoomDoc (NULL),
 	_thread (NULL),
 	_zoomThread (NULL),
-	_cache (NULL)
+	_cache (NULL),
+	_startMode (startMode)
 {
 	_thread		= new NSRRenderThread (this);
 	_zoomThread	= new NSRRenderZoomThread (this);
@@ -52,8 +56,13 @@ NSRReaderCore::openDocument (const QString &path)
 	if (_doc == NULL)
 		return;
 
-	_doc->setTextOnly (settings.isWordWrap ());
-	_doc->setInvertedColors (settings.isInvertedColors ());
+	if (_startMode == ApplicationStartupMode::InvokeCard) {
+		_doc->setTextOnly (false);
+		_doc->setInvertedColors (false);
+	} else {
+		_doc->setTextOnly (settings.isWordWrap ());
+		_doc->setInvertedColors (settings.isInvertedColors ());
+	}
 	_doc->setEncoding (settings.getTextEncoding ());
 
 	if (!_doc->isValid ()) {

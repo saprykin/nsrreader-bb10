@@ -12,6 +12,8 @@
 #include "nsrsettings.h"
 #include "nsrpageview.h"
 
+#include <bb/system/ApplicationStartupMode>
+
 class NSRReaderCore: public QObject
 {
 	Q_OBJECT
@@ -23,7 +25,8 @@ public:
 		PAGE_LOAD_CUSTOM	= 2
 	};
 
-	NSRReaderCore (QObject *parent = 0);
+	NSRReaderCore (bb::system::ApplicationStartupMode::Type startMode,
+		       QObject *parent = 0);
 	virtual ~NSRReaderCore ();
 
 	void openDocument (const QString &path);
@@ -68,12 +71,13 @@ private:
 	NSRAbstractDocument * documentByPath (const QString& path);
 	double normalizeAngle (double angle) const;
 
-	NSRAbstractDocument	*_doc;
-	NSRAbstractDocument	*_zoomDoc;
-	NSRRenderThread		*_thread;
-	NSRRenderZoomThread	*_zoomThread;
-	NSRPagesCache		*_cache;
-	NSRRenderedPage		_currentPage;
+	NSRAbstractDocument				*_doc;
+	NSRAbstractDocument				*_zoomDoc;
+	NSRRenderThread					*_thread;
+	NSRRenderZoomThread				*_zoomThread;
+	NSRPagesCache					*_cache;
+	NSRRenderedPage					_currentPage;
+	bb::system::ApplicationStartupMode::Type	_startMode;
 };
 
 #endif /* NSRREADERCORE_H_ */

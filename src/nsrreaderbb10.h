@@ -19,6 +19,7 @@
 #include <bb/system/SystemToast>
 #include <bb/system/InvokeManager>
 #include <bb/system/InvokeRequest>
+#include <bb/system/CardDoneMessage>
 
 #include <QObject>
 
@@ -63,9 +64,12 @@ private Q_SLOTS:
     void onRotateLeftRequested ();
     void onRotateRightRequested ();
     void onFullscreenSwitchRequested (bool isFullscreen);
+    void onCardPooled (const bb::system::CardDoneMessage& message);
+    void onCardResize (const bb::system::CardResizeMessage& message);
 
 private:
     void initFullUI ();
+    void initCardUI ();
     void updateVisualControls ();
     void disableVisualControls ();
     void reloadSettings ();
@@ -73,6 +77,7 @@ private:
     void saveSession ();
     void zoomIn ();
     void zoomOut ();
+    void resetState ();
 
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;

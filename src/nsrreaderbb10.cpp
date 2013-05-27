@@ -63,6 +63,10 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	connect (_invokeManager, SIGNAL (invoked (const bb::system::InvokeRequest&)),
 		 this, SLOT (onInvoke (const bb::system::InvokeRequest&)));
+	connect (_invokeManager, SIGNAL (cardPooled (const bb::system::CardDoneMessage&)),
+		 this, SLOT (onCardPooled (const bb::system::CardDoneMessage&)));
+	connect (_invokeManager, SIGNAL (cardResize (const bb::system::CardResizeMessage&)),
+		 this, SLOT (onCardResize (const bb::system::CardDoneMessage&)));
 
 	_startMode = _invokeManager->startupMode ();
 
@@ -203,7 +207,7 @@ NSRReaderBB10::initFullUI ()
 	_filePicker->setFilter (QStringList ("*.pdf") << "*.djvu" << "*.djv" <<
 					     "*.tiff" << "*.tif" << "*.txt");
 
-	_core = new NSRReaderCore (this);
+	_core = new NSRReaderCore (_startMode, this);
 
 	connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
 		 this, SLOT (onFileSelected (const QStringList&)));
@@ -236,9 +240,15 @@ NSRReaderBB10::initFullUI ()
 
 	NSRSettings settings;
 
-	_pageView->setViewMode (settings.isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
-							: NSRPageView::NSR_VIEW_MODE_GRAPHIC);
-	_isFullscreen = settings.isFullscreenMode ();
+	if (_startMode == ApplicationStartupMode::InvokeCard) {
+		_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+		_isFullscreen = true;
+		onFullscreenSwitchRequested (true);
+	} else {
+		_pageView->setViewMode (settings.isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
+				: NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+		_isFullscreen = settings.isFullscreenMode ();
+	}
 
 	connect (_pageView, SIGNAL (zoomChanged (double, bool)),
 		 this, SLOT (onZoomChanged (double, bool)));
@@ -269,6 +279,19 @@ NSRReaderBB10::initFullUI ()
 		else
 			updateVisualControls ();
 	}
+}
+
+void
+NSRReaderBB10::initCardUI ()
+{
+	if (_startMode != ApplicationStartupMode::InvokeCard)
+		return;
+
+	_page->removeAction (_actionAggregator->removeAction ("open"));
+	_page->removeAction (_actionAggregator->removeAction ("recent-docs"));
+	_page->removeAction (_actionAggregator->removeAction ("share"));
+
+	_pageView->setInvertedColors (false);
 }
 
 void
@@ -431,10 +454,6 @@ NSRReaderBB10::reloadSettings ()
 
 	_core->reloadSettings (&settings);
 	_pageView->setInvertedColors (settings.isInvertedColors ());
-//	_isFullscreen = settings.isFullscreenMode ();
-//
-//	if (!_isFullscreen)
-//		_page->setActionBarVisibility (ChromeVisibility::Visible);
 
 	/* Check whether we have noted user about text mode */
 	if (settings.isWordWrap () && !settings.isTextModeNoted ()) {
@@ -491,6 +510,9 @@ NSRReaderBB10::saveSession ()
 {
 	NSRSession	session;
 	NSRSettings	settings;
+
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		return;
 
 	if (!_core->isDocumentOpened () || _core->isPageRendering ())
 		return;
@@ -615,11 +637,7 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 	_toast->button()->setLabel ("OK");
 	_toast->show ();
 
-	_pageView->resetPage ();
-	_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
-	_pageStatus->setStatus (0, 0);
-	_readProgress->setPagesCount (0);
-	_readProgress->setCurrentPage (0);
+	resetState ();
 	updateVisualControls ();
 }
 
@@ -657,10 +675,13 @@ NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
 {
 	NSRPageView::NSRViewMode newMode;
 
-	if (mode == NSRPageView::NSR_VIEW_MODE_PREFERRED)
+	if (mode == NSRPageView::NSR_VIEW_MODE_PREFERRED) {
 		newMode = NSRSettings().isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
 						      : NSRPageView::NSR_VIEW_MODE_GRAPHIC;
-	else
+
+		if (_startMode == ApplicationStartupMode::InvokeCard)
+			newMode = NSRPageView::NSR_VIEW_MODE_GRAPHIC;
+	} else
 		newMode = mode;
 
 	_pageView->setViewMode (newMode);
@@ -703,6 +724,14 @@ void
 NSRReaderBB10::onManualExit ()
 {
 	saveSession ();
+
+	if (_startMode == ApplicationStartupMode::InvokeCard) {
+		CardDoneMessage doneMessage;
+
+		doneMessage.setReason ("Exit");
+		_invokeManager->sendCardDone (doneMessage);
+	}
+
 	Application::instance()->quit ();
 }
 
@@ -774,6 +803,9 @@ NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
 	if (target == "com.gmail.reader.nsr") {
 		saveSession ();
 		loadSession (file, page);
+	} else if (target == "com.gmail.reader.nsr.viewer") {
+		initCardUI ();
+		loadSession (file, page);
 	}
 }
 
@@ -804,3 +836,32 @@ NSRReaderBB10::onFullscreenSwitchRequested (bool isFullscreen)
 	else
 		_page->setActionBarVisibility (ChromeVisibility::Visible);
 }
+
+void
+NSRReaderBB10::onCardPooled (const bb::system::CardDoneMessage& message)
+{
+	_core->closeDocument ();
+
+	resetState ();
+
+	_pageView->setVisible (false);
+	_welcomeView->setVisible (true);
+	_invokeManager->sendCardDone (message);
+}
+
+void
+NSRReaderBB10::onCardResize (const bb::system::CardResizeMessage& message)
+{
+	_invokeManager->cardResized (message);
+}
+
+void
+NSRReaderBB10::resetState ()
+{
+	_pageView->resetPage ();
+	_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+	_pageStatus->setStatus (0, 0);
+	_readProgress->setPagesCount (0);
+	_readProgress->setCurrentPage (0);
+}
+
