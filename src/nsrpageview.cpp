@@ -163,7 +163,7 @@ NSRPageView::resetPage ()
 	_imageView->setImageSource (tracker.imageSource ());
 	_imageView->setPreferredSize (tracker.width (), tracker.height ());
 	_imageView->setRotationZ (0.0);
-	_scrollView->removeAllActionSets ();
+	_scrollView->removeActionSet (_actionSet);
 	_textArea->resetText ();
 	_currentZoom = 100;
 }
