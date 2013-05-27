@@ -43,10 +43,10 @@ NSRActionAggregator::isActionEnabled (const QString& name) const
 	return item->isEnabled ();
 }
 
-void
+bb::cascades::AbstractActionItem *
 NSRActionAggregator::removeAction (const QString& name)
 {
-	_hash.remove (name);
+	return _hash.take (name);
 }
 
 void
@@ -64,6 +64,13 @@ NSRActionAggregator::setAllEnabled (bool enabled)
 	for (int i = 0; i < count; ++i)
 		list.at(i)->setEnabled (enabled);
 }
+
+bb::cascades::AbstractActionItem *
+NSRActionAggregator::actionByName (const QString& name)
+{
+	return _hash.value (name);
+}
+
 
 
 

@@ -17,9 +17,10 @@ public:
 	void addAction (const QString& name, bb::cascades::AbstractActionItem *action);
 	void setActionEnabled (const QString& name, bool enabled);
 	bool isActionEnabled (const QString& name) const;
-	void removeAction (const QString& name);
+	bb::cascades::AbstractActionItem * removeAction (const QString& name);
 	void clear ();
 	void setAllEnabled (bool enabled);
+	bb::cascades::AbstractActionItem * actionByName (const QString& name);
 
 private:
 	QHash < QString, bb::cascades::AbstractActionItem * >	_hash;
