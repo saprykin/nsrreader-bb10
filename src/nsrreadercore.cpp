@@ -29,7 +29,7 @@ NSRReaderCore::NSRReaderCore (bb::system::ApplicationStartupMode::Type startMode
 	connect (_zoomThread, SIGNAL (renderDone ()), this, SLOT (onZoomRenderDone ()));
 	connect (_zoomThread, SIGNAL (finished ()), this, SLOT (onZoomThreadFinished ()));
 
-	_thread->setThumbnailRender (true);
+	_thread->setThumbnailRender (_startMode != ApplicationStartupMode::InvokeCard);
 }
 
 NSRReaderCore::~NSRReaderCore ()
