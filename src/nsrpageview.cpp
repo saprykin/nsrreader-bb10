@@ -135,10 +135,11 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_scrollView->actionSetCount () == 0)
 		_scrollView->addActionSet (_actionSet);
 
-	if (_delayedScrollPos.isNull ())
-		_delayedScrollPos = QPointF (_scrollView->viewableArea().left (), 0);
-
 	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION) {
+		/* Set scroll position for graphic mode */
+		if (_delayedScrollPos.isNull ())
+			_delayedScrollPos = QPointF (_scrollView->viewableArea().left (), 0);
+
 		_textArea->setText (page.getText ());
 		setScrollPosition (_delayedTextScrollPos, NSR_VIEW_MODE_TEXT);
 	}
