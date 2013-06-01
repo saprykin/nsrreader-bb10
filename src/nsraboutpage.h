@@ -2,6 +2,8 @@
 #define NSRABOUTPAGE_H_
 
 #include <bb/cascades/Page>
+#include <bb/cascades/Container>
+#include <bb/cascades/ScrollView>
 
 #include <QObject>
 
@@ -12,11 +14,13 @@ public:
 	NSRAboutPage (QObject *parent = 0);
 	virtual ~NSRAboutPage ();
 
-Q_SIGNALS:
-	void startGuideRequested ();
-
 private Q_SLOTS:
-	void onGuideButtonClicked ();
+	void onSelectedIndexChanged (int index);
+
+private:
+	bb::cascades::Container		*_aboutContainer;
+	bb::cascades::Container		*_helpContainer;
+	bb::cascades::ScrollView	*_scrollView;
 };
 
 #endif /* NSRABOUTPAGE_H_ */

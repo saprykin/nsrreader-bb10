@@ -59,7 +59,6 @@ private Q_SLOTS:
     void onNextPageRequested ();
     void onFitToWidthRequested ();
     void onSystemShortcutTriggered ();
-    void onStartGuideRequested ();
     void onInvoke (const bb::system::InvokeRequest& req);
     void onRotateLeftRequested ();
     void onRotateRightRequested ();

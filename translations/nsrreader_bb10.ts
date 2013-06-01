@@ -4,21 +4,107 @@
 <context>
     <name>NSRAboutPage</name>
     <message>
-        <source>About</source>
-        <comment>About a program, window title</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>for BlackBerry%1 10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>If you have any questions or suggestions (or even want to know what does NSR mean), do not hesitate to write me: &lt;a href=&apos;mailto:nsr.reader@gmail.com&apos;&gt;nsr.reader@gmail.com&lt;/a&gt;</source>
+        <source>About</source>
+        <comment>About a program</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Quick Start Guide</source>
-        <comment>Manual for program usage</comment>
+        <source>Help</source>
+        <comment>Help section of a program</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Welcome!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <comment>Navigation between document pages</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <comment>Application settings</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contacts: &lt;a href=&apos;mailto:nsr.reader@gmail.com&apos;&gt;nsr.reader@gmail.com&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tips &amp; Tricks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSR Reader is a handy tool for reading PDF, DjVu, TIFF and TXT documents. Hope you will be enjoying using it! Please read the following instructions and tips to make reading more comfortable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go previous page, on the right area to go next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. If you have physical keyboard use &lt;i&gt;P&lt;/i&gt; key to navigate to previous page and &lt;i&gt;N&lt;/i&gt; key for the next page (see right Action Menu&apos;s tooltips). Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Save Last Position&lt;/b&gt; &amp;ndash; NSR Reader will save last position (opened document, page number) and restore it on the next launch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Fullscreen Mode&lt;/b&gt; &amp;ndash; Action Bar at the bottom of the screen will be hidden (tap the screen somewhere to show or hide it again).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text Reflow&lt;/b&gt; &amp;ndash; this is a special mode for documents which contain a lot of text information. In this mode NSR Reader will display only text data and wrap lines for comfortable reading.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Invert Colors&lt;/b&gt; &amp;ndash; use this feature during dark days or if you have OLED display (like &lt;b&gt;Q10&lt;/b&gt; does) to save power.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files (.txt). Use it for files with specific national encoding.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSR Reader always saves position for every document. &lt;b&gt;Save Last Position&lt;/b&gt; option in &lt;i&gt;Settings&lt;/i&gt; only affects loading at the launch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you see blue bar above the bottom Action Bar? This is a progress reading indicator.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use &lt;i&gt;Recent Documents&lt;/i&gt; page to get fast access to documents you have been reading.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use pinch gesture for zooming.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSR Reader supports password protected documents (except for latest Adobe&amp;reg; Reader&amp;reg; X encryption algorithm), so don&apos;t scary them!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSR Reader caches already rendered pages to increase performance.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you have any problems with the app, please contact me (see contacts on &lt;i&gt;About&lt;/i&gt; page). Any suggestions are highly welcomed, too.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please leave a review for NSR Reader if you liked it to help others find it in the store.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thank you!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

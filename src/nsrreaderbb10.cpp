@@ -39,8 +39,6 @@ using namespace bb::cascades::pickers;
 using namespace bb::device;
 using namespace bb::multimedia;
 
-#define NSR_QUICK_GUIDE "app/native/assets/Welcome to NSR Reader.pdf"
-
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
 	_core (NULL),
@@ -270,7 +268,7 @@ NSRReaderBB10::initFullUI ()
 
 	if (settings.isFirstStart ()) {
 		settings.saveFirstStart ();
-		loadSession (QUrl::fromLocalFile (NSR_QUICK_GUIDE).path ());
+		/* TODO: show About page on help section */
 	} else {
 		/* Load previously saved session */
 		if (QFile::exists (settings.getLastSession().getFile ()) &&
@@ -384,10 +382,7 @@ NSRReaderBB10::onRecentDocsTriggered ()
 void
 NSRReaderBB10::onHelpActionTriggered ()
 {
-	NSRAboutPage *aboutPage = new NSRAboutPage ();
-	connect (aboutPage, SIGNAL (startGuideRequested ()), this, SLOT (onStartGuideRequested ()));
-
-	_naviPane->push (aboutPage);
+	_naviPane->push (new NSRAboutPage ());
 }
 
 void
@@ -780,13 +775,6 @@ NSRReaderBB10::onSystemShortcutTriggered ()
 		break;
 	}
 #endif
-}
-
-void
-NSRReaderBB10::onStartGuideRequested ()
-{
-	_naviPane->pop ();
-	loadSession (QUrl::fromLocalFile (NSR_QUICK_GUIDE).path ());
 }
 
 void
