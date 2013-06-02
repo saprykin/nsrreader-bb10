@@ -15,12 +15,12 @@ NSRReadProgress::NSRReadProgress (bb::cascades::Container *parent) :
 {
 	_progressContainer = Container::create().horizontal(HorizontalAlignment::Left)
 						.vertical(VerticalAlignment::Fill)
-						.background(Color::fromRGBA (0, 0.6, 0.75, 1.0));
+						.background(Color::fromRGBA (0.996, 0.729, 0.360, 1.0));
 
 	setBackground (Color::Black);
 	setLayout (DockLayout::create ());
-	setPreferredHeight (5);
-	setMaxHeight (5);
+	setPreferredHeight (8);
+	setMaxHeight (8);
 	setVisible (false);
 	setHorizontalAlignment (HorizontalAlignment::Fill);
 	add (_progressContainer);
