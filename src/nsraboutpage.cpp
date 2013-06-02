@@ -9,11 +9,12 @@
 #include <bb/cascades/SegmentedControl>
 #include <bb/cascades/Option>
 #include <bb/cascades/WebView>
+#include <bb/cascades/WebSettings>
 #include <bb/cascades/Color>
 
 using namespace bb::cascades;
 
-NSRAboutPage::NSRAboutPage (QObject *parent) :
+NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Page (parent),
 	_aboutContainer (NULL),
 	_helpContainer (NULL),
@@ -23,6 +24,7 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 								       .vertical(VerticalAlignment::Top);
 	segmentedControl->add (Option::create().text (trUtf8 ("About", "About a program")));
 	segmentedControl->add (Option::create().text (trUtf8 ("Help", "Help section of a program")));
+	segmentedControl->add (Option::create().text (trUtf8 ("Changes", "Changes in new version")));
 
 	connect (segmentedControl, SIGNAL (selectedIndexChanged (int)), this, SLOT (onSelectedIndexChanged (int)));
 
@@ -64,8 +66,13 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 	contactsContainer->setTopPadding (20);
 	contactsContainer->setLeftPadding (40);
 	contactsContainer->setRightPadding (40);
-	contactsContainer->setBottomPadding (35);
+	contactsContainer->setBottomPadding (20);
 	contactsContainer->add (contactsInfo);
+
+	Label *reviewLabel = Label::create().horizontal(HorizontalAlignment::Center)
+					    .vertical(VerticalAlignment::Fill);
+	reviewLabel->setText (trUtf8 ("Please, leave a review if you liked this app."));
+	reviewLabel->textStyle()->setFontSize (FontSize::Medium);
 
 	Container *twitterContainer = Container::create().horizontal(HorizontalAlignment::Center)
 							 .vertical(VerticalAlignment::Fill)
@@ -78,7 +85,7 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 					    .text("<a href='http://www.twitter.com/NSRReader'>"
 						  "Follow on Twitter</a>")
 					    .format(TextFormat::Html);
-	twitterInfo->textStyle()->setFontSize (FontSize::Small);
+	twitterInfo->textStyle()->setFontSize (FontSize::Medium);
 	twitterInfo->content()->setFlags (TextContentFlag::ActiveText);
 
 	twitterContainer->setLeftPadding (40);
@@ -98,7 +105,7 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 				       .text("<a href='http://www.facebook.com/pages/NSR-Reader/162440877184478'>"
 					     "Visit on Facebook</a>")
 				       .format(TextFormat::Html);
-	fbInfo->textStyle()->setFontSize (FontSize::Small);
+	fbInfo->textStyle()->setFontSize (FontSize::Medium);
 	fbInfo->content()->setFlags (TextContentFlag::ActiveText);
 
 	fbContainer->setLeftPadding (40);
@@ -116,8 +123,13 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 	_aboutContainer->add (contactsContainer);
 	_aboutContainer->add (twitterContainer);
 	_aboutContainer->add (fbContainer);
+	_aboutContainer->add (reviewLabel);
 
 	/* Help section goes next */
+
+	QVariantMap viewportMap;
+	viewportMap["width"] = "device-width";
+	viewportMap["initial-scale"] = 1.0;
 
 	_helpContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
@@ -163,9 +175,7 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 	QString tip7 = trUtf8 ("NSR Reader caches already rendered pages to increase performance.");
 	QString tip8 = trUtf8 ("If you have any problems with the app, please contact me (see contacts on "
 			       "<i>About</i> page). Any suggestions are highly welcomed, too.");
-	QString tip9 = trUtf8 ("Please leave a review for NSR Reader if you liked it to help others find it in the store.");
-
-	QString thankYou = trUtf8 ("Thank you!");
+	QString tip9 = trUtf8 ("Please leave a review for NSR Reader if you liked it to help others find it in the store. Thank you!");
 
 	QString htmlHelp = QString ("<html><head/><body style=\"font-family: arial, sans-serif; "
 				    "font-size: 28pt; background: #0F0F0F; color: #E6E6E6;\">"
@@ -193,20 +203,36 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 				    "<div><p>%18</p></div>"
 				    "<div><p>%19</p></div>"
 				    "<div><p>%20</p></div>"
-				    "<div style=\"text-align: center; font-size: 30pt;\"><b>%21</b></div>"
 				    "</body></html>");
 	htmlHelp = htmlHelp.arg(welcomeTitle).arg(welcomeSection).arg(navTitle).arg(navigationSection);
 	htmlHelp = htmlHelp.arg(settingsTitle).arg(savePosSet).arg(fullScrSet).arg(reflowSet)
 			   .arg(invertSet).arg(encodSet);
 	htmlHelp = htmlHelp.arg(tipsTitle).arg(tip1).arg(tip2).arg(tip3).arg(tip4).arg(tip5)
-			   .arg(tip6).arg(tip7).arg(tip8).arg(tip9).arg(thankYou);
+			   .arg(tip6).arg(tip7).arg(tip8).arg(tip9);
 
 
-	WebView *web = WebView::create ();
-	web->setHtml (htmlHelp);
+	WebView *webHelp = WebView::create ();
+	webHelp->settings()->setDevicePixelRatio (1.0);
+	webHelp->settings()->setViewportArguments (viewportMap);
+	webHelp->setHtml (htmlHelp);
 
-	_helpContainer->add (web);
+	_helpContainer->add (webHelp);
 	_helpContainer->setVisible (false);
+
+	/* And the version changes goes last */
+
+	_changesContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					       .vertical(VerticalAlignment::Fill)
+					       .layout(StackLayout::create ());
+
+	WebView *webChanges = WebView::create ();
+	webChanges->settings()->setDevicePixelRatio (1.0);
+	webChanges->settings()->setViewportArguments (viewportMap);
+	webChanges->setUrl (QUrl ("local:///assets/whats-new.html"));
+
+	_changesContainer->add (webChanges);
+	_changesContainer->setVisible (false);
+
 
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -218,6 +244,7 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 
 	rootContainer->add (_aboutContainer);
 	rootContainer->add (_helpContainer);
+	rootContainer->add (_changesContainer);
 
 	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Fill)
@@ -226,6 +253,8 @@ NSRAboutPage::NSRAboutPage (QObject *parent) :
 	contentContainer->add (_scrollView);
 
 	setContent (contentContainer);
+
+	segmentedControl->setSelectedIndex ((int) section);
 }
 
 NSRAboutPage::~NSRAboutPage ()
@@ -239,11 +268,19 @@ NSRAboutPage::onSelectedIndexChanged (int index)
 	case 0:
 		_aboutContainer->setVisible (true);
 		_helpContainer->setVisible (false);
+		_changesContainer->setVisible (false);
 		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 		break;
 	case 1:
 		_aboutContainer->setVisible (false);
 		_helpContainer->setVisible (true);
+		_changesContainer->setVisible (false);
+		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
+		break;
+	case 2:
+		_aboutContainer->setVisible (false);
+		_helpContainer->setVisible (false);
+		_changesContainer->setVisible (true);
 		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 		break;
 	default:

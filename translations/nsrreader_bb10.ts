@@ -100,11 +100,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Please leave a review for NSR Reader if you liked it to help others find it in the store.</source>
+        <source>Changes</source>
+        <comment>Changes in new version</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Thank you!</source>
+        <source>Please, leave a review if you liked this app.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please leave a review for NSR Reader if you liked it to help others find it in the store. Thank you!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

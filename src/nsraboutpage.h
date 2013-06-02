@@ -11,7 +11,12 @@ class NSRAboutPage : public bb::cascades::Page
 {
 	Q_OBJECT
 public:
-	NSRAboutPage (QObject *parent = 0);
+	enum NSRAboutSection {
+		NSR_ABOUT_SECTION_MAIN		= 0,
+		NSR_ABOUT_SECTION_HELP		= 1,
+		NSR_ABOUT_SECTION_CHANGES	= 2
+	};
+	NSRAboutPage (NSRAboutSection section, QObject *parent = 0);
 	virtual ~NSRAboutPage ();
 
 private Q_SLOTS:
@@ -20,6 +25,7 @@ private Q_SLOTS:
 private:
 	bb::cascades::Container		*_aboutContainer;
 	bb::cascades::Container		*_helpContainer;
+	bb::cascades::Container		*_changesContainer;
 	bb::cascades::ScrollView	*_scrollView;
 };
 

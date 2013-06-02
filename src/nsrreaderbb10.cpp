@@ -268,8 +268,13 @@ NSRReaderBB10::initFullUI ()
 
 	if (settings.isFirstStart ()) {
 		settings.saveFirstStart ();
-		/* TODO: show About page on help section */
+		_naviPane->push (new NSRAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_HELP));
 	} else {
+		if (!settings.isNewsShown ()) {
+			settings.saveNewsShown ();
+			_naviPane->push (new NSRAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_CHANGES));
+		}
+
 		/* Load previously saved session */
 		if (QFile::exists (settings.getLastSession().getFile ()) &&
 				settings.isLoadLastDoc ())
@@ -382,7 +387,7 @@ NSRReaderBB10::onRecentDocsTriggered ()
 void
 NSRReaderBB10::onHelpActionTriggered ()
 {
-	_naviPane->push (new NSRAboutPage ());
+	_naviPane->push (new NSRAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_MAIN));
 }
 
 void
