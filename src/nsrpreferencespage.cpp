@@ -156,43 +156,30 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	fifthContainer->add (encodingInfo);
 
 	/* Add all options to root layout */
-	Container *zeroLine = Container::create().horizontal(HorizontalAlignment::Fill)
-						 .vertical(VerticalAlignment::Fill)
-						 .background(Color::Gray);
-	zeroLine->setMaxHeight (1);
-	zeroLine->setPreferredHeight (1);
-
 	Container *firstLine = Container::create().horizontal(HorizontalAlignment::Fill)
 						  .vertical(VerticalAlignment::Fill)
-						  .background(Color::Gray);
+						  .background(Color::fromRGBA (0.20f, 0.20f, 0.20f));
 	firstLine->setMaxHeight (1);
 	firstLine->setPreferredHeight (1);
 
 	Container *secondLine = Container::create().horizontal(HorizontalAlignment::Fill)
 						   .vertical(VerticalAlignment::Fill)
-						   .background(Color::Gray);
+						   .background(Color::fromRGBA (0.20f, 0.20f, 0.20f));
 	secondLine->setMaxHeight (1);
 	secondLine->setPreferredHeight (1);
 
 	Container *thirdLine = Container::create().horizontal(HorizontalAlignment::Fill)
 						  .vertical(VerticalAlignment::Fill)
-						  .background(Color::Gray);
+						  .background(Color::fromRGBA (0.20f, 0.20f, 0.20f));
 	thirdLine->setMaxHeight (1);
 	thirdLine->setPreferredHeight (1);
 
 	Container *fourthLine = Container::create().horizontal(HorizontalAlignment::Fill)
 						   .vertical(VerticalAlignment::Fill)
-						   .background(Color::Gray);
+						   .background(Color::fromRGBA (0.20f, 0.20f, 0.20f));
 	fourthLine->setMaxHeight (1);
 	fourthLine->setPreferredHeight (1);
 
-	Container *fifthLine = Container::create().horizontal(HorizontalAlignment::Fill)
-						  .vertical(VerticalAlignment::Fill)
-						  .background(Color::Gray);
-	fifthLine->setMaxHeight (1);
-	fifthLine->setPreferredHeight (1);
-
-	rootContainer->add (zeroLine);
 	rootContainer->add (firstContainer);
 	rootContainer->add (firstLine);
 	rootContainer->add (secondContainer);
@@ -202,7 +189,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	rootContainer->add (outerFourthContainer);
 	rootContainer->add (fourthLine);
 	rootContainer->add (fifthContainer);
-	rootContainer->add (fifthLine);
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 						     .vertical(VerticalAlignment::Fill)
