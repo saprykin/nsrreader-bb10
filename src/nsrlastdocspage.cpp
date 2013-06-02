@@ -43,6 +43,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 				     .text(trUtf8 ("No recent documents",
 						   "List of recently used files is empty"))
 				     .visible(false);
+	_emptyLabel->textStyle()->setFontSize (FontSize::Large);
 
 	rootContainer->add (_listView);
 	rootContainer->add (_emptyLabel);
@@ -65,6 +66,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 		 this, SLOT (onListItemTriggered (QVariantList)));
 	connect (_listView, SIGNAL (documentRequested (QString)),
 		 this, SIGNAL (requestDocument (QString)));
+	connect (_listView, SIGNAL (modelCleared ()), this, SLOT (onModelCleared ()));
 }
 
 NSRLastDocsPage::~NSRLastDocsPage ()
@@ -89,6 +91,13 @@ NSRLastDocsPage::onListItemTriggered (QVariantList indexPath)
 }
 
 void
+NSRLastDocsPage::onModelCleared ()
+{
+	_listView->setVisible (false);
+	_emptyLabel->setVisible (true);
+}
+
+void
 NSRLastDocsPage::loadData ()
 {
 	QVariantListDataModel	*model = new QVariantListDataModel ();
@@ -109,10 +118,8 @@ NSRLastDocsPage::loadData ()
 
 	_listView->setDataModel (model);
 
-	if (count == 0) {
-		_listView->setVisible (false);
-		_emptyLabel->setVisible (true);
-	}
+	if (model->size () == 0)
+		onModelCleared ();
 }
 
 

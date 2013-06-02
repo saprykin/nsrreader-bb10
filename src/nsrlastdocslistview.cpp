@@ -39,6 +39,9 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 			model->removeAt (i);
 			break;
 		}
+
+	if (model->size () == 0)
+		emit modelCleared ();
 }
 
 void

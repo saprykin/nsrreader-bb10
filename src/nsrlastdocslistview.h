@@ -15,6 +15,7 @@ public:
 
 Q_SIGNALS:
 	void documentRequested (const QString& path);
+	void modelCleared ();
 
 public Q_SLOTS:
 	void onRemoveActionTriggered ();

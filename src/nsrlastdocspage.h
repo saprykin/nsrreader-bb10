@@ -21,6 +21,7 @@ Q_SIGNALS:
 private Q_SLOTS:
 	void onOrientationAboutToChange (bb::cascades::UIOrientation::Type type);
 	void onListItemTriggered (QVariantList indexPath);
+	void onModelCleared ();
 
 private:
 	void loadData ();
