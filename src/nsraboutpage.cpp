@@ -166,7 +166,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 			    	   "Use it for files with specific national encoding.");
 	QString tip1 = trUtf8 ("NSR Reader always saves position for every document. <b>Save Last Position</b> "
 			       "option in <i>Settings</i> only affects loading at the launch.");
-	QString tip2 = trUtf8 ("Do you see blue bar above the bottom Action Bar? This is a progress reading indicator.");
+	QString tip2 = trUtf8 ("Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.");
 	QString tip3 = trUtf8 ("Just tap the screen to see current page and overall page count at the top left corner.");
 	QString tip4 = trUtf8 ("Use <i>Recent Documents</i> page to get fast access to documents you have been reading.");
 	QString tip5 = trUtf8 ("Use pinch gesture for zooming.");
