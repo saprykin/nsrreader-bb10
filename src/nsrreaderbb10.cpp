@@ -3,7 +3,6 @@
 #include "nsrsession.h"
 #include "nsrpreferencespage.h"
 #include "nsrlastdocspage.h"
-#include "nsraboutpage.h"
 #include "nsrfilesharer.h"
 
 #include <bb/cascades/Application>
@@ -268,11 +267,11 @@ NSRReaderBB10::initFullUI ()
 
 	if (settings.isFirstStart ()) {
 		settings.saveFirstStart ();
-		_naviPane->push (new NSRAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_HELP));
+		showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_HELP);
 	} else {
 		if (!settings.isNewsShown ()) {
 			settings.saveNewsShown ();
-			_naviPane->push (new NSRAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_CHANGES));
+			showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_CHANGES);
 		}
 
 		/* Load previously saved session */
@@ -387,7 +386,7 @@ NSRReaderBB10::onRecentDocsTriggered ()
 void
 NSRReaderBB10::onHelpActionTriggered ()
 {
-	_naviPane->push (new NSRAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_MAIN));
+	showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_MAIN);
 }
 
 void
@@ -418,7 +417,6 @@ NSRReaderBB10::updateVisualControls ()
 {
 	_actionAggregator->setActionEnabled ("open", true);
 	_actionAggregator->setActionEnabled ("prefs", true);
-	_actionAggregator->setActionEnabled ("help", true);
 	_actionAggregator->setActionEnabled ("recent-docs", true);
 	_actionAggregator->setActionEnabled ("share",
 				       	     _core->isDocumentOpened () &&
@@ -444,7 +442,13 @@ NSRReaderBB10::updateVisualControls ()
 void
 NSRReaderBB10::disableVisualControls ()
 {
-	_actionAggregator->setAllEnabled (false);
+	_actionAggregator->setActionEnabled ("open", false);
+	_actionAggregator->setActionEnabled ("prev", false);
+	_actionAggregator->setActionEnabled ("bext", false);
+	_actionAggregator->setActionEnabled ("goto", false);
+	_actionAggregator->setActionEnabled ("recent-docs", false);
+	_actionAggregator->setActionEnabled ("share", false);
+	_actionAggregator->setActionEnabled ("prefs", false);
 }
 
 void
@@ -697,7 +701,8 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 		reloadSettings ();
 
 		_actionAggregator->setActionEnabled ("prefs", true);
-	}
+	} else if (dynamic_cast<NSRAboutPage *> (page) != NULL)
+		_actionAggregator->setActionEnabled ("help", true);
 
 	if (page != NULL)
 		delete page;
@@ -857,4 +862,12 @@ NSRReaderBB10::resetState ()
 	_readProgress->setPagesCount (0);
 	_readProgress->setCurrentPage (0);
 }
+
+void
+NSRReaderBB10::showAboutPage (NSRAboutPage::NSRAboutSection section)
+{
+	_actionAggregator->setActionEnabled ("help", false);
+	_naviPane->push (new NSRAboutPage (section));
+}
+
 

@@ -7,6 +7,7 @@
 #include "nsrreadprogress.h"
 #include "nsrwelcomeview.h"
 #include "nsractionaggregator.h"
+#include "nsraboutpage.h"
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/ImageView>
@@ -77,6 +78,7 @@ private:
     void zoomIn ();
     void zoomOut ();
     void resetState ();
+    void showAboutPage (NSRAboutPage::NSRAboutSection section);
 
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;
