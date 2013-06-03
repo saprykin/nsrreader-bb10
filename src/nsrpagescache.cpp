@@ -33,7 +33,6 @@ NSRPagesCache::addPage (NSRRenderedPage& page)
 {
 	qint64		newSize;
 	int		deqPage;
-	int		boundedPage;
 
 	if (!page.isValid ())
 		return;
@@ -48,9 +47,8 @@ NSRPagesCache::addPage (NSRRenderedPage& page)
 
 	while (_usedMemory + newSize > NSR_PAGES_CACHE_MAX_STORAGE &&
 	       !_pages.isEmpty ()) {
-		boundedPage = qBound (_pages.first (), page.getNumber (), _pages.last ());
-
-		if (boundedPage < (_pages.first () - _pages.last () + 1) / 2.0)
+		if (qAbs (page.getNumber () - _pages.first ()) <
+		    qAbs (page.getNumber () - _pages.last ()))
 			deqPage = _pages.takeLast ();
 		else
 			deqPage = _pages.takeFirst ();
