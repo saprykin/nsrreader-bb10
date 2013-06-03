@@ -72,10 +72,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Do you see blue bar above the bottom Action Bar? This is a progress reading indicator.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -110,6 +106,15 @@
     </message>
     <message>
         <source>Please leave a review for NSR Reader if you liked it to help others find it in the store. Thank you!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Review</source>
+        <comment>Review the app in the store</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
