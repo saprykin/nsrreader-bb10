@@ -11,8 +11,14 @@
 #include <bb/cascades/WebView>
 #include <bb/cascades/WebSettings>
 #include <bb/cascades/Color>
+#include <bb/cascades/ActionItem>
+
+#include <bb/system/InvokeTargetReply>
+#include <bb/system/InvokeRequest>
+#include <bb/system/InvokeManager>
 
 using namespace bb::cascades;
+using namespace bb::system;
 
 NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Page (parent),
@@ -254,6 +260,11 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	setContent (contentContainer);
 
+	ActionItem *reviewAction = ActionItem::create().imageSource(QUrl ("asset:///review.png"))
+						       .title(trUtf8 ("Review", "Review the app in the store"));
+	connect (reviewAction, SIGNAL (triggered ()), this, SLOT (onReviewActionTriggered ()));
+	addAction (reviewAction, ActionBarPlacement::OnBar);
+
 	segmentedControl->setSelectedIndex ((int) section);
 }
 
@@ -287,5 +298,25 @@ NSRAboutPage::onSelectedIndexChanged (int index)
 		break;
 	}
 }
+
+void
+NSRAboutPage::onReviewActionTriggered ()
+{
+	InvokeManager		invokeManager;
+	InvokeRequest		invokeRequest;
+	InvokeTargetReply	*invokeReply;
+
+	invokeRequest.setUri (QUrl ("appworld://content/27985686"));
+	invokeRequest.setAction ("bb.action.OPEN");
+	invokeRequest.setTarget ("sys.appworld");
+
+	invokeReply = invokeManager.invoke (invokeRequest);
+
+	if (invokeReply != NULL) {
+		invokeReply->setParent (this);
+		connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
+	}
+}
+
 
 

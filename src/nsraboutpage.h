@@ -21,6 +21,7 @@ public:
 
 private Q_SLOTS:
 	void onSelectedIndexChanged (int index);
+	void onReviewActionTriggered ();
 
 private:
 	bb::cascades::Container		*_aboutContainer;
