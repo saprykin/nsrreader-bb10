@@ -506,6 +506,7 @@ NSRReaderCore::copyDocument (const NSRAbstractDocument* doc)
 	res->setInvertedColors (doc->isInvertedColors ());
 	res->setEncoding (doc->getEncoding ());
 	res->setPassword (doc->getPassword ());
+	res->setRotation (doc->getRotation ());
 
 	if (!res->isValid ()) {
 		delete res;
