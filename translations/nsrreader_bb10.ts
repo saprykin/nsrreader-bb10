@@ -40,14 +40,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NSR Reader is a handy tool for reading PDF, DjVu, TIFF and TXT documents. Hope you will be enjoying using it! Please read the following instructions and tips to make reading more comfortable.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go previous page, on the right area to go next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. If you have physical keyboard use &lt;i&gt;P&lt;/i&gt; key to navigate to previous page and &lt;i&gt;N&lt;/i&gt; key for the next page (see right Action Menu&apos;s tooltips). Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Save Last Position&lt;/b&gt; &amp;ndash; NSR Reader will save last position (opened document, page number) and restore it on the next launch.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -115,6 +107,14 @@
     <message>
         <source>Review</source>
         <comment>Review the app in the store</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSR Reader is a handy tool for reading PDF, DjVu, TIFF and TXT documents. Hope you will be enjoying using it! Please take a look at the following instructions and tips to make reading more comfortable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go previous page, on the right area to go next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. If you have physical keyboard use &lt;i&gt;P&lt;/i&gt; key to navigate to previous page and &lt;i&gt;N&lt;/i&gt; key for the next page (see Action Menu&apos;s tooltipsa at the right). Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

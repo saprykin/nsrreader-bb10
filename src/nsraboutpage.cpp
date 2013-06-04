@@ -148,7 +148,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	QString welcomeSection = trUtf8 ("NSR Reader is a handy tool for reading PDF, "
 					 "DjVu, TIFF and TXT documents. Hope you will be "
-					 "enjoying using it! Please read the following "
+					 "enjoying using it! Please take a look at the following "
 					 "instructions and tips to make reading more comfortable.");
 	QString navigationSection = trUtf8 ("Use navigation arrows on Action Bar (at the bottom of the screen). "
 			    	    	    "Double tap on the left area of the screen to go previous page, on the right "
@@ -157,7 +157,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 			    	    	    "<i>Volume Up</i> key for the previous page and <i>Volume Down</i> key for "
 			    	    	    "the next page. "
 			    	    	    "If you have physical keyboard use <i>P</i> key to navigate to previous page "
-			    	    	    "and <i>N</i> key for the next page (see right Action Menu's tooltips). "
+			    	    	    "and <i>N</i> key for the next page (see Action Menu's tooltipsa at the right). "
 			    	    	    "Use <b>Go to</b> dialog to jump to arbitrary page.");
 	QString savePosSet = trUtf8 ("<b>Save Last Position</b> &ndash; NSR Reader will save last position "
 			    	     "(opened document, page number) and restore it on the next launch.");
