@@ -337,15 +337,15 @@ double NSRDjVuDocument::getMaxZoom()
 		return 0;
 
 	if (_cachedPageSize == QSize (0, 0))
-		return 200;
+		return 600;
 
 	/* Each pixel needs 3 bytes (RGB) of memory */
 	double resFactor = 72.0 / _cachedResolution;
 	double pageSize = _cachedPageSize.width() * _cachedPageSize.height() * 3  * resFactor / 2;
 	_cachedMaxZoom = (sqrt (NSR_DOCUMENT_MAX_HEAP * 72 * 72 / pageSize) / 72 * 100 + 0.5);
 
-	if (_cachedMaxZoom > 400.0)
-		_cachedMaxZoom = 400.0;
+	if (_cachedMaxZoom > 600.0)
+		_cachedMaxZoom = 600.0;
 
 	return _cachedMaxZoom;
 }
