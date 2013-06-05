@@ -341,7 +341,7 @@ double NSRDjVuDocument::getMaxZoom()
 
 	/* Each pixel needs 3 bytes (RGB) of memory */
 	double resFactor = 72.0 / _cachedResolution;
-	double pageSize = _cachedPageSize.width() * _cachedPageSize.height() * 3  * resFactor / 2;
+	double pageSize = _cachedPageSize.width() * _cachedPageSize.height() * 3 * resFactor / 4;
 	_cachedMaxZoom = (sqrt (NSR_DOCUMENT_MAX_HEAP * 72 * 72 / pageSize) / 72 * 100 + 0.5);
 	_cachedMaxZoom = validateMaxZoom (_cachedPageSize * resFactor, _cachedMaxZoom);
 
