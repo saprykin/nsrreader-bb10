@@ -1,5 +1,4 @@
 #include "nsrpageview.h"
-#include "nsrsettings.h"
 
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/StackLayout>
@@ -117,8 +116,6 @@ NSRPageView::NSRPageView (Container *parent) :
 	setLayout (DockLayout::create ());
 	add (_scrollView);
 	add (_textScrollView);
-
-	setInvertedColors (NSRSettings().isInvertedColors ());
 }
 
 NSRPageView::~NSRPageView ()
