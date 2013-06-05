@@ -220,6 +220,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	WebView *webHelp = WebView::create ();
 	webHelp->settings()->setDevicePixelRatio (1.0);
 	webHelp->settings()->setViewportArguments (viewportMap);
+	webHelp->settings()->setBackground (Color::fromRGBA (0.059f, 0.059f, 0.059f));
 	webHelp->setHtml (htmlHelp);
 
 	_helpContainer->add (webHelp);
@@ -234,6 +235,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	WebView *webChanges = WebView::create ();
 	webChanges->settings()->setDevicePixelRatio (1.0);
 	webChanges->settings()->setViewportArguments (viewportMap);
+	webChanges->settings()->setBackground (Color::fromRGBA (0.059f, 0.059f, 0.059f));
 	webChanges->setUrl (QUrl ("local:///assets/whats-new.html"));
 
 	_changesContainer->add (webChanges);
