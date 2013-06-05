@@ -144,8 +144,8 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 		setScrollPosition (_delayedTextScrollPos, NSR_VIEW_MODE_TEXT);
 	}
 
-	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
 	_imageView->setImage (page.getImage ());
+	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
 	_currentZoom = page.getZoom ();
 
 	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION ||
@@ -153,7 +153,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 		setScrollPosition (_delayedScrollPos, NSR_VIEW_MODE_GRAPHIC);
 
 	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_ROTATION)
-		setScrollPosition (QPointF (0, 0), NSR_VIEW_MODE_GRAPHIC);
+		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 
 	_delayedScrollPos = QPointF (0, 0);
 	_delayedTextScrollPos = QPointF (0, 0);
