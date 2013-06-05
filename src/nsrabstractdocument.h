@@ -7,7 +7,7 @@
 #include <bb/ImageData>
 #include <bb/PixelFormat>
 
-#define NSR_DOCUMENT_MAX_HEAP	(0x3000000 * 0.50)
+#define NSR_DOCUMENT_MAX_HEAP	(0x6000000 * 0.50)
 
 class NSRAbstractDocument : public QObject
 {
