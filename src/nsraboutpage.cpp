@@ -46,7 +46,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	Label *versionInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					    .vertical(VerticalAlignment::Fill)
-					    .text(QString ("NSR Reader ").append (NSRSettings().getVersion ()));
+					    .text(QString ("NSR Reader ").append (NSRSettings::getVersion ()));
 	versionInfo->textStyle()->setFontSize (FontSize::Large);
 	Label *versionPlatform = Label::create().horizontal(HorizontalAlignment::Center)
 						.vertical(VerticalAlignment::Fill)
