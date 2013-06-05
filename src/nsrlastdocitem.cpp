@@ -57,6 +57,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 						       .background(Color::DarkGray);
 	labelContainer->setMinHeight (70);
 	labelContainer->setTopMargin (0);
+	labelContainer->setLeftPadding (15);
 	labelContainer->add (_label);
 
 	rootContainer->add (_viewContainer);
