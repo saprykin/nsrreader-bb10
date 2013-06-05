@@ -107,6 +107,9 @@ NSRReaderBB10::initFullUI ()
 
 	_welcomeView = new NSRWelcomeView ();
 
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		_welcomeView->setCardMode (true);
+
 	connect (_welcomeView, SIGNAL (openDocumentRequested ()), this, SLOT (onOpenActionTriggered ()));
 	connect (_welcomeView, SIGNAL (recentDocumentsRequested ()), this, SLOT (onRecentDocsTriggered ()));
 

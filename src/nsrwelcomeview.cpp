@@ -3,14 +3,14 @@
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/Color>
-#include <bb/cascades/Label>
 
 using namespace bb::cascades;
 
 NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 	Container (parent),
 	_openButton (NULL),
-	_lastDocsButton (NULL)
+	_lastDocsButton (NULL),
+	_startLabel (NULL)
 {
 	setHorizontalAlignment (HorizontalAlignment::Fill);
 	setVerticalAlignment (VerticalAlignment::Fill);
@@ -37,15 +37,15 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Center)
 						      .vertical(VerticalAlignment::Center)
 						      .layout(StackLayout::create ());
-	Label *startLabel = Label::create().text(trUtf8 ("Start reading"))
-					   .horizontal(HorizontalAlignment::Center)
-					   .vertical(VerticalAlignment::Center);
-	startLabel->textStyle()->setFontSize (FontSize::XLarge);
-	startLabel->textStyle()->setFontStyle (FontStyle::Italic);
-	startLabel->textStyle()->setColor (Color::White);
-	startLabel->setBottomMargin (60);
+	_startLabel = Label::create().text(trUtf8 ("Start reading"))
+				     .horizontal(HorizontalAlignment::Center)
+				     .vertical(VerticalAlignment::Center);
+	_startLabel->textStyle()->setFontSize (FontSize::XLarge);
+	_startLabel->textStyle()->setFontStyle (FontStyle::Italic);
+	_startLabel->textStyle()->setColor (Color::White);
+	_startLabel->setBottomMargin (60);
 
-	rootContainer->add (startLabel);
+	rootContainer->add (_startLabel);
 	rootContainer->add (innerContainer);
 
 	add (rootContainer);
@@ -54,3 +54,12 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 NSRWelcomeView::~NSRWelcomeView ()
 {
 }
+
+void
+NSRWelcomeView::setCardMode (bool enabled)
+{
+	_openButton->setVisible (!enabled);
+	_lastDocsButton->setVisible (!enabled);
+	_startLabel->setVisible (!enabled);
+}
+
