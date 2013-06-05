@@ -47,8 +47,6 @@ NSRReaderCore::~NSRReaderCore ()
 void
 NSRReaderCore::openDocument (const QString &path)
 {
-	NSRSettings settings;
-
 	closeDocument ();
 
 	_doc = documentByPath (path);
@@ -60,10 +58,12 @@ NSRReaderCore::openDocument (const QString &path)
 		_doc->setTextOnly (false);
 		_doc->setInvertedColors (false);
 	} else {
+		NSRSettings settings;
+
 		_doc->setTextOnly (settings.isWordWrap ());
 		_doc->setInvertedColors (settings.isInvertedColors ());
+		_doc->setEncoding (settings.getTextEncoding ());
 	}
-	_doc->setEncoding (settings.getTextEncoding ());
 
 	if (!_doc->isValid ()) {
 		/* Check if we need password */
@@ -87,7 +87,8 @@ NSRReaderCore::openDocument (const QString &path)
 		_zoomThread->setRenderContext (_zoomDoc);
 	}
 
-	settings.addLastDocument (path);
+	if (_startMode != ApplicationStartupMode::InvokeCard)
+		NSRSettings().addLastDocument (path);
 }
 
 bool

@@ -238,16 +238,18 @@ NSRReaderBB10::initFullUI ()
 	connect (localeHandler, SIGNAL (systemLanguageChanged ()),
 		 this, SLOT (onSystemLanguageChanged ()));
 
-	NSRSettings settings;
-
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
 		_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 		_isFullscreen = true;
 		onFullscreenSwitchRequested (true);
 	} else {
+		/* We do need it here to not to read settings in card mode */
+		NSRSettings settings;
+
+		_pageView->setInvertedColors (settings.isInvertedColors ());
 		_pageView->setViewMode (settings.isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
-				: NSRPageView::NSR_VIEW_MODE_GRAPHIC);
-		_isFullscreen = settings.isFullscreenMode ();
+							       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+		onFullscreenSwitchRequested (settings.isFullscreenMode ());
 	}
 
 	connect (_pageView, SIGNAL (zoomChanged (double, bool)),
@@ -268,6 +270,8 @@ NSRReaderBB10::initFullUI ()
 		return;
 	}
 
+	NSRSettings settings;
+
 	if (settings.isFirstStart ()) {
 		settings.saveFirstStart ();
 		showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_HELP);
@@ -279,7 +283,7 @@ NSRReaderBB10::initFullUI ()
 
 		/* Load previously saved session */
 		if (QFile::exists (settings.getLastSession().getFile ()) &&
-				settings.isLoadLastDoc ())
+		    settings.isLoadLastDoc ())
 			loadSession ();
 		else
 			updateVisualControls ();
@@ -302,7 +306,7 @@ NSRReaderBB10::initCardUI ()
 void
 NSRReaderBB10::onFileSelected (const QStringList &files)
 {
-	NSRSettings	settings;
+	NSRSettings settings;
 
 	if (_core->getDocumentPath () == files.first ()) {
 		_toast->setBody (trUtf8 ("Selected file is already opened."));
@@ -484,10 +488,15 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 	NSRSession	session;
 	int		width = _pageView->getSize().width ();
 
-	if (path.isEmpty ())
-		session = NSRSettings().getLastSession ();
-	else
-		session = NSRSettings().getSessionForFile (path);
+	if (_startMode == ApplicationStartupMode::InvokeCard) {
+		session.setFile (path);
+		session.setPage (1);
+	} else {
+		if (path.isEmpty ())
+			session = NSRSettings().getLastSession ();
+		else
+			session = NSRSettings().getSessionForFile (path);
+	}
 
 	if (page != -1)
 		session.setPage (page);
@@ -504,11 +513,17 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 	}
 
 	session.setZoomScreenWidth (width);
-	_pageView->setTextZoom (session.getZoomText ());
-	_pageView->setScrollPositionOnLoad (session.getPosition (),
-					    NSRPageView::NSR_VIEW_MODE_GRAPHIC);
-	_pageView->setScrollPositionOnLoad (session.getTextPosition (),
-					    NSRPageView::NSR_VIEW_MODE_TEXT);
+
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		session.setFitToWidth (true);
+	else {
+		_pageView->setTextZoom (session.getZoomText ());
+		_pageView->setScrollPositionOnLoad (session.getPosition (),
+				NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+		_pageView->setScrollPositionOnLoad (session.getTextPosition (),
+				NSRPageView::NSR_VIEW_MODE_TEXT);
+	}
+
 	_core->loadSession (&session);
 }
 
@@ -683,11 +698,11 @@ NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
 	NSRPageView::NSRViewMode newMode;
 
 	if (mode == NSRPageView::NSR_VIEW_MODE_PREFERRED) {
-		newMode = NSRSettings().isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
-						      : NSRPageView::NSR_VIEW_MODE_GRAPHIC;
-
 		if (_startMode == ApplicationStartupMode::InvokeCard)
 			newMode = NSRPageView::NSR_VIEW_MODE_GRAPHIC;
+		else
+			newMode = NSRSettings().isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
+							      : NSRPageView::NSR_VIEW_MODE_GRAPHIC;
 	} else
 		newMode = mode;
 
