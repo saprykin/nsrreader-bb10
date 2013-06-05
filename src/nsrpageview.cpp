@@ -460,9 +460,11 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 
 	if (_viewMode == NSR_VIEW_MODE_GRAPHIC) {
 		double scale = _imageView->preferredWidth () / _initialScaleSize.width ();
-		_currentZoom *= scale;
 
-		emit zoomChanged (_currentZoom, false);
+		if (qAbs (_currentZoom * scale - _currentZoom) > 0.05) {
+			_currentZoom *= scale;
+			emit zoomChanged (_currentZoom, false);
+		}
 	}
 
 	event->accept ();
