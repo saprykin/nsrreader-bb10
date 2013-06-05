@@ -444,7 +444,7 @@ NSRReaderBB10::disableVisualControls ()
 {
 	_actionAggregator->setActionEnabled ("open", false);
 	_actionAggregator->setActionEnabled ("prev", false);
-	_actionAggregator->setActionEnabled ("bext", false);
+	_actionAggregator->setActionEnabled ("next", false);
 	_actionAggregator->setActionEnabled ("goto", false);
 	_actionAggregator->setActionEnabled ("recent-docs", false);
 	_actionAggregator->setActionEnabled ("share", false);
