@@ -294,10 +294,10 @@ void NSRDjVuDocument::renderPage(int page)
 		setZoomSilent(wZoom);
 	}
 
-	if (getZoom() > getMaxZoom())
-		setZoomSilent (getMaxZoom());
-	else if (getZoom() < getMinZoom())
+	if (getZoom() < getMinZoom())
 		setZoomSilent (getMinZoom());
+
+	setZoomSilent (validateMaxZoom (_cachedPageSize * resFactor, getZoom ()));
 
 	prect.w = (int)((double) width * getZoom() / 100.0 * resFactor);
 	prect.h = (int)((double) height * getZoom() / 100.0 * resFactor);
@@ -343,6 +343,7 @@ double NSRDjVuDocument::getMaxZoom()
 	double resFactor = 72.0 / _cachedResolution;
 	double pageSize = _cachedPageSize.width() * _cachedPageSize.height() * 3  * resFactor / 2;
 	_cachedMaxZoom = (sqrt (NSR_DOCUMENT_MAX_HEAP * 72 * 72 / pageSize) / 72 * 100 + 0.5);
+	_cachedMaxZoom = validateMaxZoom (_cachedPageSize * resFactor, _cachedMaxZoom);
 
 	if (_cachedMaxZoom > 600.0)
 		_cachedMaxZoom = 600.0;

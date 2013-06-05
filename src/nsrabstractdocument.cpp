@@ -12,13 +12,13 @@ NSRAbstractDocument::NSRAbstractDocument(const QString& file, QObject *parent) :
 	_invertedColors (false),
 	_lastError (NSR_DOCUMENT_ERROR_NO),
 	_encoding ("UTF-8"),
-	_rotation (0)
+	_rotation (0),
+	_maxPageSize (4000, 4000)
 {
 }
 
 NSRAbstractDocument::~NSRAbstractDocument()
 {
-
 }
 
 void NSRAbstractDocument::zoomToWidth(int screenWidth)
@@ -115,3 +115,19 @@ QString NSRAbstractDocument::processText(const QString &text)
 
 	return buf;
 }
+
+double
+NSRAbstractDocument::validateMaxZoom (const QSize& pageSize, double zoom) const
+{
+	QSize maxSize = getMaximumPageSize ();
+
+	if (pageSize.width () * zoom / 100.0 <= maxSize.width () &&
+	    pageSize.height () * zoom / 100.0 <= maxSize.height ())
+		return zoom;
+
+	double scale = qMin (maxSize.width () / (double) pageSize.width (),
+			     maxSize.height () / (double) pageSize.height ());
+
+	return scale * 100.0;
+}
+

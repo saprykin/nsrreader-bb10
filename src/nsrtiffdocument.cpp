@@ -85,9 +85,7 @@ void NSRTIFFDocument::renderPage(int page)
 		setZoomSilent(wZoom);
 	}
 
-	if (getZoom() > getMaxZoom())
-		setZoomSilent (getMaxZoom());
-	else if (getZoom() < getMinZoom())
+	if (getZoom() < getMinZoom())
 		setZoomSilent (getMinZoom());
 
 	if (_cachedPage == page && !_origImage.isNull()) {
@@ -146,7 +144,7 @@ double NSRTIFFDocument::getMaxZoom()
 	/* Each pixel needs 4 bytes (RGBA) of memory */
 	double pageSize = _cachedPageSize.width() * _cachedPageSize.height() * 4;
 
-	return (sqrt (NSR_DOCUMENT_MAX_HEAP / pageSize - 1) * 100 + 0.5);
+	return validateMaxZoom (_cachedPageSize, sqrt (NSR_DOCUMENT_MAX_HEAP / pageSize - 1) * 100 + 0.5);
 }
 
 double NSRTIFFDocument::getMinZoom()

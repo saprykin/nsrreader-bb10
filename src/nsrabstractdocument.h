@@ -82,11 +82,14 @@ public:
 	virtual void setEncoding (const QString& enc);
 	virtual QString getEncoding () const {return _encoding;}
 	virtual bool isEncodingUsed () const {return false;}
+	void setMaximumPageSize (const QSize& size) {_maxPageSize = size;}
+	QSize getMaximumPageSize () const {return _maxPageSize;}
 
 protected:
 	void setZoomToWidth (bool toWidth) {_zoomToWidth = toWidth;}
 	void setLastError (DocumentError err) {_lastError = err;}
 	QString processText(const QString& text);
+	double validateMaxZoom (const QSize& pageSize, double zoom) const;
 
 private:
 	QString		_docPath;
@@ -99,6 +102,7 @@ private:
 	DocumentError	_lastError;
 	QString		_encoding;
 	int		_rotation;
+	QSize		_maxPageSize;
 };
 
 #endif // NSRABSTRACTDOCUMENT_H

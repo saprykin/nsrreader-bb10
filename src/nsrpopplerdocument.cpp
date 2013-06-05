@@ -102,10 +102,10 @@ void NSRPopplerDocument::renderPage(int page)
 		setZoomSilent(wZoom);
 	}
 
-	if (getZoom() > getMaxZoom())
-		setZoomSilent (getMaxZoom());
-	else if (getZoom() < getMinZoom())
+	if (getZoom() < getMinZoom())
 		setZoomSilent (getMinZoom());
+
+	setZoomSilent (validateMaxZoom (QSize (_page->getCropWidth (), _page->getCropHeight ()), getZoom ()));
 
 	if (_readyForLoad)
 		_dev->startPage(0, NULL);
@@ -128,8 +128,9 @@ double NSRPopplerDocument::getMaxZoom()
 
 	/* Each pixel needs 4 bytes (RGBA) of memory */
 	double pageSize = _page->getCropWidth() * _page->getCropHeight() * 4;
-	_cachedMaxZoom = (sqrt (NSR_DOCUMENT_MAX_HEAP * 72 * 72 / pageSize ) / 72 * 100 + 0.5);
 	_cachedPageSize = QSize (_page->getCropWidth(), _page->getCropHeight());
+	_cachedMaxZoom = (sqrt (NSR_DOCUMENT_MAX_HEAP * 72 * 72 / pageSize ) / 72 * 100 + 0.5);
+	_cachedMaxZoom = validateMaxZoom (_cachedPageSize, _cachedMaxZoom);
 
 	return _cachedMaxZoom;
 }
