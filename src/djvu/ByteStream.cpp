@@ -1007,7 +1007,7 @@ ByteStream::create(const GURL &url,char const * const xmode)
 #ifdef UNIX
   if (!strcmp(mode,"rb")) 
     {
-      int fd = urlopen(url,O_RDONLY,0777);
+      int fd = urlopen(url,O_NOSYMLINK | O_RDONLY,0777);
       if (fd >= 0)
         {
 #if HAS_MEMMAP && defined(S_IFREG)

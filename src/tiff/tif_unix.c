@@ -184,6 +184,8 @@ TIFFOpen(const char* name, const char* mode)
 	m |= O_BINARY;
 #endif
 
+	m |= O_NOSYMLINK;
+
 	fd = open(name, m, 0666);
 	if (fd < 0) {
 		if (errno > 0 && strerror(errno) != NULL ) {
