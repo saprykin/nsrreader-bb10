@@ -315,11 +315,13 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 		return;
 	}
 
+	QFileInfo finfo (files.first ());
+
 	/* Save session for opened document */
-	settings.saveLastOpenDir (QFileInfo (files.first ()).absolutePath ());
+	settings.saveLastOpenDir (finfo.canonicalPath ());
 
 	saveSession ();
-	loadSession (files.first ());
+	loadSession (finfo.canonicalFilePath ());
 }
 
 void
