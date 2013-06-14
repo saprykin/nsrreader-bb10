@@ -38,6 +38,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isFullscreen->setChecked (settings.isFullscreenMode ());
 	_isTextMode->setChecked (settings.isWordWrap ());
 	_isInvertedColors->setChecked (settings.isInvertedColors ());
+	_encodingsList->setFocusPolicy (FocusPolicy::Touch);
 
 	QString textEncoding = settings.getTextEncoding ();
 	QStringList encodings = settings.getSupportedEncodings ();
