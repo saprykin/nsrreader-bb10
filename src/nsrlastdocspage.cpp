@@ -110,6 +110,7 @@ NSRLastDocsPage::loadData ()
 			map["title"] = QFileInfo(docs.at (i)).fileName ();
 			map["image"] = NSRThumbnailer::getThumnailPath (docs.at (i));
 			map["text"] = NSRThumbnailer::getThumbnailText (docs.at (i));
+			map["encrypted"] = NSRThumbnailer::isThumbnailEncrypted (docs.at (i));
 			map["path"] = docs.at (i);
 
 			model->append (map);

@@ -20,7 +20,8 @@ public:
 	void updateItem (const QString& title,
 			 const QString&	imgPath,
 			 const QString&	text,
-			 const QString& path);
+			 const QString& path,
+			 bool		encrypted);
 
 	/* ListItemListener iface */
 	void select (bool select);
@@ -34,6 +35,7 @@ private Q_SLOTS:
 
 private:
 	bb::cascades::ImageView		*_imageView;
+	bb::cascades::ImageView		*_lockImage;
 	bb::cascades::Label		*_textView;
 	bb::cascades::Label		*_label;
 	bb::cascades::Container		*_viewContainer;

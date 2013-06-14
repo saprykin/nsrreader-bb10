@@ -77,7 +77,8 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 	item->updateItem (map["title"].toString (),
 			  map["image"].toString (),
 			  map["text"].toString (),
-			  map["path"].toString ());
+			  map["path"].toString (),
+			  map["encrypted"].toBool ());
 }
 
 

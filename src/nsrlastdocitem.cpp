@@ -13,6 +13,7 @@ using namespace bb::cascades;
 NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	CustomControl (parent),
 	_imageView (NULL),
+	_lockImage (NULL),
 	_textView (NULL),
 	_label (NULL),
 	_viewContainer (NULL),
@@ -20,12 +21,8 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
-						      .layout(StackLayout::create ())
+						      .layout(DockLayout::create ())
 						      .background(Color::fromRGBA (0.2, 0.2, 0.2, 1.0));
-	rootContainer->setLeftPadding (10);
-	rootContainer->setRightPadding (10);
-	rootContainer->setTopPadding (10);
-	rootContainer->setBottomPadding (10);
 
 	_viewContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
@@ -42,32 +39,53 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_textView->textStyle()->setColor (Color::Gray);
 	_textView->setMultiline (true);
 
-	_viewContainer->setBottomMargin (0);
 	_viewContainer->add (_imageView);
 	_viewContainer->add (_textView);
+	_viewContainer->setLeftPadding (3);
+	_viewContainer->setRightPadding (3);
+	_viewContainer->setTopPadding (3);
+	_viewContainer->setBottomPadding (3);
 
 	_label = Label::create ().horizontal(HorizontalAlignment::Center)
 				 .vertical(VerticalAlignment::Center);
-	_label->textStyle()->setColor (Color::fromRGBA (0.8, 0.8, 0.8, 1.0));
+	_label->textStyle()->setColor (Color::White);
 	_label->textStyle()->setFontSize (FontSize::XSmall);
 
 	Container *labelContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						       .vertical(VerticalAlignment::Fill)
+						       .vertical(VerticalAlignment::Bottom)
 						       .layout(DockLayout::create ())
-						       .background(Color::DarkGray);
+						       .background(Color::Black);
+	labelContainer->setOpacity (0.8);
 	labelContainer->setMinHeight (70);
 	labelContainer->setTopMargin (0);
 	labelContainer->setLeftPadding (15);
+	labelContainer->setRightPadding (15);
 	labelContainer->add (_label);
+
+	_lockImage = ImageView::create().imageSource(QUrl ("asset:///page-lock.png"))
+					.horizontal(HorizontalAlignment::Right)
+					.vertical(VerticalAlignment::Top)
+					.visible(false);
 
 	rootContainer->add (_viewContainer);
 	rootContainer->add (labelContainer);
+	rootContainer->add (_lockImage);
 
 	_imgTracker = new ImageTracker (this);
 	connect (_imgTracker, SIGNAL (stateChanged (bb::cascades::ResourceState::Type)),
 		 this, SLOT (onImageStateChanged (bb::cascades::ResourceState::Type)));
 
-	setRoot (rootContainer);
+	Container *mainContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						      .vertical(VerticalAlignment::Fill)
+						      .layout(DockLayout::create())
+						      .background(Color::Black);
+	mainContainer->setTopPadding (10);
+	mainContainer->setRightPadding (10);
+	mainContainer->setBottomPadding (10);
+	mainContainer->setLeftPadding (10);
+	mainContainer->add (rootContainer);
+
+	setRoot (mainContainer);
 }
 
 NSRLastDocItem::~NSRLastDocItem ()
@@ -78,7 +96,8 @@ void
 NSRLastDocItem::updateItem (const QString&	title,
 			    const QString&	imgPath,
 			    const QString&	text,
-			    const QString&	path)
+			    const QString&	path,
+			    bool		encrypted)
 {
 	_label->setText (title);
 	_path = path;
@@ -94,6 +113,8 @@ NSRLastDocItem::updateItem (const QString&	title,
 		_textView->setText (text);
 		_viewContainer->setBottomMargin (10);
 	}
+
+	_lockImage->setVisible (encrypted);
 }
 
 void
@@ -115,13 +136,10 @@ NSRLastDocItem::activate (bool activate)
 {
 	Container *rootContainer = static_cast<Container *> (root ());
 
-	if (activate) {
+	if (activate)
 		rootContainer->setBackground (Color::fromRGBA (0, 0.66, 0.87, 1.0));
-		_textView->textStyle()->setColor (Color::Black);
-	} else {
-		rootContainer->setBackground (Color::fromRGBA (0.2, 0.2, 0.2, 1.0));
-		_textView->textStyle()->setColor (Color::Gray);
-	}
+	else
+		rootContainer->setBackground (Color::Black);
 }
 
 QString
@@ -153,6 +171,3 @@ NSRLastDocItem::onImageStateChanged (bb::cascades::ResourceState::Type state)
 		}
 	}
 }
-
-
-
