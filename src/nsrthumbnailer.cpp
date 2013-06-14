@@ -20,7 +20,8 @@ NSRThumbnailer::isThumbnailExists (const QString& path)
 
 void
 NSRThumbnailer::saveThumbnail (const QString&		path,
-			       const NSRRenderedPage&	page)
+			       const NSRRenderedPage&	page,
+			       bool			isEncrypted)
 {
 	QDir dir;
 	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
@@ -47,6 +48,7 @@ NSRThumbnailer::saveThumbnail (const QString&		path,
 	settings.beginGroup (filePathToGroup (path));
 	settings.setValue ("path", path);
 	settings.setValue ("text", pageText);
+	settings.setValue ("encrypted", isEncrypted);
 	settings.endGroup ();
 	settings.sync ();
 }
@@ -95,6 +97,25 @@ NSRThumbnailer::getThumbnailText (const QString& path)
 			    QSettings::IniFormat);
 
 	return settings.value(filePathToGroup (path) + "/text", "").toString ();
+}
+
+bool
+NSRThumbnailer::isThumbnailEncrypted (const QString& path)
+{
+	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
+			    QSettings::IniFormat);
+
+	return settings.value(filePathToGroup (path) + "/encrypted", false).toBool ();
+}
+
+void
+NSRThumbnailer::setThumbnailEncrypted (const QString&	path,
+				       bool		isEncrypted)
+{
+	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
+			    QSettings::IniFormat);
+
+	settings.setValue (filePathToGroup (path) + "/encrypted", isEncrypted);
 }
 
 QString

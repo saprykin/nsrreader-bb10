@@ -79,7 +79,8 @@ NSRRenderThread::run ()
 		thumbPage.setText (doc->getText ());
 
 		NSRThumbnailer::saveThumbnail (doc->getDocumentPath (),
-				thumbPage);
+					       thumbPage,
+					       !doc->getPassword().isEmpty ());
 
 		doc->setTextOnly (textOnly);
 
