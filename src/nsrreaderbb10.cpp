@@ -353,6 +353,7 @@ NSRReaderBB10::onGotoActionTriggered ()
 
 	_prompt->setTitle (trUtf8 ("Enter Page", "Enter page number"));
 	_prompt->setBody (trUtf8("Enter page (1 - %1):").arg (_core->getPagesCount ()));
+	_prompt->inputField()->setDefaultText (QString::number (_core->getCurrentPage().getNumber ()));
 	_prompt->inputField()->setInputMode (SystemUiInputMode::NumericKeypad);
 	_prompt->setDismissAutomatically (false);
 	_prompt->inputField()->setMaximumLength (QString::number(_core->getPagesCount ()).length ());
