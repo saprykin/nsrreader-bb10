@@ -58,12 +58,12 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 {
 	_invokeManager = new InvokeManager (this);
 
-	connect (_invokeManager, SIGNAL (invoked (const bb::system::InvokeRequest&)),
-		 this, SLOT (onInvoke (const bb::system::InvokeRequest&)));
-	connect (_invokeManager, SIGNAL (cardPooled (const bb::system::CardDoneMessage&)),
-		 this, SLOT (onCardPooled (const bb::system::CardDoneMessage&)));
-	connect (_invokeManager, SIGNAL (cardResize (const bb::system::CardResizeMessage&)),
-		 this, SLOT (onCardResize (const bb::system::CardDoneMessage&)));
+	Q_ASSERT (connect (_invokeManager, SIGNAL (invoked (const bb::system::InvokeRequest&)),
+			   this, SLOT (onInvoke (const bb::system::InvokeRequest&))));
+	Q_ASSERT (connect (_invokeManager, SIGNAL (cardPooled (const bb::system::CardDoneMessage&)),
+			   this, SLOT (onCardPooled (const bb::system::CardDoneMessage&))));
+	Q_ASSERT (connect (_invokeManager, SIGNAL (cardResize (const bb::system::CardResizeMessage&)),
+			   this, SLOT (onCardResize (const bb::system::CardDoneMessage&))));
 
 	_startMode = _invokeManager->startupMode ();
 
@@ -92,26 +92,33 @@ NSRReaderBB10::initFullUI ()
 						.vertical(VerticalAlignment::Fill)
 						.visible(false);
 
-	connect (_pageView, SIGNAL (prevPageRequested ()), this, SLOT (onPrevPageRequested ()));
-	connect (_pageView, SIGNAL (nextPageRequested ()), this, SLOT (onNextPageRequested ()));
-	connect (_pageView, SIGNAL (fitToWidthRequested ()), this, SLOT (onFitToWidthRequested ()));
-	connect (_pageView, SIGNAL (rotateLeftRequested ()), this, SLOT (onRotateLeftRequested ()));
-	connect (_pageView, SIGNAL (rotateRightRequested ()), this, SLOT (onRotateRightRequested ()));
+	Q_ASSERT (connect (_pageView, SIGNAL (prevPageRequested ()),
+			   this, SLOT (onPrevPageRequested ())));
+	Q_ASSERT (connect (_pageView, SIGNAL (nextPageRequested ()),
+			   this, SLOT (onNextPageRequested ())));
+	Q_ASSERT (connect (_pageView, SIGNAL (fitToWidthRequested ()),
+			   this, SLOT (onFitToWidthRequested ())));
+	Q_ASSERT (connect (_pageView, SIGNAL (rotateLeftRequested ()),
+			   this, SLOT (onRotateLeftRequested ())));
+	Q_ASSERT (connect (_pageView, SIGNAL (rotateRightRequested ()),
+			   this, SLOT (onRotateRightRequested ())));
 
 	_pageStatus = new NSRPageStatus ();
 	_pageStatus->setHorizontalAlignment(HorizontalAlignment::Left);
 	_pageStatus->setVerticalAlignment(VerticalAlignment::Top);
 	_pageStatus->setStatus (0, 0);
 
-	connect (_pageView, SIGNAL (viewTapped ()), this, SLOT (onPageTapped ()));
+	Q_ASSERT (connect (_pageView, SIGNAL (viewTapped ()), this, SLOT (onPageTapped ())));
 
 	_welcomeView = new NSRWelcomeView ();
 
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		_welcomeView->setCardMode (true);
 
-	connect (_welcomeView, SIGNAL (openDocumentRequested ()), this, SLOT (onOpenActionTriggered ()));
-	connect (_welcomeView, SIGNAL (recentDocumentsRequested ()), this, SLOT (onRecentDocsTriggered ()));
+	Q_ASSERT (connect (_welcomeView, SIGNAL (openDocumentRequested ()),
+			   this, SLOT (onOpenActionTriggered ())));
+	Q_ASSERT (connect (_welcomeView, SIGNAL (recentDocumentsRequested ()),
+			   this, SLOT (onRecentDocsTriggered ())));
 
 	rootContainer->add (_pageView);
 	rootContainer->add (_welcomeView);
@@ -177,23 +184,35 @@ NSRReaderBB10::initFullUI ()
 	SystemShortcut *zoomInShortcut = SystemShortcut::create (SystemShortcuts::ZoomIn);
 	SystemShortcut *zoomOutShortcut = SystemShortcut::create (SystemShortcuts::ZoomOut);
 
-	connect (prevShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
-	connect (nextShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
-	connect (zoomInShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
-	connect (zoomOutShortcut, SIGNAL (triggered ()), this, SLOT (onSystemShortcutTriggered ()));
+	Q_ASSERT (connect (prevShortcut, SIGNAL (triggered ()),
+			   this, SLOT (onSystemShortcutTriggered ())));
+	Q_ASSERT (connect (nextShortcut, SIGNAL (triggered ()),
+			   this, SLOT (onSystemShortcutTriggered ())));
+	Q_ASSERT (connect (zoomInShortcut, SIGNAL (triggered ()),
+			   this, SLOT (onSystemShortcutTriggered ())));
+	Q_ASSERT (connect (zoomOutShortcut, SIGNAL (triggered ()),
+			   this, SLOT (onSystemShortcutTriggered ())));
 
 	prevPageAction->addShortcut (prevShortcut);
 	nextPageAction->addShortcut (nextShortcut);
 #endif
 
-	connect (openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
-	connect (prevPageAction, SIGNAL (triggered ()), this, SLOT (onPrevPageActionTriggered ()));
-	connect (nextPageAction, SIGNAL (triggered ()), this, SLOT (onNextPageActionTriggered ()));
-	connect (gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
-	connect (prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
-	connect (recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
-	connect (helpAction, SIGNAL (triggered ()), this, SLOT (onHelpActionTriggered ()));
-	connect (shareAction, SIGNAL (triggered ()), this, SLOT (onShareActionTriggered ()));
+	Q_ASSERT (connect (openAction, SIGNAL (triggered ()),
+			   this, SLOT (onOpenActionTriggered ())));
+	Q_ASSERT (connect (prevPageAction, SIGNAL (triggered ()),
+			   this, SLOT (onPrevPageActionTriggered ())));
+	Q_ASSERT (connect (nextPageAction, SIGNAL (triggered ()),
+			   this, SLOT (onNextPageActionTriggered ())));
+	Q_ASSERT (connect (gotoAction, SIGNAL (triggered ()),
+			   this, SLOT (onGotoActionTriggered ())));
+	Q_ASSERT (connect (prefsAction, SIGNAL (triggered ()),
+			   this, SLOT (onPrefsActionTriggered ())));
+	Q_ASSERT (connect (recentDocsAction, SIGNAL (triggered ()),
+			   this, SLOT (onRecentDocsTriggered ())));
+	Q_ASSERT (connect (helpAction, SIGNAL (triggered ()),
+			   this, SLOT (onHelpActionTriggered ())));
+	Q_ASSERT (connect (shareAction, SIGNAL (triggered ()),
+			   this, SLOT (onShareActionTriggered ())));
 
 	Menu *menu = new Menu ();
 	menu->setSettingsAction (prefsAction);
@@ -209,34 +228,37 @@ NSRReaderBB10::initFullUI ()
 
 	_core = new NSRReaderCore (_startMode, this);
 
-	connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
-		 this, SLOT (onFileSelected (const QStringList&)));
-	connect (_core, SIGNAL (pageRendered (int)), this, SLOT (onPageRendered (int)));
-	connect (_core, SIGNAL (needIndicator (bool)), this, SLOT (onIndicatorRequested (bool)));
-	connect (_core, SIGNAL (needPassword ()), this, SLOT (onPasswordRequested ()));
-	connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::DocumentError)),
-		 this, SLOT (onErrorWhileOpening (NSRAbstractDocument::DocumentError)));
-	connect (_core, SIGNAL (needViewMode (NSRPageView::NSRViewMode)),
-		 this, SLOT (onViewModeRequested (NSRPageView::NSRViewMode)));
+	Q_ASSERT (connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
+			   this, SLOT (onFileSelected (const QStringList&))));
+	Q_ASSERT (connect (_core, SIGNAL (pageRendered (int)),
+			   this, SLOT (onPageRendered (int))));
+	Q_ASSERT (connect (_core, SIGNAL (needIndicator (bool)),
+			   this, SLOT (onIndicatorRequested (bool))));
+	Q_ASSERT (connect (_core, SIGNAL (needPassword ()),
+			   this, SLOT (onPasswordRequested ())));
+	Q_ASSERT (connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::DocumentError)),
+			   this, SLOT (onErrorWhileOpening (NSRAbstractDocument::DocumentError))));
+	Q_ASSERT (connect (_core, SIGNAL (needViewMode (NSRPageView::NSRViewMode)),
+			   this, SLOT (onViewModeRequested (NSRPageView::NSRViewMode))));
 
 	_naviPane = NavigationPane::create().add (_page);
 
-	connect (_naviPane, SIGNAL (popTransitionEnded (bb::cascades::Page *)),
-		 this, SLOT (onPopTransitionEnded (bb::cascades::Page *)));
+	Q_ASSERT (connect (_naviPane, SIGNAL (popTransitionEnded (bb::cascades::Page *)),
+			   this, SLOT (onPopTransitionEnded (bb::cascades::Page *))));
 
 	Application::instance()->setScene (_naviPane);
 
 	MediaKeyWatcher *volumeUpWatcher = new MediaKeyWatcher (MediaKey::VolumeUp, this);
 	MediaKeyWatcher *volumeDownWatcher = new MediaKeyWatcher (MediaKey::VolumeDown, this);
 
-	connect (volumeUpWatcher, SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
-		 this, SLOT (onPrevPageRequested ()));
-	connect (volumeDownWatcher, SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
-		 this, SLOT (onNextPageRequested ()));
+	Q_ASSERT (connect (volumeUpWatcher, SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
+			   this, SLOT (onPrevPageRequested ())));
+	Q_ASSERT (connect (volumeDownWatcher, SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
+			   this, SLOT (onNextPageRequested ())));
 
 	bb::cascades::LocaleHandler *localeHandler = new bb::cascades::LocaleHandler (this);
-	connect (localeHandler, SIGNAL (systemLanguageChanged ()),
-		 this, SLOT (onSystemLanguageChanged ()));
+	Q_ASSERT (connect (localeHandler, SIGNAL (systemLanguageChanged ()),
+			   this, SLOT (onSystemLanguageChanged ())));
 
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
 		_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
@@ -252,12 +274,12 @@ NSRReaderBB10::initFullUI ()
 		onFullscreenSwitchRequested (settings.isFullscreenMode ());
 	}
 
-	connect (_pageView, SIGNAL (zoomChanged (double, bool)),
-		 this, SLOT (onZoomChanged (double, bool)));
+	Q_ASSERT (connect (_pageView, SIGNAL (zoomChanged (double, bool)),
+			   this, SLOT (onZoomChanged (double, bool))));
 
 	Application::instance()->setAutoExit (false);
-	connect (Application::instance (), SIGNAL (manualExit ()),
-		 this, SLOT (onManualExit ()));
+	Q_ASSERT (connect (Application::instance (), SIGNAL (manualExit ()),
+			   this, SLOT (onManualExit ())));
 
 	/* Initial loading logic:
 	 *   - if we are launching from invoke request, wait for further request;
@@ -376,8 +398,8 @@ NSRReaderBB10::onPrefsActionTriggered ()
 
 	NSRPreferencesPage *prefsPage = new NSRPreferencesPage ();
 
-	connect (prefsPage, SIGNAL (switchFullscreen (bool)),
-		 this, SLOT (onFullscreenSwitchRequested (bool)));
+	Q_ASSERT (connect (prefsPage, SIGNAL (switchFullscreen (bool)),
+			   this, SLOT (onFullscreenSwitchRequested (bool))));
 
 	_naviPane->push (prefsPage);
 }
@@ -387,8 +409,8 @@ NSRReaderBB10::onRecentDocsTriggered ()
 {
 	NSRLastDocsPage *page = new NSRLastDocsPage ();
 
-	connect (page, SIGNAL (requestDocument (QString)),
-		 this, SLOT (onLastDocumentRequested (QString)));
+	Q_ASSERT (connect (page, SIGNAL (requestDocument (QString)),
+			   this, SLOT (onLastDocumentRequested (QString))));
 
 	_naviPane->push (page);
 }

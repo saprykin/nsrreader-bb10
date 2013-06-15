@@ -35,9 +35,12 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
 	removeAction->setImageSource (QUrl ("asset:///delete.png"));
 
-	connect (openAction, SIGNAL (triggered ()), listView, SLOT (onOpenActionTriggered ()));
-	connect (shareAction, SIGNAL (triggered ()), listView, SLOT (onShareActionTriggered ()));
-	connect (removeAction, SIGNAL (triggered ()), listView, SLOT (onRemoveActionTriggered ()));
+	Q_ASSERT (connect (openAction, SIGNAL (triggered ()),
+			   listView, SLOT (onOpenActionTriggered ())));
+	Q_ASSERT (connect (shareAction, SIGNAL (triggered ()),
+			   listView, SLOT (onShareActionTriggered ())));
+	Q_ASSERT (connect (removeAction, SIGNAL (triggered ()),
+			   listView, SLOT (onRemoveActionTriggered ())));
 
 	actionSet->add (openAction);
 	actionSet->add (shareAction);

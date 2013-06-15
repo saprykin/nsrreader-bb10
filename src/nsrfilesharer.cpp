@@ -53,7 +53,8 @@ NSRFileSharer::shareFile (const QString& path)
 
 	if (invokeReply != NULL) {
 		invokeReply->setParent (this);
-		connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
+		Q_ASSERT (connect (invokeReply, SIGNAL (finished ()),
+				   invokeReply, SLOT (deleteLater ())));
 	}
 }
 

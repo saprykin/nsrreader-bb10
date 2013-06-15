@@ -28,8 +28,10 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 					  .horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Center);
 
-	connect (_openButton, SIGNAL (clicked ()), this, SIGNAL (openDocumentRequested ()));
-	connect (_lastDocsButton, SIGNAL (clicked ()), this, SIGNAL (recentDocumentsRequested ()));
+	Q_ASSERT (connect (_openButton, SIGNAL (clicked ()),
+			   this, SIGNAL (openDocumentRequested ())));
+	Q_ASSERT (connect (_lastDocsButton, SIGNAL (clicked ()),
+			   this, SIGNAL (recentDocumentsRequested ())));
 
 	innerContainer->add (_openButton);
 	innerContainer->add (_lastDocsButton);

@@ -58,15 +58,15 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 
 	loadData ();
 
-	connect (OrientationSupport::instance (),
-		 SIGNAL (orientationAboutToChange (bb::cascades::UIOrientation::Type)),
-		 this,
-		 SLOT (onOrientationAboutToChange (bb::cascades::UIOrientation::Type)));
-	connect (_listView, SIGNAL (triggered (QVariantList)),
-		 this, SLOT (onListItemTriggered (QVariantList)));
-	connect (_listView, SIGNAL (documentRequested (QString)),
-		 this, SIGNAL (requestDocument (QString)));
-	connect (_listView, SIGNAL (modelCleared ()), this, SLOT (onModelCleared ()));
+	Q_ASSERT (connect (OrientationSupport::instance (),
+			   SIGNAL (orientationAboutToChange (bb::cascades::UIOrientation::Type)),
+			   this,
+			   SLOT (onOrientationAboutToChange (bb::cascades::UIOrientation::Type))));
+	Q_ASSERT (connect (_listView, SIGNAL (triggered (QVariantList)),
+			   this, SLOT (onListItemTriggered (QVariantList))));
+	Q_ASSERT (connect (_listView, SIGNAL (documentRequested (QString)),
+			   this, SIGNAL (requestDocument (QString))));
+	Q_ASSERT (connect (_listView, SIGNAL (modelCleared ()), this, SLOT (onModelCleared ())));
 }
 
 NSRLastDocsPage::~NSRLastDocsPage ()

@@ -72,8 +72,8 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	rootContainer->add (_lockImage);
 
 	_imgTracker = new ImageTracker (this);
-	connect (_imgTracker, SIGNAL (stateChanged (bb::cascades::ResourceState::Type)),
-		 this, SLOT (onImageStateChanged (bb::cascades::ResourceState::Type)));
+	Q_ASSERT (connect (_imgTracker, SIGNAL (stateChanged (bb::cascades::ResourceState::Type)),
+			   this, SLOT (onImageStateChanged (bb::cascades::ResourceState::Type))));
 
 	Container *mainContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
