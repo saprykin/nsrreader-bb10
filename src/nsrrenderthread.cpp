@@ -89,7 +89,9 @@ NSRRenderThread::run ()
 		else
 			doc->zoomToWidth (wasZoomWidth);
 		doc->setInvertedColors (wasInverted);
-	}
+	} else if (_renderThumbnail)
+		NSRThumbnailer::setThumbnailEncrypted (doc->getDocumentPath (),
+						      !doc->getPassword().isEmpty ());
 
 	completeRequest (page);
 	emit renderDone ();
