@@ -62,8 +62,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 			   this, SLOT (onInvoke (const bb::system::InvokeRequest&))));
 	Q_ASSERT (connect (_invokeManager, SIGNAL (cardPooled (const bb::system::CardDoneMessage&)),
 			   this, SLOT (onCardPooled (const bb::system::CardDoneMessage&))));
-	Q_ASSERT (connect (_invokeManager, SIGNAL (cardResize (const bb::system::CardResizeMessage&)),
-			   this, SLOT (onCardResize (const bb::system::CardDoneMessage&))));
+	Q_ASSERT (connect (_invokeManager, SIGNAL (cardResizeRequested (const bb::system::CardResizeMessage&)),
+			   this, SLOT (onCardResize (const bb::system::CardResizeMessage&))));
 
 	_startMode = _invokeManager->startupMode ();
 
