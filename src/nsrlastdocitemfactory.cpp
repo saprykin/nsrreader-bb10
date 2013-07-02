@@ -4,6 +4,7 @@
 #include "nsrfilesharer.h"
 
 #include <bb/cascades/ActionItem>
+#include <bb/cascades/DeleteActionItem>
 #include <bb/cascades/ActionSet>
 
 using namespace bb::cascades;
@@ -29,11 +30,10 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 
 	ActionItem *openAction = ActionItem::create().title (trUtf8 ("Open"));
 	ActionItem *shareAction = ActionItem::create().title (trUtf8 ("Share"));
-	ActionItem *removeAction = ActionItem::create().title (trUtf8 ("Remove from List"));
+	DeleteActionItem *removeAction = DeleteActionItem::create().title (trUtf8 ("Remove from List"));
 
 	openAction->setImageSource (QUrl ("asset:///open.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
-	removeAction->setImageSource (QUrl ("asset:///delete.png"));
 
 	Q_ASSERT (connect (openAction, SIGNAL (triggered ()),
 			   listView, SLOT (onOpenActionTriggered ())));
