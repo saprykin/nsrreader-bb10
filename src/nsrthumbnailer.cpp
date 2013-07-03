@@ -56,7 +56,7 @@ NSRThumbnailer::saveThumbnail (const QString&		path,
 QString
 NSRThumbnailer::getThumnailPath (const QString& path)
 {
-	QString hash = QCryptographicHash::hash(path.toAscii (), QCryptographicHash::Md5).toHex ();
+	QString hash = filePathToGroup (path);
 
 	return NSR_THUMBNAILS_DIR + "/" + hash + ".png";
 }
@@ -121,7 +121,8 @@ NSRThumbnailer::setThumbnailEncrypted (const QString&	path,
 QString
 NSRThumbnailer::filePathToGroup (const QString& path)
 {
-	return QCryptographicHash::hash(path.toAscii (), QCryptographicHash::Md5).toHex ();
+	return QCryptographicHash::hash(path.toAscii (), QCryptographicHash::Md5).toHex () +
+	       + "_" + QString::number (QFileInfo(path).size ());
 }
 
 
