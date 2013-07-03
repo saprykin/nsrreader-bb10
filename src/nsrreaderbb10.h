@@ -59,7 +59,6 @@ private Q_SLOTS:
     void onPrevPageRequested ();
     void onNextPageRequested ();
     void onFitToWidthRequested ();
-    void onSystemShortcutTriggered ();
     void onInvoke (const bb::system::InvokeRequest& req);
     void onRotateLeftRequested ();
     void onRotateRightRequested ();
@@ -75,8 +74,6 @@ private:
     void reloadSettings ();
     void loadSession (const QString& path = "", int page = -1);
     void saveSession ();
-    void zoomIn ();
-    void zoomOut ();
     void resetState ();
     void showAboutPage (NSRAboutPage::NSRAboutSection section);
 

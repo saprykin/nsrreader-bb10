@@ -182,17 +182,6 @@ NSRReaderBB10::initFullUI ()
 #ifdef BBNDK_VERSION_AT_LEAST
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
-	SystemShortcut *zoomInShortcut = SystemShortcut::create (SystemShortcuts::ZoomIn);
-	SystemShortcut *zoomOutShortcut = SystemShortcut::create (SystemShortcuts::ZoomOut);
-
-	Q_ASSERT (connect (prevShortcut, SIGNAL (triggered ()),
-			   this, SLOT (onSystemShortcutTriggered ())));
-	Q_ASSERT (connect (nextShortcut, SIGNAL (triggered ()),
-			   this, SLOT (onSystemShortcutTriggered ())));
-	Q_ASSERT (connect (zoomInShortcut, SIGNAL (triggered ()),
-			   this, SLOT (onSystemShortcutTriggered ())));
-	Q_ASSERT (connect (zoomOutShortcut, SIGNAL (triggered ()),
-			   this, SLOT (onSystemShortcutTriggered ())));
 	Shortcut *openShortcut = Shortcut::create().key("Ctrl+O");
 	Shortcut *gotoShortcut = Shortcut::create().key("Ctrl+G");
 
@@ -581,30 +570,6 @@ NSRReaderBB10::saveSession ()
 }
 
 void
-NSRReaderBB10::zoomIn ()
-{
-	if (!_core->isDocumentOpened () || _indicator->isVisible ())
-		return;
-
-	if (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_GRAPHIC)
-		_core->zoomIn ();
-	else
-		_pageView->setTextZoom (_pageView->getTextZoom () + 10);
-}
-
-void
-NSRReaderBB10::zoomOut ()
-{
-	if (!_core->isDocumentOpened () || _indicator->isVisible ())
-		return;
-
-	if (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_GRAPHIC)
-		_core->zoomOut ();
-	else
-		_pageView->setTextZoom (_pageView->getTextZoom () - 10);
-}
-
-void
 NSRReaderBB10::onIndicatorRequested (bool enabled)
 {
 	disableVisualControls ();
@@ -806,33 +771,6 @@ void
 NSRReaderBB10::onFitToWidthRequested ()
 {
 	_pageView->fitToWidth ();
-}
-
-void
-NSRReaderBB10::onSystemShortcutTriggered ()
-{
-#ifdef BBNDK_VERSION_AT_LEAST
-	SystemShortcut *shortcut = static_cast<SystemShortcut *> (sender ());
-
-	switch (shortcut->type ()) {
-	case SystemShortcuts::PreviousSection:
-		if (_actionAggregator->isActionEnabled ("prev"))
-			onPrevPageActionTriggered ();
-		break;
-	case SystemShortcuts::NextSection:
-		if (_actionAggregator->isActionEnabled ("next"))
-			onNextPageActionTriggered ();
-		break;
-	case SystemShortcuts::ZoomIn:
-		zoomIn ();
-		break;
-	case SystemShortcuts::ZoomOut:
-		zoomOut ();
-		break;
-	default:
-		break;
-	}
-#endif
 }
 
 void

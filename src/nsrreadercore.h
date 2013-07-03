@@ -46,8 +46,6 @@ public:
 	double getMinZoom () const;
 	double getMaxZoom () const;
 	void setZoom (double zoom, bool toWidth);
-	void zoomIn ();
-	void zoomOut ();
 	void rotate (double rot);
 	double getRotation () const;
 
