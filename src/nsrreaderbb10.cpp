@@ -23,6 +23,7 @@
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #include <bb/cascades/SystemShortcut>
+#include <bb/cascades/Shortcut>
 #endif
 
 #include <bb/system/SystemToast>
@@ -192,9 +193,13 @@ NSRReaderBB10::initFullUI ()
 			   this, SLOT (onSystemShortcutTriggered ())));
 	Q_ASSERT (connect (zoomOutShortcut, SIGNAL (triggered ()),
 			   this, SLOT (onSystemShortcutTriggered ())));
+	Shortcut *openShortcut = Shortcut::create().key("Ctrl+O");
+	Shortcut *gotoShortcut = Shortcut::create().key("Ctrl+G");
 
 	prevPageAction->addShortcut (prevShortcut);
 	nextPageAction->addShortcut (nextShortcut);
+	openAction->addShortcut (openShortcut);
+	gotoAction->addShortcut (gotoShortcut);
 #endif
 
 	Q_ASSERT (connect (openAction, SIGNAL (triggered ()),
