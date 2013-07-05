@@ -20,6 +20,7 @@ public:
 	static void cleanOldFiles ();
 	static void setThumbnailEncrypted (const QString&	path,
 					   bool			isEncrypted);
+	static void removeThumbnail (const QString& path);
 
 private:
 	static QString filePathToGroup (const QString& path);

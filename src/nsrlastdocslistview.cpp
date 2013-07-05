@@ -35,7 +35,7 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 	for (int i = 0; i < count; ++i)
 		if (model->value(i).toMap()["path"].toString () == docPath) {
 			NSRSettings().removeLastDocument (docPath);
-			QFile::remove (NSRThumbnailer::getThumnailPath (docPath));
+			NSRThumbnailer::removeThumbnail (docPath);
 			model->removeAt (i);
 			break;
 		}

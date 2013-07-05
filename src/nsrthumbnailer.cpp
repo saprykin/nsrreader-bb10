@@ -118,6 +118,16 @@ NSRThumbnailer::setThumbnailEncrypted (const QString&	path,
 	settings.setValue (filePathToGroup (path) + "/encrypted", isEncrypted);
 }
 
+void
+NSRThumbnailer::removeThumbnail (const QString& path)
+{
+	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
+			    QSettings::IniFormat);
+
+	settings.remove (filePathToGroup (path));
+	QFile::remove (getThumbnailText (path));
+}
+
 QString
 NSRThumbnailer::filePathToGroup (const QString& path)
 {
