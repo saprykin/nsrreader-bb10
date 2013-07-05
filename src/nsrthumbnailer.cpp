@@ -121,8 +121,7 @@ NSRThumbnailer::setThumbnailEncrypted (const QString&	path,
 QString
 NSRThumbnailer::filePathToGroup (const QString& path)
 {
-	return QCryptographicHash::hash(path.toAscii (), QCryptographicHash::Md5).toHex () +
-	       + "_" + QString::number (QFileInfo(path).size ());
+	return QCryptographicHash::hash(path.toAscii (), QCryptographicHash::Md5).toHex ();
 }
 
 
