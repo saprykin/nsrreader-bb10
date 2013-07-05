@@ -10,6 +10,12 @@
 #include <bb/cascades/ImageTracker>
 #include <bb/cascades/ActionItem>
 
+#include <bbndk.h>
+
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
+#include <bb/cascades/ScrollRailsPolicy>
+#endif
+
 using namespace bb::cascades;
 
 #define NSR_LOGO_WELCOME "asset:///nsrlogo-welcome.png"
@@ -71,6 +77,10 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textContainer->add (_textArea);
 	_textScrollView->setContent (_textContainer);
 	_textScrollView->setVisible (false);
+
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
+	_scrollView->scrollViewProperties()->setScrollRailsPolicy (ScrollRailsPolicy::LockNearAxes);
+#endif
 
 	_initialFontSize = (int) _textArea->textStyle()->fontSize ();
 
