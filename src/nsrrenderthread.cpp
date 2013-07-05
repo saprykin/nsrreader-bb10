@@ -58,7 +58,7 @@ NSRRenderThread::run ()
 	doc->setTextOnly (textOnly);
 
 	if (_renderThumbnail &&
-	    !NSRThumbnailer::isThumbnailExists (doc->getDocumentPath ())) {
+	    NSRThumbnailer::isThumbnailOutdated (doc->getDocumentPath ())) {
 		NSRRenderedPage	thumbPage;
 		int		wasZoom = doc->getZoom ();
 		int		wasZoomWidth = doc->getScreenWidth ();
