@@ -21,9 +21,11 @@ public:
 	static void setThumbnailEncrypted (const QString&	path,
 					   bool			isEncrypted);
 	static void removeThumbnail (const QString& path);
+	static bool isThumbnailOutdated (const QString& path);
 
 private:
-	static QString filePathToGroup (const QString& path);
+	static QString filePathToHash (const QString& path);
+	static QString getThumbnailPathFromHash (const QString& hash);
 
 	NSRThumbnailer () {}
 	~NSRThumbnailer () {}
