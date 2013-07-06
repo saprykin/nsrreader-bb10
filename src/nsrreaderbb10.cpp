@@ -21,7 +21,7 @@
 
 #include <bbndk.h>
 
-#ifdef BBNDK_VERSION_AT_LEAST
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
 #include <bb/cascades/SystemShortcut>
 #include <bb/cascades/Shortcut>
 #endif
@@ -179,7 +179,7 @@ NSRReaderBB10::initFullUI ()
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
 
-#ifdef BBNDK_VERSION_AT_LEAST
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
 	Shortcut *openShortcut = Shortcut::create().key("Ctrl+O");
