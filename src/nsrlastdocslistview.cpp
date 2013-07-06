@@ -25,23 +25,11 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 	if (sender () == NULL)
 		return;
 
-	QString			docPath = sender()->property("document-path").toString ();
-	QVariantListDataModel	*model = static_cast < QVariantListDataModel * > (dataModel ());
+	QString docPath = sender()->property("document-path").toString ();
 
-	if (docPath.isEmpty ())
-		return;
-
-	int count = model->size ();
-	for (int i = 0; i < count; ++i)
-		if (model->value(i).toMap()["path"].toString () == docPath) {
-			NSRSettings().removeLastDocument (docPath);
-			NSRThumbnailer::removeThumbnail (docPath);
-			model->removeAt (i);
-			break;
-		}
-
-	if (model->size () == 0)
-		emit modelCleared ();
+	onHideActionTriggered ();
+	emit documentToBeDeleted (docPath);
+	QFile::remove (docPath);
 }
 
 void
@@ -70,4 +58,29 @@ NSRLastDocsListView::onShareActionTriggered ()
 		return;
 
 	NSRFileSharer::getInstance()->shareFile (docPath);
+}
+
+void
+NSRLastDocsListView::onHideActionTriggered ()
+{
+	if (sender () == NULL)
+		return;
+
+	QString			docPath = sender()->property("document-path").toString ();
+	QVariantListDataModel	*model = static_cast < QVariantListDataModel * > (dataModel ());
+
+	if (docPath.isEmpty ())
+		return;
+
+	int count = model->size ();
+	for (int i = 0; i < count; ++i)
+		if (model->value(i).toMap()["path"].toString () == docPath) {
+			NSRSettings().removeLastDocument (docPath);
+			NSRThumbnailer::removeThumbnail (docPath);
+			model->removeAt (i);
+			break;
+		}
+
+	if (model->size () == 0)
+		emit modelCleared ();
 }

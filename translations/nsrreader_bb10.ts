@@ -140,7 +140,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove from List</source>
+        <source>Hide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

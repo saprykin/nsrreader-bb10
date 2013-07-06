@@ -405,6 +405,8 @@ NSRReaderBB10::onRecentDocsTriggered ()
 
 	Q_ASSERT (connect (page, SIGNAL (requestDocument (QString)),
 			   this, SLOT (onLastDocumentRequested (QString))));
+	Q_ASSERT (connect (page, SIGNAL (documentToBeDeleted (QString)),
+			   this, SLOT (onDocumentToBeDeleted (QString))));
 
 	_naviPane->push (page);
 }
@@ -727,6 +729,18 @@ NSRReaderBB10::onLastDocumentRequested (const QString& path)
 	_naviPane->pop ();
 
 	onFileSelected (QStringList (path));
+}
+
+void
+NSRReaderBB10::onDocumentToBeDeleted (const QString& path)
+{
+	if (!_core->isDocumentOpened () || _core->getDocumentPath () != path)
+		return;
+
+	_core->closeDocument ();
+
+	resetState ();
+	updateVisualControls ();
 }
 
 void

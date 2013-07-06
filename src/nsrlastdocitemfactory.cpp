@@ -30,10 +30,12 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 
 	ActionItem *openAction = ActionItem::create().title (trUtf8 ("Open"));
 	ActionItem *shareAction = ActionItem::create().title (trUtf8 ("Share"));
-	DeleteActionItem *removeAction = DeleteActionItem::create().title (trUtf8 ("Remove from List"));
+	ActionItem *hideAction = ActionItem::create().title(trUtf8 ("Hide"));
+	DeleteActionItem *removeAction = DeleteActionItem::create().title (trUtf8 ("Delete"));
 
 	openAction->setImageSource (QUrl ("asset:///open.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
+	hideAction->setImageSource (QUrl ("asset:///list-remove.png"));
 
 	Q_ASSERT (connect (openAction, SIGNAL (triggered ()),
 			   listView, SLOT (onOpenActionTriggered ())));
@@ -41,9 +43,12 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 			   listView, SLOT (onShareActionTriggered ())));
 	Q_ASSERT (connect (removeAction, SIGNAL (triggered ()),
 			   listView, SLOT (onRemoveActionTriggered ())));
+	Q_ASSERT (connect (hideAction, SIGNAL (triggered ()),
+			   listView, SLOT (onHideActionTriggered ())));
 
 	actionSet->add (openAction);
 	actionSet->add (shareAction);
+	actionSet->add (hideAction);
 	actionSet->add (removeAction);
 
 	item->addActionSet (actionSet);
@@ -75,6 +80,7 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 		item->actionSetAt(0)->at(0)->setProperty ("document-path", docPath);
 		item->actionSetAt(0)->at(1)->setProperty ("document-path", docPath);
 		item->actionSetAt(0)->at(2)->setProperty ("document-path", docPath);
+		item->actionSetAt(0)->at(3)->setProperty ("document-path", docPath);
 	}
 
 	item->updateItem (map["title"].toString (),

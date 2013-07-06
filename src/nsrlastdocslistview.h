@@ -16,11 +16,13 @@ public:
 Q_SIGNALS:
 	void documentRequested (const QString& path);
 	void modelCleared ();
+	void documentToBeDeleted (const QString& path);
 
 public Q_SLOTS:
 	void onRemoveActionTriggered ();
 	void onOpenActionTriggered ();
 	void onShareActionTriggered ();
+	void onHideActionTriggered ();
 };
 
 #endif /* NSRLASTDOCSLISTVIEW_H_ */

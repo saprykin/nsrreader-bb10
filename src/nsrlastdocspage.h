@@ -17,6 +17,7 @@ public:
 
 Q_SIGNALS:
 	void requestDocument (const QString& path);
+	void documentToBeDeleted (const QString& path);
 
 private Q_SLOTS:
 	void onOrientationAboutToChange (bb::cascades::UIOrientation::Type type);

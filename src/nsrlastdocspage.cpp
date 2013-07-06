@@ -67,6 +67,8 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	Q_ASSERT (connect (_listView, SIGNAL (documentRequested (QString)),
 			   this, SIGNAL (requestDocument (QString))));
 	Q_ASSERT (connect (_listView, SIGNAL (modelCleared ()), this, SLOT (onModelCleared ())));
+	Q_ASSERT (connect (_listView, SIGNAL (documentToBeDeleted (QString)),
+			   this, SIGNAL (documentToBeDeleted (QString))));
 }
 
 NSRLastDocsPage::~NSRLastDocsPage ()
