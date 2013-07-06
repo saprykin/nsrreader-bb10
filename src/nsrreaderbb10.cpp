@@ -841,10 +841,7 @@ NSRReaderBB10::onCardPooled (const bb::system::CardDoneMessage& message)
 	_core->closeDocument ();
 
 	resetState ();
-
-	_pageView->setVisible (false);
-	_welcomeView->setVisible (true);
-	_invokeManager->sendCardDone (message);
+	updateVisualControls ();
 }
 
 void
