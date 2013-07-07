@@ -252,10 +252,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Documents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>About</source>
         <comment>About a program, window title</comment>
         <translation type="unfinished"></translation>
@@ -304,6 +300,10 @@ Please do not blame hard NSR Reader for that because it is only a piece of softw
     <message>
         <source>Unknown error! Maybe file is broken.
 NSR Reader tried open this file, but it can&apos;t :( Please check this file on desktop computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

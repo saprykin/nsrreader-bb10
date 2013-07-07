@@ -150,7 +150,7 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *gotoAction = ActionItem::create().enabled (false);
 	gotoAction->setTitle (trUtf8 ("Go to", "Go to page"));
 	SettingsActionItem *prefsAction = SettingsActionItem::create().title(trUtf8 ("Settings"));
-	ActionItem *recentDocsAction = ActionItem::create().title (trUtf8 ("Recent Documents"));
+	ActionItem *recentDocsAction = ActionItem::create().title (trUtf8 ("Recent"));
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share document between users"));
