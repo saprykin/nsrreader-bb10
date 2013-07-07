@@ -838,6 +838,8 @@ NSRReaderBB10::onFullscreenSwitchRequested (bool isFullscreen)
 void
 NSRReaderBB10::onCardPooled (const bb::system::CardDoneMessage& message)
 {
+	Q_UNUSED (message);
+
 	_core->closeDocument ();
 
 	resetState ();
