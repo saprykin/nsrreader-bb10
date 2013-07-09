@@ -24,7 +24,7 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 	_openButton = Button::create().text(trUtf8 ("Open", "Open document"))
 				      .horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Center);
-	_lastDocsButton = Button::create().text(trUtf8 ("Recent Documents", "Recently opened documents"))
+	_lastDocsButton = Button::create().text(trUtf8 ("Recent", "Recently opened documents"))
 					  .horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Center);
 

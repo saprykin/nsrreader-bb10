@@ -175,7 +175,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 			       "option in <i>Settings</i> only affects loading at the launch.");
 	QString tip2 = trUtf8 ("Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.");
 	QString tip3 = trUtf8 ("Just tap the screen to see current page and overall page count at the top left corner.");
-	QString tip4 = trUtf8 ("Use <i>Recent Documents</i> page to get fast access to documents you have been reading.");
+	QString tip4 = trUtf8 ("Use <i>Recent</i> page to get fast access to documents you have been reading.");
 	QString tip5 = trUtf8 ("Use pinch gesture for zooming.");
 	QString tip6 = trUtf8 ("NSR Reader supports password protected documents (except for latest "
 			       "Adobe&reg; Reader&reg; X encryption algorithm), so don't scary them!");
