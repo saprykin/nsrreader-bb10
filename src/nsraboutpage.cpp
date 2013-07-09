@@ -158,26 +158,26 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 			    	    	    "<i>Volume Up</i> key for the previous page and <i>Volume Down</i> key for "
 			    	    	    "the next page. "
 			    	    	    "If you have physical keyboard use <i>P</i> key to navigate to previous page "
-			    	    	    "and <i>N</i> key for the next page (see Action Menu's tooltipsa at the right). "
+			    	    	    "and <i>N</i> key for the next page (see Action Menu's tooltips at the right). "
 			    	    	    "Use <b>Go to</b> dialog to jump to arbitrary page.");
 	QString savePosSet = trUtf8 ("<b>Save Last Position</b> &ndash; NSR Reader will save last position "
 			    	     "(opened document, page number) and restore it on the next launch.");
 	QString fullScrSet = trUtf8 ("<b>Fullscreen Mode</b> &ndash; Action Bar at the bottom of the screen will "
 			    	     "be hidden (tap the screen somewhere to show or hide it again).");
-	QString reflowSet = trUtf8 ("<b>Text Reflow</b> &ndash; this is a special mode for documents which contain a lot of "
+	QString reflowSet = trUtf8 ("<b>Text Reflow</b> &ndash; this is a special mode for files which contain a lot of "
 			    	    "text information. In this mode NSR Reader will display only text data and wrap lines "
 			    	    "for comfortable reading.");
 	QString invertSet = trUtf8 ("<b>Invert Colors</b> &ndash; use this feature during dark days or if you have OLED "
 			    	    "display (like <b>Q10</b> does) to save power.");
 	QString encodSet = trUtf8 ("<b>Text Encoding</b> &ndash; this is only applied for plain text files (.txt). "
 			    	   "Use it for files with specific national encoding.");
-	QString tip1 = trUtf8 ("NSR Reader always saves position for every document. <b>Save Last Position</b> "
+	QString tip1 = trUtf8 ("NSR Reader always saves position for every file. <b>Save Last Position</b> "
 			       "option in <i>Settings</i> only affects loading at the launch.");
 	QString tip2 = trUtf8 ("Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.");
 	QString tip3 = trUtf8 ("Just tap the screen to see current page and overall page count at the top left corner.");
-	QString tip4 = trUtf8 ("Use <i>Recent</i> page to get fast access to documents you have been reading.");
+	QString tip4 = trUtf8 ("Use <i>Recent</i> page to get fast access to files you have been reading.");
 	QString tip5 = trUtf8 ("Use pinch gesture for zooming.");
-	QString tip6 = trUtf8 ("NSR Reader supports password protected documents (except for latest "
+	QString tip6 = trUtf8 ("NSR Reader supports password protected PDF files (except for latest "
 			       "Adobe&reg; Reader&reg; X encryption algorithm), so don't scary them!");
 	QString tip7 = trUtf8 ("NSR Reader caches already rendered pages to increase performance.");
 	QString tip8 = trUtf8 ("If you have any problems with the app, please contact me (see contacts on "

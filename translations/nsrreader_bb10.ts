@@ -48,10 +48,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Text Reflow&lt;/b&gt; &amp;ndash; this is a special mode for documents which contain a lot of text information. In this mode NSR Reader will display only text data and wrap lines for comfortable reading.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Invert Colors&lt;/b&gt; &amp;ndash; use this feature during dark days or if you have OLED display (like &lt;b&gt;Q10&lt;/b&gt; does) to save power.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -60,23 +56,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NSR Reader always saves position for every document. &lt;b&gt;Save Last Position&lt;/b&gt; option in &lt;i&gt;Settings&lt;/i&gt; only affects loading at the launch.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use &lt;i&gt;Recent Documents&lt;/i&gt; page to get fast access to documents you have been reading.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use pinch gesture for zooming.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NSR Reader supports password protected documents (except for latest Adobe&amp;reg; Reader&amp;reg; X encryption algorithm), so don&apos;t scary them!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -114,7 +98,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go previous page, on the right area to go next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. If you have physical keyboard use &lt;i&gt;P&lt;/i&gt; key to navigate to previous page and &lt;i&gt;N&lt;/i&gt; key for the next page (see Action Menu&apos;s tooltipsa at the right). Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
+        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go previous page, on the right area to go next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. If you have physical keyboard use &lt;i&gt;P&lt;/i&gt; key to navigate to previous page and &lt;i&gt;N&lt;/i&gt; key for the next page (see Action Menu&apos;s tooltips at the right). Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text Reflow&lt;/b&gt; &amp;ndash; this is a special mode for files which contain a lot of text information. In this mode NSR Reader will display only text data and wrap lines for comfortable reading.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSR Reader always saves position for every file. &lt;b&gt;Save Last Position&lt;/b&gt; option in &lt;i&gt;Settings&lt;/i&gt; only affects loading at the launch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use &lt;i&gt;Recent&lt;/i&gt; page to get fast access to files you have been reading.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSR Reader supports password protected PDF files (except for latest Adobe&amp;reg; Reader&amp;reg; X encryption algorithm), so don&apos;t scary them!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -170,13 +170,13 @@
 <context>
     <name>NSRLastDocsPage</name>
     <message>
-        <source>No recent documents</source>
-        <comment>List of recently used files is empty</comment>
+        <source>Recent</source>
+        <comment>Title for window with recently opened documents</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent</source>
-        <comment>Title for window with recently opened documents</comment>
+        <source>No recent files</source>
+        <comment>List of recently used files is empty</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

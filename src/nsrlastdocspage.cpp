@@ -40,7 +40,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 
 	_emptyLabel = Label::create().horizontal(HorizontalAlignment::Center)
 				     .vertical(VerticalAlignment::Center)
-				     .text(trUtf8 ("No recent documents",
+				     .text(trUtf8 ("No recent files",
 						   "List of recently used files is empty"))
 				     .visible(false);
 	_emptyLabel->textStyle()->setFontSize (FontSize::Large);
