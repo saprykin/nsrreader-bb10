@@ -136,11 +136,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hide</source>
+        <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete</source>
+        <source>Clear Recent</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -159,11 +159,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Items removed: %1</source>
+        <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Undo</source>
+        <source>Recent cleared: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

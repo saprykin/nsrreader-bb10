@@ -86,7 +86,7 @@ NSRLastDocsListView::onHideActionTriggered ()
 		finishToast ();
 
 	_toast = new SystemToast (this);
-	_toast->setBody (trUtf8("Items removed: %1").arg (1));
+	_toast->setBody (trUtf8("Recent cleared: %1").arg (1));
 	_toast->button()->setLabel (trUtf8 ("Undo"));
 	_toast->setPosition (SystemUiPosition::BottomCenter);
 	_toast->setProperty ("document-path", docPath);
