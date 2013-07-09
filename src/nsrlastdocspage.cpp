@@ -64,8 +64,6 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 			   SLOT (onOrientationAboutToChange (bb::cascades::UIOrientation::Type))));
 	Q_ASSERT (connect (_listView, SIGNAL (triggered (QVariantList)),
 			   this, SLOT (onListItemTriggered (QVariantList))));
-	Q_ASSERT (connect (_listView, SIGNAL (documentRequested (QString)),
-			   this, SIGNAL (requestDocument (QString))));
 	Q_ASSERT (connect (_listView, SIGNAL (modelUpdated (bool)), this, SLOT (onModelUpdated (bool))));
 	Q_ASSERT (connect (_listView, SIGNAL (documentToBeDeleted (QString)),
 			   this, SIGNAL (documentToBeDeleted (QString))));

@@ -57,20 +57,6 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 }
 
 void
-NSRLastDocsListView::onOpenActionTriggered ()
-{
-	if (sender () == NULL)
-		return;
-
-	QString docPath = sender()->property("document-path").toString ();
-
-	if (docPath.isEmpty ())
-		return;
-
-	emit documentRequested (docPath);
-}
-
-void
 NSRLastDocsListView::onShareActionTriggered ()
 {
 	if (sender () == NULL)
@@ -96,10 +82,8 @@ NSRLastDocsListView::onHideActionTriggered ()
 	if (docPath.isEmpty ())
 		return;
 
-	if (_toast != NULL) {
-		_toast->cancel ();
-		onToastFinished (SystemUiResult::TimeOut);
-	}
+	if (_toast != NULL)
+		finishToast ();
 
 	_toast = new SystemToast (this);
 	_toast->setBody (trUtf8("Items removed: %1").arg (1));
