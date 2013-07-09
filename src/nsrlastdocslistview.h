@@ -3,6 +3,8 @@
 
 #include <bb/cascades/ListView>
 #include <bb/cascades/Container>
+#include <bb/system/SystemUiResult>
+#include <bb/system/SystemToast>
 
 #include <QObject>
 
@@ -15,7 +17,7 @@ public:
 
 Q_SIGNALS:
 	void documentRequested (const QString& path);
-	void modelCleared ();
+	void modelUpdated (bool isEmpty);
 	void documentToBeDeleted (const QString& path);
 
 public Q_SLOTS:
@@ -23,6 +25,14 @@ public Q_SLOTS:
 	void onOpenActionTriggered ();
 	void onShareActionTriggered ();
 	void onHideActionTriggered ();
+	void finishToast ();
+
+private Q_SLOTS:
+	void onToastFinished (bb::system::SystemUiResult::Type result);
+	void onSystemDialogFinished (bb::system::SystemUiResult::Type result);
+
+private:
+	bb::system::SystemToast *	_toast;
 };
 
 #endif /* NSRLASTDOCSLISTVIEW_H_ */

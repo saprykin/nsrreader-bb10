@@ -66,7 +66,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 			   this, SLOT (onListItemTriggered (QVariantList))));
 	Q_ASSERT (connect (_listView, SIGNAL (documentRequested (QString)),
 			   this, SIGNAL (requestDocument (QString))));
-	Q_ASSERT (connect (_listView, SIGNAL (modelCleared ()), this, SLOT (onModelCleared ())));
+	Q_ASSERT (connect (_listView, SIGNAL (modelUpdated (bool)), this, SLOT (onModelUpdated (bool))));
 	Q_ASSERT (connect (_listView, SIGNAL (documentToBeDeleted (QString)),
 			   this, SIGNAL (documentToBeDeleted (QString))));
 }
@@ -93,10 +93,10 @@ NSRLastDocsPage::onListItemTriggered (QVariantList indexPath)
 }
 
 void
-NSRLastDocsPage::onModelCleared ()
+NSRLastDocsPage::onModelUpdated (bool isEmpty)
 {
-	_listView->setVisible (false);
-	_emptyLabel->setVisible (true);
+	_listView->setVisible (!isEmpty);
+	_emptyLabel->setVisible (isEmpty);
 }
 
 void
@@ -122,7 +122,7 @@ NSRLastDocsPage::loadData ()
 	_listView->setDataModel (model);
 
 	if (model->size () == 0)
-		onModelCleared ();
+		onModelUpdated (true);
 }
 
 
