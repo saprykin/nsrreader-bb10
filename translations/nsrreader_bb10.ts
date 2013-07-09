@@ -149,6 +149,29 @@
     </message>
 </context>
 <context>
+    <name>NSRLastDocsListView</name>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete selected files: %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Items removed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>NSRLastDocsPage</name>
     <message>
         <source>No recent documents</source>
@@ -156,7 +179,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Documents</source>
+        <source>Recent</source>
         <comment>Title for window with recently opened documents</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -315,12 +338,12 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Documents</source>
-        <comment>Recently opened documents</comment>
+        <source>Start reading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Start reading</source>
+        <source>Recent</source>
+        <comment>Recently opened documents</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
