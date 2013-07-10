@@ -276,11 +276,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Share</source>
-        <comment>Share document between users</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select File</source>
         <comment>Open file window</comment>
         <translation type="unfinished"></translation>
@@ -323,6 +318,11 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
     </message>
     <message>
         <source>Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share</source>
+        <comment>Share document between users</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

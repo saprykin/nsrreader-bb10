@@ -12,6 +12,9 @@ public:
 
 	static bool isSharable (const QString& path);
 
+private Q_SLOTS:
+	void onArmed ();
+
 private:
 	NSRFileSharer ();
 };

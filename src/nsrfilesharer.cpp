@@ -1,12 +1,11 @@
 #include "nsrfilesharer.h"
 
-#include <bb/system/InvokeTargetReply>
-#include <bb/system/InvokeRequest>
-#include <bb/system/InvokeManager>
+#include <bb/cascades/Invocation>
+#include <bb/cascades/InvokeQuery>
 
 #include <QFileInfo>
 
-using namespace bb::system;
+using namespace bb::cascades;
 
 NSRFileSharer::NSRFileSharer () :
 	QObject (NULL)
@@ -32,9 +31,6 @@ NSRFileSharer::shareFile (const QString& path)
 
 	QString			extension = QFileInfo(path).suffix().toLower ();
 	QString			mimeType;
-	InvokeManager		invokeManager;
-	InvokeRequest		invokeRequest;
-	InvokeTargetReply	*invokeReply;
 
 	if (extension == "pdf")
 		mimeType = "application/pdf";
@@ -45,21 +41,27 @@ NSRFileSharer::shareFile (const QString& path)
 	else
 		mimeType = "text/plain";
 
-	invokeRequest.setMimeType (mimeType);
-	invokeRequest.setUri (QUrl::fromLocalFile (path));
-	invokeRequest.setAction ("bb.action.SHARE");
+	Invocation *invocation = Invocation::create (InvokeQuery::create().parent(this)
+									  .mimeType(mimeType)
+									  .uri(QUrl::fromLocalFile (path)));
 
-	invokeReply = invokeManager.invoke (invokeRequest);
-
-	if (invokeReply != NULL) {
-		invokeReply->setParent (this);
-		Q_ASSERT (connect (invokeReply, SIGNAL (finished ()),
-				   invokeReply, SLOT (deleteLater ())));
-	}
+	Q_ASSERT (connect (invocation, SIGNAL (armed ()), this, SLOT (onArmed ())));
+	Q_ASSERT (connect (invocation, SIGNAL (finished ()), invocation, SLOT (deleteLater ())));
 }
 
 bool
 NSRFileSharer::isSharable (const QString& path)
 {
 	return !path.startsWith ("app/native/assets", Qt::CaseSensitive);
+}
+
+void
+NSRFileSharer::onArmed ()
+{
+	if (sender () == NULL)
+		return;
+
+	Invocation *invocation = static_cast<Invocation *> (sender ());
+
+	invocation->trigger ("bb.action.SHARE");
 }
