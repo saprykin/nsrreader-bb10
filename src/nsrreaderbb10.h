@@ -66,6 +66,8 @@ private Q_SLOTS:
     void onFullscreenSwitchRequested (bool isFullscreen);
     void onCardPooled (const bb::system::CardDoneMessage& message);
     void onCardResize (const bb::system::CardResizeMessage& message);
+    void onBackButtonTriggered ();
+    void onTopPagePeeked (bool isPeeked);
 
 private:
     void initFullUI ();

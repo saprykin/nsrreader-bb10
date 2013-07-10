@@ -18,6 +18,7 @@
 #include <bb/cascades/Menu>
 #include <bb/cascades/ActionItem>
 #include <bb/cascades/SettingsActionItem>
+#include <bb/cascades/NavigationPaneProperties>
 
 #include <bbndk.h>
 
@@ -140,6 +141,9 @@ NSRReaderBB10::initFullUI ()
 
 	_page = Page::create().content (mainContainer);
 	_actionAggregator = new NSRActionAggregator (this);
+
+	Q_ASSERT (connect (_page, SIGNAL (peekedAtChanged (bool)),
+			   this, SLOT (onTopPagePeeked (bool))));
 
 	ActionItem *openAction = ActionItem::create().enabled (true);
 	openAction->setTitle (trUtf8 ("Open", "Open document"));
@@ -407,6 +411,12 @@ NSRReaderBB10::onRecentDocsTriggered ()
 			   this, SLOT (onLastDocumentRequested (QString))));
 	Q_ASSERT (connect (page, SIGNAL (documentToBeDeleted (QString)),
 			   this, SLOT (onDocumentToBeDeleted (QString))));
+
+	ActionItem *pageBackAction = ActionItem::create();
+	page->setPaneProperties (NavigationPaneProperties::create().backButton(pageBackAction));
+
+	connect (pageBackAction, SIGNAL (triggered ()), this, SLOT (onBackButtonTriggered ()));
+	connect (pageBackAction, SIGNAL (triggered ()), _naviPane, SLOT (pop ()));
 
 	_naviPane->push (page);
 }
@@ -869,4 +879,18 @@ NSRReaderBB10::showAboutPage (NSRAboutPage::NSRAboutSection section)
 	_naviPane->push (new NSRAboutPage (section));
 }
 
+void
+NSRReaderBB10::onBackButtonTriggered ()
+{
+	NSRLastDocsPage *page = dynamic_cast<NSRLastDocsPage *> (_naviPane->top ());
 
+	if (page != NULL)
+		page->finishToast ();
+}
+
+void
+NSRReaderBB10::onTopPagePeeked (bool isPeeked)
+{
+	if (isPeeked)
+		onBackButtonTriggered ();
+}

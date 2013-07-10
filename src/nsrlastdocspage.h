@@ -15,6 +15,8 @@ public:
 	NSRLastDocsPage (QObject *parent = 0);
 	virtual ~NSRLastDocsPage ();
 
+	void finishToast ();
+
 Q_SIGNALS:
 	void requestDocument (const QString& path);
 	void documentToBeDeleted (const QString& path);

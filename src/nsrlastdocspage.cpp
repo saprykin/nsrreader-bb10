@@ -74,6 +74,12 @@ NSRLastDocsPage::~NSRLastDocsPage ()
 }
 
 void
+NSRLastDocsPage::finishToast ()
+{
+	_listView->finishToast ();
+}
+
+void
 NSRLastDocsPage::onOrientationAboutToChange (bb::cascades::UIOrientation::Type type)
 {
 	if (type == UIOrientation::Portrait)
