@@ -5,6 +5,7 @@
 #include <bb/cascades/StackLayoutProperties>
 #include <bb/cascades/Color>
 #include <bb/cascades/ImagePaint>
+#include <bb/cascades/LayoutUpdateHandler>
 
 #include <QFile>
 
@@ -17,8 +18,15 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_textView (NULL),
 	_label (NULL),
 	_viewContainer (NULL),
-	_imgTracker (NULL)
+	_imgTracker (NULL),
+	_solidContainer (NULL),
+	_innerContainer (NULL),
+	_selectAnimation (NULL),
+	_selected (false)
 {
+	memset (_solidSelect, 0, sizeof (_solidSelect));
+	memset (_innerSelect, 0, sizeof (_innerSelect));
+
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create ())
@@ -41,10 +49,6 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 
 	_viewContainer->add (_imageView);
 	_viewContainer->add (_textView);
-	_viewContainer->setLeftPadding (3);
-	_viewContainer->setRightPadding (3);
-	_viewContainer->setTopPadding (3);
-	_viewContainer->setBottomPadding (3);
 
 	_label = Label::create ().horizontal(HorizontalAlignment::Center)
 				 .vertical(VerticalAlignment::Center);
@@ -79,12 +83,81 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create())
 						      .background(Color::Black);
-	mainContainer->setTopPadding (10);
-	mainContainer->setRightPadding (10);
-	mainContainer->setBottomPadding (10);
-	mainContainer->setLeftPadding (10);
-	mainContainer->add (rootContainer);
 
+	_solidContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					     .vertical(VerticalAlignment::Fill)
+					     .layout(DockLayout::create())
+					     .background(Color::Transparent);
+
+	_solidSelect[0] = Container::create().horizontal(HorizontalAlignment::Fill)
+					     .vertical(VerticalAlignment::Top)
+					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+	_solidSelect[1] = Container::create().horizontal(HorizontalAlignment::Right)
+					     .vertical(VerticalAlignment::Center)
+					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+	_solidSelect[2] = Container::create().horizontal(HorizontalAlignment::Fill)
+					     .vertical(VerticalAlignment::Bottom)
+					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+	_solidSelect[3] = Container::create().horizontal(HorizontalAlignment::Left)
+					     .vertical(VerticalAlignment::Center)
+					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+
+	_solidSelect[0]->setPreferredHeight (4);
+	_solidSelect[1]->setPreferredWidth (4);
+	_solidSelect[2]->setPreferredHeight (4);
+	_solidSelect[3]->setPreferredWidth (4);
+
+	_solidContainer->add (_solidSelect[0]);
+	_solidContainer->add (_solidSelect[1]);
+	_solidContainer->add (_solidSelect[2]);
+	_solidContainer->add (_solidSelect[3]);
+
+	_solidContainer->setVisible (false);
+
+	_innerContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					     .vertical(VerticalAlignment::Fill)
+					     .layout(DockLayout::create())
+					     .background(Color::Transparent);
+	_innerContainer->setTopPadding (4);
+	_innerContainer->setRightPadding (4);
+	_innerContainer->setBottomPadding (4);
+	_innerContainer->setLeftPadding (4);
+
+	_innerSelect[0] = Container::create().horizontal(HorizontalAlignment::Fill)
+					     .vertical(VerticalAlignment::Top)
+					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+	_innerSelect[1] = Container::create().horizontal(HorizontalAlignment::Right)
+					     .vertical(VerticalAlignment::Center)
+					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+	_innerSelect[2] = Container::create().horizontal(HorizontalAlignment::Fill)
+					     .vertical(VerticalAlignment::Bottom)
+					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+	_innerSelect[3] = Container::create().horizontal(HorizontalAlignment::Left)
+					     .vertical(VerticalAlignment::Center)
+					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+
+	_innerSelect[0]->setPreferredHeight (8);
+	_innerSelect[1]->setPreferredWidth (8);
+	_innerSelect[2]->setPreferredHeight (8);
+	_innerSelect[3]->setPreferredWidth (8);
+
+	_innerContainer->setOpacity (0.0);
+
+	_innerContainer->add (_innerSelect[0]);
+	_innerContainer->add (_innerSelect[1]);
+	_innerContainer->add (_innerSelect[2]);
+	_innerContainer->add (_innerSelect[3]);
+
+	rootContainer->add (_solidContainer);
+	rootContainer->add (_innerContainer);
+
+	_selectAnimation = FadeTransition::create().duration(250).to(0.5).target(_innerContainer);
+
+
+	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
+							       SLOT (onLayoutFrameChanged (QRectF)));
+
+	mainContainer->add (rootContainer);
 	setRoot (mainContainer);
 }
 
@@ -120,26 +193,42 @@ NSRLastDocItem::updateItem (const QString&	title,
 void
 NSRLastDocItem::select (bool select)
 {
-	activate (select);
+	if (_selected == select)
+		return;
+
+	_selected = select;
+
+	_innerContainer->setOpacity (select ? 1.0 : 0.0);
+	_solidContainer->setOpacity (select ? 1.0 : 0.0);
+
+	if (select)
+		_solidContainer->setVisible (select);
 }
 
 void
 NSRLastDocItem::reset (bool selected, bool activated)
 {
-	Q_UNUSED (activated);
-
 	select (selected);
+	activate (activated);
 }
 
 void
 NSRLastDocItem::activate (bool activate)
 {
-	Container *rootContainer = static_cast<Container *> (root ());
+	if (_selected)
+		return;
 
 	if (activate)
-		rootContainer->setBackground (Color::fromRGBA (0, 0.66, 0.87, 1.0));
-	else
-		rootContainer->setBackground (Color::Black);
+		_solidContainer->setOpacity (1.0);
+
+	_solidContainer->setVisible (activate);
+
+	if (activate)
+		_selectAnimation->play ();
+	else {
+		_selectAnimation->stop ();
+		_innerContainer->setOpacity (0.0);
+	}
 }
 
 QString
@@ -170,4 +259,13 @@ NSRLastDocItem::onImageStateChanged (bb::cascades::ResourceState::Type state)
 			_imageView->setHorizontalAlignment (HorizontalAlignment::Fill);
 		}
 	}
+}
+
+void
+NSRLastDocItem::onLayoutFrameChanged (const QRectF& rect)
+{
+	_solidSelect[1]->setPreferredHeight (rect.height () - 8);
+	_solidSelect[3]->setPreferredHeight (rect.height () - 8);
+	_innerSelect[1]->setPreferredHeight (rect.height () - 24);
+	_innerSelect[3]->setPreferredHeight (rect.height () - 24);
 }

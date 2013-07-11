@@ -8,6 +8,9 @@
 #include <bb/cascades/Container>
 #include <bb/cascades/ImageTracker>
 #include <bb/cascades/ResourceState>
+#include <bb/cascades/FadeTransition>
+
+#include <QRectF>
 
 class NSRLastDocItem : public bb::cascades::CustomControl,
 		       public bb::cascades::ListItemListener
@@ -32,6 +35,7 @@ public:
 
 private Q_SLOTS:
 	void onImageStateChanged (bb::cascades::ResourceState::Type state);
+	void onLayoutFrameChanged (const QRectF& rect);
 
 private:
 	bb::cascades::ImageView		*_imageView;
@@ -40,7 +44,13 @@ private:
 	bb::cascades::Label		*_label;
 	bb::cascades::Container		*_viewContainer;
 	bb::cascades::ImageTracker	*_imgTracker;
+	bb::cascades::Container		*_solidSelect[4];
+	bb::cascades::Container		*_innerSelect[4];
+	bb::cascades::Container		*_solidContainer;
+	bb::cascades::Container		*_innerContainer;
+	bb::cascades::FadeTransition	*_selectAnimation;
 	QString				_path;
+	bool				_selected;
 };
 
 #endif /* NSRLASTDOCITEM_H_ */
