@@ -29,8 +29,8 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 	ActionSet *actionSet = ActionSet::create().subtitle (trUtf8 ("File"));
 
 	ActionItem *shareAction = ActionItem::create().title (trUtf8 ("Share"));
-	ActionItem *hideAction = ActionItem::create().title(trUtf8 ("Clear Recent"));
-	DeleteActionItem *removeAction = DeleteActionItem::create().title (trUtf8 ("Delete"));
+	ActionItem *hideAction = ActionItem::create().title (trUtf8 ("Clear Recent", "Clear recent documents"));
+	DeleteActionItem *removeAction = DeleteActionItem::create ();
 
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
 	hideAction->setImageSource (QUrl ("asset:///list-remove.png"));
@@ -71,10 +71,6 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 	if (item->actionSetCount () > 0) {
 		item->actionSetAt(0)->setTitle (map["title"].toString ());
 		item->actionSetAt(0)->at(0)->setEnabled (NSRFileSharer::isSharable (docPath));
-
-		item->actionSetAt(0)->at(0)->setProperty ("document-path", docPath);
-		item->actionSetAt(0)->at(1)->setProperty ("document-path", docPath);
-		item->actionSetAt(0)->at(2)->setProperty ("document-path", docPath);
 	}
 
 	item->updateItem (map["title"].toString (),

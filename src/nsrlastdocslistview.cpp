@@ -5,9 +5,14 @@
 #include "nsrthumbnailer.h"
 
 #include <bb/cascades/QListDataModel>
+#include <bb/cascades/MultiSelectActionItem>
+#include <bb/cascades/MultiSelectHandler>
+#include <bb/cascades/ActionItem>
+#include <bb/cascades/DeleteActionItem>
 #include <bb/system/SystemDialog>
 
 #include <QFile>
+#include <QVariant>
 
 using namespace bb::cascades;
 using namespace bb::system;
@@ -16,6 +21,17 @@ NSRLastDocsListView::NSRLastDocsListView (bb::cascades::Container *parent) :
 	ListView (parent),
 	_toast (NULL)
 {
+	setMultiSelectAction (MultiSelectActionItem::create());
+	multiSelectHandler()->addAction (ActionItem::create().title(trUtf8 ("Clear Recent", "Clear recent documents"))
+							     .imageSource(QUrl ("asset:///list-remove.png"))
+							     .onTriggered (this, SLOT (onHideActionTriggered ())));
+	multiSelectHandler()->addAction (ActionItem::create().title(trUtf8 ("Share"))
+							     .imageSource(QUrl ("asset:///share.png"))
+							     .onTriggered (this, SLOT (onShareActionTriggered ())));
+	multiSelectHandler()->addAction (DeleteActionItem::create().onTriggered (this, SLOT (onRemoveActionTriggered ())));
+
+	Q_ASSERT (connect (this, SIGNAL (selectionChanged (QVariantList, bool)),
+			   this, SLOT (onSelectionChanged ())));
 }
 
 NSRLastDocsListView::~NSRLastDocsListView ()
@@ -26,32 +42,32 @@ NSRLastDocsListView::~NSRLastDocsListView ()
 void
 NSRLastDocsListView::onRemoveActionTriggered ()
 {
-	if (sender () == NULL)
+	QVariantListDataModel *	model = static_cast < QVariantListDataModel * > (dataModel ());
+	QVariantList 		list;
+
+	int count = selectionList().count ();
+
+	if (count == 0)
 		return;
 
-	QString			docPath = sender()->property("document-path").toString ();
-	QVariantListDataModel	*model = static_cast < QVariantListDataModel * > (dataModel ());
+	for (int i = 0; i < count; ++i) {
+		QMap<QString, QVariant> map;
 
-	if (docPath.isEmpty ())
-		return;
+		map["path"] = model->data(selectionList().at(i).toList ()).toMap()["path"].toString ();
+		map["index"] = selectionList().at(i).toList().first().toInt ();
+
+		list.append (QVariant (map));
+	}
 
 	SystemDialog *dialog = new SystemDialog (this);
 	dialog->setTitle (trUtf8 ("Delete"));
-	dialog->setBody (trUtf8("Delete selected files: %1?").arg (1));
+	dialog->setBody (trUtf8("Delete selected files: %1?").arg (count));
 	dialog->confirmButton()->setLabel (trUtf8 ("Delete"));
 	dialog->cancelButton()->setLabel (trUtf8 ("Cancel"));
-	dialog->setProperty ("document-path", docPath);
-
+	dialog->setProperty ("undo-data", list);
 
 	Q_ASSERT (connect (dialog, SIGNAL (finished (bb::system::SystemUiResult::Type)),
 			   this, SLOT (onSystemDialogFinished (bb::system::SystemUiResult::Type))));
-
-	int count = model->size ();
-	for (int i = 0; i < count; ++i)
-		if (model->value(i).toMap()["path"].toString () == docPath) {
-			dialog->setProperty ("model-index", i);
-			break;
-		}
 
 	dialog->exec ();
 }
@@ -59,49 +75,54 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 void
 NSRLastDocsListView::onShareActionTriggered ()
 {
-	if (sender () == NULL)
+	QVariantListDataModel	*model = static_cast < QVariantListDataModel * > (dataModel ());
+	QStringList		files;
+
+	int count = selectionList().count ();
+
+	if (count == 0)
 		return;
 
-	QString docPath = sender()->property("document-path").toString ();
+	for (int i = 0; i < count; ++i)
+		files.append (model->data(selectionList().at(i).toList ()).toMap()["path"].toString ());
 
-	if (docPath.isEmpty ())
-		return;
-
-	NSRFileSharer::getInstance()->shareFile (docPath);
+	NSRFileSharer::getInstance()->shareFiles (files);
 }
 
 void
 NSRLastDocsListView::onHideActionTriggered ()
 {
-	if (sender () == NULL)
-		return;
+	QVariantListDataModel *	model = static_cast < QVariantListDataModel * > (dataModel ());
+	QVariantList 		list;
 
-	QString			docPath = sender()->property("document-path").toString ();
-	QVariantListDataModel	*model = static_cast < QVariantListDataModel * > (dataModel ());
+	int count = selectionList().count ();
 
-	if (docPath.isEmpty ())
+	if (count == 0)
 		return;
 
 	if (_toast != NULL)
 		finishToast ();
 
+	for (int i = count - 1; i >= 0; --i) {
+		QMap<QString, QVariant>	map;
+		int			index = selectionList().at(i).toList().first().toInt ();
+
+		map["path"] = model->data(selectionList().at(i).toList ()).toMap()["path"].toString ();
+		map["index"] = index;
+		map["record"] = model->value (index);
+
+		model->removeAt (index);
+		list.append (QVariant (map));
+	}
+
 	_toast = new SystemToast (this);
-	_toast->setBody (trUtf8("Recent cleared: %1").arg (1));
+	_toast->setBody (trUtf8("Recent cleared: %1").arg (count));
 	_toast->button()->setLabel (trUtf8 ("Undo"));
 	_toast->setPosition (SystemUiPosition::BottomCenter);
-	_toast->setProperty ("document-path", docPath);
+	_toast->setProperty ("undo-data", list);
 
 	Q_ASSERT (connect (_toast, SIGNAL (finished (bb::system::SystemUiResult::Type)),
 			   this, SLOT (onToastFinished (bb::system::SystemUiResult::Type))));
-
-	int count = model->size ();
-	for (int i = 0; i < count; ++i)
-		if (model->value(i).toMap()["path"].toString () == docPath) {
-			_toast->setProperty ("model-record", model->value (i));
-			_toast->setProperty ("model-index", i);
-			model->removeAt (i);
-			break;
-		}
 
 	if (model->size () == 0)
 		emit modelUpdated (true);
@@ -124,16 +145,22 @@ NSRLastDocsListView::onToastFinished (bb::system::SystemUiResult::Type result)
 	if (_toast == NULL)
 		return;
 
-	QVariantListDataModel	*model = static_cast < QVariantListDataModel * > (dataModel ());
-	QString			docPath = _toast->property("document-path").toString ();
+	QVariantList list = _toast->property("undo-data").toList ();
 
 	if (result == SystemUiResult::ButtonSelection) {
-		model->insert (_toast->property("model-index").toInt (),
-			       _toast->property("model-record"));
+		QVariantListDataModel *model = static_cast < QVariantListDataModel * > (dataModel ());
+
+		for (int i = list.count () - 1; i >= 0; --i)
+			model->insert (list.at(i).toMap()["index"].toInt (),
+				       list.at(i).toMap()["record"]);
+
 		emit modelUpdated (false);
 	} else {
-		NSRSettings().removeLastDocument (docPath);
-		NSRThumbnailer::removeThumbnail (docPath);
+		for (int i = list.count () - 1; i >= 0; --i) {
+			QString docPath = list.at(i).toMap()["path"].toString ();
+			NSRSettings().removeLastDocument (docPath);
+			NSRThumbnailer::removeThumbnail (docPath);
+		}
 	}
 
 	_toast->deleteLater ();
@@ -149,18 +176,37 @@ NSRLastDocsListView::onSystemDialogFinished (bb::system::SystemUiResult::Type re
 	SystemDialog *dialog = static_cast<SystemDialog *> (sender ());
 
 	if (result == SystemUiResult::ConfirmButtonSelection) {
-		QVariantListDataModel	*model = static_cast < QVariantListDataModel * > (dataModel ());
-		QString			docPath = dialog->property("document-path").toString ();
+		QVariantListDataModel *	model = static_cast < QVariantListDataModel * > (dataModel ());
+		QVariantList 		list = dialog->property("undo-data").toList ();
 
-		model->removeAt (dialog->property("model-index").toInt ());
-		NSRSettings().removeLastDocument (docPath);
-		NSRThumbnailer::removeThumbnail (docPath);
-		emit documentToBeDeleted (docPath);
-		QFile::remove (docPath);
+		for (int i = list.count () - 1; i >= 0; --i) {
+			QString docPath = list.at(i).toMap()["path"].toString ();
+			model->removeAt (list.at(i).toMap()["index"].toInt ());
+			NSRSettings().removeLastDocument (docPath);
+			NSRThumbnailer::removeThumbnail (docPath);
+			emit documentToBeDeleted (docPath);
+			QFile::remove (docPath);
+		}
 
 		if (model->size () == 0)
 			emit modelUpdated (true);
 	}
 
 	dialog->deleteLater ();
+}
+
+void
+NSRLastDocsListView::onSelectionChanged ()
+{
+	int selectCount	= selectionList().count ();
+	int actionCount	= multiSelectHandler()->actionCount ();
+
+	for (int i = 0; i < actionCount; ++i)
+		multiSelectHandler()->actionAt(i)->setEnabled (selectCount > 0);
+
+	if (selectCount >= 1)
+		multiSelectHandler()->setStatus (trUtf8 ("Selected: %1", "Items selected")
+						 .arg (selectCount));
+	else
+		multiSelectHandler()->setStatus (trUtf8 ("No items selected"));
 }

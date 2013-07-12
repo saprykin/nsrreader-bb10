@@ -24,26 +24,43 @@ NSRFileSharer::getInstance ()
 }
 
 void
-NSRFileSharer::shareFile (const QString& path)
+NSRFileSharer::shareFiles (const QStringList& list)
 {
-	if (path.isEmpty ())
+	if (list.isEmpty ())
 		return;
 
-	QString			extension = QFileInfo(path).suffix().toLower ();
-	QString			mimeType;
+	QUrl	uri;
+	QString	data;
+	QString	mimeType;
 
-	if (extension == "pdf")
-		mimeType = "application/pdf";
-	else if (extension == "djvu" || extension == "djv")
-		mimeType = "image/vnd.djvu";
-	else if (extension == "tiff" || extension == "tif")
-		mimeType = "image/tiff";
-	else
-		mimeType = "text/plain";
+	if (list.count () == 1) {
+		QString	extension = QFileInfo(list.first ()).suffix().toLower ();
+
+		if (extension == "pdf")
+			mimeType = "application/pdf";
+		else if (extension == "djvu" || extension == "djv")
+			mimeType = "image/vnd.djvu";
+		else if (extension == "tiff" || extension == "tif")
+			mimeType = "image/tiff";
+		else
+			mimeType = "text/plain";
+
+		uri = QUrl::fromLocalFile (list.first ());
+	} else {
+		mimeType = "filelist/mixed";
+		uri = QUrl ("list://");
+
+		int count = list.count ();
+		for (int i = 0; i < count; ++i)
+			data += "{ \"uri\" : \"file://" + QUrl(list.at (i)).toLocalFile () + "\" },";
+
+		data = "[ " + data.left (data.count () - 1) + " ]";
+	}
 
 	Invocation *invocation = Invocation::create (InvokeQuery::create().parent(this)
-									  .mimeType(mimeType)
-									  .uri(QUrl::fromLocalFile (path)));
+									  .uri(uri)
+									  .data(data.toUtf8 ())
+									  .mimeType(mimeType));
 
 	Q_ASSERT (connect (invocation, SIGNAL (armed ()), this, SLOT (onArmed ())));
 	Q_ASSERT (connect (invocation, SIGNAL (finished ()), invocation, SLOT (deleteLater ())));

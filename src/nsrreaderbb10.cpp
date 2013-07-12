@@ -433,7 +433,7 @@ NSRReaderBB10::onShareActionTriggered ()
 	if (!_core->isDocumentOpened ())
 		return;
 
-	NSRFileSharer::getInstance()->shareFile (_core->getDocumentPath ());
+	NSRFileSharer::getInstance()->shareFiles (QStringList (_core->getDocumentPath ()));
 }
 
 void

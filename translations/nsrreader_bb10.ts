@@ -136,11 +136,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Clear Recent</source>
+        <comment>Clear recent documents</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -164,6 +161,24 @@
     </message>
     <message>
         <source>Recent cleared: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Recent</source>
+        <comment>Clear recent documents</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected: %1</source>
+        <comment>Items selected</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No items selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

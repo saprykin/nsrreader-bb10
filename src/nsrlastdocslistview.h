@@ -28,6 +28,7 @@ public Q_SLOTS:
 private Q_SLOTS:
 	void onToastFinished (bb::system::SystemUiResult::Type result);
 	void onSystemDialogFinished (bb::system::SystemUiResult::Type result);
+	void onSelectionChanged ();
 
 private:
 	bb::system::SystemToast *	_toast;
