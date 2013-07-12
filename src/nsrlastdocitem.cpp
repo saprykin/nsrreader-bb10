@@ -151,7 +151,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	rootContainer->add (_solidContainer);
 	rootContainer->add (_innerContainer);
 
-	_selectAnimation = FadeTransition::create().duration(250).to(0.5).target(_innerContainer);
+	_selectAnimation = FadeTransition::create().duration(250).delay(100).to(0.5).target(_innerContainer);
 
 
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
@@ -198,11 +198,11 @@ NSRLastDocItem::select (bool select)
 
 	_selected = select;
 
-	_innerContainer->setOpacity (select ? 1.0 : 0.0);
-	_solidContainer->setOpacity (select ? 1.0 : 0.0);
+	_solidContainer->setVisible (select);
+	_innerContainer->setVisible (select);
 
-	if (select)
-		_solidContainer->setVisible (select);
+//	_innerContainer->setOpacity (select ? 1.0 : 0.0);
+//	_solidContainer->setOpacity (select ? 1.0 : 0.0);
 }
 
 void
@@ -218,16 +218,18 @@ NSRLastDocItem::activate (bool activate)
 	if (_selected)
 		return;
 
-	if (activate)
-		_solidContainer->setOpacity (1.0);
-
-	_solidContainer->setVisible (activate);
-
-	if (activate)
-		_selectAnimation->play ();
-	else {
-		_selectAnimation->stop ();
+	if (activate) {
 		_innerContainer->setOpacity (0.0);
+		_solidContainer->setOpacity (1.0);
+		_selectAnimation->play ();
+		_solidContainer->setVisible (true);
+		_innerContainer->setVisible (true);
+	} else {
+		_selectAnimation->stop ();
+		_solidContainer->setVisible (false);
+		_innerContainer->setVisible (false);
+		_innerContainer->setOpacity (1.0);
+		_solidContainer->setOpacity (1.0);
 	}
 }
 
