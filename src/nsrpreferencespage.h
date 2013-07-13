@@ -18,7 +18,6 @@ Q_SIGNALS:
 	void switchFullscreen (bool isFullscreen);
 
 private:
-	bb::cascades::ToggleButton	*_isSaveLastPos;
 	bb::cascades::ToggleButton	*_isFullscreen;
 	bb::cascades::ToggleButton	*_isTextMode;
 	bb::cascades::ToggleButton	*_isInvertedColors;

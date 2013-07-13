@@ -40,10 +40,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Save Last Position&lt;/b&gt; &amp;ndash; NSR Reader will save last position (opened document, page number) and restore it on the next launch.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Fullscreen Mode&lt;/b&gt; &amp;ndash; Action Bar at the bottom of the screen will be hidden (tap the screen somewhere to show or hide it again).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -106,15 +102,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NSR Reader always saves position for every file. &lt;b&gt;Save Last Position&lt;/b&gt; option in &lt;i&gt;Settings&lt;/i&gt; only affects loading at the launch.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use &lt;i&gt;Recent&lt;/i&gt; page to get fast access to files you have been reading.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>NSR Reader supports password protected PDF files (except for latest Adobe&amp;reg; Reader&amp;reg; X encryption algorithm), so don&apos;t scary them!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSR Reader always saves position for every file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -220,11 +216,6 @@
     <message>
         <source>Text Encoding</source>
         <comment>Option in preferences, selects text encoding</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save Last Position</source>
-        <comment>Option in preferences, saves last position of the document</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>

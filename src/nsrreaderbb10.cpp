@@ -302,8 +302,7 @@ NSRReaderBB10::initFullUI ()
 		}
 
 		/* Load previously saved session */
-		if (QFile::exists (settings.getLastSession().getFile ()) &&
-		    settings.isLoadLastDoc ())
+		if (QFile::exists (settings.getLastSession().getFile ()))
 			loadSession ();
 		else
 			updateVisualControls ();

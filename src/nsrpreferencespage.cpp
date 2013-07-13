@@ -13,7 +13,6 @@ using namespace bb::cascades;
 
 NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Page (parent),
-	_isSaveLastPos (NULL),
 	_isFullscreen (NULL),
 	_isTextMode (NULL),
 	_isInvertedColors (NULL),
@@ -26,7 +25,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(StackLayout::create ());
 
-	_isSaveLastPos = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isFullscreen = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isTextMode = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isInvertedColors = ToggleButton::create().horizontal(HorizontalAlignment::Right);
@@ -34,7 +32,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 					   .title(trUtf8 ("Text Encoding", "Option in preferences, "
 							   	   	   "selects text encoding"));
 
-	_isSaveLastPos->setChecked (settings.isLoadLastDoc ());
 	_isFullscreen->setChecked (settings.isFullscreenMode ());
 	_isTextMode->setChecked (settings.isWordWrap ());
 	_isInvertedColors->setChecked (settings.isInvertedColors ());
@@ -54,21 +51,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 		_encodingsList->add (Option::create().text(encodings.at (i)));
 	_encodingsList->setSelectedIndex (encodingIndex);
 
-	/* 'Save last position' option */
-	Container *firstContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						       .layout(DockLayout::create());
-
-	firstContainer->setTopPadding (40);
-	firstContainer->setBottomPadding (40);
-	firstContainer->setLeftPadding (20);
-	firstContainer->setRightPadding (20);
-
-	firstContainer->add (Label::create(trUtf8 ("Save Last Position",
-						   "Option in preferences, "
-						   "saves last position of the document"))
-				    .horizontal(HorizontalAlignment::Left)
-				    .vertical(VerticalAlignment::Center));
-	firstContainer->add (_isSaveLastPos);
+	/* First container is out - was to save last positions */
 
 	/* 'Fullscreen mode' option */
 	Container *secondContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -157,12 +140,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	fifthContainer->add (encodingInfo);
 
 	/* Add all options to root layout */
-	Container *firstLine = Container::create().horizontal(HorizontalAlignment::Fill)
-						  .vertical(VerticalAlignment::Fill)
-						  .background(Color::fromRGBA (0.20f, 0.20f, 0.20f));
-	firstLine->setMaxHeight (1);
-	firstLine->setPreferredHeight (1);
-
 	Container *secondLine = Container::create().horizontal(HorizontalAlignment::Fill)
 						   .vertical(VerticalAlignment::Fill)
 						   .background(Color::fromRGBA (0.20f, 0.20f, 0.20f));
@@ -181,8 +158,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	fourthLine->setMaxHeight (1);
 	fourthLine->setPreferredHeight (1);
 
-	rootContainer->add (firstContainer);
-	rootContainer->add (firstLine);
 	rootContainer->add (secondContainer);
 	rootContainer->add (secondLine);
 	rootContainer->add (outerThirdContainer);
@@ -211,7 +186,6 @@ NSRPreferencesPage::saveSettings ()
 {
 	NSRSettings settings;
 
-	settings.saveLoadLastDoc (_isSaveLastPos->isChecked ());
 	settings.saveFullscreenMode (_isFullscreen->isChecked ());
 	settings.saveWordWrap (_isTextMode->isChecked ());
 	settings.saveInvertedColors (_isInvertedColors->isChecked ());

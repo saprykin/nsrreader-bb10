@@ -160,8 +160,6 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 			    	    	    "If you have physical keyboard use <i>P</i> key to navigate to previous page "
 			    	    	    "and <i>N</i> key for the next page (see Action Menu's tooltips at the right). "
 			    	    	    "Use <b>Go to</b> dialog to jump to arbitrary page.");
-	QString savePosSet = trUtf8 ("<b>Save Last Position</b> &ndash; NSR Reader will save last position "
-			    	     "(opened document, page number) and restore it on the next launch.");
 	QString fullScrSet = trUtf8 ("<b>Fullscreen Mode</b> &ndash; Action Bar at the bottom of the screen will "
 			    	     "be hidden (tap the screen somewhere to show or hide it again).");
 	QString reflowSet = trUtf8 ("<b>Text Reflow</b> &ndash; this is a special mode for files which contain a lot of "
@@ -171,8 +169,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 			    	    "display (like <b>Q10</b> does) to save power.");
 	QString encodSet = trUtf8 ("<b>Text Encoding</b> &ndash; this is only applied for plain text files (.txt). "
 			    	   "Use it for files with specific national encoding.");
-	QString tip1 = trUtf8 ("NSR Reader always saves position for every file. <b>Save Last Position</b> "
-			       "option in <i>Settings</i> only affects loading at the launch.");
+	QString tip1 = trUtf8 ("NSR Reader always saves position for every file.");
 	QString tip2 = trUtf8 ("Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.");
 	QString tip3 = trUtf8 ("Just tap the screen to see current page and overall page count at the top left corner.");
 	QString tip4 = trUtf8 ("Use <i>Recent</i> page to get fast access to files you have been reading.");
@@ -198,9 +195,9 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 				    "<div><p>%7</p></div>"
 				    "<div><p>%8</p></div>"
 				    "<div><p>%9</p></div>"
-				    "<div><p>%10</p></div>"
 				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
-				    "border-bottom: 1px solid white; font-size: 30pt;\">%11</div></div>"
+				    "border-bottom: 1px solid white; font-size: 30pt;\">%10</div></div>"
+				    "<div><p>%11</p></div>"
 				    "<div><p>%12</p></div>"
 				    "<div><p>%13</p></div>"
 				    "<div><p>%14</p></div>"
@@ -209,10 +206,9 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 				    "<div><p>%17</p></div>"
 				    "<div><p>%18</p></div>"
 				    "<div><p>%19</p></div>"
-				    "<div><p>%20</p></div>"
 				    "</body></html>");
 	htmlHelp = htmlHelp.arg(welcomeTitle).arg(welcomeSection).arg(navTitle).arg(navigationSection);
-	htmlHelp = htmlHelp.arg(settingsTitle).arg(savePosSet).arg(fullScrSet).arg(reflowSet)
+	htmlHelp = htmlHelp.arg(settingsTitle).arg(fullScrSet).arg(reflowSet)
 			   .arg(invertSet).arg(encodSet);
 	htmlHelp = htmlHelp.arg(tipsTitle).arg(tip1).arg(tip2).arg(tip3).arg(tip4).arg(tip5)
 			   .arg(tip6).arg(tip7).arg(tip8).arg(tip9);

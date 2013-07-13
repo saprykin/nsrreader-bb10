@@ -25,7 +25,6 @@ NSRSettings::NSRSettings (QObject *parent) :
 
 	beginGroup ("Global");
 
-	_isLoadLastDoc = value("load-last-doc", true).toBool ();
 	_isFullscreenMode = value("fullscreen-mode", false).toBool ();
 	_isWordWrap = value("word-wrap", false).toBool ();
 	_isTextModeNoted = value("text-mode-noted", false).toBool ();
@@ -106,16 +105,6 @@ NSRSettings::saveSession (NSRSession *session)
 	endGroup ();
 
 	setValue ("Global/last-session", formatName);
-
-	sync ();
-}
-
-void
-NSRSettings::saveLoadLastDoc (bool load)
-{
-	beginGroup ("Global");
-	setValue ("load-last-doc", load);
-	endGroup ();
 
 	sync ();
 }
@@ -328,6 +317,8 @@ NSRSettings::cleanOldFiles ()
 	for (int i = count - 1; i >= 0; --i)
 		if (!QFile::exists (docs.at (i)))
 			docs.removeAt (i);
+
+	remove ("Global/load-last-doc");
 
 	setValue ("Global/last-config-clean", lastClean);
 	setValue ("Global/last-documents", QVariant (docs));

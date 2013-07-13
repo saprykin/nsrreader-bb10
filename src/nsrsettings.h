@@ -15,8 +15,6 @@ public:
 	NSRSession getLastSession ();
 	NSRSession getSessionForFile (const QString& file);
 
-	void saveLoadLastDoc (bool load);
-	bool isLoadLastDoc () const {return _isLoadLastDoc;}
 	void saveFullscreenMode (bool fullscreen);
 	bool isFullscreenMode () {return _isFullscreenMode;}
 	void saveLastOpenDir (const QString& dir);
@@ -48,7 +46,6 @@ private:
 	void	readSession (const QString& name, NSRSession& session);
 	void	cleanOldFiles ();
 
-	bool		_isLoadLastDoc;
 	bool		_isFullscreenMode;
 	bool		_isWordWrap;
 	bool		_isTextModeNoted;
