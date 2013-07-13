@@ -148,7 +148,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	QString tipsTitle = trUtf8 ("Tips & Tricks");
 
 	QString welcomeSection = trUtf8 ("NSR Reader is a handy tool for reading PDF, "
-					 "DjVu, TIFF and TXT documents. Hope you will be "
+					 "DjVu, TIFF and TXT files. Hope you will be "
 					 "enjoying using it! Please take a look at the following "
 					 "instructions and tips to make reading more comfortable.");
 	QString navigationSection = trUtf8 ("Use navigation arrows on Action Bar (at the bottom of the screen). "
@@ -163,7 +163,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 					    "<li><b>P</b> key to navigate to previous page</li>"
 			    	    	    "<li><b>N</b> key to navigate to next page</li>"
 					    "<li><b>Ctrl + G</b> to go to arbitrary page</li>"
-					    "<li><b>Ctrl + O</b> to open another document</li>"
+					    "<li><b>Ctrl + O</b> to open another file</li>"
 					    "<li><b>Space</b> to scroll down one screen</li>"
 					    "<li><b>Shift + Space</b> to scroll up one screen</li>"
 					    "<li><b>B</b> to scroll to bottom</li>"

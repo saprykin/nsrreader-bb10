@@ -22,7 +22,7 @@ NSRLastDocsListView::NSRLastDocsListView (bb::cascades::Container *parent) :
 	_toast (NULL)
 {
 	setMultiSelectAction (MultiSelectActionItem::create());
-	multiSelectHandler()->addAction (ActionItem::create().title(trUtf8 ("Clear Recent", "Clear recent documents"))
+	multiSelectHandler()->addAction (ActionItem::create().title(trUtf8 ("Clear Recent", "Clear recent files"))
 							     .imageSource(QUrl ("asset:///list-remove.png"))
 							     .onTriggered (this, SLOT (onHideActionTriggered ())));
 	multiSelectHandler()->addAction (ActionItem::create().title(trUtf8 ("Share"))

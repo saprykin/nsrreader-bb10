@@ -73,7 +73,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 						       .layout(DockLayout::create());
 	Container *outerThirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							    .layout(StackLayout::create());
-	Label *columnInfo = Label::create (trUtf8 ("Use Text Reflow to read documents with "
+	Label *columnInfo = Label::create (trUtf8 ("Use Text Reflow to read files with "
 						   "large amount of text data."))
 				   .horizontal(HorizontalAlignment::Fill)
 				   .vertical(VerticalAlignment::Center);

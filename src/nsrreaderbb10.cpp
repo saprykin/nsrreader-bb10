@@ -146,7 +146,7 @@ NSRReaderBB10::initFullUI ()
 			   this, SLOT (onTopPagePeeked (bool))));
 
 	ActionItem *openAction = ActionItem::create().enabled (true);
-	openAction->setTitle (trUtf8 ("Open", "Open document"));
+	openAction->setTitle (trUtf8 ("Open", "Open file"));
 	ActionItem *prevPageAction = ActionItem::create().enabled (false);
 	prevPageAction->setTitle (trUtf8 ("Previous", "Previous page"));
 	ActionItem *nextPageAction = ActionItem::create().enabled (false);
@@ -157,7 +157,7 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *recentDocsAction = ActionItem::create().title (trUtf8 ("Recent"));
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
 	ActionItem *shareAction = ActionItem::create().enabled (false);
-	shareAction->setTitle (trUtf8 ("Share", "Share document between users"));
+	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
 
 	_page->addAction (openAction, ActionBarPlacement::OnBar);
 	_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
@@ -500,11 +500,11 @@ NSRReaderBB10::reloadSettings ()
 	if (settings.isWordWrap () && !settings.isTextModeNoted ()) {
 		settings.saveTextModeNoted ();
 		_toast->setBody (trUtf8 ("You are using text reflow the first time. Note that "
-					 "document formatting may be differ than in original one, "
+					 "file formatting may be differ than in original one, "
 					 "no images displayed and page can be empty if there is "
-					 "no text in the document. Also text may not be displayed "
+					 "no text in the file. Also text may not be displayed "
 					 "properly if appropriate language is not supported by phone.",
-					 "Text reflow is a view mode of PDF/DjVu document when "
+					 "Text reflow is a view mode of PDF/DjVu files when "
 					 "only text information without images is displayed with "
 					 "word wrap feature enabled."));
 		_toast->button()->setLabel ("OK");

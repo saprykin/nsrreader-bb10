@@ -109,7 +109,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	ActionItem *rotateRightAction = ActionItem::create().title (trUtf8 ("Rotate Right"));
 	rotateRightAction->setImageSource (QUrl ("asset:///rotate-right.png"));
 	ActionItem *fitToWidthAction = ActionItem::create().title (trUtf8 ("Fit to Width",
-								  	   "Fit document to screen width"));
+								  	   "Fit image to screen width"));
 	fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
 
 

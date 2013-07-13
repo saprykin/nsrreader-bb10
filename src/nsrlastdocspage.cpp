@@ -54,7 +54,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	setContent (rootContainer);
 	setTitleBar (TitleBar::create().title(trUtf8 ("Recent",
 						      "Title for window with recently "
-						      "opened documents")));
+						      "opened files")));
 
 	loadData ();
 

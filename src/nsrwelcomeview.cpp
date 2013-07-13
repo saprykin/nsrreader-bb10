@@ -21,10 +21,10 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 						       .vertical(VerticalAlignment::Center)
 						       .layout(StackLayout::create ());
 
-	_openButton = Button::create().text(trUtf8 ("Open", "Open document"))
+	_openButton = Button::create().text(trUtf8 ("Open", "Open file"))
 				      .horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Center);
-	_lastDocsButton = Button::create().text(trUtf8 ("Recent", "Recently opened documents"))
+	_lastDocsButton = Button::create().text(trUtf8 ("Recent", "Recently opened files"))
 					  .horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Center);
 

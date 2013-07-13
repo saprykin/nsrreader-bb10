@@ -90,10 +90,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NSR Reader is a handy tool for reading PDF, DjVu, TIFF and TXT documents. Hope you will be enjoying using it! Please take a look at the following instructions and tips to make reading more comfortable.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Text Reflow&lt;/b&gt; &amp;ndash; this is a special mode for files which contain a lot of text information. In this mode NSR Reader will display only text data and wrap lines for comfortable reading.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -110,7 +106,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go previous page, on the right area to go next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another document&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
+        <source>NSR Reader is a handy tool for reading PDF, DjVu, TIFF and TXT files. Hope you will be enjoying using it! Please take a look at the following instructions and tips to make reading more comfortable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go previous page, on the right area to go next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -133,7 +133,7 @@
     </message>
     <message>
         <source>Clear Recent</source>
-        <comment>Clear recent documents</comment>
+        <comment>Clear recent files</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -160,11 +160,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear Recent</source>
-        <comment>Clear recent documents</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Share</source>
         <translation type="unfinished"></translation>
     </message>
@@ -177,17 +172,22 @@
         <source>No items selected</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Clear Recent</source>
+        <comment>Clear recent files</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRLastDocsPage</name>
     <message>
-        <source>Recent</source>
-        <comment>Title for window with recently opened documents</comment>
+        <source>No recent files</source>
+        <comment>List of recently used files is empty</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No recent files</source>
-        <comment>List of recently used files is empty</comment>
+        <source>Recent</source>
+        <comment>Title for window with recently opened files</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -207,7 +207,7 @@
     </message>
     <message>
         <source>Fit to Width</source>
-        <comment>Fit document to screen width</comment>
+        <comment>Fit image to screen width</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -221,10 +221,6 @@
     <message>
         <source>Fullscreen Mode</source>
         <comment>Option in preferences</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use Text Reflow to read documents with large amount of text data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -249,14 +245,13 @@
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Use Text Reflow to read files with large amount of text data.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRReaderBB10</name>
-    <message>
-        <source>Open</source>
-        <comment>Open document</comment>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Previous</source>
         <comment>Previous page</comment>
@@ -300,11 +295,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You are using text reflow the first time. Note that document formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the document. Also text may not be displayed properly if appropriate language is not supported by phone.</source>
-        <comment>Text reflow is a view mode of PDF/DjVu document when only text information without images is displayed with word wrap feature enabled.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enter Password</source>
         <translation type="unfinished"></translation>
     </message>
@@ -327,25 +317,35 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Open</source>
+        <comment>Open file</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Share</source>
-        <comment>Share document between users</comment>
+        <comment>Share file between users</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone.</source>
+        <comment>Text reflow is a view mode of PDF/DjVu files when only text information without images is displayed with word wrap feature enabled.</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>NSRWelcomeView</name>
     <message>
-        <source>Open</source>
-        <comment>Open document</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start reading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Open</source>
+        <comment>Open file</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Recent</source>
-        <comment>Recently opened documents</comment>
+        <comment>Recently opened files</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -29,7 +29,7 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 	ActionSet *actionSet = ActionSet::create().subtitle (trUtf8 ("File"));
 
 	ActionItem *shareAction = ActionItem::create().title (trUtf8 ("Share"));
-	ActionItem *hideAction = ActionItem::create().title (trUtf8 ("Clear Recent", "Clear recent documents"));
+	ActionItem *hideAction = ActionItem::create().title (trUtf8 ("Clear Recent", "Clear recent files"));
 	DeleteActionItem *removeAction = DeleteActionItem::create ();
 
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
