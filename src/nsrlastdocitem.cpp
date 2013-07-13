@@ -200,9 +200,6 @@ NSRLastDocItem::select (bool select)
 
 	_solidContainer->setVisible (select);
 	_innerContainer->setVisible (select);
-
-//	_innerContainer->setOpacity (select ? 1.0 : 0.0);
-//	_solidContainer->setOpacity (select ? 1.0 : 0.0);
 }
 
 void
