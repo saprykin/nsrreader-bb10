@@ -186,8 +186,8 @@ NSRReaderBB10::initFullUI ()
 #if BBNDK_VERSION_AT_LEAST(10,1,0)
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
-	Shortcut *openShortcut = Shortcut::create().key("Ctrl+O");
-	Shortcut *gotoShortcut = Shortcut::create().key("Ctrl+G");
+	Shortcut *openShortcut = Shortcut::create().key("Ctrl + O");
+	Shortcut *gotoShortcut = Shortcut::create().key("Ctrl + G");
 
 	prevPageAction->addShortcut (prevShortcut);
 	nextPageAction->addShortcut (nextShortcut);

@@ -94,10 +94,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go previous page, on the right area to go next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. If you have physical keyboard use &lt;i&gt;P&lt;/i&gt; key to navigate to previous page and &lt;i&gt;N&lt;/i&gt; key for the next page (see Action Menu&apos;s tooltips at the right). Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Text Reflow&lt;/b&gt; &amp;ndash; this is a special mode for files which contain a lot of text information. In this mode NSR Reader will display only text data and wrap lines for comfortable reading.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -111,6 +107,10 @@
     </message>
     <message>
         <source>NSR Reader always saves position for every file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go previous page, on the right area to go next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another document&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
