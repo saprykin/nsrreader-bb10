@@ -36,6 +36,7 @@ public:
 private Q_SLOTS:
 	void onImageStateChanged (bb::cascades::ResourceState::Type state);
 	void onLayoutFrameChanged (const QRectF& rect);
+	void onAnimationStopped ();
 
 private:
 	bb::cascades::ImageView		*_imageView;

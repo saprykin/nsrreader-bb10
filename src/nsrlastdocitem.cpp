@@ -151,7 +151,8 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	rootContainer->add (_solidContainer);
 	rootContainer->add (_innerContainer);
 
-	_selectAnimation = FadeTransition::create().duration(250).delay(100).to(0.5).target(_innerContainer);
+	_selectAnimation = FadeTransition::create().duration(350).delay(30).to(0.3).target(_innerContainer);
+	Q_ASSERT (connect (_selectAnimation, SIGNAL (stopped ()), this, SLOT (onAnimationStopped ())));
 
 
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
@@ -267,4 +268,11 @@ NSRLastDocItem::onLayoutFrameChanged (const QRectF& rect)
 	_solidSelect[3]->setPreferredHeight (rect.height () - 8);
 	_innerSelect[1]->setPreferredHeight (rect.height () - 24);
 	_innerSelect[3]->setPreferredHeight (rect.height () - 24);
+}
+
+void
+NSRLastDocItem::onAnimationStopped ()
+{
+	_innerContainer->setOpacity (1.0);
+	_solidContainer->setOpacity (1.0);
 }
