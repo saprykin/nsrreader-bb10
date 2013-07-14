@@ -328,7 +328,7 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 	NSRSettings settings;
 
 	if (_core->getDocumentPath () == files.first ()) {
-		_toast->setBody (trUtf8 ("Selected file is already opened."));
+		_toast->setBody (trUtf8 ("Selected file is already opened"));
 		_toast->resetButton ();
 		_toast->show ();
 		return;
@@ -502,10 +502,10 @@ NSRReaderBB10::reloadSettings ()
 					 "file formatting may be differ than in original one, "
 					 "no images displayed and page can be empty if there is "
 					 "no text in the file. Also text may not be displayed "
-					 "properly if appropriate language is not supported by phone.",
+					 "properly if appropriate language is not supported by phone",
 					 "Text reflow is a view mode of PDF/DjVu files when "
 					 "only text information without images is displayed with "
-					 "word wrap feature enabled."));
+					 "word wrap feature enabled"));
 		_toast->button()->setLabel ("OK");
 		_toast->show ();
 	}
@@ -601,7 +601,7 @@ NSRReaderBB10::onPasswordRequested ()
 	_prompt = new SystemPrompt (this);
 
 	_prompt->setTitle (trUtf8 ("Enter Password"));
-	_prompt->inputField()->setEmptyText (trUtf8 ("Enter file password"));
+	_prompt->inputField()->setEmptyText (trUtf8 ("Enter file password:"));
 	_prompt->inputField()->setInputMode (SystemUiInputMode::Password);
 	_prompt->setDismissAutomatically (false);
 
@@ -658,7 +658,7 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 	else
 		errorStr = trUtf8 ("Unknown error! Maybe file is broken.\n"
 				   "NSR Reader tried open this file, but it can't :( "
-				   "Please check this file on desktop computer.");
+				   "Please check this file on desktop computer");
 
 	_toast->setBody (errorStr);
 	_toast->button()->setLabel ("OK");
