@@ -14,9 +14,9 @@ using namespace bb::cascades;
 NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	CustomControl (parent),
 	_imageView (NULL),
-	_lockImage (NULL),
 	_textView (NULL),
 	_label (NULL),
+	_lockContainer (NULL),
 	_viewContainer (NULL),
 	_imgTracker (NULL),
 	_solidContainer (NULL),
@@ -66,14 +66,24 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	labelContainer->setRightPadding (15);
 	labelContainer->add (_label);
 
-	_lockImage = ImageView::create().imageSource(QUrl ("asset:///page-lock.png"))
-					.horizontal(HorizontalAlignment::Right)
-					.vertical(VerticalAlignment::Top)
-					.visible(false);
+	_lockContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					    .vertical(VerticalAlignment::Center)
+					    .background(Color::Transparent)
+					    .layout(StackLayout::create ())
+					    .visible(false);
+
+	ImageView *lockImage = ImageView::create().imageSource(QUrl ("asset:///lock.png"))
+						  .horizontal(HorizontalAlignment::Center)
+						  .vertical(VerticalAlignment::Center);
+	Label *lockLabel = Label::create ();
+	lockLabel->textStyle()->setFontSize (FontSize::XSmall);
+
+	_lockContainer->add (lockImage);
+	_lockContainer->add (lockLabel);
 
 	rootContainer->add (_viewContainer);
 	rootContainer->add (labelContainer);
-	rootContainer->add (_lockImage);
+	rootContainer->add (_lockContainer);
 
 	_imgTracker = new ImageTracker (this);
 	Q_ASSERT (connect (_imgTracker, SIGNAL (stateChanged (bb::cascades::ResourceState::Type)),
@@ -176,6 +186,14 @@ NSRLastDocItem::updateItem (const QString&	title,
 	_label->setText (title);
 	_path = path;
 
+	_lockContainer->setVisible (encrypted);
+
+	if (encrypted) {
+		_imageView->setVisible (false);
+		_textView->setVisible (false);
+		return;
+	}
+
 	if (QFile::exists (imgPath)) {
 		_textView->setVisible (false);
 		_imageView->setVisible (true);
@@ -187,8 +205,6 @@ NSRLastDocItem::updateItem (const QString&	title,
 		_textView->setText (text);
 		_viewContainer->setBottomMargin (10);
 	}
-
-	_lockImage->setVisible (encrypted);
 }
 
 void

@@ -12,14 +12,12 @@ class NSRThumbnailer
 public:
 	static bool isThumbnailExists (const QString& path);
 	static void saveThumbnail (const QString&		path,
-				   const NSRRenderedPage&	page,
-				   bool				isEncrypted);
+				   const NSRRenderedPage&	page);
+	static void saveThumbnailEncrypted (const QString&	path);
 	static QString getThumbnailText (const QString& path);
 	static QString getThumnailPath (const QString& path);
 	static bool isThumbnailEncrypted (const QString& path);
 	static void cleanOldFiles ();
-	static void setThumbnailEncrypted (const QString&	path,
-					   bool			isEncrypted);
 	static void removeThumbnail (const QString& path);
 	static bool isThumbnailOutdated (const QString& path);
 

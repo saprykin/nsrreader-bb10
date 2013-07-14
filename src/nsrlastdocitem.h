@@ -40,9 +40,9 @@ private Q_SLOTS:
 
 private:
 	bb::cascades::ImageView		*_imageView;
-	bb::cascades::ImageView		*_lockImage;
 	bb::cascades::Label		*_textView;
 	bb::cascades::Label		*_label;
+	bb::cascades::Container		*_lockContainer;
 	bb::cascades::Container		*_viewContainer;
 	bb::cascades::ImageTracker	*_imgTracker;
 	bb::cascades::Container		*_solidSelect[4];

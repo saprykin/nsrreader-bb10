@@ -57,8 +57,14 @@ NSRRenderThread::run ()
 	page.setText (doc->getText ());
 	doc->setTextOnly (textOnly);
 
-	if (_renderThumbnail &&
-	    NSRThumbnailer::isThumbnailOutdated (doc->getDocumentPath ())) {
+	if (!_renderThumbnail) {
+		completeRequest (page);
+		emit renderDone ();
+	}
+
+	if (!doc->getPassword().isEmpty ())
+		NSRThumbnailer::saveThumbnailEncrypted (doc->getDocumentPath ());
+	else if (NSRThumbnailer::isThumbnailOutdated (doc->getDocumentPath ())) {
 		NSRRenderedPage	thumbPage;
 		int		wasZoom = doc->getZoom ();
 		int		wasZoomWidth = doc->getScreenWidth ();
@@ -79,8 +85,7 @@ NSRRenderThread::run ()
 		thumbPage.setText (doc->getText ());
 
 		NSRThumbnailer::saveThumbnail (doc->getDocumentPath (),
-					       thumbPage,
-					       !doc->getPassword().isEmpty ());
+					       thumbPage);
 
 		doc->setTextOnly (textOnly);
 
@@ -89,9 +94,7 @@ NSRRenderThread::run ()
 		else
 			doc->zoomToWidth (wasZoomWidth);
 		doc->setInvertedColors (wasInverted);
-	} else if (_renderThumbnail)
-		NSRThumbnailer::setThumbnailEncrypted (doc->getDocumentPath (),
-						      !doc->getPassword().isEmpty ());
+	}
 
 	completeRequest (page);
 	emit renderDone ();

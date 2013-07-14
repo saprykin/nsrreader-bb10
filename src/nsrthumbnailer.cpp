@@ -20,10 +20,13 @@ NSRThumbnailer::isThumbnailExists (const QString& path)
 
 void
 NSRThumbnailer::saveThumbnail (const QString&		path,
-			       const NSRRenderedPage&	page,
-			       bool			isEncrypted)
+			       const NSRRenderedPage&	page)
 {
 	QDir dir;
+
+	if (!dir.exists (NSR_THUMBNAILS_DIR))
+		dir.mkpath (NSR_THUMBNAILS_DIR);
+
 	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
 			    QSettings::IniFormat);
 
@@ -31,9 +34,6 @@ NSRThumbnailer::saveThumbnail (const QString&		path,
 		return;
 
 	QString hash = filePathToHash (path);
-
-	if (!dir.exists (NSR_THUMBNAILS_DIR))
-		dir.mkpath (NSR_THUMBNAILS_DIR);
 
 	if (page.getImage().isValid ()) {
 		QString fileName = getThumbnailPathFromHash (hash);
@@ -53,10 +53,37 @@ NSRThumbnailer::saveThumbnail (const QString&		path,
 	settings.beginGroup (hash);
 	settings.setValue ("path", path);
 	settings.setValue ("text", pageText);
-	settings.setValue ("encrypted", isEncrypted);
+	settings.setValue ("encrypted", false);
 	settings.setValue ("file-size", QFileInfo (path).size ());
 	settings.endGroup ();
 	settings.sync ();
+}
+
+void
+NSRThumbnailer::saveThumbnailEncrypted (const QString&	path)
+{
+	QDir dir;
+
+	if (!dir.exists (NSR_THUMBNAILS_DIR))
+		dir.mkpath (NSR_THUMBNAILS_DIR);
+
+	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
+			    QSettings::IniFormat);
+
+	if (!QFile::exists (path))
+		return;
+
+	QString hash = filePathToHash (path);
+
+	settings.beginGroup (hash);
+	settings.setValue ("path", path);
+	settings.setValue ("encrypted", true);
+	settings.setValue ("file-size", QFileInfo (path).size ());
+	settings.remove ("text");
+	settings.endGroup ();
+	settings.sync ();
+
+	QFile::remove (getThumbnailPathFromHash (hash));
 }
 
 QString
@@ -110,16 +137,6 @@ NSRThumbnailer::isThumbnailEncrypted (const QString& path)
 			    QSettings::IniFormat);
 
 	return settings.value(filePathToHash (path) + "/encrypted", false).toBool ();
-}
-
-void
-NSRThumbnailer::setThumbnailEncrypted (const QString&	path,
-				       bool		isEncrypted)
-{
-	QSettings settings (NSR_THUMBNAILS_DIR + "/thumbnails.ini",
-			    QSettings::IniFormat);
-
-	settings.setValue (filePathToHash (path) + "/encrypted", isEncrypted);
 }
 
 void

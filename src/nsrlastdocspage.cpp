@@ -112,12 +112,17 @@ NSRLastDocsPage::loadData ()
 
 	for (int i = 0; i < count; ++i) {
 		if (QFile::exists (docs.at (i))) {
-			QVariantMap map;
+			QVariantMap	map;
+			bool 		isEncrypted = NSRThumbnailer::isThumbnailEncrypted (docs.at (i));
+
 			map["title"] = QFileInfo(docs.at (i)).fileName ();
-			map["image"] = NSRThumbnailer::getThumnailPath (docs.at (i));
-			map["text"] = NSRThumbnailer::getThumbnailText (docs.at (i));
-			map["encrypted"] = NSRThumbnailer::isThumbnailEncrypted (docs.at (i));
 			map["path"] = docs.at (i);
+			map["encrypted"] = isEncrypted;
+
+			if (!isEncrypted) {
+				map["image"] = NSRThumbnailer::getThumnailPath (docs.at (i));
+				map["text"] = NSRThumbnailer::getThumbnailText (docs.at (i));
+			}
 
 			model->append (map);
 		}
