@@ -370,8 +370,7 @@ NSRReaderBB10::onGotoActionTriggered ()
 
 	_prompt = new SystemPrompt (this);
 
-	_prompt->setTitle (trUtf8 ("Enter Page", "Enter page number"));
-	_prompt->setBody (trUtf8("Enter page (1 - %1):").arg (_core->getPagesCount ()));
+	_prompt->setTitle (trUtf8("Enter Page (1 - %1)", "Enter page number").arg (_core->getPagesCount ()));
 	_prompt->inputField()->setDefaultText (QString::number (_core->getCurrentPage().getNumber ()));
 	_prompt->inputField()->setInputMode (SystemUiInputMode::NumericKeypad);
 	_prompt->setDismissAutomatically (false);
@@ -602,7 +601,7 @@ NSRReaderBB10::onPasswordRequested ()
 	_prompt = new SystemPrompt (this);
 
 	_prompt->setTitle (trUtf8 ("Enter Password"));
-	_prompt->setBody (trUtf8 ("Enter password:"));
+	_prompt->inputField()->setEmptyText (trUtf8 ("Enter file password"));
 	_prompt->inputField()->setInputMode (SystemUiInputMode::Password);
 	_prompt->setDismissAutomatically (false);
 

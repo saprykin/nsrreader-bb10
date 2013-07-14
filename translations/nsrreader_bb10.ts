@@ -286,20 +286,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enter Page</source>
-        <comment>Enter page number</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter page (1 - %1):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enter Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter password:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -329,6 +316,15 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
     <message>
         <source>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone.</source>
         <comment>Text reflow is a view mode of PDF/DjVu files when only text information without images is displayed with word wrap feature enabled.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter Page (1 - %1)</source>
+        <comment>Enter page number</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter file password</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
