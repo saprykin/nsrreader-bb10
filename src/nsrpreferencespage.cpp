@@ -8,6 +8,7 @@
 #include <bb/cascades/Label>
 #include <bb/cascades/TitleBar>
 #include <bb/cascades/ScrollView>
+#include <bb/cascades/Divider>
 
 using namespace bb::cascades;
 
@@ -140,30 +141,12 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	fifthContainer->add (encodingInfo);
 
 	/* Add all options to root layout */
-	Container *secondLine = Container::create().horizontal(HorizontalAlignment::Fill)
-						   .vertical(VerticalAlignment::Fill)
-						   .background(Color::fromRGBA (0.20f, 0.20f, 0.20f));
-	secondLine->setMaxHeight (1);
-	secondLine->setPreferredHeight (1);
-
-	Container *thirdLine = Container::create().horizontal(HorizontalAlignment::Fill)
-						  .vertical(VerticalAlignment::Fill)
-						  .background(Color::fromRGBA (0.20f, 0.20f, 0.20f));
-	thirdLine->setMaxHeight (1);
-	thirdLine->setPreferredHeight (1);
-
-	Container *fourthLine = Container::create().horizontal(HorizontalAlignment::Fill)
-						   .vertical(VerticalAlignment::Fill)
-						   .background(Color::fromRGBA (0.20f, 0.20f, 0.20f));
-	fourthLine->setMaxHeight (1);
-	fourthLine->setPreferredHeight (1);
-
 	rootContainer->add (secondContainer);
-	rootContainer->add (secondLine);
+	rootContainer->add (Divider::create ());
 	rootContainer->add (outerThirdContainer);
-	rootContainer->add (thirdLine);
+	rootContainer->add (Divider::create ());
 	rootContainer->add (outerFourthContainer);
-	rootContainer->add (fourthLine);
+	rootContainer->add (Divider::create ());
 	rootContainer->add (fifthContainer);
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
