@@ -48,6 +48,8 @@ public:
 	void setZoom (double zoom, bool toWidth);
 	void rotate (double rot);
 	double getRotation () const;
+	void saveCurrentPagePositions (const QPointF& pos,
+				       const QPointF& textPos);
 
 Q_SIGNALS:
 	void pageRendered (int number);

@@ -11,6 +11,7 @@ NSRRenderedPage::NSRRenderedPage (QObject *parent) :
 NSRRenderedPage::NSRRenderedPage (int number, QObject *parent) :
 	QObject (parent),
 	_reason (NSR_RENDER_REASON_NONE),
+	_zoom (0),
 	_number (number)
 {
 }
@@ -18,11 +19,13 @@ NSRRenderedPage::NSRRenderedPage (int number, QObject *parent) :
 NSRRenderedPage::NSRRenderedPage (const NSRRenderedPage& page) :
 	QObject (page.parent ())
 {
-	_reason	= page._reason;
-	_image	= page._image;
-	_zoom	= page._zoom;
-	_number	= page._number;
-	_text	= page._text;
+	_reason		= page._reason;
+	_image		= page._image;
+	_zoom		= page._zoom;
+	_number		= page._number;
+	_text		= page._text;
+	_lastPos	= page._lastPos;
+	_lastTextPos	= page._lastTextPos;
 }
 
 NSRRenderedPage::~NSRRenderedPage ()
@@ -33,11 +36,13 @@ NSRRenderedPage&
 NSRRenderedPage::operator = (const NSRRenderedPage& page)
 {
 	if (this != &page) {
-		_reason	= page._reason;
-		_image	= page._image;
-		_zoom	= page._zoom;
-		_number	= page._number;
-		_text	= page._text;
+		_reason		= page._reason;
+		_image		= page._image;
+		_zoom		= page._zoom;
+		_number		= page._number;
+		_text		= page._text;
+		_lastPos	= page._lastPos;
+		_lastTextPos	= page._lastTextPos;
 	}
 
 	return *this;
@@ -79,10 +84,34 @@ NSRRenderedPage::getText () const
 	return _text;
 }
 
+QPointF
+NSRRenderedPage::getLastPosition () const
+{
+	return _lastPos;
+}
+
+QPointF
+NSRRenderedPage::getLastTextPosition () const
+{
+	return _lastTextPos;
+}
+
 bool
 NSRRenderedPage::isValid () const
 {
+	return _number > 0;
+}
+
+bool
+NSRRenderedPage::isImageValid () const
+{
 	return _number > 0 && _image.isValid ();
+}
+
+bool
+NSRRenderedPage::isEmpty () const
+{
+	return _text.isEmpty () && !_image.isValid ();
 }
 
 void
@@ -118,5 +147,14 @@ NSRRenderedPage::setText (const QString& text)
 	_text = text;
 }
 
+void
+NSRRenderedPage::setLastPosition (const QPointF& pos)
+{
+	_lastPos = pos;
+}
 
-
+void
+NSRRenderedPage::setLastTextPosition (const QPointF& pos)
+{
+	_lastTextPos = pos;
+}

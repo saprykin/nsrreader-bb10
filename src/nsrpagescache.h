@@ -17,7 +17,12 @@ public:
 	bool isPageExists (int number);
 	NSRRenderedPage getPage (int number);
 	void addPage (NSRRenderedPage &page);
+	void removePage (int number);
 	void clearStorage ();
+	void updatePagePositions (int			number,
+				  const QPointF&	pos,
+				  const QPointF& 	textPos);
+	void removePagesWithoutImages ();
 
 private:
 	QHash<int, NSRRenderedPage>	_hash;

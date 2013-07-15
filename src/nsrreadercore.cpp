@@ -177,6 +177,9 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 	if (_zoomDoc != NULL)
 		_zoomDoc->setInvertedColors (settings->isInvertedColors ());
 
+	if (wasTextOnly && !settings->isWordWrap ())
+		_cache->removePagesWithoutImages ();
+
 	/* Check whether we need to re-render the page */
 	if (wasTextOnly && !settings->isWordWrap ())
 		needReload = true;
@@ -355,6 +358,16 @@ NSRReaderCore::getRotation () const
 }
 
 void
+NSRReaderCore::saveCurrentPagePositions (const QPointF& pos,
+					 const QPointF& textPos)
+{
+	if (_doc == NULL || !_doc->isValid ())
+		return;
+
+	_cache->updatePagePositions (_currentPage.getNumber (), pos, textPos);
+}
+
+void
 NSRReaderCore::onRenderDone ()
 {
 	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
@@ -376,7 +389,7 @@ NSRReaderCore::onZoomRenderDone ()
 	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
 	NSRRenderedPage page = _zoomThread->getRenderedPage ();
 
-	if (!page.isValid ())
+	if (!page.isImageValid ())
 		return;
 
 	/* We do not need to reset document changed flag because it would be

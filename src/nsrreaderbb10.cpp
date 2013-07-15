@@ -353,12 +353,16 @@ NSRReaderBB10::onOpenActionTriggered ()
 void
 NSRReaderBB10::onPrevPageActionTriggered ()
 {
+	_core->saveCurrentPagePositions (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_GRAPHIC),
+					 _pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_TEXT));
 	_core->navigateToPage (NSRReaderCore::PAGE_LOAD_PREV);
 }
 
 void
 NSRReaderBB10::onNextPageActionTriggered ()
 {
+	_core->saveCurrentPagePositions (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_GRAPHIC),
+					 _pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_TEXT));
 	_core->navigateToPage (NSRReaderCore::PAGE_LOAD_NEXT);
 }
 
@@ -601,7 +605,7 @@ NSRReaderBB10::onPasswordRequested ()
 	_prompt = new SystemPrompt (this);
 
 	_prompt->setTitle (trUtf8 ("Enter Password"));
-	_prompt->inputField()->setEmptyText (trUtf8 ("Enter file password:"));
+	_prompt->inputField()->setEmptyText (trUtf8 ("Enter file password"));
 	_prompt->inputField()->setInputMode (SystemUiInputMode::Password);
 	_prompt->setDismissAutomatically (false);
 

@@ -34,10 +34,11 @@ NSRPagesCache::addPage (NSRRenderedPage& page)
 	qint64		newSize;
 	int		deqPage;
 
-	if (!page.isValid ())
+	if (page.isEmpty ())
 		return;
 
-	newSize = page.getSize().width () * page.getSize().height () * 4;
+	newSize = page.getSize().width () * page.getSize().height () * 4 +
+		  page.getText().size () * 2;
 
 	if (newSize > NSR_PAGES_CACHE_MAX_STORAGE)
 		return;
@@ -55,7 +56,8 @@ NSRPagesCache::addPage (NSRRenderedPage& page)
 
 		NSRRenderedPage rpage = _hash.take (deqPage);
 
-		_usedMemory -= (rpage.getSize().width () * rpage.getSize().height () * 4);
+		_usedMemory -= (rpage.getSize().width () * rpage.getSize().height () * 4 +
+				rpage.getText().size () * 2);
 	}
 
 	_pages.append (page.getNumber ());
@@ -65,9 +67,51 @@ NSRPagesCache::addPage (NSRRenderedPage& page)
 	_usedMemory += newSize;
 }
 
+void
+NSRPagesCache::removePage (int number)
+{
+	if (number <= 0)
+		return;
+
+	NSRRenderedPage page = _hash.take (number);
+
+	_pages.removeAll (number);
+
+	if (!page.isValid ())
+		return;
+
+	_usedMemory -= (page.getSize().width () * page.getSize().height () * 4 +
+			page.getText().size () * 2);
+}
+
 void NSRPagesCache::clearStorage ()
 {
 	_hash.clear ();
 	_pages.clear ();
 	_usedMemory = 0;
+}
+
+void
+NSRPagesCache::updatePagePositions (int number,
+				    const QPointF& pos,
+				    const QPointF& textPos)
+{
+	NSRRenderedPage page = _hash.value (number);
+
+	if (!page.isValid ())
+		return;
+
+	page.setLastPosition (pos);
+	page.setLastTextPosition (textPos);
+
+	_hash.insert (number, page);
+}
+
+void
+NSRPagesCache::removePagesWithoutImages ()
+{
+	int count = _pages.count ();
+	for (int i = count - 1; i >= 0; --i)
+		if (!_hash.value(_pages.at (i)).isImageValid ())
+			removePage (_pages.at (i));
 }

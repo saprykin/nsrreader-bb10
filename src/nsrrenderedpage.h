@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSize>
+#include <QPointF>
 
 #include <bb/ImageData>
 
@@ -32,18 +33,26 @@ public:
 	QSize getSize () const;
 	bb::ImageData getImage () const;
 	QString getText () const;
+	QPointF getLastPosition () const;
+	QPointF getLastTextPosition () const;
 	bool isValid () const;
+	bool isImageValid () const;
+	bool isEmpty () const;
 
 	void setRenderReason (NSRRenderedPage::NSRRenderReason reason);
 	void setNumber (int number);
 	void setZoom (double zoom);
 	void setImage (bb::ImageData img);
 	void setText (const QString &text);
+	void setLastPosition (const QPointF& pos);
+	void setLastTextPosition (const QPointF& pos);
 
 private:
 	NSRRenderReason		_reason;
 	bb::ImageData		_image;
 	QString			_text;
+	QPointF			_lastPos;
+	QPointF			_lastTextPos;
 	double			_zoom;
 	int			_number;
 };
