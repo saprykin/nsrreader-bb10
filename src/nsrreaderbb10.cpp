@@ -113,9 +113,8 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (connect (_pageView, SIGNAL (viewTapped ()), this, SLOT (onPageTapped ())));
 
 	_welcomeView = new NSRWelcomeView ();
-
-	if (_startMode == ApplicationStartupMode::InvokeCard)
-		_welcomeView->setCardMode (true);
+	/* We need welcome view only if not loading file at start up */
+	_welcomeView->setCardMode (true);
 
 	Q_ASSERT (connect (_welcomeView, SIGNAL (openDocumentRequested ()),
 			   this, SLOT (onOpenActionTriggered ())));
@@ -295,6 +294,10 @@ NSRReaderBB10::initFullUI ()
 	if (settings.isFirstStart ()) {
 		settings.saveFirstStart ();
 		showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_HELP);
+
+		_welcomeView->setCardMode (false);
+
+		updateVisualControls ();
 	} else {
 		if (!settings.isNewsShown ()) {
 			settings.saveNewsShown ();
@@ -304,8 +307,10 @@ NSRReaderBB10::initFullUI ()
 		/* Load previously saved session */
 		if (QFile::exists (settings.getLastSession().getFile ()))
 			loadSession ();
-		else
+		else {
+			_welcomeView->setCardMode (false);
 			updateVisualControls ();
+		}
 	}
 }
 
@@ -664,6 +669,8 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 				   "NSR Reader tried open this file, but it can't :( "
 				   "Please check this file on desktop computer");
 
+	_welcomeView->setCardMode (_startMode == ApplicationStartupMode::InvokeCard);
+
 	_toast->setBody (errorStr);
 	_toast->button()->setLabel ("OK");
 	_toast->show ();
@@ -817,6 +824,9 @@ NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
 		initCardUI ();
 		loadSession (file, page);
 	}
+
+	if (!_core->isDocumentOpened ())
+		_welcomeView->setCardMode (_startMode == ApplicationStartupMode::InvokeCard);
 }
 
 void
