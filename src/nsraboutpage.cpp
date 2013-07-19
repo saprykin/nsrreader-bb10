@@ -43,7 +43,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	ImageView *logoView = ImageView::create().horizontal(HorizontalAlignment::Center)
 						 .vertical(VerticalAlignment::Center)
-						 .imageSource(QUrl ("asset:///nsrlogo-welcome.png"));
+						 .imageSource(QUrl ("asset:///nsrlogo.png"));
 
 	Label *versionInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					    .vertical(VerticalAlignment::Fill)

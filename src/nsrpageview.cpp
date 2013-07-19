@@ -18,8 +18,6 @@
 
 using namespace bb::cascades;
 
-#define NSR_LOGO_WELCOME "asset:///nsrlogo-welcome.png"
-
 NSRPageView::NSRPageView (Container *parent) :
 	Container (parent),
 	_scrollView (NULL),
@@ -49,7 +47,6 @@ NSRPageView::NSRPageView (Container *parent) :
 					      .scrollMode(ScrollMode::Vertical);
 	_imageView = ImageView::create().horizontal(HorizontalAlignment::Center)
 					.vertical(VerticalAlignment::Center);
-	_imageView->setImageSource (QUrl (NSR_LOGO_WELCOME));
 
 	_imageContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					     .vertical(VerticalAlignment::Fill)
@@ -180,10 +177,8 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 void
 NSRPageView::resetPage ()
 {
-	ImageTracker tracker (QUrl (NSR_LOGO_WELCOME));
-
-	_imageView->setImageSource (tracker.imageSource ());
-	_imageView->setPreferredSize (tracker.width (), tracker.height ());
+	_imageView->resetImage ();
+	_imageView->resetImageSource ();
 	_imageView->setRotationZ (0.0);
 	_scrollView->removeActionSet (_actionSet);
 	_textArea->resetText ();
@@ -419,12 +414,12 @@ NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 	if (!_isZoomingEnabled)
 		return;
 
+	if (_imageView->image().isNull ())
+		return;
+
 	if (_viewMode == NSR_VIEW_MODE_TEXT)
 		_initialFontSize = (int) _textArea->textStyle()->fontSize ();
 	else {
-		if (_imageView->imageSource().path () == NSR_LOGO_WELCOME)
-			return;
-
 		_initialScaleSize = QSize (_imageView->preferredWidth (),
 					   _imageView->preferredHeight ());
 		_initialScalePos = _scrollView->viewableArea().center ();
