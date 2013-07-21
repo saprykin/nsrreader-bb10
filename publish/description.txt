@@ -10,8 +10,9 @@ Plenty of features will make reading comfortable everywhere:
 - saves last reading position;
 - inverted colors mode helps to save power and read at dark;
 - text reflow mode makes reading huge text-enabled PDF and DjVu files easy;
-- nice preview of recently opened documents;
-- share your documents through BBM service;
+- nice preview of recently opened files;
+- active frame (application cover) support;
+- share your files through BBM, Bluetooth, NFC and other apps;
 - fast and responsive user interface.
 
 Made for users with love :)
