@@ -47,9 +47,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 
 	rootContainer->add (_listView);
 	rootContainer->add (_emptyLabel);
-	rootContainer->setBackground(Color::Black);
-	rootContainer->setTopPadding (20);
-	rootContainer->setBottomPadding (20);
+	rootContainer->setBackground (Color::Black);
 
 	setContent (rootContainer);
 	setTitleBar (TitleBar::create().title(trUtf8 ("Recent",
