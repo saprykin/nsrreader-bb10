@@ -23,8 +23,11 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	_backView (NULL),
 	_logoView (NULL),
 	_pageView (NULL),
+	_textView (NULL),
+	_textContainer (NULL),
 	_pageNumContainer (NULL),
-	_pageNumLabel (NULL)
+	_pageNumLabel (NULL),
+	_isTextOnly (false)
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -99,6 +102,28 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 				       .vertical(VerticalAlignment::Fill);
 	_pageNumLabel->textStyle()->setFontSize(FontSize::XXSmall);
 
+	_textContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					    .vertical(VerticalAlignment::Fill)
+					    .layout(DockLayout::create())
+					    .background(Color::White)
+					    .visible(false);
+	_textView = TextArea::create().horizontal(HorizontalAlignment::Fill)
+				      .vertical(VerticalAlignment::Fill)
+				      .editable(false)
+				      .inputFlags(TextInputFlag::SpellCheckOff |
+						  TextInputFlag::PredictionOff |
+						  TextInputFlag::AutoCapitalizationOff |
+						  TextInputFlag::AutoCorrectionOff |
+						  TextInputFlag::AutoPeriodOff |
+						  TextInputFlag::WordSubstitutionOff |
+						  TextInputFlag::VirtualKeyboardOff);
+	_textView->setTopPadding (0);
+	_textView->setBottomPadding (0);
+	_textView->setTextFormat (TextFormat::Plain);
+	_textView->textStyle()->setColor (Color::Black);
+	_textView->textStyle()->setFontSize (FontSize::XSmall);
+	_textContainer->add (_textView);
+
 	numLabelContainer->add (_pageNumLabel);
 	_pageNumContainer->add (numContainer);
 	_pageNumContainer->add (numLabelContainer);
@@ -106,6 +131,7 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	imageContainer->add (_backView);
 	imageContainer->add (_logoView);
 	imageContainer->add (_pageView);
+	imageContainer->add (_textContainer);
 	imageContainer->add (_pageNumContainer);
 
 	rootContainer->add (_titleContainer);
@@ -119,17 +145,17 @@ NSRSceneCover::~NSRSceneCover ()
 }
 
 void
-NSRSceneCover::setPageData (const bb::cascades::Image&	image,
+NSRSceneCover::setPageData (const NSRRenderedPage&	page,
                 	    const QString&		title,
-                	    int				pageNumber,
                 	    int				pagesTotal)
 {
-	if (image.isNull () || title.isEmpty () || pageNumber < 1 || pagesTotal < pageNumber)
+	if (page.isEmpty () || title.isEmpty () || page.getNumber () < 1 || pagesTotal < page.getNumber ())
 		return;
 
-	_pageView->setImage (image);
+	_pageView->setImage (page.getImage ());
+	_textView->setText (page.getText ());
 	_titleLabel->setText (title);
-	_pageNumLabel->setText(QString("%1 / %2").arg(pageNumber).arg (pagesTotal));
+	_pageNumLabel->setText(QString("%1 / %2").arg(page.getNumber ()).arg (pagesTotal));
 
 	QString	extension = QFileInfo(title).suffix().toLower ();
 	QString background;
@@ -144,6 +170,7 @@ NSRSceneCover::setPageData (const bb::cascades::Image&	image,
 		background = "asset:///txt-header.png";
 
 	_titleContainer->setBackground (ImagePaint (Image (QUrl (background)), RepeatPattern::Fill));
+	_isTextOnly = !page.getImage().isValid () && !page.getText().isEmpty ();
 }
 
 void
@@ -154,6 +181,8 @@ NSRSceneCover::resetPageData ()
 	_pageView->resetImage ();
 	_pageView->resetImageSource ();
 	_pageNumLabel->resetText ();
+	_textView->resetText ();
+	_isTextOnly = false;
 }
 
 void
@@ -162,6 +191,7 @@ NSRSceneCover::setStatic (bool isStatic)
 	_titleContainer->setVisible (!isStatic);
 	_backView->setVisible (isStatic);
 	_logoView->setVisible (isStatic);
-	_pageView->setVisible (!isStatic);
+	_pageView->setVisible (!isStatic && !_isTextOnly);
+	_textContainer->setVisible (_isTextOnly);
 	_pageNumContainer->setVisible (!isStatic);
 }
