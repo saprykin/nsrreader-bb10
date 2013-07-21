@@ -4,6 +4,7 @@
 #include "nsrpreferencespage.h"
 #include "nsrlastdocspage.h"
 #include "nsrfilesharer.h"
+#include "nsrscenecover.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
@@ -56,7 +57,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_toast (NULL),
 	_invokeManager (NULL),
 	_startMode (ApplicationStartupMode::LaunchApplication),
-	_isFullscreen (false)
+	_isFullscreen (false),
+	_isActiveFrame (false)
 {
 	_invokeManager = new InvokeManager (this);
 
@@ -274,7 +276,13 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (connect (_pageView, SIGNAL (zoomChanged (double, bool)),
 			   this, SLOT (onZoomChanged (double, bool))));
 
+	Application::instance()->setCover (new NSRSceneCover (this));
 	Application::instance()->setAutoExit (false);
+
+	Q_ASSERT (connect (Application::instance (), SIGNAL (thumbnail ()),
+			   this, SLOT (onThumbnail ())));
+	Q_ASSERT (connect (Application::instance (), SIGNAL (fullscreen ()),
+			   this, SLOT (onFullscreen ())));
 	Q_ASSERT (connect (Application::instance (), SIGNAL (manualExit ()),
 			   this, SLOT (onManualExit ())));
 
@@ -454,7 +462,11 @@ NSRReaderBB10::onPageRendered (int number)
 				_core->getPagesCount ());
 	_readProgress->setCurrentPage (_core->getCurrentPage().getNumber ());
 	_readProgress->setPagesCount (_core->getPagesCount ());
+
 	updateVisualControls ();
+
+	if (_isActiveFrame)
+		onThumbnail ();
 }
 
 void
@@ -905,4 +917,43 @@ NSRReaderBB10::onTopPagePeeked (bool isPeeked)
 {
 	if (isPeeked)
 		onBackButtonTriggered ();
+}
+
+void
+NSRReaderBB10::onThumbnail ()
+{
+	NSRSceneCover *cover = dynamic_cast<NSRSceneCover *> (Application::instance()->cover ());
+
+	if (cover == NULL)
+		return;
+
+	_isActiveFrame = true;
+
+	if (_core->isDocumentOpened ()) {
+		NSRRenderedPage page = _core->getCurrentPage ();
+
+		if (page.getImage().isValid ()) {
+			cover->setPageData (Image (page.getImage ()),
+					    QFileInfo(_core->getDocumentPath ()).fileName (),
+					    page.getNumber (),
+					    _core->getPagesCount ());
+			cover->setStatic (false);
+		} else
+			cover->setStatic (true);
+	} else
+		cover->setStatic (true);
+}
+
+void
+NSRReaderBB10::onFullscreen ()
+{
+	NSRSceneCover *cover = dynamic_cast<NSRSceneCover *> (Application::instance()->cover ());
+
+	if (cover == NULL)
+		return;
+
+	_isActiveFrame = false;
+
+	cover->resetPageData ();
+	cover->setStatic (true);
 }

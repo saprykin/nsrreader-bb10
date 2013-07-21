@@ -68,6 +68,8 @@ private Q_SLOTS:
     void onCardResize (const bb::system::CardResizeMessage& message);
     void onBackButtonTriggered ();
     void onTopPagePeeked (bool isPeeked);
+    void onThumbnail ();
+    void onFullscreen ();
 
 private:
     void initFullUI ();
@@ -95,6 +97,7 @@ private:
     bb::system::InvokeManager			*_invokeManager;
     bb::system::ApplicationStartupMode::Type	_startMode;
     bool					_isFullscreen;
+    bool					_isActiveFrame;
 };
 
 #endif /* NSRREADERBB10_H_ */
