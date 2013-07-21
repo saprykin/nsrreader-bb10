@@ -37,7 +37,8 @@ NSRPageView::NSRPageView (Container *parent) :
 	_initialFontSize (100),
 	_isInvertedColors (false),
 	_isZooming (false),
-	_isZoomingEnabled (true)
+	_isZoomingEnabled (true),
+	_hasImage (false)
 {
 	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Fill)
@@ -159,6 +160,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 		setScrollPosition (_delayedTextScrollPos, NSR_VIEW_MODE_TEXT);
 	}
 
+	_hasImage = page.getImage().isValid ();
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
 	_currentZoom = page.getZoom ();
@@ -183,6 +185,7 @@ NSRPageView::resetPage ()
 	_scrollView->removeActionSet (_actionSet);
 	_textArea->resetText ();
 	_currentZoom = 100;
+	_hasImage = false;
 }
 
 void
@@ -414,12 +417,12 @@ NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 	if (!_isZoomingEnabled)
 		return;
 
-	if (_imageView->image().isNull ())
-		return;
-
 	if (_viewMode == NSR_VIEW_MODE_TEXT)
 		_initialFontSize = (int) _textArea->textStyle()->fontSize ();
 	else {
+		if (!_hasImage)
+			return;
+
 		_initialScaleSize = QSize (_imageView->preferredWidth (),
 					   _imageView->preferredHeight ());
 		_initialScalePos = _scrollView->viewableArea().center ();

@@ -94,6 +94,7 @@ private:
 	bool				_isInvertedColors;
 	bool				_isZooming;
 	bool				_isZoomingEnabled;
+	bool				_hasImage;
 };
 
 #endif /* NSRPAGEVIEW_H_ */
