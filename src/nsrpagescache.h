@@ -14,9 +14,9 @@ public:
 	NSRPagesCache (QObject *parent = 0);
 	virtual ~NSRPagesCache ();
 
-	bool isPageExists (int number);
-	NSRRenderedPage getPage (int number);
-	void addPage (NSRRenderedPage &page);
+	bool isPageExists (int number) const;
+	NSRRenderedPage getPage (int number) const;
+	void addPage (const NSRRenderedPage &page);
 	void removePage (int number);
 	void clearStorage ();
 	void updatePagePositions (int			number,

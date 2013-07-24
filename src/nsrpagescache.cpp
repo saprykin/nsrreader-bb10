@@ -17,19 +17,19 @@ NSRPagesCache::~NSRPagesCache ()
 }
 
 bool
-NSRPagesCache::isPageExists (int number)
+NSRPagesCache::isPageExists (int number) const
 {
 	return _hash.contains (number);
 }
 
 NSRRenderedPage
-NSRPagesCache::getPage (int number)
+NSRPagesCache::getPage (int number) const
 {
 	return _hash.value (number);
 }
 
 void
-NSRPagesCache::addPage (NSRRenderedPage& page)
+NSRPagesCache::addPage (const NSRRenderedPage& page)
 {
 	qint64		newSize;
 	int		deqPage;
@@ -60,10 +60,13 @@ NSRPagesCache::addPage (NSRRenderedPage& page)
 				rpage.getText().size () * 2);
 	}
 
-	_pages.append (page.getNumber ());
+	NSRRenderedPage newPage = page;
+	newPage.setRenderReason (NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION);
+
+	_pages.append (newPage.getNumber ());
 	qSort (_pages);
 
-	_hash.insert (page.getNumber (), page);
+	_hash.insert (newPage.getNumber (), newPage);
 	_usedMemory += newSize;
 }
 
