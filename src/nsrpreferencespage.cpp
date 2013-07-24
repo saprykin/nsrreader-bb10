@@ -39,13 +39,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_encodingsList->setFocusPolicy (FocusPolicy::Touch);
 
 	QString textEncoding = settings.getTextEncoding ();
-	QStringList encodings = settings.getSupportedEncodings ();
-	int encodingIndex = encodings.indexOf (textEncoding, 0);
-
-	if (encodingIndex == -1) {
-		textEncoding = defEncoding;
-		encodingIndex = encodings.indexOf (textEncoding, 0);
-	}
+	QStringList encodings = NSRSettings::getSupportedEncodings ();
+	int encodingIndex = NSRSettings::mapEncodingToIndex (textEncoding);
 
 	int count = encodings.count ();
 	for (int i = 0; i < count; ++i)
@@ -174,5 +169,5 @@ NSRPreferencesPage::saveSettings ()
 	settings.saveInvertedColors (_isInvertedColors->isChecked ());
 
 	if (_encodingsList->isSelectedOptionSet ())
-		settings.saveTextEncoding (_encodingsList->selectedOption()->text ());
+		settings.saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));
 }

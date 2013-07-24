@@ -42,7 +42,7 @@ NSRSettings::NSRSettings (QObject *parent) :
 	/* TODO: find a way to check if a font from configuration file exists */
 	_fontFamily = defFont;
 
-	if (!getSupportedEncodings().contains (_textEncoding))
+	if (!getSupportedEncodingsShort().contains (_textEncoding))
 		_textEncoding = QString ("UTF-8");
 
 	endGroup ();
@@ -210,19 +210,84 @@ NSRSettings::getVersion()
 QStringList
 NSRSettings::getSupportedEncodings()
 {
-	QStringList codecs;
-
-	codecs << "UTF-8" << "ISO-8859-1" << "ISO-8859-2" << "ISO-8859-3" << "ISO-8859-4"
-	       << "ISO-8859-5" << "ISO-8859-6" << "ISO-8859-7" << "ISO-8859-8" << "ISO-8859-9"
-	       << "ISO-8859-10" << "ISO-8859-11" << "ISO-8859-13" << "ISO-8859-14" << "ISO-8859-15"
-	       << "ISO-8859-16" << "Shift JIS" << "EUC-JP" << "EUC-KR" << "ISO-2022-JP" << "TSCII"
-	       << "GB18030" << "GB2312" << "KOI8-R" << "KOI8-U" << "CP850" << "CP866" <<  "CP874"
-	       << "CP936" << "CP950" << "CP1250" << "CP1251" << "CP1252" << "CP1253" << "CP1254"
-	       << "CP1255" << "CP1256" << "CP1257" << "CP1258"
-	       << "UTF-16" << "UTF-16BE" << "UTF-16LE" << "UTF-32" << "UTF-32BE" << "UTF-32LE"
+	static QStringList codecs = QStringList ()
+	       << "Unicode (UTF-8)"<< "Western European (ISO-8859-1)" << "Western European (CP850)"
+	       << "Western European (CP1252)" << "Western European (ISO-8859-15)"
+	       << "Central European (ISO-8859-2)" << "Central European (CP1250)"
+	       << "South European (ISO-8859-3)" << "Baltic (ISO-8859-4)" << "Baltic (ISO-8859-13)"
+	       << "Baltic (CP1257)" << "Nordic (ISO-8859-10)" << "Celtic (ISO-8859-14)"
+	       << "Romanian (ISO-8859-16)" << "Greek (ISO-8859-7)" << "Greek (CP1253)"
+	       << "Cyrillic (ISO-8859-5)" << "Cyrillic (KOI8-R)" << "Cyrillic (CP1251)"
+	       << "Cyrillic/Russia (CP866)" << "Cyrillic/Ukraine (KOI8-U)"
+	       << "Hebrew (ISO-8859-8)" << "Hebrew (ISO-8859-8-I)" << "Hebrew (CP1255)"
+	       << "Turkish (ISO-8859-9)" << "Turkish (CP1254)"
+	       << "Arabic (ISO-8859-6)" << "Arabic (ISO-8859-6-I)" << "Arabic (CP1256)"
+	       << "Latin/Thai (ISO-8859-11)" << "Thai (CP874)"
+	       << "Korean (EUC-KR)" << "Korean (CP949)"
+	       << "Japanese (Shift_JIS)" << "Japanese (EUC-JP)" << "Japanese (JIS7)"
+	       << "Japanese (ISO-2022-JP)"
+	       << "Chinese Simplified (GB18030)" << "Chinese Simplified (GB2312)"
+	       << "Chinese Simplified (GBK)" << "Chinese Simplified (CP936)"
+	       << "Chinese Traditional (Big5)" << "Chinese Traditional (Big5-HKSCS)"
+	       << "Chinese Traditional (Big5-ETen)" << "Chinese Traditional (CP950)"
+	       << "Tamil (TSCII)" << "Vietnamese (CP1258)"
+	       << "Unicode (UTF-16)" << "Unicode (UTF-16BE)" << "Unicode (UTF-16LE)" << "Unicode (UTF-32)"
+	       << "Unicode (UTF-32BE)" << "Unicode (UTF-32LE)"
 	       << "Apple Roman" << "WINSAMI2";
 
 	return codecs;
+}
+
+QStringList
+NSRSettings::getSupportedEncodingsShort ()
+{
+	static QStringList codecs = QStringList ()
+	       << "UTF-8"<< "ISO-8859-1" << "CP850"
+	       << "CP1252" << "ISO-8859-15"
+	       << "ISO-8859-2" << "CP1250"
+	       << "ISO-8859-3" << "ISO-8859-4" << "ISO-8859-13"
+	       << "CP1257" << "ISO-8859-10" << "ISO-8859-14"
+	       << "ISO-8859-16" << "ISO-8859-7" << "CP1253"
+	       << "ISO-8859-5" << "KOI8-R" << "CP1251"
+	       << "CP866" << "KOI8-U"
+	       << "ISO-8859-8" << "ISO-8859-8-I" << "CP1255"
+	       << "ISO-8859-9" << "CP1254"
+	       << "ISO-8859-6" << "ISO-8859-6-I" << "CP1256"
+	       << "ISO-8859-11" << "CP874"
+	       << "EUC-KR" << "CP949"
+	       << "Shift_JIS" << "EUC-JP" << "JIS7"
+	       << "ISO-2022-JP"
+	       << "GB18030" << "GB2312"
+	       << "GBK" << "CP936"
+	       << "Big5" << "Big5-HKSCS"
+	       << "Big5-ETen" << "CP950"
+	       << "TSCII" << "CP1258"
+	       << "UTF-16" << "UTF-16BE" << "UTF-16LE" << "UTF-32"
+	       << "UTF-32BE" << "UTF-32LE"
+	       << "Apple Roman" << "WINSAMI2";
+
+	return codecs;
+}
+
+QString
+NSRSettings::mapIndexToEncoding (int index)
+{
+	QStringList list = getSupportedEncodingsShort ();
+
+	if (index < 0 || index > list.count ())
+		return QString ("UTF-8");
+	else
+		return list.at (index);
+}
+
+int
+NSRSettings::mapEncodingToIndex (const QString& encoding)
+{
+	QStringList list = getSupportedEncodingsShort ();
+
+	int index = list.indexOf (encoding, 0);
+
+	return index >= 0 ? index : 0;
 }
 
 QString

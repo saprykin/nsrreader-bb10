@@ -39,12 +39,15 @@ public:
 
 	static QString getVersion ();
 	static QStringList getSupportedEncodings ();
+	static QString mapIndexToEncoding (int index);
+	static int mapEncodingToIndex (const QString& encoding);
 	static QString getSettingsDirectory ();
 
 private:
-	QString	formatFileName (const QString& name);
-	void	readSession (const QString& name, NSRSession& session);
-	void	cleanOldFiles ();
+	static QStringList	getSupportedEncodingsShort ();
+	QString			formatFileName (const QString& name);
+	void			readSession (const QString& name, NSRSession& session);
+	void			cleanOldFiles ();
 
 	bool		_isFullscreenMode;
 	bool		_isWordWrap;
