@@ -150,7 +150,13 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_delayedTextScrollPos.isNull ())
 		_delayedTextScrollPos = page.getLastTextPosition ();
 
-	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION) {
+	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_SETTINGS) {
+		/* Encoding may be changed, we must reload text data */
+		QPointF pos = getScrollPosition (NSR_VIEW_MODE_TEXT);
+		_textScrollView->scrollToPoint (0, 0, ScrollAnimation::None);
+		_textArea->setText (page.getText ());
+		setScrollPosition (pos, NSR_VIEW_MODE_TEXT);
+	} else if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION) {
 		/* Set scroll position for graphic mode */
 		if (_delayedScrollPos.isNull ())
 			_delayedScrollPos = QPointF (_scrollView->viewableArea().left (), 0);
