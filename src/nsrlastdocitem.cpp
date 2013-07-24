@@ -198,12 +198,18 @@ NSRLastDocItem::updateItem (const QString&	title,
 		_textView->setVisible (false);
 		_imageView->setVisible (true);
 		_imgTracker->setImageSource (QUrl::fromLocalFile (imgPath));
-		_viewContainer->setBottomMargin (0);
+		_viewContainer->setLeftPadding (0);
+		_viewContainer->setTopPadding (0);
+		_viewContainer->setRightPadding (0);
+		_viewContainer->setBottomPadding (0);
 	} else {
 		_imageView->setVisible (false);
 		_textView->setVisible (true);
 		_textView->setText (text);
-		_viewContainer->setBottomMargin (10);
+		_viewContainer->setLeftPadding (12);
+		_viewContainer->setTopPadding (12);
+		_viewContainer->setRightPadding (12);
+		_viewContainer->setBottomPadding (12);
 	}
 }
 
