@@ -24,11 +24,12 @@ NSRSession::NSRSession (const QString& file,
 			double angle) :
 	_file (file),
 	_pos (pos),
-	_textPos (_textPos),
+	_textPos (textPos),
 	_zoomGraphic (zoomGraphic),
 	_angle (angle),
 	_page (page),
 	_zoomText (zoomText),
+	_zoomScreenWidth (720),
 	_isFitToWidth (isFitToWidth)
 {
 }
