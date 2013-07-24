@@ -152,8 +152,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 					 "enjoying using it! Please take a look at the following "
 					 "instructions and tips to make reading more comfortable.");
 	QString navigationSection = trUtf8 ("Use navigation arrows on Action Bar (at the bottom of the screen). "
-			    	    	    "Double tap on the left area of the screen to go previous page, on the right "
-			    	    	    "area to go next page and on the center to fit page to screen width. "
+			    	    	    "Double tap on the left area of the screen to go to previous page, on the right "
+			    	    	    "area to go to next page and on the center to fit page to screen width. "
 			    	    	    "Another way of navigation is to use <i>Volume Up/Down</i> hardware keys: "
 			    	    	    "<i>Volume Up</i> key for the previous page and <i>Volume Down</i> key for "
 			    	    	    "the next page. "
