@@ -189,8 +189,10 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 		needReload = true;
 	}
 
-	if (wasEncoding != _doc->getEncoding () && _doc->isEncodingUsed ())
+	if (wasEncoding != _doc->getEncoding () && _doc->isEncodingUsed ()) {
+		_cache->clearStorage ();
 		needReload = true;
+	}
 
 	if (wasTextOnly != settings->isWordWrap () && !needReload)
 		emit needViewMode (NSRPageView::NSR_VIEW_MODE_PREFERRED);
