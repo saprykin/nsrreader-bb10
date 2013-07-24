@@ -29,9 +29,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isFullscreen = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isTextMode = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isInvertedColors = ToggleButton::create().horizontal(HorizontalAlignment::Right);
-	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill)
-					   .title(trUtf8 ("Text Encoding", "Option in preferences, "
-							   	   	   "selects text encoding"));
+	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
 	_isFullscreen->setChecked (settings.isFullscreenMode ());
 	_isTextMode->setChecked (settings.isWordWrap ());
@@ -120,6 +118,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	/* 'Text encoding' drop down list */
 	Container *fifthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .layout(StackLayout::create());
+	Label *textEncodingLabel = Label::create(trUtf8 ("Text Encoding", "Option in preferences, "
+						     	    	   	  "selects text encoding"))
+				     	 .horizontal(HorizontalAlignment::Fill)
+				     	 .vertical(VerticalAlignment::Center);
 	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for pure text files. "
 						    "None other format supports encoding selection."))
 				     .horizontal(HorizontalAlignment::Fill)
@@ -132,6 +134,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	fifthContainer->setLeftPadding (20);
 	fifthContainer->setRightPadding (20);
 
+	fifthContainer->add (textEncodingLabel);
 	fifthContainer->add (_encodingsList);
 	fifthContainer->add (encodingInfo);
 
