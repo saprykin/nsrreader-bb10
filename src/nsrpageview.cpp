@@ -12,8 +12,10 @@
 
 #include <bbndk.h>
 
-#if BBNDK_VERSION_AT_LEAST(10,2,0)
-#include <bb/cascades/ScrollRailsPolicy>
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#    include <bb/cascades/ScrollRailsPolicy>
+#  endif
 #endif
 
 using namespace bb::cascades;
@@ -76,8 +78,10 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textScrollView->setContent (_textContainer);
 	_textScrollView->setVisible (false);
 
-#if BBNDK_VERSION_AT_LEAST(10,2,0)
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_scrollView->scrollViewProperties()->setScrollRailsPolicy (ScrollRailsPolicy::LockNearAxes);
+#  endif
 #endif
 
 	_initialFontSize = (int) _textArea->textStyle()->fontSize ();
