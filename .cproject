@@ -70,7 +70,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.1556311716" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="HAVE_CONFIG_H=1"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.includePath.462938502" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.462938502" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath"/>
 								<inputType id="com.qnx.qcc.inputType.compiler.1029968617" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.641239610" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
@@ -112,7 +112,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.643478115" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="HAVE_CONFIG_H=1"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.includePath.1293759493" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1293759493" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath"/>
 								<inputType id="com.qnx.qcc.inputType.compiler.2032228051" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.472050186" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
@@ -156,7 +156,7 @@
 							<tool id="com.qnx.qcc.tool.compiler.2003361052" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
 								<option id="com.qnx.qcc.option.compiler.optlevel.427589327" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
 								<option id="com.qnx.qcc.option.compiler.defines.758439402" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines"/>
-								<option id="com.qnx.qcc.option.compiler.includePath.1259823933" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1259823933" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath"/>
 								<inputType id="com.qnx.qcc.inputType.compiler.2017569883" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.855988456" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
@@ -192,9 +192,21 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/nsrreader-bb10"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Device-Profile">
+			<resource resourceType="PROJECT" workspacePath="/nsrreader-bb10"/>
+		</configuration>
+		<configuration configurationName="Device-Debug">
+			<resource resourceType="PROJECT" workspacePath="/nsrreader-bb10"/>
+		</configuration>
+		<configuration configurationName="Simulator-Debug">
+			<resource resourceType="PROJECT" workspacePath="/nsrreader-bb10"/>
+		</configuration>
+		<configuration configurationName="Device-Release">
+			<resource resourceType="PROJECT" workspacePath="/nsrreader-bb10"/>
+		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 </cproject>
