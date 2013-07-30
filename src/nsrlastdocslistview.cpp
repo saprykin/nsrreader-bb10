@@ -30,8 +30,9 @@ NSRLastDocsListView::NSRLastDocsListView (bb::cascades::Container *parent) :
 							     .onTriggered (this, SLOT (onShareActionTriggered ())));
 	multiSelectHandler()->addAction (DeleteActionItem::create().onTriggered (this, SLOT (onRemoveActionTriggered ())));
 
-	Q_ASSERT (connect (this, SIGNAL (selectionChanged (QVariantList, bool)),
-			   this, SLOT (onSelectionChanged ())));
+	bool ok = connect (this, SIGNAL (selectionChanged (QVariantList, bool)),
+			   this, SLOT (onSelectionChanged ()));
+	Q_ASSERT (ok);
 }
 
 NSRLastDocsListView::~NSRLastDocsListView ()
@@ -66,8 +67,9 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 	dialog->cancelButton()->setLabel (trUtf8 ("Cancel"));
 	dialog->setProperty ("undo-data", list);
 
-	Q_ASSERT (connect (dialog, SIGNAL (finished (bb::system::SystemUiResult::Type)),
-			   this, SLOT (onSystemDialogFinished (bb::system::SystemUiResult::Type))));
+	bool ok = connect (dialog, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+			   this, SLOT (onSystemDialogFinished (bb::system::SystemUiResult::Type)));
+	Q_ASSERT (ok);
 
 	dialog->exec ();
 }
@@ -121,8 +123,9 @@ NSRLastDocsListView::onHideActionTriggered ()
 	_toast->setPosition (SystemUiPosition::BottomCenter);
 	_toast->setProperty ("undo-data", list);
 
-	Q_ASSERT (connect (_toast, SIGNAL (finished (bb::system::SystemUiResult::Type)),
-			   this, SLOT (onToastFinished (bb::system::SystemUiResult::Type))));
+	bool ok = connect (_toast, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+			   this, SLOT (onToastFinished (bb::system::SystemUiResult::Type)));
+	Q_ASSERT (ok);
 
 	if (model->size () == 0)
 		emit modelUpdated (true);

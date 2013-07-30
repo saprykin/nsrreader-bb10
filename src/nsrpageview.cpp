@@ -120,12 +120,14 @@ NSRPageView::NSRPageView (Container *parent) :
 	_actionSet->add (rotateLeftAction);
 	_actionSet->add (rotateRightAction);
 
-	Q_ASSERT (connect (rotateLeftAction, SIGNAL (triggered ()),
-			   this, SIGNAL (rotateLeftRequested ())));
-	Q_ASSERT (connect (rotateRightAction, SIGNAL (triggered ()),
-			   this, SIGNAL (rotateRightRequested ())));
-	Q_ASSERT (connect (fitToWidthAction, SIGNAL (triggered ()),
-			   this, SIGNAL (fitToWidthRequested ())));
+	bool ok = connect (rotateLeftAction, SIGNAL (triggered ()), this, SIGNAL (rotateLeftRequested ()));
+	Q_ASSERT (ok);
+
+	ok = connect (rotateRightAction, SIGNAL (triggered ()), this, SIGNAL (rotateRightRequested ()));
+	Q_ASSERT (ok);
+
+	ok = connect (fitToWidthAction, SIGNAL (triggered ()), this, SIGNAL (fitToWidthRequested ()));
+	Q_ASSERT (ok);
 
 	_scrollView->addActionSet (_actionSet);
 

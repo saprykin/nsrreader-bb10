@@ -25,12 +25,14 @@ NSRReaderCore::NSRReaderCore (bb::system::ApplicationStartupMode::Type startMode
 	_zoomThread	= new NSRRenderZoomThread (this);
 	_cache		= new NSRPagesCache (this);
 
-	Q_ASSERT (connect (_thread, SIGNAL (renderDone ()),
-			   this, SLOT (onRenderDone ())));
-	Q_ASSERT (connect (_zoomThread, SIGNAL (renderDone ()),
-			   this, SLOT (onZoomRenderDone ())));
-	Q_ASSERT (connect (_zoomThread, SIGNAL (finished ()),
-			   this, SLOT (onZoomThreadFinished ())));
+	bool ok = connect (_thread, SIGNAL (renderDone ()), this, SLOT (onRenderDone ()));
+	Q_ASSERT (ok);
+
+	ok = connect (_zoomThread, SIGNAL (renderDone ()), this, SLOT (onZoomRenderDone ()));
+	Q_ASSERT (ok);
+
+	ok = connect (_zoomThread, SIGNAL (finished ()), this, SLOT (onZoomThreadFinished ()));
+	Q_ASSERT (ok);
 
 	_thread->setThumbnailRender (_startMode != ApplicationStartupMode::InvokeCard);
 }

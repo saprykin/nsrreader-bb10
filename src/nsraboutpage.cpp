@@ -32,8 +32,9 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	segmentedControl->add (Option::create().text (trUtf8 ("Help", "Help section of a program")));
 	segmentedControl->add (Option::create().text (trUtf8 ("Changes", "Changes in new version")));
 
-	Q_ASSERT (connect (segmentedControl, SIGNAL (selectedIndexChanged (int)),
-			   this, SLOT (onSelectedIndexChanged (int))));
+	bool ok = connect (segmentedControl, SIGNAL (selectedIndexChanged (int)), this, SLOT (onSelectedIndexChanged (int)));
+
+	Q_ASSERT (ok);
 
 	/* About section goes first */
 
@@ -271,8 +272,10 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	ActionItem *reviewAction = ActionItem::create().imageSource(QUrl ("asset:///review.png"))
 						       .title(trUtf8 ("Review", "Review the app in the store"));
-	Q_ASSERT (connect (reviewAction, SIGNAL (triggered ()),
-			   this, SLOT (onReviewActionTriggered ())));
+
+	ok = connect (reviewAction, SIGNAL (triggered ()), this, SLOT (onReviewActionTriggered ()));
+	Q_ASSERT (ok);
+
 	addAction (reviewAction, ActionBarPlacement::OnBar);
 
 	segmentedControl->setSelectedIndex ((int) section);
@@ -324,8 +327,8 @@ NSRAboutPage::onReviewActionTriggered ()
 
 	if (invokeReply != NULL) {
 		invokeReply->setParent (this);
-		Q_ASSERT (connect (invokeReply, SIGNAL (finished ()),
-				   invokeReply, SLOT (deleteLater ())));
+		bool ok = connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
+		Q_ASSERT (ok);
 	}
 }
 

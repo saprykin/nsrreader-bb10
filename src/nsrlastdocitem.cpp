@@ -86,8 +86,9 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	rootContainer->add (_lockContainer);
 
 	_imgTracker = new ImageTracker (this);
-	Q_ASSERT (connect (_imgTracker, SIGNAL (stateChanged (bb::cascades::ResourceState::Type)),
-			   this, SLOT (onImageStateChanged (bb::cascades::ResourceState::Type))));
+	bool ok = connect (_imgTracker, SIGNAL (stateChanged (bb::cascades::ResourceState::Type)),
+			   this, SLOT (onImageStateChanged (bb::cascades::ResourceState::Type)));
+	Q_ASSERT (ok);
 
 	Container *mainContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -162,8 +163,8 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	rootContainer->add (_innerContainer);
 
 	_selectAnimation = FadeTransition::create().duration(350).delay(30).to(0.3).target(_innerContainer);
-	Q_ASSERT (connect (_selectAnimation, SIGNAL (stopped ()), this, SLOT (onAnimationStopped ())));
-
+	ok = connect (_selectAnimation, SIGNAL (stopped ()), this, SLOT (onAnimationStopped ()));
+	Q_ASSERT (ok);
 
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
 							       SLOT (onLayoutFrameChanged (QRectF)));

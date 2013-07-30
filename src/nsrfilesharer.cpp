@@ -62,8 +62,11 @@ NSRFileSharer::shareFiles (const QStringList& list)
 									  .data(data.toUtf8 ())
 									  .mimeType(mimeType));
 
-	Q_ASSERT (connect (invocation, SIGNAL (armed ()), this, SLOT (onArmed ())));
-	Q_ASSERT (connect (invocation, SIGNAL (finished ()), invocation, SLOT (deleteLater ())));
+	bool ok = connect (invocation, SIGNAL (armed ()), this, SLOT (onArmed ()));
+	Q_ASSERT (ok);
+
+	ok = connect (invocation, SIGNAL (finished ()), invocation, SLOT (deleteLater ()));
+	Q_ASSERT (ok);
 }
 
 bool
