@@ -17,6 +17,10 @@ Plenty of features will make reading comfortable everywhere:
 
 Made for users with love :)
 
-If you have any questions or suggestions - please contact me because any feedback is welcomed and important for future improvements.
+Please, do not use reviews to report issues and ask questions because I can't even reply or contact you. Contact me directly via email with any questions, suggestions and found issues and I will try to resolve them as soon as possible. Any feedback is welcomed and important for future improvements.
+
+If you like the app then the best support for me would be your positive review. This is the best thing which motivates to bring new features and improvements :)
+
+* IMPORTANT * Do NOT disable Shared Files permission for the app because without that it can't read files.
 
 pdf reader, pdf viewer, djvu reader, djvu viewer, pdf, djvu, tiff, tif, documents, text
