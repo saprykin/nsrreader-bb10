@@ -99,8 +99,7 @@ NSRReaderBB10::initFullUI ()
 	_pageView->setVerticalAlignment (VerticalAlignment::Fill);
 	_pageView->setVisible (false);
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
-						.vertical(VerticalAlignment::Fill)
-						.visible(false);
+						.vertical(VerticalAlignment::Fill);
 
 	bool ok = connect (_pageView, SIGNAL (prevPageRequested ()), this, SLOT (onPrevPageRequested ()));
 	Q_ASSERT (ok);
@@ -643,7 +642,6 @@ void
 NSRReaderBB10::onIndicatorRequested (bool enabled)
 {
 	disableVisualControls ();
-	_indicator->setVisible (enabled);
 	_pageView->setZoomEnabled (!enabled);
 
 	if (enabled)
