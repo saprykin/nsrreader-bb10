@@ -482,7 +482,6 @@ NSRReaderBB10::onRecentDocsTriggered ()
 	page->setPaneProperties (NavigationPaneProperties::create().backButton(pageBackAction));
 
 	connect (pageBackAction, SIGNAL (triggered ()), this, SLOT (onBackButtonTriggered ()));
-	connect (pageBackAction, SIGNAL (triggered ()), _naviPane, SLOT (pop ()));
 
 	_naviPane->push (page);
 }
@@ -960,6 +959,8 @@ NSRReaderBB10::onBackButtonTriggered ()
 
 	if (page != NULL)
 		page->finishToast ();
+
+	_naviPane->pop ();
 }
 
 void
