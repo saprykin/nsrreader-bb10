@@ -4,7 +4,7 @@
 #include <bb/cascades/Container>
 #include <bb/cascades/Color>
 #include <bb/cascades/StackLayout>
-#include <bb/cascades/DockLayout>
+#include <bb/cascades/StackLayoutProperties>
 #include <bb/cascades/Label>
 #include <bb/cascades/TitleBar>
 #include <bb/cascades/ScrollView>
@@ -49,22 +49,25 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	/* 'Fullscreen mode' option */
 	Container *secondContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-							.layout(DockLayout::create());
+							.layout(StackLayout::create()
+									    .orientation(LayoutOrientation::LeftToRight));
 
-	secondContainer->setTopPadding (40);
-	secondContainer->setBottomPadding (40);
+	secondContainer->setTopPadding (20);
 	secondContainer->setLeftPadding (20);
 	secondContainer->setRightPadding (20);
 
 	secondContainer->add (Label::create(trUtf8 ("Fullscreen Mode",
 						    "Option in preferences"))
 				     .horizontal(HorizontalAlignment::Left)
-				     .vertical(VerticalAlignment::Center));
+				     .vertical(VerticalAlignment::Center)
+				     .multiline(true)
+				     .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f)));
 	secondContainer->add (_isFullscreen);
 
 	/* 'Text mode' option */
 	Container *thirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						       .layout(DockLayout::create());
+						       .layout(StackLayout::create()
+						       	       	           .orientation(LayoutOrientation::LeftToRight));
 	Container *outerThirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							    .layout(StackLayout::create());
 	Label *columnInfo = Label::create (trUtf8 ("Use Text Reflow to read files with "
@@ -78,11 +81,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 						   "Option in preferences, "
 						   "reflows PDF in single text column"))
 				    .horizontal(HorizontalAlignment::Left)
-				    .vertical(VerticalAlignment::Center));
+				    .vertical(VerticalAlignment::Center)
+				    .multiline(true)
+				    .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f)));
 	thirdContainer->add (_isTextMode);
 
-	outerThirdContainer->setTopPadding (40);
-	outerThirdContainer->setBottomPadding (40);
 	outerThirdContainer->setLeftPadding (20);
 	outerThirdContainer->setRightPadding (20);
 
@@ -91,7 +94,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	/* 'Invert colors' option */
 	Container *fourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-							.layout(DockLayout::create());
+							.layout(StackLayout::create()
+									    .orientation(LayoutOrientation::LeftToRight));
 	Container *outerFourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							     .layout(StackLayout::create());
 	Label *invertInfo = Label::create (trUtf8 ("Inverted colors can save power with "
@@ -104,11 +108,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	fourthContainer->add (Label::create(trUtf8 ("Invert Colors",
 						    "Option in preferences"))
 				     .horizontal(HorizontalAlignment::Left)
-				     .vertical(VerticalAlignment::Center));
+				     .vertical(VerticalAlignment::Center)
+				     .multiline(true)
+				     .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f)));
 	fourthContainer->add (_isInvertedColors);
 
-	outerFourthContainer->setTopPadding (40);
-	outerFourthContainer->setBottomPadding (40);
 	outerFourthContainer->setLeftPadding (20);
 	outerFourthContainer->setRightPadding (20);
 
@@ -121,7 +125,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Label *textEncodingLabel = Label::create(trUtf8 ("Text Encoding", "Option in preferences, "
 						     	    	   	  "selects text encoding"))
 				     	 .horizontal(HorizontalAlignment::Fill)
-				     	 .vertical(VerticalAlignment::Center);
+				     	 .vertical(VerticalAlignment::Center)
+				     	 .multiline(true);
 	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for pure text files. "
 						    "None other format supports encoding selection."))
 				     .horizontal(HorizontalAlignment::Fill)
@@ -129,8 +134,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	encodingInfo->textStyle()->setFontSize (FontSize::XSmall);
 	encodingInfo->setMultiline (true);
 
-	fifthContainer->setTopPadding (40);
-	fifthContainer->setBottomPadding (40);
+	fifthContainer->setBottomPadding (20);
 	fifthContainer->setLeftPadding (20);
 	fifthContainer->setRightPadding (20);
 

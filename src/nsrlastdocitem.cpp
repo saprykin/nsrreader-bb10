@@ -9,6 +9,8 @@
 
 #include <QFile>
 
+#include <bbndk.h>
+
 using namespace bb::cascades;
 
 NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
@@ -171,6 +173,13 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 
 	mainContainer->add (rootContainer);
 	setRoot (mainContainer);
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	_imageView->accessibility()->addLabel (_label);
+	_textView->accessibility()->addLabel (_label);
+#  endif
+#endif
 }
 
 NSRLastDocItem::~NSRLastDocItem ()

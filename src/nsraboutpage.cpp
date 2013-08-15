@@ -17,6 +17,8 @@
 #include <bb/system/InvokeRequest>
 #include <bb/system/InvokeManager>
 
+#include <bbndk.h>
+
 using namespace bb::cascades;
 using namespace bb::system;
 
@@ -46,6 +48,12 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 						 .vertical(VerticalAlignment::Center)
 						 .imageSource(QUrl ("asset:///nsrlogo.png"));
 
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	logoView->accessibility()->setName (trUtf8 ("Logo of the app"));
+#  endif
+#endif
+
 	Label *versionInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					    .vertical(VerticalAlignment::Fill)
 					    .text(QString ("NSR Reader ").append (NSRSettings::getVersion ()));
@@ -57,7 +65,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	Label *authorInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Fill)
-					   .text(QString ("© 2011-2013 Alexander Saprykin"));
+					   .text(QString ("© 2011-2013 Alexander Saprykin"))
+					   .multiline(true);
 
 	Label *contactsInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					     .vertical(VerticalAlignment::Fill)
@@ -67,6 +76,12 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	contactsInfo->setMultiline (true);
 	contactsInfo->setTextFormat (TextFormat::Html);
 	contactsInfo->content()->setFlags (TextContentFlag::ActiveText);
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	contactsInfo->accessibility()->setName (trUtf8 ("Contacts: nsr.reader@gmail.com - click to write a email"));
+#  endif
+#endif
 
 	Container *contactsContainer = Container::create().horizontal(HorizontalAlignment::Center)
 							  .vertical(VerticalAlignment::Fill)
@@ -78,7 +93,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	contactsContainer->add (contactsInfo);
 
 	Label *reviewLabel = Label::create().horizontal(HorizontalAlignment::Center)
-					    .vertical(VerticalAlignment::Fill);
+					    .vertical(VerticalAlignment::Fill)
+					    .multiline(true);
 	reviewLabel->setText (trUtf8 ("Please, leave a review if you liked this app."));
 	reviewLabel->textStyle()->setFontSize (FontSize::Medium);
 
@@ -120,6 +136,15 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	fbContainer->setRightPadding (40);
 	fbContainer->add (fbImage);
 	fbContainer->add (fbInfo);
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	twitterInfo->accessibility()->setName (trUtf8 ("Click to visit Twitter page"));
+	twitterImage->accessibility()->setName (trUtf8 ("Twitter logo"));
+	fbInfo->accessibility()->setName (trUtf8 ("Click to visit Facebook page"));
+	fbImage->accessibility()->setName (trUtf8 ("Facebook logo"));
+#  endif
+#endif
 
 	_aboutContainer->setTopPadding (40);
 	_aboutContainer->setBottomPadding (40);
@@ -272,6 +297,12 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	ActionItem *reviewAction = ActionItem::create().imageSource(QUrl ("asset:///review.png"))
 						       .title(trUtf8 ("Review", "Review the app in the store"));
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	reviewAction->accessibility()->setName (trUtf8 ("Review the app in the store"));
+#  endif
+#endif
 
 	ok = connect (reviewAction, SIGNAL (triggered ()), this, SLOT (onReviewActionTriggered ()));
 	Q_ASSERT (ok);

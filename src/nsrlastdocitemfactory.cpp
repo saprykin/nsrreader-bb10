@@ -7,6 +7,8 @@
 #include <bb/cascades/DeleteActionItem>
 #include <bb/cascades/ActionSet>
 
+#include <bbndk.h>
+
 using namespace bb::cascades;
 
 NSRLastDocItemFactory::NSRLastDocItemFactory ()
@@ -34,6 +36,13 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
 	hideAction->setImageSource (QUrl ("asset:///list-remove.png"));
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
+	hideAction->accessibility()->setName (trUtf8 ("Remove file from the recent list only"));
+#  endif
+#endif
 
 	bool ok = connect (shareAction, SIGNAL (triggered ()), listView, SLOT (onShareActionTriggered ()));
 	Q_ASSERT (ok);

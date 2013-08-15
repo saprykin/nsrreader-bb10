@@ -113,6 +113,34 @@
         <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; dialog to jump to arbitrary page.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Logo of the app</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contacts: nsr.reader@gmail.com - click to write a email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to visit Twitter page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Twitter logo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to visit Facebook page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Facebook logo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Review the app in the store</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRAbstractDocument</name>
@@ -134,6 +162,14 @@
     <message>
         <source>Clear Recent</source>
         <comment>Clear recent files</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share file with others</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove file from the recent list only</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -325,6 +361,38 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
     </message>
     <message>
         <source>Enter file password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to previous page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to next page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to arbitrary page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Settings page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open page with recent files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open page with information about the app and help sections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share file with others</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -171,6 +171,19 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
 
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	openAction->accessibility()->setName (trUtf8 ("Open file"));
+	prevPageAction->accessibility()->setName (trUtf8 ("Go to previous page"));
+	nextPageAction->accessibility()->setName (trUtf8 ("Go to next page"));
+	gotoAction->accessibility()->setName (trUtf8 ("Go to arbitrary page"));
+	prefsAction->accessibility()->setName (trUtf8 ("Open Settings page"));
+	recentDocsAction->accessibility()->setName (trUtf8 ("Open page with recent files"));
+	helpAction->accessibility()->setName (trUtf8 ("Open page with information about the app and help sections"));
+	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
+#  endif
+#endif
+
 	_page->addAction (openAction, ActionBarPlacement::OnBar);
 	_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
