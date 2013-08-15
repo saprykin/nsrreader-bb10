@@ -1426,7 +1426,7 @@ DataPool::load_file(void)
          OpenFiles::get()->stream_released(f->stream, this);
       }
       fstream=0;
-   } else DEBUG_MSG("Not connected\n");
+   } else {DEBUG_MSG("Not connected\n")};
 }
 
 void
