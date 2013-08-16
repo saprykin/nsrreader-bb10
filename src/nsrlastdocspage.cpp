@@ -60,6 +60,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 			   SIGNAL (orientationAboutToChange (bb::cascades::UIOrientation::Type)),
 			   this,
 			   SLOT (onOrientationAboutToChange (bb::cascades::UIOrientation::Type)));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	ok = connect (_listView, SIGNAL (triggered (QVariantList)),

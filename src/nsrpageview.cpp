@@ -121,6 +121,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_actionSet->add (rotateRightAction);
 
 	bool ok = connect (rotateLeftAction, SIGNAL (triggered ()), this, SIGNAL (rotateLeftRequested ()));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	ok = connect (rotateRightAction, SIGNAL (triggered ()), this, SIGNAL (rotateRightRequested ()));

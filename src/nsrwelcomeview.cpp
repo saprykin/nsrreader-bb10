@@ -29,6 +29,7 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 					  .vertical(VerticalAlignment::Center);
 
 	bool ok = connect (_openButton, SIGNAL (clicked ()), this, SIGNAL (openDocumentRequested ()));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	ok = connect (_lastDocsButton, SIGNAL (clicked ()), this, SIGNAL (recentDocumentsRequested ()));

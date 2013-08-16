@@ -35,7 +35,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	segmentedControl->add (Option::create().text (trUtf8 ("Changes", "Changes in new version")));
 
 	bool ok = connect (segmentedControl, SIGNAL (selectedIndexChanged (int)), this, SLOT (onSelectedIndexChanged (int)));
-
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	/* About section goes first */
@@ -359,6 +359,7 @@ NSRAboutPage::onReviewActionTriggered ()
 	if (invokeReply != NULL) {
 		invokeReply->setParent (this);
 		bool ok = connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
+		Q_UNUSED (ok);
 		Q_ASSERT (ok);
 	}
 }

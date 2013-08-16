@@ -45,6 +45,7 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 #endif
 
 	bool ok = connect (shareAction, SIGNAL (triggered ()), listView, SLOT (onShareActionTriggered ()));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	ok = connect (removeAction, SIGNAL (triggered ()), listView, SLOT (onRemoveActionTriggered ()));

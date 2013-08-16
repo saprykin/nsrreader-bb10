@@ -26,6 +26,7 @@ NSRReaderCore::NSRReaderCore (bb::system::ApplicationStartupMode::Type startMode
 	_cache		= new NSRPagesCache (this);
 
 	bool ok = connect (_thread, SIGNAL (renderDone ()), this, SLOT (onRenderDone ()));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	ok = connect (_zoomThread, SIGNAL (renderDone ()), this, SLOT (onZoomRenderDone ()));

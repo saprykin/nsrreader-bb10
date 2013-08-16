@@ -63,6 +63,7 @@ NSRFileSharer::shareFiles (const QStringList& list)
 									  .mimeType(mimeType));
 
 	bool ok = connect (invocation, SIGNAL (armed ()), this, SLOT (onArmed ()));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	ok = connect (invocation, SIGNAL (finished ()), invocation, SLOT (deleteLater ()));

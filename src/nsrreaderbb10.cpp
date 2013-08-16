@@ -66,6 +66,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	bool ok = connect (_invokeManager, SIGNAL (invoked (const bb::system::InvokeRequest&)),
 			   this, SLOT (onInvoke (const bb::system::InvokeRequest&)));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	ok = connect (_invokeManager, SIGNAL (cardPooled (const bb::system::CardDoneMessage&)),
@@ -102,6 +103,7 @@ NSRReaderBB10::initFullUI ()
 						.vertical(VerticalAlignment::Fill);
 
 	bool ok = connect (_pageView, SIGNAL (prevPageRequested ()), this, SLOT (onPrevPageRequested ()));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	ok = connect (_pageView, SIGNAL (nextPageRequested ()), this, SLOT (onNextPageRequested ()));
@@ -462,6 +464,7 @@ NSRReaderBB10::onPrefsActionTriggered ()
 
 	bool ok = connect (prefsPage, SIGNAL (switchFullscreen (bool)),
 			   this, SLOT (onFullscreenSwitchRequested (bool)));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	_naviPane->push (prefsPage);
@@ -473,6 +476,7 @@ NSRReaderBB10::onRecentDocsTriggered ()
 	NSRLastDocsPage *page = new NSRLastDocsPage ();
 
 	bool ok = connect (page, SIGNAL (requestDocument (QString)), this, SLOT (onLastDocumentRequested (QString)));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	ok = connect (page, SIGNAL (documentToBeDeleted (QString)), this, SLOT (onDocumentToBeDeleted (QString)));

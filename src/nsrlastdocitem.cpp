@@ -90,6 +90,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_imgTracker = new ImageTracker (this);
 	bool ok = connect (_imgTracker, SIGNAL (stateChanged (bb::cascades::ResourceState::Type)),
 			   this, SLOT (onImageStateChanged (bb::cascades::ResourceState::Type)));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
 	Container *mainContainer = Container::create().horizontal(HorizontalAlignment::Fill)

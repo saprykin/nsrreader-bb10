@@ -160,6 +160,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	bool ok = connect (_isFullscreen, SIGNAL (checkedChanged (bool)),
 			   this, SIGNAL (switchFullscreen (bool)));
+	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 }
 
