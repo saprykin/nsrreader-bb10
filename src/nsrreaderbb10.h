@@ -81,6 +81,7 @@ private:
     void saveSession ();
     void resetState ();
     void showAboutPage (NSRAboutPage::NSRAboutSection section);
+    void showToast (const QString& text, bool reset);
 
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;

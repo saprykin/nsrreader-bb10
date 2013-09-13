@@ -574,16 +574,16 @@ NSRReaderBB10::reloadSettings ()
 	/* Check whether we have noted user about text mode */
 	if (settings.isWordWrap () && !settings.isTextModeNoted ()) {
 		settings.saveTextModeNoted ();
-		_toast->setBody (trUtf8 ("You are using text reflow the first time. Note that "
-					 "file formatting may be differ than in original one, "
-					 "no images displayed and page can be empty if there is "
-					 "no text in the file. Also text may not be displayed "
-					 "properly if appropriate language is not supported by phone",
-					 "Text reflow is a view mode of PDF/DjVu files when "
-					 "only text information without images is displayed with "
-					 "word wrap feature enabled"));
-		_toast->button()->setLabel ("OK");
-		_toast->show ();
+		QString text = trUtf8 ("You are using text reflow the first time. Note that "
+				       "file formatting may be differ than in original one, "
+				       "no images displayed and page can be empty if there is "
+				       "no text in the file. Also text may not be displayed "
+				       "properly if appropriate language is not supported by phone",
+				       "Text reflow is a view mode of PDF/DjVu files when "
+				       "only text information without images is displayed with "
+				       "word wrap feature enabled. Use pinch gesture to adjust "
+				       "text size");
+		showToast (text, false);
 	}
 }
 
@@ -592,6 +592,16 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 {
 	NSRSession	session;
 	int		width = _pageView->getSize().width ();
+
+	if (!path.isEmpty () && !QFile::exists (path)) {
+		QString errorStr = trUtf8 ("It seems that selected file doesn't exist anymore "
+					 "or NSR Reader doesn't have Shared Files permission. Please "
+					 "check permissions at Settings->Security and Privacy->"
+					 "Application Permissions");
+
+		showToast (errorStr, true);
+		return;
+	}
 
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
 		session.setFile (path);
@@ -735,14 +745,7 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 				   "NSR Reader tried open this file, but it can't :( "
 				   "Please check this file on desktop computer");
 
-	_welcomeView->setCardMode (_startMode == ApplicationStartupMode::InvokeCard);
-
-	_toast->setBody (errorStr);
-	_toast->button()->setLabel ("OK");
-	_toast->show ();
-
-	resetState ();
-	updateVisualControls ();
+	showToast (errorStr, true);
 }
 
 void
@@ -955,6 +958,23 @@ NSRReaderBB10::showAboutPage (NSRAboutPage::NSRAboutSection section)
 {
 	_actionAggregator->setActionEnabled ("help", false);
 	_naviPane->push (new NSRAboutPage (section));
+}
+
+void
+NSRReaderBB10::showToast (const QString& text, bool reset)
+{
+	if (reset)
+		_welcomeView->setCardMode (_startMode == ApplicationStartupMode::InvokeCard);
+
+	_toast->cancel ();
+	_toast->setBody (text);
+	_toast->button()->setLabel ("OK");
+	_toast->show ();
+
+	if (reset) {
+		resetState ();
+		updateVisualControls ();
+	}
 }
 
 void

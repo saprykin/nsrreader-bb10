@@ -395,6 +395,10 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
         <source>Share file with others</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>It seems that selected file doesn&apos;t exist anymore or NSR Reader doesn&apos;t have Shared Files permission. Please check permissions at Settings-&gt;Security and Privacy-&gt;Application Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRWelcomeView</name>
