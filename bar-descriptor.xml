@@ -65,9 +65,11 @@
     <!--  The category where the application appears. Either core.games or core.media. -->
     <splashScreens>
        <image/>
-       <image>nsrreader-splash-720x720.png</image>
-       <image>nsrreader-splash-768x1280.png</image>
-       <image>nsrreader-splash-1280x768.png</image>
+       <image>splash-720x720.png</image>
+       <image>splash-768x1280.png</image>
+       <image>splash-1280x768.png</image>
+       <image>splash-720x1280.png</image>
+       <image>splash-1280x720.png</image>
     </splashScreens>
     <name>NSR Reader</name>
     <configuration name="Device-Debug">
@@ -100,9 +102,11 @@
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
-    <asset path="assets/nsrreader-splash-720x720.png">nsrreader-splash-720x720.png</asset>
-    <asset path="assets/nsrreader-splash-768x1280.png">nsrreader-splash-768x1280.png</asset>
-    <asset path="assets/nsrreader-splash-1280x768.png">nsrreader-splash-1280x768.png</asset>
+    <asset path="assets/splash-720x720.png">splash-720x720.png</asset>
+    <asset path="assets/splash-768x1280.png">splash-768x1280.png</asset>
+    <asset path="assets/splash-1280x768.png">splash-1280x768.png</asset>
+    <asset path="assets/splash-720x1280.png">splash-720x1280.png</asset>
+    <asset path="assets/splash-1280x720.png">splash-1280x720.png</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
