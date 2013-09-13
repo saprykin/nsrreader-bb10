@@ -129,6 +129,9 @@
             <property var="uris" value="file://"/>
             <property var="exts" value="pdf,djvu,djv,tiff,tif,txt"/>
         </filter>
+        <invoke-target-pattern>
+        	<pattern-value type="regex">file\://[\w/]+.*\.(pdf|djv|djvu|tif|tiff|txt)</pattern-value>
+        </invoke-target-pattern>
         <icon>
             <image>icon.png</image>
         </icon>
