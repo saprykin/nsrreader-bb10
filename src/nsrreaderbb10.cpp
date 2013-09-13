@@ -352,6 +352,7 @@ NSRReaderBB10::initFullUI ()
 
 	if (settings.isFirstStart ()) {
 		settings.saveFirstStart ();
+		settings.saveNewsShown ();
 		showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_HELP);
 
 		_welcomeView->setCardMode (false);
