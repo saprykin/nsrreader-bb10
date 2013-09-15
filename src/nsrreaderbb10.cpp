@@ -556,6 +556,9 @@ NSRReaderBB10::updateVisualControls ()
 		_actionAggregator->setActionEnabled ("prev", totalPages != 1 && currentPage > 1);
 		_actionAggregator->setActionEnabled ("next", totalPages != 1 && currentPage != totalPages);
 		_actionAggregator->setActionEnabled ("goto", totalPages > 1);
+
+		if (totalPages == 1)
+			_slider->setVisible (false);
 	}
 }
 
