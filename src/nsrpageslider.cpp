@@ -84,6 +84,9 @@ NSRPageSlider::getValue () const
 void
 NSRPageSlider::onSliderTouchEvent (bb::cascades::TouchEvent* event)
 {
+	if (!isEnabled ())
+		return;
+
 	switch (event->touchType ()) {
 	case TouchType::Down:
 		emit interactionStarted ();
