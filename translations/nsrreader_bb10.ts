@@ -228,6 +228,13 @@
     </message>
 </context>
 <context>
+    <name>NSRPageSlider</name>
+    <message>
+        <source>Page number slider</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>NSRPageView</name>
     <message>
         <source>Rotate Left</source>
@@ -338,11 +345,6 @@ Please do not blame hard NSR Reader for that because it is only a piece of softw
     <message>
         <source>Share</source>
         <comment>Share file between users</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter Page (1 - %1)</source>
-        <comment>Enter page number</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -7,10 +7,11 @@
 
 using namespace bb::cascades;
 
-NSRPageStatus::NSRPageStatus (Container *parent) :
+NSRPageStatus::NSRPageStatus (bb::cascades::Container *parent) :
 	Container (parent),
 	_statusLabel (NULL),
-	_timerId (-1)
+	_timerId (-1),
+	_autoHide (true)
 {
 	_statusLabel = Label::create().horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Center);
@@ -63,10 +64,29 @@ NSRPageStatus::setOnScreen (bool visible)
 		_timerId = -1;
 	}
 
-	if (visible)
+	if (visible && _autoHide)
 		_timerId = startTimer (3000);
 
 	setVisible (visible);
+}
+
+void
+NSRPageStatus::setAutoHide (bool autoHide)
+{
+	if (_autoHide == autoHide)
+		return;
+
+	if (autoHide) {
+		if (_timerId == -1)
+			_timerId = startTimer (3000);
+	} else {
+		if (_timerId != -1) {
+			killTimer (_timerId);
+			_timerId = -1;
+		}
+	}
+
+	_autoHide = autoHide;
 }
 
 void
@@ -80,6 +100,3 @@ NSRPageStatus::timerEvent (QTimerEvent* ev)
 
 	setOnScreen (false);
 }
-
-
-

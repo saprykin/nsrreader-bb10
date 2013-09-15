@@ -43,6 +43,9 @@ using namespace bb::cascades::pickers;
 using namespace bb::device;
 using namespace bb::multimedia;
 
+#define NSR_ACTION_BAR_NORMAL_HEIGHT	140
+#define NSR_ACTION_BAR_REDUCED_HEIGHT	100
+
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
 	_core (NULL),
@@ -136,10 +139,24 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (_welcomeView, SIGNAL (recentDocumentsRequested ()), this, SLOT (onRecentDocsTriggered ()));
 	Q_ASSERT (ok);
 
+	_slider = new NSRPageSlider ();
+	_slider->setBottomSpace (getActionBarHeight ());
+	_slider->setVisible (false);
+
+	ok = connect (_slider, SIGNAL (interactionStarted ()), this, SLOT (onPageSliderInteractionStarted ()));
+	Q_ASSERT (ok);
+
+	ok = connect (_slider, SIGNAL (interactionEnded ()), this, SLOT (onPageSliderInteractionEnded ()));
+	Q_ASSERT (ok);
+
+	ok = connect (_slider, SIGNAL (currentValueChanged (int)), this, SLOT (onPageSliderValueChanged (int)));
+	Q_ASSERT (ok);
+
 	rootContainer->add (_pageView);
 	rootContainer->add (_welcomeView);
 	rootContainer->add (_indicator);
 	rootContainer->add (_pageStatus);
+	rootContainer->add (_slider);
 	rootContainer->setBackground (Color::Black);
 	rootContainer->setLayoutProperties (StackLayoutProperties::create().spaceQuota (1.0));
 
@@ -307,6 +324,12 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onSystemLanguageChanged ()));
 	Q_ASSERT (ok);
 
+	ok = connect (OrientationSupport::instance (),
+		      SIGNAL (orientationAboutToChange (bb::cascades::UIOrientation::Type)),
+		      this,
+		      SLOT (onOrientationAboutToChange (bb::cascades::UIOrientation::Type)));
+	Q_ASSERT (ok);
+
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
 		_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 		_isFullscreen = true;
@@ -434,26 +457,8 @@ NSRReaderBB10::onNextPageActionTriggered ()
 void
 NSRReaderBB10::onGotoActionTriggered ()
 {
-	if (_prompt != NULL)
-		return;
-
-	_prompt = new SystemPrompt (this);
-
-	_prompt->setTitle (trUtf8("Enter Page (1 - %1)", "Enter page number").arg (_core->getPagesCount ()));
-	_prompt->inputField()->setDefaultText (QString::number (_core->getCurrentPage().getNumber ()));
-	_prompt->inputField()->setInputMode (SystemUiInputMode::NumericKeypad);
-	_prompt->setDismissAutomatically (false);
-	_prompt->inputField()->setMaximumLength (QString::number(_core->getPagesCount ()).length ());
-
-	bool res = connect (_prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
-			    this, SLOT (onGotoDialogFinished (bb::system::SystemUiResult::Type)));
-
-	if (res)
-		_prompt->exec ();
-	else {
-		_prompt->deleteLater ();
-		_prompt = NULL;
-	}
+	_slider->setVisible (!_slider->isVisible ());
+	_readProgress->setVisible (!_slider->isVisible ());
 }
 
 void
@@ -509,14 +514,15 @@ NSRReaderBB10::onShareActionTriggered ()
 void
 NSRReaderBB10::onPageRendered (int number)
 {
-	Q_UNUSED (number);
+	int pagesCount = _core->getPagesCount ();
 
 	_pageView->setZoomRange (_core->getMinZoom (), _core->getMaxZoom ());
 	_pageView->setPage (_core->getCurrentPage ());
-	_pageStatus->setStatus (_core->getCurrentPage().getNumber (),
-				_core->getPagesCount ());
-	_readProgress->setCurrentPage (_core->getCurrentPage().getNumber ());
-	_readProgress->setPagesCount (_core->getPagesCount ());
+	_pageStatus->setStatus (number, pagesCount);
+	_readProgress->setCurrentPage (number);
+	_readProgress->setPagesCount (pagesCount);
+	_slider->setRange (1, pagesCount);
+	_slider->setValue (number);
 
 	updateVisualControls ();
 
@@ -535,6 +541,8 @@ NSRReaderBB10::updateVisualControls ()
 				       	     NSRFileSharer::isSharable (_core->getDocumentPath ()));
 	_pageView->setVisible (_core->isDocumentOpened ());
 	_welcomeView->setVisible (!_core->isDocumentOpened ());
+	_readProgress->setVisible (!_slider->isVisible ());
+	_slider->setEnabled (_core->isDocumentOpened ());
 
 	if (!_core->isDocumentOpened ()) {
 		_actionAggregator->setActionEnabled ("prev", false);
@@ -561,6 +569,7 @@ NSRReaderBB10::disableVisualControls ()
 	_actionAggregator->setActionEnabled ("recent-docs", false);
 	_actionAggregator->setActionEnabled ("share", false);
 	_actionAggregator->setActionEnabled ("prefs", false);
+	_slider->setEnabled (false);
 }
 
 void
@@ -595,9 +604,9 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 
 	if (!path.isEmpty () && !QFile::exists (path)) {
 		QString errorStr = trUtf8 ("It seems that selected file doesn't exist anymore "
-					 "or NSR Reader doesn't have Shared Files permission. Please "
-					 "check permissions at Settings->Security and Privacy->"
-					 "Application Permissions");
+					   "or NSR Reader doesn't have Shared Files permission. Please "
+					   "check permissions at Settings->Security and Privacy->"
+					   "Application Permissions");
 
 		showToast (errorStr, true);
 		return;
@@ -712,24 +721,6 @@ NSRReaderBB10::onPasswordDialogFinished (bb::system::SystemUiResult::Type res)
 }
 
 void
-NSRReaderBB10::onGotoDialogFinished (bb::system::SystemUiResult::Type res)
-{
-	int pageNum = 0;
-
-	if (res == SystemUiResult::ConfirmButtonSelection)
-		pageNum = _prompt->inputFieldTextEntry().toInt ();
-
-	_prompt->deleteLater ();
-	_prompt = NULL;
-
-	if (res == SystemUiResult::CancelButtonSelection)
-		return;
-
-	if (pageNum != _core->getCurrentPage().getNumber ())
-		_core->navigateToPage (NSRReaderCore::PAGE_LOAD_CUSTOM, pageNum);
-}
-
-void
 NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 {
 	QString errorStr;
@@ -775,6 +766,8 @@ NSRReaderBB10::onPageTapped ()
 		_page->setActionBarVisibility (ChromeVisibility::Overlay);
 	else
 		_page->setActionBarVisibility (ChromeVisibility::Hidden);
+
+	_slider->setBottomSpace (getActionBarHeight ());
 }
 
 void
@@ -924,6 +917,8 @@ NSRReaderBB10::onFullscreenSwitchRequested (bool isFullscreen)
 		_page->setActionBarVisibility (ChromeVisibility::Hidden);
 	else
 		_page->setActionBarVisibility (ChromeVisibility::Visible);
+
+	_slider->setBottomSpace (getActionBarHeight ());
 }
 
 void
@@ -949,8 +944,12 @@ NSRReaderBB10::resetState ()
 	_pageView->resetPage ();
 	_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 	_pageStatus->setStatus (0, 0);
+	_readProgress->setVisible (false);
 	_readProgress->setPagesCount (0);
 	_readProgress->setCurrentPage (0);
+	_slider->setVisible (false);
+	_slider->setRange (0, 0);
+	_slider->setValue (0);
 }
 
 void
@@ -974,6 +973,34 @@ NSRReaderBB10::showToast (const QString& text, bool reset)
 	if (reset) {
 		resetState ();
 		updateVisualControls ();
+	}
+}
+
+int
+NSRReaderBB10::getActionBarHeight ()
+{
+	if (!_isFullscreen)
+		return 0;
+	else {
+		if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
+			return 0;
+		else
+			return getActionBarHeightForOrientation (OrientationSupport::instance()->orientation ());
+	}
+}
+
+int
+NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Type orientation)
+{
+	QSize	displaySize = DisplayInfo().pixelSize ();
+
+	if (displaySize.width () == displaySize.height ())
+		return NSR_ACTION_BAR_REDUCED_HEIGHT;
+	else {
+		if (orientation == UIOrientation::Portrait)
+			return NSR_ACTION_BAR_NORMAL_HEIGHT;
+		else
+			return NSR_ACTION_BAR_REDUCED_HEIGHT;
 	}
 }
 
@@ -1031,4 +1058,35 @@ NSRReaderBB10::onFullscreen ()
 
 	cover->resetPageData ();
 	cover->setStatic (true);
+}
+
+void
+NSRReaderBB10::onOrientationAboutToChange (bb::cascades::UIOrientation::Type orientation)
+{
+	if (_page->actionBarVisibility () != ChromeVisibility::Hidden)
+		_slider->setBottomSpace (getActionBarHeightForOrientation (orientation));
+}
+
+void
+NSRReaderBB10::onPageSliderInteractionStarted ()
+{
+	_pageStatus->setAutoHide (false);
+	_pageStatus->setOnScreen (true);
+}
+
+void
+NSRReaderBB10::onPageSliderInteractionEnded ()
+{
+	_pageStatus->setAutoHide (true);
+
+	int pageNum = _slider->getValue ();
+
+	if (pageNum != _core->getCurrentPage().getNumber ())
+		_core->navigateToPage (NSRReaderCore::PAGE_LOAD_CUSTOM, pageNum);
+}
+
+void
+NSRReaderBB10::onPageSliderValueChanged (int value)
+{
+	_pageStatus->setStatus (value, _core->getPagesCount ());
 }

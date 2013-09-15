@@ -545,6 +545,3 @@ NSRReaderCore::normalizeAngle (double angle) const
 
 	return angle;
 }
-
-
-

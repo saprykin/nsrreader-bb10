@@ -8,12 +8,14 @@
 #include "nsrwelcomeview.h"
 #include "nsractionaggregator.h"
 #include "nsraboutpage.h"
+#include "nsrpageslider.h"
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/ImageView>
 #include <bb/cascades/ActivityIndicator>
 #include <bb/cascades/Page>
 #include <bb/cascades/NavigationPane>
+#include <bb/cascades/UIOrientation>
 
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
@@ -47,7 +49,6 @@ private Q_SLOTS:
     void onIndicatorRequested (bool enabled);
     void onPasswordRequested ();
     void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
-    void onGotoDialogFinished (bb::system::SystemUiResult::Type res);
     void onErrorWhileOpening (NSRAbstractDocument::DocumentError error);
     void onSystemLanguageChanged ();
     void onPageTapped ();
@@ -70,6 +71,10 @@ private Q_SLOTS:
     void onTopPagePeeked (bool isPeeked);
     void onThumbnail ();
     void onFullscreen ();
+    void onOrientationAboutToChange (bb::cascades::UIOrientation::Type orientation);
+    void onPageSliderInteractionStarted ();
+    void onPageSliderInteractionEnded ();
+    void onPageSliderValueChanged (int value);
 
 private:
     void initFullUI ();
@@ -82,6 +87,8 @@ private:
     void resetState ();
     void showAboutPage (NSRAboutPage::NSRAboutSection section);
     void showToast (const QString& text, bool reset);
+    int getActionBarHeight ();
+    int getActionBarHeightForOrientation (bb::cascades::UIOrientation::Type orientation);
 
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;
@@ -89,6 +96,7 @@ private:
     NSRReadProgress				*_readProgress;
     NSRWelcomeView				*_welcomeView;
     NSRActionAggregator				*_actionAggregator;
+    NSRPageSlider				*_slider;
     bb::cascades::NavigationPane		*_naviPane;
     bb::cascades::Page				*_page;
     bb::cascades::pickers::FilePicker		*_filePicker;

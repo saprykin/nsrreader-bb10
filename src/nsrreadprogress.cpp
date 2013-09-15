@@ -76,14 +76,11 @@ NSRReadProgress::onLayoutFrameChanged (const QRectF& rect)
 void
 NSRReadProgress::updateProgress ()
 {
-	if (_pagesCount <= 1 || _currentPage <= 0) {
-		setVisible (false);
+	if (_pagesCount <= 1 || _currentPage <= 0)
 		return;
-	}
 
 	double progress = (double) _currentPage / _pagesCount * _width;
 	_progressContainer->setPreferredWidth (progress);
-	setVisible (true);
 }
 
 
