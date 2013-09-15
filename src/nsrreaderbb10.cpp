@@ -541,7 +541,7 @@ NSRReaderBB10::updateVisualControls ()
 				       	     NSRFileSharer::isSharable (_core->getDocumentPath ()));
 	_pageView->setVisible (_core->isDocumentOpened ());
 	_welcomeView->setVisible (!_core->isDocumentOpened ());
-	_readProgress->setVisible (!_slider->isVisible ());
+	_readProgress->setVisible (!_slider->isVisible () && _core->isDocumentOpened () && _core->getPagesCount () > 1);
 	_slider->setEnabled (_core->isDocumentOpened ());
 
 	if (!_core->isDocumentOpened ()) {
