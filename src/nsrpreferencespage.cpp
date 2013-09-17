@@ -52,7 +52,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 							.layout(StackLayout::create()
 									    .orientation(LayoutOrientation::LeftToRight));
 
-	secondContainer->setTopPadding (20);
+	secondContainer->setTopPadding (30);
 	secondContainer->setLeftPadding (20);
 	secondContainer->setRightPadding (20);
 
@@ -144,11 +144,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	/* Add all options to root layout */
 	rootContainer->add (secondContainer);
-	rootContainer->add (Divider::create ());
+	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (outerThirdContainer);
-	rootContainer->add (Divider::create ());
+	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (outerFourthContainer);
-	rootContainer->add (Divider::create ());
+	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (fifthContainer);
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
