@@ -195,21 +195,21 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 					    "<li><b>B</b> to scroll to bottom</li>"
 					    "<li><b>T</b> to scroll to top</li>"
 					    "</ul>"
-			    	    	    "Use <b>Go to</b> dialog to jump to arbitrary page.");
+			    	    	    "Use <b>Go to</b> page slider to move to arbitrary page.");
 	QString fullScrSet = trUtf8 ("<b>Fullscreen Mode</b> &ndash; Action Bar at the bottom of the screen will "
 			    	     "be hidden (tap the screen somewhere to show or hide it again).");
 	QString reflowSet = trUtf8 ("<b>Text Reflow</b> &ndash; this is a special mode for files which contain a lot of "
 			    	    "text information. In this mode NSR Reader will display only text data and wrap lines "
 			    	    "for comfortable reading.");
 	QString invertSet = trUtf8 ("<b>Invert Colors</b> &ndash; use this feature during dark days or if you have OLED "
-			    	    "display (like <b>Q10</b> does) to save power.");
+			    	    "display to save power.");
 	QString encodSet = trUtf8 ("<b>Text Encoding</b> &ndash; this is only applied for plain text files (.txt). "
 			    	   "Use it for files with specific national encoding.");
 	QString tip1 = trUtf8 ("NSR Reader always saves position for every file.");
 	QString tip2 = trUtf8 ("Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.");
 	QString tip3 = trUtf8 ("Just tap the screen to see current page and overall page count at the top left corner.");
 	QString tip4 = trUtf8 ("Use <i>Recent</i> page to get fast access to files you have been reading.");
-	QString tip5 = trUtf8 ("Use pinch gesture for zooming.");
+	QString tip5 = trUtf8 ("Use pinch gesture for zooming (increase/decrease font size in text reflow mode).");
 	QString tip6 = trUtf8 ("NSR Reader supports password protected PDF files (except for latest "
 			       "Adobe&reg; Reader&reg; X encryption algorithm), so don't scary them!");
 	QString tip7 = trUtf8 ("NSR Reader caches already rendered pages to increase performance.");
