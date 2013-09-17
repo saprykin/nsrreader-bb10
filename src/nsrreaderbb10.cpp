@@ -559,6 +559,10 @@ NSRReaderBB10::updateVisualControls ()
 
 		if (totalPages == 1)
 			_slider->setVisible (false);
+
+		/* Maybe action bar is not autohidden after previous document failed to be opened? */
+		if (_isFullscreen && _page->actionBarVisibility () == ChromeVisibility::Visible)
+			_page->setActionBarVisibility (ChromeVisibility::Hidden);
 	}
 }
 
