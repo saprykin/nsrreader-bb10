@@ -402,6 +402,12 @@ NSRReaderCore::onZoomRenderDone ()
 	if (_zoomThread->isDocumentChanged ())
 		return;
 
+	/* It seems that another page is rendering already */
+	if (_thread->isRunning ()) {
+		_zoomThread->cancelRequests ();
+		return;
+	}
+
 	_currentPage = page;
 
 	if (!_cache->isPageExists (_currentPage.getNumber ()))
