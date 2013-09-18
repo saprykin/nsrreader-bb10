@@ -21,37 +21,6 @@ public:
 		NSR_DOCUMENT_ERROR_UNKNOWN	= 3
 	};
 
-	Q_PROPERTY (QString documentPath
-		    READ getDocumentPath)
-	Q_PROPERTY (int pagesNumber
-		    READ getNumberOfPages)
-	Q_PROPERTY (bool isValid
-		    READ isValid
-		    CONSTANT)
-	Q_PROPERTY (double zoom
-		    READ getZoom
-		    WRITE setZoom)
-	Q_PROPERTY (bool zoomToWidth
-		    READ isZoomToWidth
-		    WRITE setZoomToWidth)
-	Q_PROPERTY (int rotation
-		    READ getRotation
-		    WRITE setRotation)
-	Q_PROPERTY (QString text
-		    READ getText)
-	Q_PROPERTY (bool isTextOnly
-		    READ isTextOnly
-		    WRITE setTextOnly)
-	Q_PROPERTY (bool invertedColors
-		    READ isInvertedColors
-		    WRITE setInvertedColors)
-	Q_PROPERTY (QString encoding
-		    READ getEncoding
-		    WRITE setEncoding)
-	Q_PROPERTY (DocumentError lastError
-		    READ getLastError
-		    WRITE setLastError)
-
 	explicit NSRAbstractDocument(const QString& file, QObject *parent = 0);
 	virtual ~NSRAbstractDocument ();
 	inline QString getDocumentPath () const {return _docPath;}
@@ -76,6 +45,8 @@ public:
 	virtual bool isTextOnly () const {return _textOnly;}
 	void setInvertedColors (bool isInverted) {_invertedColors = isInverted;}
 	bool isInvertedColors () const {return _invertedColors;}
+	void setAutoCrop (bool isAutoCrop) {_autoCrop = isAutoCrop;}
+	bool isAutoCrop () const {return _autoCrop;}
 	DocumentError getLastError () const {return _lastError;}
 	virtual void setPassword (const QString& passwd) {_password = passwd;}
 	virtual QString getPassword () const {return _password;}
@@ -99,6 +70,7 @@ private:
 	bool		_zoomToWidth;
 	bool		_textOnly;
 	bool		_invertedColors;
+	bool		_autoCrop;
 	DocumentError	_lastError;
 	QString		_encoding;
 	int		_rotation;

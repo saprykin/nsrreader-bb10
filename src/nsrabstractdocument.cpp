@@ -10,6 +10,7 @@ NSRAbstractDocument::NSRAbstractDocument(const QString& file, QObject *parent) :
 	_zoomToWidth (false),
 	_textOnly (false),
 	_invertedColors (false),
+	_autoCrop (false),
 	_lastError (NSR_DOCUMENT_ERROR_NO),
 	_encoding ("UTF-8"),
 	_rotation (0),
