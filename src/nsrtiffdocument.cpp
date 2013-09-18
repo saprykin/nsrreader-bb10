@@ -1,4 +1,5 @@
 #include "nsrtiffdocument.h"
+#include "nsrpagecropper.h"
 
 #include <math.h>
 
@@ -169,9 +170,16 @@ bb::ImageData NSRTIFFDocument::getCurrentPage()
 	if (_image.isNull())
 		return bb::ImageData ();
 
+	NSRCropPads pads;
+
+	if (isAutoCrop ())
+		pads = NSRPageCropper::findCropPads ((unsigned char *) _image.bits (),
+						     NSRPageCropper::NSR_PIXEL_ORDER_ARGB,
+						     _image.width (), _image.height (), _image.bytesPerLine ());
+
 	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
-			       _image.width (),
-			       _image.height ());
+			       _image.width () - pads.leftPad - pads.rightPad,
+			       _image.height () - pads.topPad - pads.bottomPad);
 
 	unsigned char *addr = (unsigned char *) imgData.pixels ();
 	int stride = imgData.bytesPerLine ();
@@ -180,21 +188,21 @@ bb::ImageData NSRTIFFDocument::getCurrentPage()
 	int rowBytes = _image.bytesPerLine ();
 	unsigned char *dataPtr = _image.bits ();
 
-	addr += (bh - 1) * stride;
-	for (int i = 0; i < bh; ++i) {
+	addr += (bh - pads.topPad - pads.bottomPad - 1) * stride;
+	for (int i = pads.topPad; i < bh - pads.bottomPad; ++i) {
 		unsigned char *inAddr = (unsigned char *) (dataPtr + i * rowBytes);
 
-		for (int j = 0; j < bw; ++j) {
+		for (int j = pads.leftPad; j < bw - pads.rightPad; ++j) {
 			if (isInvertedColors ()) {
-				addr[j * 4 + 3] = 255;
-				addr[j * 4 + 2] = 255 - inAddr[j * 4 + 2];
-				addr[j * 4 + 1] = 255 - inAddr[j * 4 + 1];
-				addr[j * 4 + 0] = 255 - inAddr[j * 4 + 0];
+				addr[(j - pads.leftPad) * 4 + 3] = 255;
+				addr[(j - pads.leftPad) * 4 + 2] = 255 - inAddr[j * 4 + 2];
+				addr[(j - pads.leftPad) * 4 + 1] = 255 - inAddr[j * 4 + 1];
+				addr[(j - pads.leftPad) * 4 + 0] = 255 - inAddr[j * 4 + 0];
 			} else {
-				addr[j * 4 + 3] = 255;
-				addr[j * 4 + 2] = inAddr[j * 4 + 2];
-				addr[j * 4 + 1] = inAddr[j * 4 + 1];
-				addr[j * 4 + 0] = inAddr[j * 4 + 0];
+				addr[(j - pads.leftPad) * 4 + 3] = 255;
+				addr[(j - pads.leftPad) * 4 + 2] = inAddr[j * 4 + 2];
+				addr[(j - pads.leftPad) * 4 + 1] = inAddr[j * 4 + 1];
+				addr[(j - pads.leftPad) * 4 + 0] = inAddr[j * 4 + 0];
 			}
 		}
 

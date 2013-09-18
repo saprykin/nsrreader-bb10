@@ -1,4 +1,5 @@
 #include "nsrdjvudocument.h"
+#include "nsrpagecropper.h"
 
 #include <math.h>
 
@@ -376,25 +377,38 @@ bb::ImageData NSRDjVuDocument::getCurrentPage()
 	if (_imgData == NULL)
 		return bb::ImageData ();
 
+	NSRCropPads pads;
+
+	if (isAutoCrop ())
+		pads = NSRPageCropper::findCropPads ((unsigned char *) _imgData,
+						     NSRPageCropper::NSR_PIXEL_ORDER_BGR,
+						     _imgSize.width (), _imgSize.height (), _imgSize.width () * 3);
+
 	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
-			       _imgSize.width (),
-			       _imgSize.height ());
+			       _imgSize.width () - pads.leftPad - pads.rightPad,
+			       _imgSize.height () - pads.topPad - pads.bottomPad);
 
 	int rowSize = imgData.bytesPerLine ();
 	unsigned char *image = imgData.pixels ();
 
-	for (int i = 0; i < _imgSize.height(); ++i)
-		for (int j = 0; j < _imgSize.width(); ++j) {
+	for (int i = pads.topPad; i < _imgSize.height() - pads.bottomPad; ++i)
+		for (int j = pads.leftPad; j < _imgSize.width() - pads.rightPad; ++j) {
 			if (isInvertedColors()) {
-				*(image + rowSize * i + j * 4) = 255 - *(_imgData + i * _imgSize.width() * 3 + j * 3 + 2);
-				*(image + rowSize * i + j * 4 + 1) = 255 - *(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
-				*(image + rowSize * i + j * 4 + 2) = 255 - *(_imgData + i * _imgSize.width() * 3 + j * 3);
-				*(image + rowSize * i + j * 4 + 3) = 255;
+				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4) =
+						255 - *(_imgData + i * _imgSize.width() * 3 + j * 3 + 2);
+				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 1) =
+						255 - *(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
+				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 2) =
+						255 - *(_imgData + i * _imgSize.width() * 3 + j * 3);
+				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 3) = 255;
 			} else {
-				*(image + rowSize * i + j * 4) = *(_imgData + i * _imgSize.width() * 3 + j * 3 + 2);
-				*(image + rowSize * i + j * 4 + 1) = *(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
-				*(image + rowSize * i + j * 4 + 2) = *(_imgData + i * _imgSize.width() * 3 + j * 3);
-				*(image + rowSize * i + j * 4 + 3) = 255;
+				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4) =
+						*(_imgData + i * _imgSize.width() * 3 + j * 3 + 2);
+				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 1) =
+						*(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
+				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 2) =
+						*(_imgData + i * _imgSize.width() * 3 + j * 3);
+				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 3) = 255;
 			}
 		}
 

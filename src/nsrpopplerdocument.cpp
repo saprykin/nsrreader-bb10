@@ -1,4 +1,5 @@
 #include "nsrpopplerdocument.h"
+#include "nsrpagecropper.h"
 
 #include "ErrorCodes.h"
 
@@ -171,25 +172,34 @@ bb::ImageData NSRPopplerDocument::getCurrentPage()
 	while (rowBytes % 4)
 		rowBytes += 1;
 
-	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied, bw, bh);
+	NSRCropPads pads;
+
+	if (isAutoCrop ())
+		pads = NSRPageCropper::findCropPads ((unsigned char *) bitmap->getDataPtr (),
+						     NSRPageCropper::NSR_PIXEL_ORDER_RGB,
+						     bw, bh, rowBytes);
+
+	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
+			       bw - pads.leftPad - pads.rightPad,
+			       bh - pads.topPad - pads.bottomPad);
 
 	unsigned char *addr = (unsigned char *) imgData.pixels ();
 	int stride = imgData.bytesPerLine ();
 
-	for (int i = 0; i < bh; ++i) {
+	for (int i = pads.topPad; i < bh - pads.bottomPad; ++i) {
 		unsigned char *inAddr = (unsigned char *) (dataPtr + i * rowBytes);
 
-		for (int j = 0; j < bw; ++j) {
+		for (int j = pads.leftPad; j < bw - pads.rightPad; ++j) {
 			if (isInvertedColors ()) {
-				addr[j * 4 + 0] = 255 - inAddr[j * 3 + 0];
-				addr[j * 4 + 1] = 255 - inAddr[j * 3 + 1];
-				addr[j * 4 + 2] = 255 - inAddr[j * 3 + 2];
-				addr[j * 4 + 3] = 255;
+				addr[(j - pads.leftPad) * 4 + 0] = 255 - inAddr[j * 3 + 0];
+				addr[(j - pads.leftPad) * 4 + 1] = 255 - inAddr[j * 3 + 1];
+				addr[(j - pads.leftPad) * 4 + 2] = 255 - inAddr[j * 3 + 2];
+				addr[(j - pads.leftPad) * 4 + 3] = 255;
 			} else {
-				addr[j * 4 + 0] = inAddr[j * 3 + 0];
-				addr[j * 4 + 1] = inAddr[j * 3 + 1];
-				addr[j * 4 + 2] = inAddr[j * 3 + 2];
-				addr[j * 4 + 3] = 255;
+				addr[(j - pads.leftPad) * 4 + 0] = inAddr[j * 3 + 0];
+				addr[(j - pads.leftPad) * 4 + 1] = inAddr[j * 3 + 1];
+				addr[(j - pads.leftPad) * 4 + 2] = inAddr[j * 3 + 2];
+				addr[(j - pads.leftPad) * 4 + 3] = 255;
 			}
 		}
 
