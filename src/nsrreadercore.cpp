@@ -240,7 +240,6 @@ NSRReaderCore::navigateToPage (PageLoad dir, int pageNumber)
 	loadPage (dir, NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION, pageNumber);
 }
 
-
 bool
 NSRReaderCore::isPageRendering () const
 {
@@ -507,6 +506,7 @@ NSRReaderCore::copyDocument (const NSRAbstractDocument* doc)
 	res->setEncoding (doc->getEncoding ());
 	res->setPassword (doc->getPassword ());
 	res->setRotation (doc->getRotation ());
+	res->setAutoCrop (doc->isAutoCrop ());
 
 	if (!res->isValid ()) {
 		delete res;
