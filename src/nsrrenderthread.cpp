@@ -70,10 +70,12 @@ NSRRenderThread::run ()
 		int		wasZoomWidth = doc->getScreenWidth ();
 		bool		wasZoomToWidth = doc->isZoomToWidth ();
 		bool		wasInverted = doc->isInvertedColors ();
+		bool		wasAutoCrop = doc->isAutoCrop ();
 
 		doc->zoomToWidth (256);
 		doc->setTextOnly (false);
 		doc->setInvertedColors (false);
+		doc->setAutoCrop (false);
 		doc->renderPage (1);
 
 		thumbPage.setZoom (doc->getZoom ());
@@ -87,6 +89,7 @@ NSRRenderThread::run ()
 		NSRThumbnailer::saveThumbnail (doc->getDocumentPath (),
 					       thumbPage);
 
+		doc->setAutoCrop (wasAutoCrop);
 		doc->setTextOnly (textOnly);
 
 		if (!wasZoomToWidth)
