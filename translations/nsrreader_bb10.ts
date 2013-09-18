@@ -138,7 +138,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use pinch gesture for zooming (including text reflow mode).</source>
+        <source>Use pinch gesture for zooming (increase/decrease font size in text reflow mode).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
