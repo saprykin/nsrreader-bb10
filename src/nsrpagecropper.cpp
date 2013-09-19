@@ -20,6 +20,9 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 	int		px;			/* Bytes in pixel 					*/
 	int		pxShift;		/* Shift in bytes to the first color component in pixel	*/
 
+	if (data == NULL || stride < width * 3 || width < 3 || height < 3)
+		return pads;
+
 	int maxWCrop = (int) (width * NSR_CROP_MAX_PAD_PERCENT);
 	int maxHCrop = (int) (height * NSR_CROP_MAX_PAD_PERCENT);
 
