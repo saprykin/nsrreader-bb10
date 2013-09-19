@@ -32,9 +32,18 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 	}
 
 	/* Use mean of two corner pixels as background */
-	unsigned char red = (dataPtr[pxShift] + dataPtr[(width - 1) * px + pxShift]) / 2;
-	unsigned char green = (dataPtr[pxShift + 1] + dataPtr[(width - 1) * px + pxShift + 1]) / 2;
-	unsigned char blue = (dataPtr[pxShift + 2] + dataPtr[(width - 1) * px + pxShift + 2]) / 2;
+	unsigned char red = (dataPtr[pxShift] +
+			     dataPtr[(width - 1) * px + pxShift] +
+			     dataPtr[stride * (height - 1) + pxShift] +
+			     dataPtr[stride * (height - 1) + (width - 1) * px + pxShift]) / 4;
+	unsigned char green = (dataPtr[pxShift + 1] +
+			       dataPtr[(width - 1) * px + pxShift + 1] +
+			       dataPtr[stride * (height - 1) + pxShift + 1] +
+			       dataPtr[stride * (height - 1) + (width - 1) * px + pxShift + 1]) / 4;
+	unsigned char blue = (dataPtr[pxShift + 2] +
+			      dataPtr[(width - 1) * px + pxShift + 2] +
+			      dataPtr[stride * (height - 1) + pxShift + 2] +
+			      dataPtr[stride * (height - 1) + (width - 1) * px + pxShift + 2]) / 4;
 
 	/* First, find top crop pad */
 	for (int row = 0; row < maxHCrop; ++row) {
@@ -61,11 +70,6 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 	/* Next, find bottom crop pad */
 
 	dataPtr = data + stride * (height - 1);
-
-	red = (dataPtr[pxShift] + dataPtr[(width - 1) * px + pxShift]) / 2;
-	green = (dataPtr[pxShift + 1] + dataPtr[(width - 1) * px + pxShift + 1]) / 2;
-	blue = (dataPtr[pxShift + 2] + dataPtr[(width - 1) * px + pxShift + 2]) / 2;
-
 	badCount = 0;
 
 	for (int row = height - 1; row >= height - maxHCrop; --row) {
@@ -92,11 +96,6 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 	/* Next, find left crop pad */
 
 	dataPtr = data;
-
-	red = (dataPtr[pxShift] + dataPtr[stride * (height - 1) + pxShift]) / 2;
-	green = (dataPtr[pxShift + 1] + dataPtr[stride * (height - 1) + pxShift + 1]) / 2;
-	blue = (dataPtr[pxShift + 2] + dataPtr[stride * (height - 1) + pxShift + 2]) / 2;
-
 	badCount = 0;
 
 	for (int col = 0; col < maxWCrop; ++col) {
@@ -120,11 +119,6 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 	/* Finally, find right crop pad */
 
 	dataPtr = data;
-
-	red = (dataPtr[(width - 1) * px + pxShift] + dataPtr[stride * (height - 1) + (width - 1) * px + pxShift]) / 2;
-	green = (dataPtr[(width - 1) * px + pxShift + 1] + dataPtr[stride * (height - 1) + (width - 1) * px + pxShift + 1]) / 2;
-	blue = (dataPtr[(width - 1) * px + pxShift + 2] + dataPtr[stride * (height - 1) + (width - 1) * px + pxShift + 2]) / 2;
-
 	badCount = 0;
 
 	for (int col = width - 1; col >= width - maxWCrop; --col) {
