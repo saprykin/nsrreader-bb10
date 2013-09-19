@@ -29,6 +29,7 @@ NSRSettings::NSRSettings (QObject *parent) :
 	_isWordWrap = value("word-wrap", false).toBool ();
 	_isTextModeNoted = value("text-mode-noted", false).toBool ();
 	_isInvertedColors = value("inverted-colors", false).toBool ();
+	_isAutoCrop = value("auto-crop", false).toBool ();
 	_lastOpenDir = value("last-open-dir", "C:").toString ();
 	_isNewsShown = (value("news-shown-version", "1.0.0").toString () == NSR_READER_VERSION);
 	_fontFamily = value("font-family", "Sans Serif").toString ();
@@ -159,6 +160,17 @@ NSRSettings::saveInvertedColors (bool inverted)
 	_isInvertedColors = inverted;
 	beginGroup ("Global");
 	setValue ("inverted-colors", _isInvertedColors);
+	endGroup ();
+
+	sync ();
+}
+
+void
+NSRSettings::saveAutoCrop (bool crop)
+{
+	_isAutoCrop = crop;
+	beginGroup ("Global");
+	setValue ("auto-crop", _isAutoCrop);
 	endGroup ();
 
 	sync ();

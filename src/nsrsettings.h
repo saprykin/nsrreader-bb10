@@ -25,6 +25,8 @@ public:
 	bool isTextModeNoted () const {return _isTextModeNoted;}
 	void saveInvertedColors (bool inverted);
 	bool isInvertedColors () const {return _isInvertedColors;}
+	void saveAutoCrop (bool crop);
+	bool isAutoCrop () const {return _isAutoCrop;}
 	bool isNewsShown () const {return _isNewsShown;}
 	void saveNewsShown ();
 	QString getFontFamily () const {return _fontFamily;}
@@ -53,6 +55,7 @@ private:
 	bool		_isWordWrap;
 	bool		_isTextModeNoted;
 	bool		_isInvertedColors;
+	bool		_isAutoCrop;
 	bool		_isNewsShown;
 	bool		_isFirstStart;
 	QString		_lastOpenDir;
