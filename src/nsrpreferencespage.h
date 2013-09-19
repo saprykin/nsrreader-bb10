@@ -21,6 +21,7 @@ private:
 	bb::cascades::ToggleButton	*_isFullscreen;
 	bb::cascades::ToggleButton	*_isTextMode;
 	bb::cascades::ToggleButton	*_isInvertedColors;
+	bb::cascades::ToggleButton	*_isAutoCrop;
 	bb::cascades::DropDown		*_encodingsList;
 };
 

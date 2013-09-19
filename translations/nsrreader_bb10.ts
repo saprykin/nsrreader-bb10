@@ -292,6 +292,11 @@
         <source>Use Text Reflow to read files with large amount of text data.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Crop Blank Edges</source>
+        <comment>Option in preferences</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRReaderBB10</name>

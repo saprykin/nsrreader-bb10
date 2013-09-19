@@ -68,6 +68,7 @@ NSRReaderCore::openDocument (const QString &path)
 
 		_doc->setTextOnly (settings.isWordWrap ());
 		_doc->setInvertedColors (settings.isInvertedColors ());
+		_doc->setAutoCrop (settings.isAutoCrop ());
 		_doc->setEncoding (settings.getTextEncoding ());
 	}
 
@@ -171,14 +172,18 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 	bool	needReload = false;
 	bool	wasTextOnly = _doc->isTextOnly ();
 	bool	wasInverted = _doc->isInvertedColors ();
+	bool	wasCropped = _doc->isAutoCrop ();
 	QString	wasEncoding = _doc->getEncoding ();
 
 	_doc->setInvertedColors (settings->isInvertedColors ());
 	_doc->setTextOnly (settings->isWordWrap ());
+	_doc->setAutoCrop (settings->isAutoCrop ());
 	_doc->setEncoding (settings->getTextEncoding ());
 
-	if (_zoomDoc != NULL)
+	if (_zoomDoc != NULL) {
 		_zoomDoc->setInvertedColors (settings->isInvertedColors ());
+		_zoomDoc->setAutoCrop (settings->isAutoCrop ());
+	}
 
 	if (wasTextOnly && !settings->isWordWrap ())
 		_cache->removePagesWithoutImages ();
@@ -187,7 +192,8 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 	if (wasTextOnly && !settings->isWordWrap ())
 		needReload = true;
 
-	if (wasInverted != _doc->isInvertedColors ()) {
+	if (wasInverted != _doc->isInvertedColors () ||
+	    wasCropped != _doc->isAutoCrop ()) {
 		_cache->clearStorage ();
 		needReload = true;
 	}

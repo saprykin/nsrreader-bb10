@@ -29,11 +29,13 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isFullscreen = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isTextMode = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isInvertedColors = ToggleButton::create().horizontal(HorizontalAlignment::Right);
+	_isAutoCrop = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
 	_isFullscreen->setChecked (settings.isFullscreenMode ());
 	_isTextMode->setChecked (settings.isWordWrap ());
 	_isInvertedColors->setChecked (settings.isInvertedColors ());
+	_isAutoCrop->setChecked (settings.isAutoCrop ());
 	_encodingsList->setFocusPolicy (FocusPolicy::Touch);
 
 	QString textEncoding = settings.getTextEncoding ();
@@ -142,12 +144,30 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	fifthContainer->add (_encodingsList);
 	fifthContainer->add (encodingInfo);
 
+	/* 'Crop blank edges' option */
+	/* 'Invert colors' option */
+	Container *sixthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						       .layout(StackLayout::create()
+									    .orientation(LayoutOrientation::LeftToRight));
+	sixthContainer->add (Label::create(trUtf8 ("Crop Blank Edges",
+						   "Option in preferences"))
+				   .horizontal(HorizontalAlignment::Left)
+				   .vertical(VerticalAlignment::Center)
+				   .multiline(true)
+				   .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f)));
+	sixthContainer->add (_isAutoCrop);
+
+	sixthContainer->setLeftPadding (20);
+	sixthContainer->setRightPadding (20);
+
 	/* Add all options to root layout */
 	rootContainer->add (secondContainer);
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (outerThirdContainer);
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (outerFourthContainer);
+	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
+	rootContainer->add (sixthContainer);
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (fifthContainer);
 
@@ -176,6 +196,7 @@ NSRPreferencesPage::saveSettings ()
 	settings.saveFullscreenMode (_isFullscreen->isChecked ());
 	settings.saveWordWrap (_isTextMode->isChecked ());
 	settings.saveInvertedColors (_isInvertedColors->isChecked ());
+	settings.saveAutoCrop (_isAutoCrop->isChecked ());
 
 	if (_encodingsList->isSelectedOptionSet ())
 		settings.saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));
