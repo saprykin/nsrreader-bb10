@@ -21,6 +21,7 @@ public:
 	void setTextOnly (bool textOnly);
 	QString getText ();
 	bool isEncodingUsed () const;
+	bool isAutoCrop () const;
 
 private:
 	QString			_text;

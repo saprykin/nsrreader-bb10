@@ -126,5 +126,9 @@ bool NSRTextDocument::isEncodingUsed () const
 	return true;
 }
 
+bool NSRTextDocument::isAutoCrop () const
+{
+	return false;
+}
 
 
