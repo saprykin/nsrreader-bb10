@@ -203,6 +203,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 			    	    "for comfortable reading.");
 	QString invertSet = trUtf8 ("<b>Invert Colors</b> &ndash; use this feature during dark days or if you have OLED "
 			    	    "display to save power.");
+	QString cropSet = trUtf8 ("<b>Crop Blank Edges</b> &ndash; automatically tries to detect and crop page's blank edges "
+				  "to reduce side-to-side scrolling, especially when page is fitted to screen width.");
 	QString encodSet = trUtf8 ("<b>Text Encoding</b> &ndash; this is only applied for plain text files (.txt). "
 			    	   "Use it for files with specific national encoding.");
 	QString tip1 = trUtf8 ("NSR Reader always saves position for every file.");
@@ -231,9 +233,9 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 				    "<div><p>%7</p></div>"
 				    "<div><p>%8</p></div>"
 				    "<div><p>%9</p></div>"
+				    "<div><p>%10</p></div>"
 				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
-				    "border-bottom: 1px solid white; font-size: 30pt;\">%10</div></div>"
-				    "<div><p>%11</p></div>"
+				    "border-bottom: 1px solid white; font-size: 30pt;\">%11</div></div>"
 				    "<div><p>%12</p></div>"
 				    "<div><p>%13</p></div>"
 				    "<div><p>%14</p></div>"
@@ -242,10 +244,11 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 				    "<div><p>%17</p></div>"
 				    "<div><p>%18</p></div>"
 				    "<div><p>%19</p></div>"
+				    "<div><p>%20</p></div>"
 				    "</body></html>");
 	htmlHelp = htmlHelp.arg(welcomeTitle).arg(welcomeSection).arg(navTitle).arg(navigationSection);
 	htmlHelp = htmlHelp.arg(settingsTitle).arg(fullScrSet).arg(reflowSet)
-			   .arg(invertSet).arg(encodSet);
+			   .arg(invertSet).arg(cropSet).arg(encodSet);
 	htmlHelp = htmlHelp.arg(tipsTitle).arg(tip1).arg(tip2).arg(tip3).arg(tip4).arg(tip5)
 			   .arg(tip6).arg(tip7).arg(tip8).arg(tip9);
 
