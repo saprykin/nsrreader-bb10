@@ -35,25 +35,25 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 	}
 
 	/* Use mean of two corner pixels as background */
-	unsigned char red = (dataPtr[pxShift] +
-			     dataPtr[(width - 1) * px + pxShift] +
-			     dataPtr[stride * (height - 1) + pxShift] +
-			     dataPtr[stride * (height - 1) + (width - 1) * px + pxShift]) / 4;
-	unsigned char green = (dataPtr[pxShift + 1] +
-			       dataPtr[(width - 1) * px + pxShift + 1] +
-			       dataPtr[stride * (height - 1) + pxShift + 1] +
-			       dataPtr[stride * (height - 1) + (width - 1) * px + pxShift + 1]) / 4;
-	unsigned char blue = (dataPtr[pxShift + 2] +
-			      dataPtr[(width - 1) * px + pxShift + 2] +
-			      dataPtr[stride * (height - 1) + pxShift + 2] +
-			      dataPtr[stride * (height - 1) + (width - 1) * px + pxShift + 2]) / 4;
+	double red = (dataPtr[pxShift] +
+		      dataPtr[(width - 1) * px + pxShift] +
+		      dataPtr[stride * (height - 1) + pxShift] +
+		      dataPtr[stride * (height - 1) + (width - 1) * px + pxShift]) / 4.0;
+	double green = (dataPtr[pxShift + 1] +
+			dataPtr[(width - 1) * px + pxShift + 1] +
+			dataPtr[stride * (height - 1) + pxShift + 1] +
+			dataPtr[stride * (height - 1) + (width - 1) * px + pxShift + 1]) / 4.0;
+	double blue = (dataPtr[pxShift + 2] +
+		       dataPtr[(width - 1) * px + pxShift + 2] +
+		       dataPtr[stride * (height - 1) + pxShift + 2] +
+		       dataPtr[stride * (height - 1) + (width - 1) * px + pxShift + 2]) / 4.0;
 
 	/* First, find top crop pad */
 	for (int row = 0; row < maxHCrop; ++row) {
 		for (int col = 0; col < width; ++col) {
-			rDelta = ((double) red - dataPtr[col * px + pxShift]) / red;
-			gDelta = ((double) green - dataPtr[col * px + pxShift + 1]) / green;
-			bDelta = ((double) blue - dataPtr[col * px + pxShift + 2]) / blue;
+			rDelta = (red - dataPtr[col * px + pxShift]) / red;
+			gDelta = (green - dataPtr[col * px + pxShift + 1]) / green;
+			bDelta = (blue - dataPtr[col * px + pxShift + 2]) / blue;
 
 			if (fabs (rDelta) > NSR_CROP_AGGRESSIVE_VALUE ||
 			    fabs (gDelta > NSR_CROP_AGGRESSIVE_VALUE) ||
@@ -77,9 +77,9 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 
 	for (int row = height - 1; row >= height - maxHCrop; --row) {
 		for (int col = 0; col < width; ++col) {
-			rDelta = ((double) red - dataPtr[col * px + pxShift]) / red;
-			gDelta = ((double) green - dataPtr[col * px + pxShift + 1]) / green;
-			bDelta = ((double) blue - dataPtr[col * px + pxShift + 2]) / blue;
+			rDelta = (red - dataPtr[col * px + pxShift]) / red;
+			gDelta = (green - dataPtr[col * px + pxShift + 1]) / green;
+			bDelta = (blue - dataPtr[col * px + pxShift + 2]) / blue;
 
 			if (fabs (rDelta) > NSR_CROP_AGGRESSIVE_VALUE ||
 			    fabs (gDelta > NSR_CROP_AGGRESSIVE_VALUE) ||
@@ -103,9 +103,9 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 
 	for (int col = 0; col < maxWCrop; ++col) {
 		for (int row = 0; row < height; ++row) {
-			rDelta = ((double) red - dataPtr[row * stride + col * px + pxShift]) / red;
-			gDelta = ((double) green - dataPtr[row * stride + col * px + pxShift + 1]) / green;
-			bDelta = ((double) blue - dataPtr[row * stride + col * px + pxShift + 2]) / blue;
+			rDelta = (red - dataPtr[row * stride + col * px + pxShift]) / red;
+			gDelta = (green - dataPtr[row * stride + col * px + pxShift + 1]) / green;
+			bDelta = (blue - dataPtr[row * stride + col * px + pxShift + 2]) / blue;
 
 			if (fabs (rDelta) > NSR_CROP_AGGRESSIVE_VALUE ||
 			    fabs (gDelta > NSR_CROP_AGGRESSIVE_VALUE) ||
@@ -126,9 +126,9 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 
 	for (int col = width - 1; col >= width - maxWCrop; --col) {
 		for (int row = 0; row < height; ++row) {
-			rDelta = ((double) red - dataPtr[row * stride + col * px + pxShift]) / red;
-			gDelta = ((double) green - dataPtr[row * stride + col * px + pxShift + 1]) / green;
-			bDelta = ((double) blue - dataPtr[row * stride + col * px + pxShift + 2]) / blue;
+			rDelta = (red - dataPtr[row * stride + col * px + pxShift]) / red;
+			gDelta = (green - dataPtr[row * stride + col * px + pxShift + 1]) / green;
+			bDelta = (blue - dataPtr[row * stride + col * px + pxShift + 2]) / blue;
 
 			if (fabs (rDelta) > NSR_CROP_AGGRESSIVE_VALUE ||
 			    fabs (gDelta > NSR_CROP_AGGRESSIVE_VALUE) ||
