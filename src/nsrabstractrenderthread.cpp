@@ -66,8 +66,14 @@ NSRAbstractRenderThread::getRenderedPage ()
 {
 	QMutexLocker locker (&_renderedMutex);
 
-	return _renderedPages.isEmpty () ? NSRRenderedPage () :
-					  _renderedPages.takeFirst ();
+	NSRRenderedPage page;
+
+	if (!_renderedPages.isEmpty ()) {
+		page = _renderedPages.takeFirst ();
+		page.setCropped (_doc->isAutoCrop ());
+	}
+
+	return page;
 }
 
 void
