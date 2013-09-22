@@ -141,6 +141,10 @@
         <source>Use pinch gesture for zooming (increase/decrease font size in text reflow mode).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&lt;b&gt;Crop Blank Edges&lt;/b&gt; &amp;ndash; automatically tries to detect and crop page&apos;s blank edges to reduce side-to-side scrolling, especially when page is fitted to screen width.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRAbstractDocument</name>
