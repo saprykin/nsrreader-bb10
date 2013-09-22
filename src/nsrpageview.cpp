@@ -9,6 +9,10 @@
 #include <bb/cascades/PinchHandler>
 #include <bb/cascades/ImageTracker>
 #include <bb/cascades/ActionItem>
+#include <bb/cascades/UIOrientation>
+#include <bb/cascades/OrientationSupport>
+
+#include <bb/device/DisplayInfo>
 
 #include <bbndk.h>
 
@@ -19,6 +23,7 @@
 #endif
 
 using namespace bb::cascades;
+using namespace bb::device;
 
 NSRPageView::NSRPageView (Container *parent) :
 	Container (parent),
@@ -135,6 +140,14 @@ NSRPageView::NSRPageView (Container *parent) :
 	setLayout (DockLayout::create ());
 	add (_scrollView);
 	add (_textScrollView);
+
+	/* Fill control size with default value (the whole screen) */
+	QSize displaySize = DisplayInfo().pixelSize ();
+
+	if (OrientationSupport::instance()->orientation () == UIOrientation::Landscape)
+		displaySize.transpose ();
+
+	_size = displaySize;
 }
 
 NSRPageView::~NSRPageView ()
