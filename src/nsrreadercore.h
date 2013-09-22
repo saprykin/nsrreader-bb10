@@ -45,7 +45,7 @@ public:
 	double getZoom () const;
 	double getMinZoom () const;
 	double getMaxZoom () const;
-	void setZoom (double zoom, bool toWidth);
+	void setZoom (double zoom, NSRRenderedPage::NSRRenderReason reason);
 	void rotate (double rot);
 	double getRotation () const;
 	void saveCurrentPagePositions (const QPointF& pos,

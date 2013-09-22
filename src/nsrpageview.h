@@ -43,7 +43,7 @@ public:
 	void setInvertedColors (bool inv);
 	QSize getSize () const;
 	void setZoomRange (double minZoom, double maxZoom);
-	void fitToWidth ();
+	void fitToWidth (NSRRenderedPage::NSRRenderReason reason);
 	int getTextZoom () const;
 	void setTextZoom (int fontSize);
 	void setZoomEnabled (bool enabled);
@@ -51,7 +51,7 @@ public:
 
 Q_SIGNALS:
 	void viewTapped ();
-	void zoomChanged (double zoom, bool toWidth);
+	void zoomChanged (double zoom, NSRRenderedPage::NSRRenderReason reason);
 	void nextPageRequested ();
 	void prevPageRequested ();
 	void fitToWidthRequested ();

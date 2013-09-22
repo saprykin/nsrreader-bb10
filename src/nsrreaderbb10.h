@@ -56,7 +56,7 @@ private Q_SLOTS:
     void onPopTransitionEnded (bb::cascades::Page *page);
     void onLastDocumentRequested (const QString& path);
     void onDocumentToBeDeleted (const QString& path);
-    void onZoomChanged (double zoom, bool toWidth);
+    void onZoomChanged (double zoom, NSRRenderedPage::NSRRenderReason reason);
     void onManualExit ();
     void onPrevPageRequested ();
     void onNextPageRequested ();

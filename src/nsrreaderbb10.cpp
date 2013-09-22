@@ -344,8 +344,8 @@ NSRReaderBB10::initFullUI ()
 		onFullscreenSwitchRequested (settings.isFullscreenMode ());
 	}
 
-	ok = connect (_pageView, SIGNAL (zoomChanged (double, bool)),
-		      this, SLOT (onZoomChanged (double, bool)));
+	ok = connect (_pageView, SIGNAL (zoomChanged (double, NSRRenderedPage::NSRRenderReason)),
+		      this, SLOT (onZoomChanged (double, NSRRenderedPage::NSRRenderReason)));
 	Q_ASSERT (ok);
 
 	Application::instance()->setCover (new NSRSceneCover (this));
@@ -515,9 +515,11 @@ void
 NSRReaderBB10::onPageRendered (int number)
 {
 	int pagesCount = _core->getPagesCount ();
+	NSRRenderedPage page = _core->getCurrentPage ();
 
 	_pageView->setZoomRange (_core->getMinZoom (), _core->getMaxZoom ());
-	_pageView->setPage (_core->getCurrentPage ());
+	_pageView->setPage (page);
+
 	_pageStatus->setStatus (number, pagesCount);
 	_readProgress->setCurrentPage (number);
 	_readProgress->setPagesCount (pagesCount);
@@ -525,6 +527,10 @@ NSRReaderBB10::onPageRendered (int number)
 	_slider->setValue (number);
 
 	updateVisualControls ();
+
+	if (_core->isFitToWidth () && page.isCropped () &&
+	    page.getRenderReason () != NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH)
+		_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
 
 	if (_isActiveFrame)
 		onThumbnail ();
@@ -832,12 +838,13 @@ NSRReaderBB10::onDocumentToBeDeleted (const QString& path)
 }
 
 void
-NSRReaderBB10::onZoomChanged (double zoom, bool toWidth)
+NSRReaderBB10::onZoomChanged (double zoom, NSRRenderedPage::NSRRenderReason reason)
 {
-	if (toWidth)
+	if (reason == NSRRenderedPage::NSR_RENDER_REASON_ZOOM_TO_WIDTH ||
+	    reason == NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH)
 		_core->setScreenWidth (_pageView->getSize().width ());
 
-	_core->setZoom (zoom, toWidth);
+	_core->setZoom (zoom, reason);
 }
 
 void
@@ -872,7 +879,7 @@ NSRReaderBB10::onNextPageRequested ()
 void
 NSRReaderBB10::onFitToWidthRequested ()
 {
-	_pageView->fitToWidth ();
+	_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
 }
 
 void

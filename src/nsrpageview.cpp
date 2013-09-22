@@ -266,7 +266,7 @@ NSRPageView::setZoomRange (double minZoom, double maxZoom)
 }
 
 void
-NSRPageView::fitToWidth ()
+NSRPageView::fitToWidth (NSRRenderedPage::NSRRenderReason reason)
 {
 	if (_viewMode != NSR_VIEW_MODE_GRAPHIC)
 		return;
@@ -290,7 +290,7 @@ NSRPageView::fitToWidth ()
 				      _imageView->preferredHeight () * scale);
 	_currentZoom *= scale;
 
-	emit zoomChanged (_currentZoom, true);
+	emit zoomChanged (_currentZoom, reason);
 }
 
 int
@@ -492,7 +492,7 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 
 		if (qAbs (_currentZoom * scale - _currentZoom) > 0.05) {
 			_currentZoom *= scale;
-			emit zoomChanged (_currentZoom, false);
+			emit zoomChanged (_currentZoom, NSRRenderedPage::NSR_RENDER_REASON_ZOOM);
 		}
 	}
 
