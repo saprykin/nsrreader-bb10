@@ -4,7 +4,8 @@ NSRRenderedPage::NSRRenderedPage (QObject *parent) :
 	QObject (parent),
 	_reason (NSR_RENDER_REASON_NONE),
 	_zoom (0),
-	_number (0)
+	_number (0),
+	_cropped (false)
 {
 }
 
@@ -12,7 +13,8 @@ NSRRenderedPage::NSRRenderedPage (int number, QObject *parent) :
 	QObject (parent),
 	_reason (NSR_RENDER_REASON_NONE),
 	_zoom (0),
-	_number (number)
+	_number (number),
+	_cropped (false)
 {
 }
 
@@ -26,6 +28,7 @@ NSRRenderedPage::NSRRenderedPage (const NSRRenderedPage& page) :
 	_text		= page._text;
 	_lastPos	= page._lastPos;
 	_lastTextPos	= page._lastTextPos;
+	_cropped	= page._cropped;
 }
 
 NSRRenderedPage::~NSRRenderedPage ()
@@ -43,6 +46,7 @@ NSRRenderedPage::operator = (const NSRRenderedPage& page)
 		_text		= page._text;
 		_lastPos	= page._lastPos;
 		_lastTextPos	= page._lastTextPos;
+		_cropped	= page._cropped;
 	}
 
 	return *this;
@@ -109,9 +113,16 @@ NSRRenderedPage::isImageValid () const
 }
 
 bool
+
 NSRRenderedPage::isEmpty () const
 {
 	return _text.isEmpty () && !_image.isValid ();
+}
+
+bool
+NSRRenderedPage::isCropped () const
+{
+	return _cropped;
 }
 
 void
@@ -157,4 +168,10 @@ void
 NSRRenderedPage::setLastTextPosition (const QPointF& pos)
 {
 	_lastTextPos = pos;
+}
+
+void
+NSRRenderedPage::setCropped (bool cropped)
+{
+	_cropped = cropped;
 }

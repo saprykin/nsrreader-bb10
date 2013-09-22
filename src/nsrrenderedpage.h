@@ -18,7 +18,8 @@ public:
 		NSR_RENDER_REASON_SETTINGS	= 2,
 		NSR_RENDER_REASON_ZOOM		= 3,
 		NSR_RENDER_REASON_ZOOM_TO_WIDTH	= 4,
-		NSR_RENDER_REASON_ROTATION	= 5
+		NSR_RENDER_REASON_ROTATION	= 5,
+		NSR_RENDER_REASON_CROP_TO_WIDTH	= 6
 	};
 
 	NSRRenderedPage (QObject *parent = 0);
@@ -38,6 +39,7 @@ public:
 	bool isValid () const;
 	bool isImageValid () const;
 	bool isEmpty () const;
+	bool isCropped () const;
 
 	void setRenderReason (NSRRenderedPage::NSRRenderReason reason);
 	void setNumber (int number);
@@ -46,6 +48,7 @@ public:
 	void setText (const QString &text);
 	void setLastPosition (const QPointF& pos);
 	void setLastTextPosition (const QPointF& pos);
+	void setCropped (bool cropped);
 
 private:
 	NSRRenderReason		_reason;
@@ -55,6 +58,7 @@ private:
 	QPointF			_lastTextPos;
 	double			_zoom;
 	int			_number;
+	bool			_cropped;
 };
 
 #endif /* NSRRENDEREDPAGE_H_ */
