@@ -348,7 +348,7 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onZoomChanged (double, NSRRenderedPage::NSRRenderReason)));
 	Q_ASSERT (ok);
 
-	Application::instance()->setCover (new NSRSceneCover (this));
+	Application::instance()->setCover (new NSRSceneCover ());
 	Application::instance()->setAutoExit (false);
 
 	ok = connect (Application::instance (), SIGNAL (thumbnail ()), this, SLOT (onThumbnail ()));
