@@ -98,8 +98,11 @@ void NSRPopplerDocument::renderPage(int page)
 		return;
 	}
 
+	double pageWidth = (getRotation () == 90 || getRotation () == 270) ? _page->getCropHeight ()
+									   : _page->getCropWidth ();
+
 	if (isZoomToWidth()) {
-		double wZoom = ((double) getScreenWidth() / (double) _page->getCropWidth() * 100.0);
+		double wZoom = ((double) getScreenWidth() / pageWidth * 100.0);
 		setZoomSilent(wZoom);
 	}
 
