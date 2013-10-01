@@ -26,13 +26,28 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 	int maxWCrop = (int) (width * NSR_CROP_MAX_PAD_PERCENT);
 	int maxHCrop = (int) (height * NSR_CROP_MAX_PAD_PERCENT);
 
-	if (order == NSR_PIXEL_ORDER_RGB || order == NSR_PIXEL_ORDER_BGR) {
+	switch (order) {
+	case NSR_PIXEL_ORDER_RGB:
+	case NSR_PIXEL_ORDER_BGR:
 		px = 3;
 		pxShift = 0;
-	} else {
+		break;
+	case NSR_PIXEL_ORDER_ARGB:
 		px = 4;
 		pxShift = 1;
+		break;
+	case NSR_PIXEL_ORDER_BGRA:
+	case NSR_PIXEL_ORDER_RGBA:
+		px = 4;
+		pxShift = 0;
+		break;
+	default:
+		px = 0;
+		pxShift = 0;
 	}
+
+	if (px == 0 && pxShift == 0)
+		return pads;
 
 	/* Use mean of two corner pixels as background */
 	double red = (dataPtr[pxShift] +
