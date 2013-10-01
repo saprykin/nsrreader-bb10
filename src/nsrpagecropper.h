@@ -1,19 +1,7 @@
 #ifndef NSRPAGECROPPER_H_
 #define NSRPAGECROPPER_H_
 
-struct NSRCropPads
-{
-	NSRCropPads () :
-		topPad (0),
-		rightPad (0),
-		bottomPad (0),
-		leftPad (0)
-	{}
-	int topPad;
-	int rightPad;
-	int bottomPad;
-	int leftPad;
-};
+#include "nsrcroppads.h"
 
 class NSRPageCropper
 {

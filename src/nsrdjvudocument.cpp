@@ -385,30 +385,30 @@ bb::ImageData NSRDjVuDocument::getCurrentPage()
 						     _imgSize.width (), _imgSize.height (), _imgSize.width () * 3);
 
 	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
-			       _imgSize.width () - pads.leftPad - pads.rightPad,
-			       _imgSize.height () - pads.topPad - pads.bottomPad);
+			       _imgSize.width () - pads.getLeft () - pads.getRight (),
+			       _imgSize.height () - pads.getTop () - pads.getBottom ());
 
 	int rowSize = imgData.bytesPerLine ();
 	unsigned char *image = imgData.pixels ();
 
-	for (int i = pads.topPad; i < _imgSize.height() - pads.bottomPad; ++i)
-		for (int j = pads.leftPad; j < _imgSize.width() - pads.rightPad; ++j) {
+	for (int i = pads.getTop (); i < _imgSize.height() - pads.getBottom (); ++i)
+		for (int j = pads.getLeft (); j < _imgSize.width() - pads.getRight (); ++j) {
 			if (isInvertedColors()) {
-				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4) =
+				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4) =
 						255 - *(_imgData + i * _imgSize.width() * 3 + j * 3 + 2);
-				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 1) =
+				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 1) =
 						255 - *(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
-				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 2) =
+				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 2) =
 						255 - *(_imgData + i * _imgSize.width() * 3 + j * 3);
-				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 3) = 255;
+				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 3) = 255;
 			} else {
-				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4) =
+				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4) =
 						*(_imgData + i * _imgSize.width() * 3 + j * 3 + 2);
-				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 1) =
+				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 1) =
 						*(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
-				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 2) =
+				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 2) =
 						*(_imgData + i * _imgSize.width() * 3 + j * 3);
-				*(image + rowSize * (i - pads.topPad) + (j - pads.leftPad) * 4 + 3) = 255;
+				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 3) = 255;
 			}
 		}
 

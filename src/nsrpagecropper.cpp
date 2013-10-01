@@ -77,10 +77,10 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 		}
 
 		if (badCount > NSR_CROP_PIXEL_THRESHOLD) {
-			pads.topPad = row + 1;
+			pads.setTop (row + 1);
 			break;
 		} else if (row == maxHCrop - 1)
-			pads.topPad = row + 1;
+			pads.setTop (row + 1);
 
 		dataPtr += stride;
 	}
@@ -103,10 +103,10 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 		}
 
 		if (badCount > NSR_CROP_PIXEL_THRESHOLD) {
-			pads.bottomPad = height - row - 1;
+			pads.setBottom (height - row - 1);
 			break;
 		} else if (row == height - maxHCrop)
-			pads.bottomPad = height - row - 1;
+			pads.setBottom (height - row - 1);
 
 		dataPtr -= stride;
 	}
@@ -128,10 +128,10 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 				++badCount;		}
 
 		if (badCount > NSR_CROP_PIXEL_THRESHOLD) {
-			pads.leftPad = col + 1;
+			pads.setLeft (col + 1);
 			break;
 		} else if (col == maxWCrop - 1)
-			pads.leftPad = col + 1;
+			pads.setLeft (col + 1);
 	}
 
 	/* Finally, find right crop pad */
@@ -152,16 +152,16 @@ NSRPageCropper::findCropPads (unsigned char *data, NSRPixelOrder order, int widt
 		}
 
 		if (badCount > NSR_CROP_PIXEL_THRESHOLD) {
-			pads.rightPad = width - col - 1;
+			pads.setRight (width - col - 1);
 			break;
 		} else if (col == width - maxWCrop)
-			pads.rightPad = width - col - 1;
+			pads.setRight (width - col - 1);
 	}
 
-	pads.topPad = qMax (pads.topPad - 5, 0);
-	pads.rightPad = qMax (pads.rightPad - 5, 0);
-	pads.bottomPad = qMax (pads.bottomPad - 5, 0);
-	pads.leftPad = qMax (pads.leftPad - 5, 0);
+	pads.setTop (qMax (pads.getTop () - 5, 0));
+	pads.setRight (qMax (pads.getRight () - 5, 0));
+	pads.setBottom (qMax (pads.getBottom () - 5, 0));
+	pads.setLeft (qMax (pads.getLeft () - 5, 0));
 
 	return pads;
 }

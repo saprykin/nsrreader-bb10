@@ -183,26 +183,26 @@ bb::ImageData NSRPopplerDocument::getCurrentPage()
 						     bw, bh, rowBytes);
 
 	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
-			       bw - pads.leftPad - pads.rightPad,
-			       bh - pads.topPad - pads.bottomPad);
+			       bw - pads.getLeft () - pads.getRight (),
+			       bh - pads.getTop () - pads.getBottom ());
 
 	unsigned char *addr = (unsigned char *) imgData.pixels ();
 	int stride = imgData.bytesPerLine ();
 
-	for (int i = pads.topPad; i < bh - pads.bottomPad; ++i) {
+	for (int i = pads.getTop (); i < bh - pads.getBottom (); ++i) {
 		unsigned char *inAddr = (unsigned char *) (dataPtr + i * rowBytes);
 
-		for (int j = pads.leftPad; j < bw - pads.rightPad; ++j) {
+		for (int j = pads.getLeft (); j < bw - pads.getRight (); ++j) {
 			if (isInvertedColors ()) {
-				addr[(j - pads.leftPad) * 4 + 0] = 255 - inAddr[j * 3 + 0];
-				addr[(j - pads.leftPad) * 4 + 1] = 255 - inAddr[j * 3 + 1];
-				addr[(j - pads.leftPad) * 4 + 2] = 255 - inAddr[j * 3 + 2];
-				addr[(j - pads.leftPad) * 4 + 3] = 255;
+				addr[(j - pads.getLeft ()) * 4 + 0] = 255 - inAddr[j * 3 + 0];
+				addr[(j - pads.getLeft ()) * 4 + 1] = 255 - inAddr[j * 3 + 1];
+				addr[(j - pads.getLeft ()) * 4 + 2] = 255 - inAddr[j * 3 + 2];
+				addr[(j - pads.getLeft ()) * 4 + 3] = 255;
 			} else {
-				addr[(j - pads.leftPad) * 4 + 0] = inAddr[j * 3 + 0];
-				addr[(j - pads.leftPad) * 4 + 1] = inAddr[j * 3 + 1];
-				addr[(j - pads.leftPad) * 4 + 2] = inAddr[j * 3 + 2];
-				addr[(j - pads.leftPad) * 4 + 3] = 255;
+				addr[(j - pads.getLeft ()) * 4 + 0] = inAddr[j * 3 + 0];
+				addr[(j - pads.getLeft ()) * 4 + 1] = inAddr[j * 3 + 1];
+				addr[(j - pads.getLeft ()) * 4 + 2] = inAddr[j * 3 + 2];
+				addr[(j - pads.getLeft ()) * 4 + 3] = 255;
 			}
 		}
 
