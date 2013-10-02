@@ -30,10 +30,10 @@ NSRCropPads::setScale (double scale)
 	} else {
 		double ratio = qAbs (_scale) <= DBL_EPSILON ? scale : scale / _scale;
 
-		_left	*= ratio;
-		_right	*= ratio;
-		_top	*= ratio;
-		_bottom	*= ratio;
+		_left	= (int) (_left * ratio);
+		_right	= (int) (_right * ratio);
+		_top	= (int) (_top * ratio);
+		_bottom	= (int) (_bottom * ratio);
 	}
 
 	_scale = scale;
