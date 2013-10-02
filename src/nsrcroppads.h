@@ -45,6 +45,9 @@ public:
 		_bottom = bottom * _scale;
 	}
 
+	void rotateLeft ();
+	void rotateRight ();
+
 private:
 	double	_scale;
 	int	_left;

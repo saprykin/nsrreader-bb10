@@ -38,3 +38,25 @@ NSRCropPads::setScale (double scale)
 
 	_scale = scale;
 }
+
+void
+NSRCropPads::rotateLeft ()
+{
+	int tmp = _top;
+
+	_top	= _right;
+	_right	= _bottom;
+	_bottom	= _left;
+	_left	= tmp;
+}
+
+void
+NSRCropPads::rotateRight ()
+{
+	int tmp = _top;
+
+	_top	= _left;
+	_left	= _bottom;
+	_bottom	= _right;
+	_right	= tmp;
+}
