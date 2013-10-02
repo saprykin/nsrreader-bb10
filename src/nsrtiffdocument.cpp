@@ -128,6 +128,29 @@ void NSRTIFFDocument::renderPage(int page)
 		trans.scale(scale, scale);
 		trans.rotate(-getRotation());
 
+		if (isAutoCrop ()) {
+			_pads = NSRPageCropper::findCropPads ((unsigned char *) img->bits (),
+							      NSRPageCropper::NSR_PIXEL_ORDER_ARGB,
+							      img->width (), img->height (), img->bytesPerLine ());
+			_pads.setScale (scale);
+
+			switch (getRotation ()) {
+			case 90:
+				_pads.rotateRight ();
+				break;
+			case 180:
+				_pads.rotateRight ();
+				_pads.rotateRight ();
+				break;
+			case 270:
+				_pads.rotateLeft ();
+				break;
+			default:
+				break;
+			}
+		} else
+			_pads = NSRCropPads ();
+
 		if (_origImage.byteCount() > NSR_DOCUMENT_MAX_HEAP / (2 + scale * scale)) {
 			_image = img->transformed(trans);
 			_cachedPage = 0;
@@ -184,16 +207,9 @@ bb::ImageData NSRTIFFDocument::getCurrentPage()
 	if (_image.isNull())
 		return bb::ImageData ();
 
-	NSRCropPads pads;
-
-	if (isAutoCrop ())
-		pads = NSRPageCropper::findCropPads ((unsigned char *) _image.bits (),
-						     NSRPageCropper::NSR_PIXEL_ORDER_ARGB,
-						     _image.width (), _image.height (), _image.bytesPerLine ());
-
 	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
-			       _image.width () - pads.getLeft () - pads.getRight (),
-			       _image.height () - pads.getTop () - pads.getBottom ());
+			       _image.width () - _pads.getLeft () - _pads.getRight (),
+			       _image.height () - _pads.getTop () - _pads.getBottom ());
 
 	unsigned char *addr = (unsigned char *) imgData.pixels ();
 	int stride = imgData.bytesPerLine ();
@@ -202,21 +218,21 @@ bb::ImageData NSRTIFFDocument::getCurrentPage()
 	int rowBytes = _image.bytesPerLine ();
 	unsigned char *dataPtr = _image.bits ();
 
-	addr += (bh - pads.getTop () - pads.getBottom () - 1) * stride;
-	for (int i = pads.getTop (); i < bh - pads.getBottom (); ++i) {
+	addr += (bh - _pads.getTop () - _pads.getBottom () - 1) * stride;
+	for (int i = _pads.getTop (); i < bh - _pads.getBottom (); ++i) {
 		unsigned char *inAddr = (unsigned char *) (dataPtr + i * rowBytes);
 
-		for (int j = pads.getLeft (); j < bw - pads.getRight (); ++j) {
+		for (int j = _pads.getLeft (); j < bw - _pads.getRight (); ++j) {
 			if (isInvertedColors ()) {
-				addr[(j - pads.getLeft ()) * 4 + 0] = 255 - inAddr[j * 4 + 1];
-				addr[(j - pads.getLeft ()) * 4 + 1] = 255 - inAddr[j * 4 + 2];
-				addr[(j - pads.getLeft ()) * 4 + 2] = 255 - inAddr[j * 4 + 3];
-				addr[(j - pads.getLeft ()) * 4 + 3] = 255;
+				addr[(j - _pads.getLeft ()) * 4 + 0] = 255 - inAddr[j * 4 + 1];
+				addr[(j - _pads.getLeft ()) * 4 + 1] = 255 - inAddr[j * 4 + 2];
+				addr[(j - _pads.getLeft ()) * 4 + 2] = 255 - inAddr[j * 4 + 3];
+				addr[(j - _pads.getLeft ()) * 4 + 3] = 255;
 			} else {
-				addr[(j - pads.getLeft ()) * 4 + 0] = inAddr[j * 4 + 1];
-				addr[(j - pads.getLeft ()) * 4 + 1] = inAddr[j * 4 + 2];
-				addr[(j - pads.getLeft ()) * 4 + 2] = inAddr[j * 4 + 3];
-				addr[(j - pads.getLeft ()) * 4 + 3] = 255;
+				addr[(j - _pads.getLeft ()) * 4 + 0] = inAddr[j * 4 + 1];
+				addr[(j - _pads.getLeft ()) * 4 + 1] = inAddr[j * 4 + 2];
+				addr[(j - _pads.getLeft ()) * 4 + 2] = inAddr[j * 4 + 3];
+				addr[(j - _pads.getLeft ()) * 4 + 3] = 255;
 			}
 		}
 

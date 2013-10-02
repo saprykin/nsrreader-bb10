@@ -2,6 +2,7 @@
 #define NSRTIFFDOCUMENT_H
 
 #include "nsrabstractdocument.h"
+#include "nsrcroppads.h"
 #include "tiff/tiffio.h"
 
 class NSRTIFFDocument : public NSRAbstractDocument
@@ -18,6 +19,7 @@ public:
 	double getMinZoom();
 
 private:
+	NSRCropPads		_pads;
 	TIFF			*_tiff;
 	bool			_readyForLoad;
 	QSize			_cachedPageSize;
