@@ -225,7 +225,7 @@ NSRTIFFDocument::getCurrentPage ()
 	if (_image.isNull())
 		return bb::ImageData ();
 
-	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
+	bb::ImageData imgData (bb::PixelFormat::RGBX,
 			       _image.width () - _pads.getLeft () - _pads.getRight (),
 			       _image.height () - _pads.getTop () - _pads.getBottom ());
 

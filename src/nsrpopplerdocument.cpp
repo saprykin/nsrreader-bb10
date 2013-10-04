@@ -182,7 +182,7 @@ bb::ImageData NSRPopplerDocument::getCurrentPage()
 						     NSRPageCropper::NSR_PIXEL_ORDER_RGB,
 						     bw, bh, rowBytes);
 
-	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
+	bb::ImageData imgData (bb::PixelFormat::RGBX,
 			       bw - pads.getLeft () - pads.getRight (),
 			       bh - pads.getTop () - pads.getBottom ());
 

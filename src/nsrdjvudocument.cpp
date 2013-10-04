@@ -384,7 +384,7 @@ bb::ImageData NSRDjVuDocument::getCurrentPage()
 						     NSRPageCropper::NSR_PIXEL_ORDER_BGR,
 						     _imgSize.width (), _imgSize.height (), _imgSize.width () * 3);
 
-	bb::ImageData imgData (bb::PixelFormat::RGBA_Premultiplied,
+	bb::ImageData imgData (bb::PixelFormat::RGBX,
 			       _imgSize.width () - pads.getLeft () - pads.getRight (),
 			       _imgSize.height () - pads.getTop () - pads.getBottom ());
 
