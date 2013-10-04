@@ -12,19 +12,19 @@ public:
 	}
 
 	inline int getLeft () const {
-		return _left;
+		return (int) _left;
 	}
 
 	inline int getRight () const {
-		return _right;
+		return (int) _right;
 	}
 
 	inline int getTop () const {
-		return _top;
+		return (int) _top;
 	}
 
 	inline int getBottom () const {
-		return _bottom;
+		return (int) _bottom;
 	}
 
 	void setScale (double scale);
@@ -45,15 +45,21 @@ public:
 		_bottom = bottom * _scale;
 	}
 
-	void rotateLeft ();
-	void rotateRight ();
+	void setRotation (int angle);
 
 private:
+	void rotateRight ();
+	void rotateLeft ();
+	void rotate180 ();
+	void mirrorVertical ();
+	void mirrorHorizontal ();
+
 	double	_scale;
-	int	_left;
-	int	_right;
-	int	_top;
-	int	_bottom;
+	double	_left;
+	double	_right;
+	double	_top;
+	double	_bottom;
+	int	_angle;	/** Clockwise */
 };
 
 #endif /* NSRCROPPADS_H_ */
