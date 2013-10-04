@@ -119,16 +119,16 @@ NSRTIFFDocument::renderPage (int page)
 		delete img;
 		delete imgBuf;
 	} else {
-		/* Convert from RGBA to ARGB pixel format */
+		/* Convert from ABGR to ARGB pixel format */
 		quint32 *dataPtr = reinterpret_cast<quint32 *> (img->bits ());
 
 		for (quint32 row = 0; row < h; ++row)
 			for (quint32 col = 0; col < w; ++col) {
 				quint32 pxl  = *(dataPtr + row * w + col);
-				*(dataPtr + row * w + col) = ((pxl & 0x000000FF) << 24) |
-							     ((pxl & 0xFF000000) >> 8) |
-							     ((pxl & 0x00FF0000) >> 8) |
-							     ((pxl & 0x0000FF00) >> 8);
+				*(dataPtr + row * w + col) = ((pxl & 0x000000FF) << 16) |
+							     (pxl & 0xFF000000) |
+							     ((pxl & 0x00FF0000) >> 16) |
+							     (pxl & 0x0000FF00);
 			}
 
 		double scale = getZoom () / 100.0;
@@ -220,14 +220,14 @@ NSRTIFFDocument::getCurrentPage ()
 
 		for (int j = _pads.getLeft (); j < bw - _pads.getRight (); ++j) {
 			if (isInvertedColors ()) {
-				addr[(j - _pads.getLeft ()) * 4 + 0] = 255 - inAddr[j * 4 + 1];
-				addr[(j - _pads.getLeft ()) * 4 + 1] = 255 - inAddr[j * 4 + 2];
-				addr[(j - _pads.getLeft ()) * 4 + 2] = 255 - inAddr[j * 4 + 3];
+				addr[(j - _pads.getLeft ()) * 4 + 0] = 255 - inAddr[j * 4 + 2];
+				addr[(j - _pads.getLeft ()) * 4 + 1] = 255 - inAddr[j * 4 + 1];
+				addr[(j - _pads.getLeft ()) * 4 + 2] = 255 - inAddr[j * 4 + 0];
 				addr[(j - _pads.getLeft ()) * 4 + 3] = 255;
 			} else {
-				addr[(j - _pads.getLeft ()) * 4 + 0] = inAddr[j * 4 + 1];
-				addr[(j - _pads.getLeft ()) * 4 + 1] = inAddr[j * 4 + 2];
-				addr[(j - _pads.getLeft ()) * 4 + 2] = inAddr[j * 4 + 3];
+				addr[(j - _pads.getLeft ()) * 4 + 0] = inAddr[j * 4 + 2];
+				addr[(j - _pads.getLeft ()) * 4 + 1] = inAddr[j * 4 + 1];
+				addr[(j - _pads.getLeft ()) * 4 + 2] = inAddr[j * 4 + 0];
 				addr[(j - _pads.getLeft ()) * 4 + 3] = 255;
 			}
 		}
