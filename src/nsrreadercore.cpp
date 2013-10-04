@@ -473,6 +473,11 @@ NSRReaderCore::loadPage (PageLoad				dir,
 		QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
 
 		_currentPage = _cache->getPage (pageToLoad);
+
+		/* We do not want to re-render page again because it is already cropped */
+		if (_currentPage.isCropped ())
+			_currentPage.setRenderReason (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
+
 		emit pageRendered (pageToLoad);
 		emit needViewMode (suffix == "txt" ? NSRPageView::NSR_VIEW_MODE_TEXT
 						   : NSRPageView::NSR_VIEW_MODE_PREFERRED);
