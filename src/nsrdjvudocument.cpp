@@ -400,7 +400,6 @@ bb::ImageData NSRDjVuDocument::getCurrentPage()
 						255 - *(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
 				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 2) =
 						255 - *(_imgData + i * _imgSize.width() * 3 + j * 3);
-				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 3) = 255;
 			} else {
 				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4) =
 						*(_imgData + i * _imgSize.width() * 3 + j * 3 + 2);
@@ -408,7 +407,6 @@ bb::ImageData NSRDjVuDocument::getCurrentPage()
 						*(_imgData + i * _imgSize.width() * 3 + j * 3 + 1);
 				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 2) =
 						*(_imgData + i * _imgSize.width() * 3 + j * 3);
-				*(image + rowSize * (i - pads.getTop ()) + (j - pads.getLeft ()) * 4 + 3) = 255;
 			}
 		}
 

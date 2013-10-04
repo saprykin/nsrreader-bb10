@@ -246,12 +246,10 @@ NSRTIFFDocument::getCurrentPage ()
 				addr[(j - _pads.getLeft ()) * 4 + 0] = 255 - inAddr[j * 4 + 2];
 				addr[(j - _pads.getLeft ()) * 4 + 1] = 255 - inAddr[j * 4 + 1];
 				addr[(j - _pads.getLeft ()) * 4 + 2] = 255 - inAddr[j * 4 + 0];
-				addr[(j - _pads.getLeft ()) * 4 + 3] = 255;
 			} else {
 				addr[(j - _pads.getLeft ()) * 4 + 0] = inAddr[j * 4 + 2];
 				addr[(j - _pads.getLeft ()) * 4 + 1] = inAddr[j * 4 + 1];
 				addr[(j - _pads.getLeft ()) * 4 + 2] = inAddr[j * 4 + 0];
-				addr[(j - _pads.getLeft ()) * 4 + 3] = 255;
 			}
 		}
 

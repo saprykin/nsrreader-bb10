@@ -197,12 +197,10 @@ bb::ImageData NSRPopplerDocument::getCurrentPage()
 				addr[(j - pads.getLeft ()) * 4 + 0] = 255 - inAddr[j * 3 + 0];
 				addr[(j - pads.getLeft ()) * 4 + 1] = 255 - inAddr[j * 3 + 1];
 				addr[(j - pads.getLeft ()) * 4 + 2] = 255 - inAddr[j * 3 + 2];
-				addr[(j - pads.getLeft ()) * 4 + 3] = 255;
 			} else {
 				addr[(j - pads.getLeft ()) * 4 + 0] = inAddr[j * 3 + 0];
 				addr[(j - pads.getLeft ()) * 4 + 1] = inAddr[j * 3 + 1];
 				addr[(j - pads.getLeft ()) * 4 + 2] = inAddr[j * 3 + 2];
-				addr[(j - pads.getLeft ()) * 4 + 3] = 255;
 			}
 		}
 
