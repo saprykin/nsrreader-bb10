@@ -19,6 +19,8 @@ public:
 	double getMinZoom();
 
 private:
+	void updateCropPads ();
+
 	NSRCropPads		_pads;
 	TIFF			*_tiff;
 	bool			_readyForLoad;

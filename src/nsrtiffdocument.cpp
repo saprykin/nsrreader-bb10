@@ -3,7 +3,7 @@
 
 #include <math.h>
 
-NSRTIFFDocument::NSRTIFFDocument(const QString& file, QObject *parent) :
+NSRTIFFDocument::NSRTIFFDocument (const QString& file, QObject *parent) :
 	NSRAbstractDocument (file, parent),
 	_tiff (NULL),
 	_readyForLoad (false),
@@ -28,22 +28,23 @@ NSRTIFFDocument::NSRTIFFDocument(const QString& file, QObject *parent) :
 	}
 }
 
-NSRTIFFDocument::~NSRTIFFDocument()
+NSRTIFFDocument::~NSRTIFFDocument ()
 {
 	if (_tiff != NULL) {
 		TIFFClose (_tiff);
 		_tiff = NULL;
 	}
 
-	if (!_origImage.isNull())
+	if (!_origImage.isNull ())
 		_origImage = QImage ();
 
-	if (!_image.isNull())
+	if (!_image.isNull ())
 		_image = QImage ();
 }
 
 
-int NSRTIFFDocument::getNumberOfPages() const
+int
+NSRTIFFDocument::getNumberOfPages () const
 {
 	if (_tiff == NULL)
 		return 0;
@@ -51,19 +52,21 @@ int NSRTIFFDocument::getNumberOfPages() const
 	return _pageCount > 0 ? _pageCount : 1;
 }
 
-bool NSRTIFFDocument::isValid() const
+bool
+NSRTIFFDocument::isValid () const
 {
 	return (_tiff != NULL);
 }
 
-void NSRTIFFDocument::renderPage(int page)
+void
+NSRTIFFDocument::renderPage (int page)
 {
 	uint32	w = 0, h = 0;
 	size_t	npixels;
 	char	*imgBuf;
 	QImage	*img;
 
-	if (_tiff == NULL || page > getNumberOfPages() || page < 1)
+	if (_tiff == NULL || page > getNumberOfPages () || page < 1)
 		return;
 
 	if (_pageCount > 0 && TIFFSetDirectory (_tiff, page - 1) == 0)
@@ -78,35 +81,41 @@ void NSRTIFFDocument::renderPage(int page)
 	if (npixels * sizeof (uint32) > NSR_DOCUMENT_MAX_HEAP)
 		return;
 
-	if (!_image.isNull())
+	if (!_image.isNull ())
 		_image = QImage ();
 
 	double pageWidth = (getRotation () == 90 || getRotation () == 270) ? h : w;
 
-	if (isZoomToWidth()) {
-		double wZoom = ((double) getScreenWidth() / pageWidth * 100.0);
-		setZoomSilent(wZoom);
+	if (isZoomToWidth ()) {
+		double wZoom = ((double) getScreenWidth () / pageWidth * 100.0);
+		setZoomSilent (wZoom);
 	}
 
-	if (getZoom() < getMinZoom())
-		setZoomSilent (getMinZoom());
+	if (getZoom () < getMinZoom ())
+		setZoomSilent (getMinZoom ());
 
-	if (_cachedPage == page && !_origImage.isNull()) {
+	if (_cachedPage == page && !_origImage.isNull ()) {
+		double scale = getZoom () / 100.0;
 		QTransform trans;
-		trans.scale(getZoom() / 100.0, getZoom() / 100.0);
-		trans.rotate(-getRotation());
-		_image = _origImage.transformed(trans);
+
+		trans.scale (scale, scale);
+		trans.rotate (getRotation ());
+		_image = _origImage.transformed (trans);
+
+		if (isAutoCrop ())
+			updateCropPads ();
+
 		_readyForLoad = true;
 		return;
 	}
 
-	if (!_origImage.isNull())
+	if (!_origImage.isNull ())
 		_origImage = QImage ();
 
 	imgBuf = new char[npixels * sizeof (uint32)];
 	img = new QImage ((const uchar*) imgBuf, w, h, w * sizeof (uint32), QImage::Format_ARGB32);
 
-	if (TIFFReadRGBAImage (_tiff, w, h, (uint32 *) img->bits(), 0) == 0) {
+	if (TIFFReadRGBAImageOriented (_tiff, w, h, (uint32 *) img->bits(), ORIENTATION_TOPLEFT, 0) == 0) {
 		delete img;
 		delete imgBuf;
 	} else {
@@ -122,48 +131,33 @@ void NSRTIFFDocument::renderPage(int page)
 							     ((pxl & 0x0000FF00) >> 8);
 			}
 
-		double scale = getZoom() / 100.0;
+		double scale = getZoom () / 100.0;
 		QTransform trans;
 
-		trans.scale(scale, scale);
-		trans.rotate(-getRotation());
+		trans.scale (scale, scale);
+		trans.rotate (getRotation ());
 
 		if (isAutoCrop ()) {
 			_pads = NSRPageCropper::findCropPads ((unsigned char *) img->bits (),
 							      NSRPageCropper::NSR_PIXEL_ORDER_ARGB,
 							      img->width (), img->height (), img->bytesPerLine ());
-			_pads.setScale (scale);
-
-			switch (getRotation ()) {
-			case 90:
-				_pads.rotateRight ();
-				break;
-			case 180:
-				_pads.rotateRight ();
-				_pads.rotateRight ();
-				break;
-			case 270:
-				_pads.rotateLeft ();
-				break;
-			default:
-				break;
-			}
+			updateCropPads ();
 		} else
 			_pads = NSRCropPads ();
 
-		if (_origImage.byteCount() > NSR_DOCUMENT_MAX_HEAP / (2 + scale * scale)) {
-			_image = img->transformed(trans);
+		if (_origImage.byteCount () > NSR_DOCUMENT_MAX_HEAP / (2 + scale * scale)) {
+			_image = img->transformed (trans);
 			_cachedPage = 0;
 
 			delete img;
 			delete imgBuf;
 		} else {
-			_origImage = img->copy();
+			_origImage = img->copy ();
 
 			delete img;
 			delete imgBuf;
 
-			_image = _origImage.transformed(trans);
+			_image = _origImage.transformed (trans);
 			_cachedPage = page;
 		}
 
@@ -171,7 +165,8 @@ void NSRTIFFDocument::renderPage(int page)
 	}
 }
 
-double NSRTIFFDocument::getMaxZoom()
+double
+NSRTIFFDocument::getMaxZoom ()
 {
 	if (_tiff == NULL)
 		return 0;
@@ -180,26 +175,28 @@ double NSRTIFFDocument::getMaxZoom()
 		return 100;
 
 	/* Each pixel needs 4 bytes (RGBA) of memory */
-	double pageSize = _cachedPageSize.width() * _cachedPageSize.height() * 4;
+	double pageSize = _cachedPageSize.width () * _cachedPageSize.height () * 4;
 
 	return validateMaxZoom (_cachedPageSize, sqrt (NSR_DOCUMENT_MAX_HEAP / pageSize - 1) * 100 + 0.5);
 }
 
-double NSRTIFFDocument::getMinZoom()
+double
+NSRTIFFDocument::getMinZoom ()
 {
 	if (_cachedPageSize == QSize (0, 0))
 		return 25;
 
 	/* Each pixel needs 4 bytes (RGBA) of memory */
-	double pageSize = _cachedPageSize.width() * _cachedPageSize.height() * 4;
+	double pageSize = _cachedPageSize.width () * _cachedPageSize.height () * 4;
 
 	if (pageSize > NSR_DOCUMENT_MAX_HEAP)
-		return getMaxZoom();
+		return getMaxZoom ();
 	else
-		return (getMaxZoom() / 10) > 25 ? 25 : getMaxZoom() / 10;
+		return (getMaxZoom () / 10) > 25 ? 25 : getMaxZoom () / 10;
 }
 
-bb::ImageData NSRTIFFDocument::getCurrentPage()
+bb::ImageData
+NSRTIFFDocument::getCurrentPage ()
 {
 	if (!_readyForLoad)
 		return bb::ImageData ();
@@ -218,7 +215,6 @@ bb::ImageData NSRTIFFDocument::getCurrentPage()
 	int rowBytes = _image.bytesPerLine ();
 	unsigned char *dataPtr = _image.bits ();
 
-	addr += (bh - _pads.getTop () - _pads.getBottom () - 1) * stride;
 	for (int i = _pads.getTop (); i < bh - _pads.getBottom (); ++i) {
 		unsigned char *inAddr = (unsigned char *) (dataPtr + i * rowBytes);
 
@@ -236,8 +232,17 @@ bb::ImageData NSRTIFFDocument::getCurrentPage()
 			}
 		}
 
-		addr -= stride;
+		addr += stride;
 	}
 
 	return imgData;
+}
+
+void
+NSRTIFFDocument::updateCropPads ()
+{
+	double scale = getZoom () / 100.0;
+
+	_pads.setScale (scale);
+	_pads.setRotation (getRotation ());
 }
