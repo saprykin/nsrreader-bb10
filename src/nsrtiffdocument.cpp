@@ -115,21 +115,42 @@ NSRTIFFDocument::renderPage (int page)
 	imgBuf = new char[npixels * sizeof (uint32)];
 	img = new QImage ((const uchar*) imgBuf, w, h, w * sizeof (uint32), QImage::Format_ARGB32);
 
-	if (TIFFReadRGBAImageOriented (_tiff, w, h, (uint32 *) img->bits(), ORIENTATION_TOPLEFT, 0) == 0) {
+	if (TIFFReadRGBAImageOriented (_tiff, w, h, (uint32 *) img->bits (), ORIENTATION_TOPLEFT, 0) == 0) {
 		delete img;
 		delete imgBuf;
 	} else {
-		/* Convert from ABGR to ARGB pixel format */
-		quint32 *dataPtr = reinterpret_cast<quint32 *> (img->bits ());
+		uint32 orientationTag = 0;
 
-		for (quint32 row = 0; row < h; ++row)
-			for (quint32 col = 0; col < w; ++col) {
-				quint32 pxl  = *(dataPtr + row * w + col);
-				*(dataPtr + row * w + col) = ((pxl & 0x000000FF) << 16) |
-							     (pxl & 0xFF000000) |
-							     ((pxl & 0x00FF0000) >> 16) |
-							     (pxl & 0x0000FF00);
+		if (TIFFGetField (_tiff, TIFFTAG_ORIENTATION, &orientationTag) == 0) {
+			switch (orientationTag) {
+			case ORIENTATION_LEFTTOP:
+				rotateRightMirrorHorizontal (&img, &imgBuf);
+				break;
+			case ORIENTATION_RIGHTTOP:
+				rotateRightMirrorVertical (&img, &imgBuf);
+				break;
+			case ORIENTATION_RIGHTBOT:
+				rotateRightMirrorHorizontal (&img, &imgBuf);
+				break;
+			case ORIENTATION_LEFTBOT:
+				rotateRightMirrorVertical (&img, &imgBuf);
+				break;
+			default:
+				break;
 			}
+		} else {
+			/* Convert from ABGR to ARGB pixel format */
+			uint32 *dataPtr = reinterpret_cast<uint32 *> (img->bits ());
+
+			for (uint32 row = 0; row < h; ++row)
+				for (uint32 col = 0; col < w; ++col) {
+					uint32 pxl  = *(dataPtr + row * w + col);
+					*(dataPtr + row * w + col) = ((pxl & 0x000000FF) << 16) |
+							(pxl & 0xFF000000) |
+							((pxl & 0x00FF0000) >> 16) |
+							(pxl & 0x0000FF00);
+				}
+		}
 
 		double scale = getZoom () / 100.0;
 		QTransform trans;
@@ -245,4 +266,68 @@ NSRTIFFDocument::updateCropPads ()
 
 	_pads.setScale (scale);
 	_pads.setRotation (getRotation ());
+}
+
+/* The following code was taken from the Qt TIFF handler plugin with some modifications */
+void
+NSRTIFFDocument::rotateRightMirrorHorizontal (QImage** const image, char **buf)
+{
+	const int height = (*image)->height ();
+	const int width = (*image)->width ();
+
+	char *newBuf = new char[height * width * sizeof (uint32)];
+	QImage *generated = new QImage ((const uchar *) newBuf, height, width, height * sizeof (uint32), (*image)->format ());
+	const uint32 *pixel = reinterpret_cast<const uint32 *> ((*image)->bits ());
+	uint32 *const generatedBits = reinterpret_cast<uint32 *> (generated->bits ());
+
+	for (int row = 0; row < height; ++row) {
+		for (int col = 0; col < width; ++col) {
+			int idx = col * height + row;
+			/* Also convert from ABGR to ARGB */
+			generatedBits[idx] = ((*pixel & 0x000000FF) << 16) |
+					     (*pixel & 0xFF000000) |
+					     ((*pixel & 0x00FF0000) >> 16) |
+					     (*pixel & 0x0000FF00);
+			++pixel;
+		}
+	}
+
+	delete *image;
+	delete *buf;
+
+	*image = generated;
+	*buf = newBuf;
+}
+
+void
+NSRTIFFDocument::rotateRightMirrorVertical (QImage** const image, char **buf)
+{
+	const int height = (*image)->height ();
+	const int width = (*image)->width ();
+
+	char *newBuf = new char[height * width * sizeof (uint32)];
+	QImage *generated = new QImage ((const uchar *) newBuf, height, width, height * sizeof (uint32), (*image)->format ());
+	const int lastCol = width - 1;
+	const int lastRow = height - 1;
+
+	const uint32 *pixel = reinterpret_cast<const uint32 *> ((*image)->bits ());
+	uint32 *const generatedBits = reinterpret_cast<uint32 *> (generated->bits ());
+
+	for (int row = 0; row < height; ++row) {
+		for (int col = 0; col < width; ++col) {
+			int idx = (lastCol - col) * height + (lastRow - row);
+			/* Also convert from ABGR to ARGB */
+			generatedBits[idx] = ((*pixel & 0x000000FF) << 16) |
+					     (*pixel & 0xFF000000) |
+					     ((*pixel & 0x00FF0000) >> 16) |
+					     (*pixel & 0x0000FF00);
+			++pixel;
+		}
+	}
+
+	delete *image;
+	delete *buf;
+
+	*image = generated;
+	*buf = newBuf;
 }

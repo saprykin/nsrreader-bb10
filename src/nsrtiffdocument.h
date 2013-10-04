@@ -20,6 +20,8 @@ public:
 
 private:
 	void updateCropPads ();
+	void rotateRightMirrorHorizontal (QImage ** image, char **buf);
+	void rotateRightMirrorVertical (QImage ** image, char **buf);
 
 	NSRCropPads		_pads;
 	TIFF			*_tiff;
