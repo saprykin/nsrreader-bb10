@@ -121,7 +121,7 @@ NSRTIFFDocument::renderPage (int page)
 	} else {
 		uint32 orientationTag = 0;
 
-		if (TIFFGetField (_tiff, TIFFTAG_ORIENTATION, &orientationTag) == 0) {
+		if (TIFFGetField (_tiff, TIFFTAG_ORIENTATION, &orientationTag) != 0) {
 			switch (orientationTag) {
 			case ORIENTATION_LEFTTOP:
 				rotateRightMirrorHorizontal (&img, &imgBuf);
@@ -138,7 +138,9 @@ NSRTIFFDocument::renderPage (int page)
 			default:
 				break;
 			}
-		} else {
+		};
+
+		if (orientationTag < ORIENTATION_LEFTTOP) {
 			/* Convert from ABGR to ARGB pixel format */
 			uint32 *dataPtr = reinterpret_cast<uint32 *> (img->bits ());
 
@@ -146,9 +148,9 @@ NSRTIFFDocument::renderPage (int page)
 				for (uint32 col = 0; col < w; ++col) {
 					uint32 pxl  = *(dataPtr + row * w + col);
 					*(dataPtr + row * w + col) = ((pxl & 0x000000FF) << 16) |
-							(pxl & 0xFF000000) |
-							((pxl & 0x00FF0000) >> 16) |
-							(pxl & 0x0000FF00);
+								     (pxl & 0xFF000000) |
+								     ((pxl & 0x00FF0000) >> 16) |
+								     (pxl & 0x0000FF00);
 				}
 		}
 
