@@ -5,7 +5,8 @@ NSRRenderedPage::NSRRenderedPage (QObject *parent) :
 	_reason (NSR_RENDER_REASON_NONE),
 	_zoom (0),
 	_number (0),
-	_cropped (false)
+	_cropped (false),
+	_cached (false)
 {
 }
 
@@ -14,7 +15,8 @@ NSRRenderedPage::NSRRenderedPage (int number, QObject *parent) :
 	_reason (NSR_RENDER_REASON_NONE),
 	_zoom (0),
 	_number (number),
-	_cropped (false)
+	_cropped (false),
+	_cached (false)
 {
 }
 
@@ -29,6 +31,7 @@ NSRRenderedPage::NSRRenderedPage (const NSRRenderedPage& page) :
 	_lastPos	= page._lastPos;
 	_lastTextPos	= page._lastTextPos;
 	_cropped	= page._cropped;
+	_cached		= page._cached;
 }
 
 NSRRenderedPage::~NSRRenderedPage ()
@@ -47,6 +50,7 @@ NSRRenderedPage::operator = (const NSRRenderedPage& page)
 		_lastPos	= page._lastPos;
 		_lastTextPos	= page._lastTextPos;
 		_cropped	= page._cropped;
+		_cached		= page._cached;
 	}
 
 	return *this;
@@ -125,6 +129,12 @@ NSRRenderedPage::isCropped () const
 	return _cropped;
 }
 
+bool
+NSRRenderedPage::isCached () const
+{
+	return _cached;
+}
+
 void
 NSRRenderedPage::setRenderReason (NSRRenderedPage::NSRRenderReason reason)
 {
@@ -174,4 +184,10 @@ void
 NSRRenderedPage::setCropped (bool cropped)
 {
 	_cropped = cropped;
+}
+
+void
+NSRRenderedPage::setCached (bool cached)
+{
+	_cached = cached;
 }

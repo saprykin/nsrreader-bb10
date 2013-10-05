@@ -40,6 +40,7 @@ public:
 	bool isImageValid () const;
 	bool isEmpty () const;
 	bool isCropped () const;
+	bool isCached () const;
 
 	void setRenderReason (NSRRenderedPage::NSRRenderReason reason);
 	void setNumber (int number);
@@ -49,6 +50,7 @@ public:
 	void setLastPosition (const QPointF& pos);
 	void setLastTextPosition (const QPointF& pos);
 	void setCropped (bool cropped);
+	void setCached (bool cached);
 
 private:
 	NSRRenderReason		_reason;
@@ -59,6 +61,7 @@ private:
 	double			_zoom;
 	int			_number;
 	bool			_cropped;
+	bool			_cached;
 };
 
 #endif /* NSRRENDEREDPAGE_H_ */
