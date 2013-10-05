@@ -457,6 +457,7 @@ NSRReaderBB10::onNextPageActionTriggered ()
 void
 NSRReaderBB10::onGotoActionTriggered ()
 {
+	_slider->setBottomSpace (getActionBarHeight ());
 	_slider->setVisible (!_slider->isVisible ());
 	_readProgress->setVisible (!_slider->isVisible ());
 }
@@ -998,19 +999,18 @@ NSRReaderBB10::showToast (const QString& text, bool reset)
 int
 NSRReaderBB10::getActionBarHeight ()
 {
-	if (!_isFullscreen)
-		return 0;
-	else {
-		if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
-			return 0;
-		else
-			return getActionBarHeightForOrientation (OrientationSupport::instance()->orientation ());
-	}
+	return getActionBarHeightForOrientation (OrientationSupport::instance()->orientation ());
 }
 
 int
 NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Type orientation)
 {
+	if (!_isFullscreen)
+		return 0;
+
+	if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
+		return 0;
+
 	QSize	displaySize = DisplayInfo().pixelSize ();
 
 	if (displaySize.width () == displaySize.height ())
