@@ -529,9 +529,10 @@ NSRReaderBB10::onPageRendered (int number)
 
 	updateVisualControls ();
 
-	/* Fit cropped page to width only in graphic mode */
+	/* Fit cropped page to width only in graphic mode,
+	 * cached pages should be already cropped and fitted */
 	if (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_GRAPHIC) {
-		if (_core->isFitToWidth () && page.isCropped () &&
+		if (_core->isFitToWidth () && page.isCropped () && !page.isCached () &&
 		    page.getRenderReason () != NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH)
 			_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
 	}
