@@ -64,9 +64,8 @@ private Q_SLOTS:
 	void onZoomThreadFinished ();
 
 private:
-	void loadPage (PageLoad				dir,
-		       NSRRenderedPage::NSRRenderReason	reason,
-		       int				pageNumber = 0);
+	void loadPage (PageLoad			dir,
+		       const NSRRenderedPage&	request = NSRRenderedPage (0, NULL));
 	NSRAbstractDocument * copyDocument (const NSRAbstractDocument *doc);
 	NSRAbstractDocument * documentByPath (const QString& path);
 	double normalizeAngle (double angle) const;

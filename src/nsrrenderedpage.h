@@ -24,6 +24,7 @@ public:
 
 	NSRRenderedPage (QObject *parent = 0);
 	NSRRenderedPage (int number, QObject *parent = 0);
+	NSRRenderedPage (int number, NSRRenderReason reason, QObject *parent = 0);
 	NSRRenderedPage (const NSRRenderedPage& page);
 	virtual ~NSRRenderedPage ();
 	NSRRenderedPage& operator= (const NSRRenderedPage& page);

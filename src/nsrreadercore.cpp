@@ -213,8 +213,8 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 
 	if (needReload)
 		loadPage (PAGE_LOAD_CUSTOM,
-			  NSRRenderedPage::NSR_RENDER_REASON_SETTINGS,
-			  _currentPage.getNumber ());
+			  NSRRenderedPage (_currentPage.getNumber (),
+					   NSRRenderedPage::NSR_RENDER_REASON_SETTINGS));
 }
 
 void
@@ -239,8 +239,8 @@ NSRReaderCore::loadSession (const NSRSession *session)
 				_doc->zoomToWidth (session->getZoomScreenWidth ());
 
 			loadPage (PAGE_LOAD_CUSTOM,
-				  NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION,
-				  session->getPage ());
+				  NSRRenderedPage (session->getPage (),
+						   NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION));
 		}
 	}
 }
@@ -248,7 +248,9 @@ NSRReaderCore::loadSession (const NSRSession *session)
 void
 NSRReaderCore::navigateToPage (PageLoad dir, int pageNumber)
 {
-	loadPage (dir, NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION, pageNumber);
+	loadPage (dir,
+		  NSRRenderedPage (pageNumber,
+				   NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION));
 }
 
 bool
@@ -323,6 +325,11 @@ NSRReaderCore::setZoom (double zoom, NSRRenderedPage::NSRRenderReason reason)
 	if (_doc->isTextOnly ())
 		return;
 
+	NSRRenderedPage cachedPage = _cache->getPage (_currentPage.getNumber ());
+	NSRRenderedPage request (_currentPage.getNumber (), reason);
+	request.setText (cachedPage.getText ());
+	request.setLastTextPosition (cachedPage.getLastTextPosition ());
+
 	if (reason == NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH)
 		_cache->removePage (_currentPage.getNumber ());
 	else
@@ -333,7 +340,7 @@ NSRReaderCore::setZoom (double zoom, NSRRenderedPage::NSRRenderReason reason)
 
 	_zoomDoc->setZoom (zoom);
 
-	loadPage (PAGE_LOAD_CUSTOM, reason, _currentPage.getNumber ());
+	loadPage (PAGE_LOAD_CUSTOM, request);
 }
 
 void
@@ -361,8 +368,8 @@ NSRReaderCore::rotate (double rot)
 	_cache->clearStorage ();
 
 	loadPage (PAGE_LOAD_CUSTOM,
-		  NSRRenderedPage::NSR_RENDER_REASON_ROTATION,
-		  _currentPage.getNumber ());
+		  NSRRenderedPage (_currentPage.getNumber (),
+				   NSRRenderedPage::NSR_RENDER_REASON_ROTATION));
 }
 
 double
@@ -453,9 +460,8 @@ NSRReaderCore::onZoomThreadFinished ()
 }
 
 void
-NSRReaderCore::loadPage (PageLoad				dir,
-			 NSRRenderedPage::NSRRenderReason	reason,
-			 int					pageNumber)
+NSRReaderCore::loadPage (PageLoad		dir,
+			 const NSRRenderedPage&	request)
 {
 	if (_doc == NULL || _thread->isRunning ())
 		return;
@@ -470,7 +476,7 @@ NSRReaderCore::loadPage (PageLoad				dir,
 		pageToLoad += 1;
 		break;
 	case PAGE_LOAD_CUSTOM:
-		pageToLoad = pageNumber;
+		pageToLoad = request.getNumber ();
 		break;
 	default:
 		pageToLoad = _currentPage.getNumber ();
@@ -481,6 +487,9 @@ NSRReaderCore::loadPage (PageLoad				dir,
 		pageToLoad = 1;
 	else if (pageToLoad > _doc->getNumberOfPages ())
 		pageToLoad = _doc->getNumberOfPages ();
+
+	NSRRenderedPage req (request);
+	req.setNumber (pageToLoad);
 
 	if (_cache->isPageExists (pageToLoad)) {
 		QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
@@ -493,20 +502,19 @@ NSRReaderCore::loadPage (PageLoad				dir,
 		return;
 	}
 
-	NSRRenderedPage request (pageToLoad);
-	request.setRenderReason (reason);
+	NSRRenderedPage::NSRRenderReason reason = req.getRenderReason ();
 
 	if (reason == NSRRenderedPage::NSR_RENDER_REASON_ZOOM ||
 	    reason == NSRRenderedPage::NSR_RENDER_REASON_ZOOM_TO_WIDTH ||
 	    reason == NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH) {
-		_zoomThread->addRequest (request);
+		_zoomThread->addRequest (req);
 
 		if (!_zoomThread->isRunning ())
 			_zoomThread->start ();
 	} else {
 		emit needIndicator (true);
 
-		_thread->addRequest (request);
+		_thread->addRequest (req);
 		_thread->start ();
 	}
 }

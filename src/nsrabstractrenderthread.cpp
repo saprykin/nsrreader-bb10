@@ -30,7 +30,7 @@ NSRAbstractRenderThread::getRenderContext ()
 }
 
 void
-NSRAbstractRenderThread::addRequest (NSRRenderedPage& page)
+NSRAbstractRenderThread::addRequest (const NSRRenderedPage& page)
 {
 	QMutexLocker locker (&_requestedMutex);
 	_requestedPages.append (page);

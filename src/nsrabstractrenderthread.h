@@ -16,7 +16,7 @@ public:
 
 	void setRenderContext (NSRAbstractDocument *doc);
 	NSRAbstractDocument * getRenderContext ();
-	void addRequest (NSRRenderedPage &page);
+	void addRequest (const NSRRenderedPage &page);
 	void cancelRequests ();
 	bool hasRequests ();
 	NSRRenderedPage getRequest ();

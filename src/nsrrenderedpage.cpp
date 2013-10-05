@@ -20,6 +20,16 @@ NSRRenderedPage::NSRRenderedPage (int number, QObject *parent) :
 {
 }
 
+NSRRenderedPage::NSRRenderedPage (int number, NSRRenderReason reason, QObject *parent) :
+		QObject (parent),
+		_reason (reason),
+		_zoom (0),
+		_number (number),
+		_cropped (false),
+		_cached (false)
+{
+}
+
 NSRRenderedPage::NSRRenderedPage (const NSRRenderedPage& page) :
 	QObject (page.parent ())
 {
