@@ -491,7 +491,8 @@ NSRReaderBB10::onRecentDocsTriggered ()
 	ActionItem *pageBackAction = ActionItem::create();
 	page->setPaneProperties (NavigationPaneProperties::create().backButton(pageBackAction));
 
-	connect (pageBackAction, SIGNAL (triggered ()), this, SLOT (onBackButtonTriggered ()));
+	ok = connect (pageBackAction, SIGNAL (triggered ()), this, SLOT (onBackButtonTriggered ()));
+	Q_ASSERT (ok);
 
 	_naviPane->push (page);
 }
