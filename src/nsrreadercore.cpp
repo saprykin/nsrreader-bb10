@@ -410,8 +410,12 @@ NSRReaderCore::onZoomRenderDone ()
 		return;
 
 	/* Check if the zoomed page is still relevant */
-	if (_currentPage.getNumber () != page.getNumber ())
+	if (_currentPage.getNumber () != page.getNumber () &&
+	    qAbs (_zoomDoc->getZoom () - page.getZoom ()) <= DBL_EPSILON) {
+		/* Anyway document hasn't changed, so we can save it in cache */
+		_cache->addPage (page);
 		return;
+	}
 
 	/* It seems that another page is rendering already */
 	if (_thread->isRunning ()) {
