@@ -409,6 +409,10 @@ NSRReaderCore::onZoomRenderDone ()
 	if (_zoomThread->isDocumentChanged ())
 		return;
 
+	/* Check if the zoomed page is still relevant */
+	if (_currentPage.getNumber () != page.getNumber ())
+		return;
+
 	/* It seems that another page is rendering already */
 	if (_thread->isRunning ()) {
 		_zoomThread->cancelRequests ();
