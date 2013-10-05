@@ -6,7 +6,6 @@
 #include <QFileInfo>
 #include <QDataStream>
 #include <QTextCodec>
-#include <QDebug>
 
 #define NSR_TEXT_PAGE_SIZE	5120
 #define NSR_TEXT_MIN_ZOOM	25
@@ -18,7 +17,7 @@ NSRTextDocument::NSRTextDocument (const QString &file, QObject *parent) :
 {
 	QFileInfo info (file);
 
-	setTextOnly (true);
+	NSRAbstractDocument::setTextOnly (true);
 
 	_pagesCount = (int) (ceil ((double) info.size() / NSR_TEXT_PAGE_SIZE) + 0.5);
 }
