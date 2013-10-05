@@ -171,6 +171,7 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 
 	bool	needReload = false;
 	bool	wasTextOnly = _doc->isTextOnly ();
+	bool	isNowTextOnly = (dynamic_cast<NSRTextDocument *> (_doc) != NULL) || settings->isWordWrap ();
 	bool	wasInverted = _doc->isInvertedColors ();
 	bool	wasCropped = _doc->isAutoCrop ();
 	QString	wasEncoding = _doc->getEncoding ();
@@ -185,17 +186,21 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 		_zoomDoc->setAutoCrop (settings->isAutoCrop ());
 	}
 
-	if (wasTextOnly && !settings->isWordWrap ())
-		_cache->removePagesWithoutImages ();
-
 	/* Check whether we need to re-render the page */
-	if (wasTextOnly && !settings->isWordWrap ())
+	if (wasTextOnly && !isNowTextOnly) {
+		_cache->removePagesWithoutImages ();
 		needReload = true;
+	}
 
 	if (wasInverted != _doc->isInvertedColors () ||
 	    wasCropped != _doc->isAutoCrop ()) {
-		_cache->clearStorage ();
-		needReload = true;
+		/* Do not clear text from cache if text mode is remained */
+		if (wasTextOnly && isNowTextOnly)
+			_cache->removePagesWithImages ();
+		else {
+			_cache->clearStorage ();
+			needReload = true;
+		}
 	}
 
 	if (wasEncoding != _doc->getEncoding () && _doc->isEncodingUsed ()) {
@@ -203,7 +208,7 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 		needReload = true;
 	}
 
-	if (wasTextOnly != settings->isWordWrap () && !needReload)
+	if (wasTextOnly != isNowTextOnly && !needReload)
 		emit needViewMode (NSRPageView::NSR_VIEW_MODE_PREFERRED);
 
 	if (needReload)
