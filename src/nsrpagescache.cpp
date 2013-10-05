@@ -62,6 +62,7 @@ NSRPagesCache::addPage (const NSRRenderedPage& page)
 
 	NSRRenderedPage newPage = page;
 	newPage.setRenderReason (NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION);
+	newPage.setCached (true);
 
 	_pages.append (newPage.getNumber ());
 	qSort (_pages);
