@@ -499,6 +499,9 @@ NSRReaderCore::loadPage (PageLoad				dir,
 		if (!_zoomThread->isRunning ())
 			_zoomThread->start ();
 	} else {
+		if (_zoomThread->isRunning ())
+			_zoomThread->cancelRequests ();
+
 		emit needIndicator (true);
 
 		_thread->addRequest (request);
