@@ -528,9 +528,12 @@ NSRReaderBB10::onPageRendered (int number)
 
 	updateVisualControls ();
 
-	if (_core->isFitToWidth () && page.isCropped () &&
-	    page.getRenderReason () != NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH)
-		_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
+	/* Fit cropped page to width only in graphic mode */
+	if (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_GRAPHIC) {
+		if (_core->isFitToWidth () && page.isCropped () &&
+		    page.getRenderReason () != NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH)
+			_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
+	}
 
 	if (_isActiveFrame)
 		onThumbnail ();
