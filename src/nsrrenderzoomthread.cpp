@@ -49,7 +49,7 @@ NSRRenderZoomThread::run ()
 
 		/* We need this page only if there is no more
 		 * pages requested. If there are more pages
-		 * requested than current page is outdated */
+		 * requested then current page is outdated */
 		if (!hasRequests ()) {
 			completeRequest (page);
 			emit renderDone ();
