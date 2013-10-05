@@ -792,7 +792,8 @@ NSRReaderBB10::onPageTapped ()
 void
 NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
 {
-	NSRPageView::NSRViewMode newMode;
+	NSRPageView::NSRViewMode	newMode;
+	bool				needRefit = false;
 
 	if (mode == NSRPageView::NSR_VIEW_MODE_PREFERRED) {
 		if (_startMode == ApplicationStartupMode::InvokeCard)
@@ -803,7 +804,16 @@ NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
 	} else
 		newMode = mode;
 
+	needRefit = (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_TEXT) &&
+		    (newMode == NSRPageView::NSR_VIEW_MODE_GRAPHIC) &&
+		    !_core->getCurrentPage().isCached () &&
+		    _core->getCurrentPage().isCropped () &&
+		    _core->isFitToWidth ();
+
 	_pageView->setViewMode (newMode);
+
+	if (needRefit)
+		_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
 }
 
 void
