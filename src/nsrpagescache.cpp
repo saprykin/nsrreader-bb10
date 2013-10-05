@@ -119,3 +119,12 @@ NSRPagesCache::removePagesWithoutImages ()
 		if (!_hash.value(_pages.at (i)).isImageValid ())
 			removePage (_pages.at (i));
 }
+
+void
+NSRPagesCache::removePagesWithImages ()
+{
+	int count = _pages.count ();
+	for (int i = count - 1; i >= 0; --i)
+		if (_hash.value(_pages.at (i)).isImageValid ())
+			removePage (_pages.at (i));
+}

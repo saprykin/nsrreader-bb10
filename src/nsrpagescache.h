@@ -23,6 +23,7 @@ public:
 				  const QPointF&	pos,
 				  const QPointF& 	textPos);
 	void removePagesWithoutImages ();
+	void removePagesWithImages ();
 
 private:
 	QHash<int, NSRRenderedPage>	_hash;
