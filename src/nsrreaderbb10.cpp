@@ -54,6 +54,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_readProgress (NULL),
 	_welcomeView (NULL),
 	_actionAggregator (NULL),
+	_slider (NULL),
+	_bpsHandler (NULL),
 	_naviPane (NULL),
 	_page (NULL),
 	_filePicker (NULL),
@@ -63,7 +65,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_invokeManager (NULL),
 	_startMode (ApplicationStartupMode::LaunchApplication),
 	_isFullscreen (false),
-	_isActiveFrame (false)
+	_isActiveFrame (false),
+	_wasSliderVisible (false)
 {
 	_invokeManager = new InvokeManager (this);
 
@@ -175,6 +178,10 @@ NSRReaderBB10::initFullUI ()
 
 	ok = connect (_page, SIGNAL (peekedAtChanged (bool)), this, SLOT (onTopPagePeeked (bool)));
 	Q_ASSERT (ok);
+
+	_bpsHandler = new NSRBpsEventHandler (this);
+	ok = connect (_bpsHandler, SIGNAL (vkbVisibilityChanged (bool)),
+		      this, SLOT (onVkbVisibilityChanged (bool)));
 
 	ActionItem *openAction = ActionItem::create().enabled (true);
 	openAction->setTitle (trUtf8 ("Open", "Open file"));
@@ -1021,6 +1028,9 @@ NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Ty
 	if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
 		return 0;
 
+	if (_bpsHandler->isVkbVisible ())
+		return 0;
+
 	QSize	displaySize = DisplayInfo().pixelSize ();
 
 	if (displaySize.width () == displaySize.height ())
@@ -1118,4 +1128,14 @@ void
 NSRReaderBB10::onPageSliderValueChanged (int value)
 {
 	_pageStatus->setStatus (value, _core->getPagesCount ());
+}
+
+void
+NSRReaderBB10::onVkbVisibilityChanged (bool visible)
+{
+	if (visible) {
+		_wasSliderVisible = _slider->isVisible ();
+		_slider->setVisible (false);
+	} else
+		_slider->setVisible (_wasSliderVisible);
 }

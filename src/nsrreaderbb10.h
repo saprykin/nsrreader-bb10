@@ -9,6 +9,7 @@
 #include "nsractionaggregator.h"
 #include "nsraboutpage.h"
 #include "nsrpageslider.h"
+#include "nsrbpseventhandler.h"
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/ImageView>
@@ -75,6 +76,7 @@ private Q_SLOTS:
     void onPageSliderInteractionStarted ();
     void onPageSliderInteractionEnded ();
     void onPageSliderValueChanged (int value);
+    void onVkbVisibilityChanged (bool visible);
 
 private:
     void initFullUI ();
@@ -97,6 +99,7 @@ private:
     NSRWelcomeView				*_welcomeView;
     NSRActionAggregator				*_actionAggregator;
     NSRPageSlider				*_slider;
+    NSRBpsEventHandler				*_bpsHandler;
     bb::cascades::NavigationPane		*_naviPane;
     bb::cascades::Page				*_page;
     bb::cascades::pickers::FilePicker		*_filePicker;
@@ -107,6 +110,7 @@ private:
     bb::system::ApplicationStartupMode::Type	_startMode;
     bool					_isFullscreen;
     bool					_isActiveFrame;
+    bool					_wasSliderVisible;
 };
 
 #endif /* NSRREADERBB10_H_ */
