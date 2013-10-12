@@ -106,8 +106,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	ImageView *twitterImage = ImageView::create().imageSource(QUrl ("asset:///twitter.png"));
 	Label *twitterInfo = Label::create().horizontal(HorizontalAlignment::Left)
 					    .vertical(VerticalAlignment::Center)
-					    .text("<a href='http://www.twitter.com/NSRReader'>"
-						  "Follow on Twitter</a>")
+					    .text(trUtf8 ("<a href='http://www.twitter.com/NSRReader'>"
+							  "Follow on Twitter</a>"))
 					    .format(TextFormat::Html);
 	twitterInfo->textStyle()->setFontSize (FontSize::Medium);
 	twitterInfo->content()->setFlags (TextContentFlag::ActiveText);
@@ -126,8 +126,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	ImageView *fbImage = ImageView::create().imageSource(QUrl ("asset:///facebook.png"));
 	Label *fbInfo = Label::create().horizontal(HorizontalAlignment::Left)
 				       .vertical(VerticalAlignment::Center)
-				       .text("<a href='http://www.facebook.com/pages/NSR-Reader/162440877184478'>"
-					     "Visit on Facebook</a>")
+				       .text(trUtf8 ("<a href='http://www.facebook.com/pages/NSR-Reader/162440877184478'>"
+						     "Visit on Facebook</a>"))
 				       .format(TextFormat::Html);
 	fbInfo->textStyle()->setFontSize (FontSize::Medium);
 	fbInfo->content()->setFlags (TextContentFlag::ActiveText);

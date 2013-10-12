@@ -223,29 +223,31 @@ QStringList
 NSRSettings::getSupportedEncodings()
 {
 	static QStringList codecs = QStringList ()
-	       << "Unicode (UTF-8)"<< "Western European (ISO-8859-1)" << "Western European (CP850)"
-	       << "Western European (CP1252)" << "Western European (ISO-8859-15)"
-	       << "Central European (ISO-8859-2)" << "Central European (CP1250)"
-	       << "South European (ISO-8859-3)" << "Baltic (ISO-8859-4)" << "Baltic (ISO-8859-13)"
-	       << "Baltic (CP1257)" << "Nordic (ISO-8859-10)" << "Celtic (ISO-8859-14)"
-	       << "Romanian (ISO-8859-16)" << "Greek (ISO-8859-7)" << "Greek (CP1253)"
-	       << "Cyrillic (ISO-8859-5)" << "Cyrillic (KOI8-R)" << "Cyrillic (CP1251)"
-	       << "Cyrillic/Russia (CP866)" << "Cyrillic/Ukraine (KOI8-U)"
-	       << "Hebrew (ISO-8859-8)" << "Hebrew (ISO-8859-8-I)" << "Hebrew (CP1255)"
-	       << "Turkish (ISO-8859-9)" << "Turkish (CP1254)"
-	       << "Arabic (ISO-8859-6)" << "Arabic (ISO-8859-6-I)" << "Arabic (CP1256)"
-	       << "Latin/Thai (ISO-8859-11)" << "Thai (CP874)"
-	       << "Korean (EUC-KR)" << "Korean (CP949)"
-	       << "Japanese (Shift_JIS)" << "Japanese (EUC-JP)" << "Japanese (JIS7)"
-	       << "Japanese (ISO-2022-JP)"
-	       << "Chinese Simplified (GB18030)" << "Chinese Simplified (GB2312)"
-	       << "Chinese Simplified (GBK)" << "Chinese Simplified (CP936)"
-	       << "Chinese Traditional (Big5)" << "Chinese Traditional (Big5-HKSCS)"
-	       << "Chinese Traditional (Big5-ETen)" << "Chinese Traditional (CP950)"
-	       << "Tamil (TSCII)" << "Vietnamese (CP1258)"
-	       << "Unicode (UTF-16)" << "Unicode (UTF-16BE)" << "Unicode (UTF-16LE)" << "Unicode (UTF-32)"
-	       << "Unicode (UTF-32BE)" << "Unicode (UTF-32LE)"
-	       << "Apple Roman" << "WINSAMI2";
+	       << trUtf8 ("Unicode (UTF-8)") << trUtf8 ("Western European (ISO-8859-1)")
+	       << trUtf8 ("Western European (CP850)")
+	       << trUtf8 ("Western European (CP1252)") << trUtf8 ("Western European (ISO-8859-15)")
+	       << trUtf8 ("Central European (ISO-8859-2)") << trUtf8 ("Central European (CP1250)")
+	       << trUtf8 ("South European (ISO-8859-3)") << trUtf8 ("Baltic (ISO-8859-4)")
+	       << trUtf8 ("Baltic (ISO-8859-13)")
+	       << trUtf8 ("Baltic (CP1257)") << trUtf8 ("Nordic (ISO-8859-10)") << trUtf8 ("Celtic (ISO-8859-14)")
+	       << trUtf8 ("Romanian (ISO-8859-16)") << trUtf8 ("Greek (ISO-8859-7)") << trUtf8 ("Greek (CP1253)")
+	       << trUtf8 ("Cyrillic (ISO-8859-5)") << trUtf8 ("Cyrillic (KOI8-R)") << trUtf8 ("Cyrillic (CP1251)")
+	       << trUtf8 ("Cyrillic/Russia (CP866)") << trUtf8 ("Cyrillic/Ukraine (KOI8-U)")
+	       << trUtf8 ("Hebrew (ISO-8859-8)") << trUtf8 ("Hebrew (ISO-8859-8-I)") << trUtf8 ("Hebrew (CP1255)")
+	       << trUtf8 ("Turkish (ISO-8859-9)") << trUtf8 ("Turkish (CP1254)")
+	       << trUtf8 ("Arabic (ISO-8859-6)") << trUtf8 ("Arabic (ISO-8859-6-I)") << trUtf8 ("Arabic (CP1256)")
+	       << trUtf8 ("Latin/Thai (ISO-8859-11)") << trUtf8 ("Thai (CP874)")
+	       << trUtf8 ("Korean (EUC-KR)") << trUtf8 ("Korean (CP949)")
+	       << trUtf8 ("Japanese (Shift_JIS)") << trUtf8 ("Japanese (EUC-JP)") << trUtf8 ("Japanese (JIS7)")
+	       << trUtf8 ("Japanese (ISO-2022-JP)")
+	       << trUtf8 ("Chinese Simplified (GB18030)") << trUtf8 ("Chinese Simplified (GB2312)")
+	       << trUtf8 ("Chinese Simplified (GBK)") << trUtf8 ("Chinese Simplified (CP936)")
+	       << trUtf8 ("Chinese Traditional (Big5)") << trUtf8 ("Chinese Traditional (Big5-HKSCS)")
+	       << trUtf8 ("Chinese Traditional (Big5-ETen)") << trUtf8 ("Chinese Traditional (CP950)")
+	       << trUtf8 ("Tamil (TSCII)") << trUtf8 ("Vietnamese (CP1258)")
+	       << trUtf8 ("Unicode (UTF-16)") << trUtf8 ("Unicode (UTF-16BE)") << trUtf8 ("Unicode (UTF-16LE)")
+	       << trUtf8 ("Unicode (UTF-32)") << trUtf8 ("Unicode (UTF-32BE)") << trUtf8 ("Unicode (UTF-32LE)")
+	       << trUtf8 ("Apple Roman") << trUtf8 ("WINSAMI2");
 
 	return codecs;
 }

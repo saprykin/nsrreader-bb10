@@ -120,7 +120,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
 
 
-	_actionSet = ActionSet::create().title(trUtf8 ("Page")).subtitle ("Graphical Mode");
+	_actionSet = ActionSet::create().title(trUtf8 ("Page")).subtitle (trUtf8 ("Graphical Mode"));
 	_actionSet->add (fitToWidthAction);
 	_actionSet->add (rotateLeftAction);
 	_actionSet->add (rotateRightAction);

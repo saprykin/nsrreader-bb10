@@ -145,6 +145,14 @@
         <source>&lt;b&gt;Crop Blank Edges&lt;/b&gt; &amp;ndash; automatically tries to detect and crop page&apos;s blank edges to reduce side-to-side scrolling, especially when page is fitted to screen width.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&lt;a href=&apos;http://www.twitter.com/NSRReader&apos;&gt;Follow on Twitter&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Visit on Facebook&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRAbstractDocument</name>
@@ -255,6 +263,10 @@
     <message>
         <source>Fit to Width</source>
         <comment>Fit image to screen width</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Graphical Mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -408,6 +420,229 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
     <message>
         <source>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone</source>
         <comment>Text reflow is a view mode of PDF/DjVu files when only text information without images is displayed with word wrap feature enabled. Use pinch gesture to adjust text size</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NSRSettings</name>
+    <message>
+        <source>Unicode (UTF-8)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Western European (ISO-8859-1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Western European (CP850)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Western European (CP1252)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Western European (ISO-8859-15)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Central European (ISO-8859-2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Central European (CP1250)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>South European (ISO-8859-3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Baltic (ISO-8859-4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Baltic (ISO-8859-13)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Baltic (CP1257)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nordic (ISO-8859-10)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Celtic (ISO-8859-14)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Romanian (ISO-8859-16)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Greek (ISO-8859-7)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Greek (CP1253)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cyrillic (ISO-8859-5)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cyrillic (KOI8-R)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cyrillic (CP1251)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cyrillic/Russia (CP866)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cyrillic/Ukraine (KOI8-U)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hebrew (ISO-8859-8)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hebrew (ISO-8859-8-I)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hebrew (CP1255)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turkish (ISO-8859-9)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turkish (CP1254)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arabic (ISO-8859-6)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arabic (ISO-8859-6-I)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arabic (CP1256)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Latin/Thai (ISO-8859-11)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thai (CP874)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Korean (EUC-KR)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Korean (CP949)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Japanese (Shift_JIS)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Japanese (EUC-JP)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Japanese (JIS7)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Japanese (ISO-2022-JP)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese Simplified (GB18030)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese Simplified (GB2312)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese Simplified (GBK)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese Simplified (CP936)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese Traditional (Big5)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese Traditional (Big5-HKSCS)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese Traditional (Big5-ETen)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chinese Traditional (CP950)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tamil (TSCII)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vietnamese (CP1258)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unicode (UTF-16)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unicode (UTF-16BE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unicode (UTF-16LE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unicode (UTF-32)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unicode (UTF-32BE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unicode (UTF-32LE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apple Roman</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WINSAMI2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
