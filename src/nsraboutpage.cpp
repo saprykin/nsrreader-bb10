@@ -79,7 +79,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
-	contactsInfo->accessibility()->setName (trUtf8 ("Contacts: nsr.reader@gmail.com - click to write a email"));
+	contactsInfo->accessibility()->setName (trUtf8 ("Contacts: nsr.reader@gmail.com - tap to write a email"));
 #  endif
 #endif
 
@@ -139,9 +139,9 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
-	twitterInfo->accessibility()->setName (trUtf8 ("Click to visit Twitter page"));
+	twitterInfo->accessibility()->setName (trUtf8 ("Tap to visit Twitter page"));
 	twitterImage->accessibility()->setName (trUtf8 ("Twitter logo"));
-	fbInfo->accessibility()->setName (trUtf8 ("Click to visit Facebook page"));
+	fbInfo->accessibility()->setName (trUtf8 ("Tap to visit Facebook page"));
 	fbImage->accessibility()->setName (trUtf8 ("Facebook logo"));
 #  endif
 #endif

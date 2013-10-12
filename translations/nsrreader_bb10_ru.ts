@@ -107,11 +107,11 @@
     </message>
     <message>
         <source>Contacts: nsr.reader@gmail.com - click to write a email</source>
-        <translation>Контакты: nsr.reader@gmail.com - нажмите для написания письма</translation>
+        <translation type="obsolete">Контакты: nsr.reader@gmail.com - нажмите для написания письма</translation>
     </message>
     <message>
         <source>Click to visit Twitter page</source>
-        <translation>Нажмите для перехода на страницу Twitter</translation>
+        <translation type="obsolete">Нажмите для перехода на страницу Twitter</translation>
     </message>
     <message>
         <source>Twitter logo</source>
@@ -119,7 +119,7 @@
     </message>
     <message>
         <source>Click to visit Facebook page</source>
-        <translation>Нажмите для перехода на страницу Facebook</translation>
+        <translation type="obsolete">Нажмите для перехода на страницу Facebook</translation>
     </message>
     <message>
         <source>Facebook logo</source>
@@ -152,6 +152,18 @@
     <message>
         <source>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Visit on Facebook&lt;/a&gt;</source>
         <translation>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Посетить  Facebook&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Contacts: nsr.reader@gmail.com - tap to write a email</source>
+        <translation>Контакты: nsr.reader@gmail.com - нажмите для написания письма</translation>
+    </message>
+    <message>
+        <source>Tap to visit Twitter page</source>
+        <translation>Нажмите для перехода на страницу Twitter</translation>
+    </message>
+    <message>
+        <source>Tap to visit Facebook page</source>
+        <translation>Нажмите для перехода на страницу Facebook</translation>
     </message>
 </context>
 <context>

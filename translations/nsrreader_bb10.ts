@@ -106,19 +106,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Contacts: nsr.reader@gmail.com - click to write a email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Click to visit Twitter page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Twitter logo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Click to visit Facebook page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -151,6 +139,18 @@
     </message>
     <message>
         <source>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Visit on Facebook&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contacts: nsr.reader@gmail.com - tap to write a email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tap to visit Twitter page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tap to visit Facebook page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
