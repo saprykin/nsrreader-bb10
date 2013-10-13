@@ -131,19 +131,19 @@
     </message>
     <message>
         <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</source>
-        <translation>Используйте стрелки на нижней панели инструментов для навигации. Двойное касание левой части экрана загружает предыдущую страницу, правой части - следующую страницу, а двойное касание по середине масштабирует страницу по ширине экрана. Также можно перемещаться между страницами, используя аппаратные кнопки регулировки громкости: &lt;i&gt;Увеличить громкость&lt;/i&gt; для перехода на предыдущую страницу и &lt;i&gt;Уменьшить громкость&lt;/i&gt; для перехода на следующую страницу.&lt;p&gt;&lt;/p&gt;Если у телефона есть физическая клавиатура, то можно использовать следующие клавиши (могут меняться в зависимости от используемого языка): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; для прехода на предыдущую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; для перехода на следующую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; для перехода на произвольную страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; для открытия другого файла&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; для пролистывания одного экрана вниз&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; для пролистывания одного экрана вверх&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; для пролистывания до конца&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; для пролистывания на верх&lt;/li&gt;&lt;/ul&gt;Используйте бегунок &lt;b&gt;Перейти к&lt;/b&gt; для перехода к произвольной странице.</translation>
+        <translation>Используйте стрелки на нижней панели инструментов для навигации. Двойное касание левой части экрана загружает предыдущую страницу, правой части - следующую страницу, а двойное касание по середине масштабирует страницу по ширине экрана. Также можно перемещаться между страницами, используя аппаратные кнопки регулировки громкости: &lt;i&gt;Увеличить громкость&lt;/i&gt; для перехода на предыдущую страницу и &lt;i&gt;Уменьшить громкость&lt;/i&gt; для перехода на следующую страницу.&lt;p&gt;&lt;/p&gt;Если у телефона есть физическая клавиатура, то можно использовать следующие клавиши (могут меняться в зависимости от используемого языка): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; для прехода на предыдущую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; для перехода на следующую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; для перехода на произвольную страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; для открытия другого файла&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; для пролистывания одного экрана вниз&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; для пролистывания одного экрана вверх&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; для пролистывания до конца&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; для пролистывания наверх&lt;/li&gt;&lt;/ul&gt;Используйте бегунок &lt;b&gt;Перейти к&lt;/b&gt; для перехода к произвольной странице.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Invert Colors&lt;/b&gt; &amp;ndash; use this feature during dark days or if you have OLED display to save power.</source>
-        <translation>&lt;b&gt;Инвертировать цвета&lt;/b&gt; &amp;ndash; используйте эту функцию для чтения в темное время суток или для того, чтобы сэкономить энергию при наличии экрана, выполненного по технологии OLED.</translation>
+        <translation>&lt;b&gt;Инвертировать цвета&lt;/b&gt; &amp;ndash; используйте эту функцию для чтения в тёмное время суток или для того, чтобы сэкономить энергию при наличии экрана, выполненного по технологии OLED.</translation>
     </message>
     <message>
         <source>Use pinch gesture for zooming (increase/decrease font size in text reflow mode).</source>
-        <translation>Используйте жест сведения и разведения пальцев для масштабирования (увеличения/уменьшения размера шрифта при включёном переформатировании текста).</translation>
+        <translation>Используйте жест сведения и разведения пальцев для масштабирования (увеличения/уменьшения размера шрифта при включённом переформатировании текста).</translation>
     </message>
     <message>
         <source>&lt;b&gt;Crop Blank Edges&lt;/b&gt; &amp;ndash; automatically tries to detect and crop page&apos;s blank edges to reduce side-to-side scrolling, especially when page is fitted to screen width.</source>
-        <translation>&lt;b&gt;Обрезать пустые края&lt;/b&gt; &amp;ndash; автоматически пытается определить и обрезать пустые края страницы для уменьшения горизонтального пролистывания страницы, особенно при масштабировании по ширине экрана.</translation>
+        <translation>&lt;b&gt;Обрезать пустые края&lt;/b&gt; &amp;ndash; автоматически пытается определить и обрезать пустые края страницы для уменьшения горизонтального пролистывания, особенно при масштабировании по ширине экрана.</translation>
     </message>
     <message>
         <source>&lt;a href=&apos;http://www.twitter.com/NSRReader&apos;&gt;Follow on Twitter&lt;/a&gt;</source>
@@ -151,7 +151,7 @@
     </message>
     <message>
         <source>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Visit on Facebook&lt;/a&gt;</source>
-        <translation>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Посетить  Facebook&lt;/a&gt;</translation>
+        <translation>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Посетить Facebook&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Contacts: nsr.reader@gmail.com - tap to write a email</source>
@@ -388,7 +388,7 @@ Please do not blame hard NSR Reader for that because it is only a piece of softw
         <source>Unknown error! Maybe file is broken.
 NSR Reader tried open this file, but it can&apos;t :( Please check this file on desktop computer</source>
         <translation>Неизвестная ошибка! Возможно, файл повреждён.
-NSR Reader попыталось открыть этот файл, но не получилось :( Пожалуйста, проверьте файл на обычном компьютере</translation>
+Приложение NSR Reader попыталось открыть этот файл, но не получилось :( Пожалуйста, проверьте файл на обычном компьютере</translation>
     </message>
     <message>
         <source>Enter file password</source>
@@ -412,7 +412,7 @@ NSR Reader попыталось открыть этот файл, но не по
     </message>
     <message>
         <source>Open Settings page</source>
-        <translation>Открыть страницу с настройками</translation>
+        <translation>Открыть страницу с настройками приложения</translation>
     </message>
     <message>
         <source>Open page with recent files</source>
