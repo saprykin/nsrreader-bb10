@@ -435,6 +435,10 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
         <comment>Text reflow is a view mode of PDF/DjVu files when only text information without images is displayed with word wrap feature enabled. Use pinch gesture to adjust text size</comment>
         <translation>Вы используете режим переформатирования текста первый раз. Учтите, что форматирование может отличаться от оригинала, изображения не отображаются, и страница может быть пустой, если не содержит текста. Также текст может отображаться некорректно, если телефон не поддерживает соответствующий язык</translation>
     </message>
+    <message>
+        <source>Select File</source>
+        <translation type="obsolete">Выберите файл</translation>
+    </message>
 </context>
 <context>
     <name>NSRSettings</name>
