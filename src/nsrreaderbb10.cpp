@@ -18,7 +18,6 @@
 #include <bb/cascades/Label>
 #include <bb/cascades/Menu>
 #include <bb/cascades/ActionItem>
-#include <bb/cascades/SettingsActionItem>
 #include <bb/cascades/NavigationPaneProperties>
 
 #include <bbndk.h>
@@ -194,7 +193,7 @@ NSRReaderBB10::initFullUI ()
 	nextPageAction->setTitle (trUtf8 ("Next", "Next page"));
 	ActionItem *gotoAction = ActionItem::create().enabled (false);
 	gotoAction->setTitle (trUtf8 ("Go to", "Go to page"));
-	SettingsActionItem *prefsAction = SettingsActionItem::create().title(trUtf8 ("Settings"));
+	ActionItem *prefsAction = ActionItem::create().title(trUtf8 ("Settings"));
 	ActionItem *recentDocsAction = ActionItem::create().title (trUtf8 ("Recent"));
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
 	ActionItem *shareAction = ActionItem::create().enabled (false);
@@ -233,6 +232,7 @@ NSRReaderBB10::initFullUI ()
 	prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
 	nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 	gotoAction->setImageSource (QUrl ("asset:///goto.png"));
+	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
 	recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
@@ -276,8 +276,8 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	Menu *menu = new Menu ();
-	menu->setSettingsAction (prefsAction);
 	menu->addAction (helpAction);
+	menu->addAction (prefsAction);
 	Application::instance()->setMenu (menu);
 
 	_filePicker = new FilePicker (this);
