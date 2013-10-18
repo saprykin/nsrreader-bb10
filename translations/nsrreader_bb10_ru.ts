@@ -45,7 +45,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files (.txt). Use it for files with specific national encoding.</source>
-        <translation>&lt;b&gt;Кодировка текста&lt;/b&gt; &amp;ndash; применима только для чисто текстовых файлов (с расширением txt). Используйте для файлов со специфичной национальной кодировкой.</translation>
+        <translation>&lt;b&gt;Кодировка текста&lt;/b&gt; &amp;ndash; применима только для чисто текстовых файлов (.txt). Используйте для файлов со специфичной национальной кодировкой.</translation>
     </message>
     <message>
         <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
@@ -70,7 +70,7 @@
     </message>
     <message>
         <source>Please leave a review for NSR Reader if you liked it to help others find it in the store. Thank you!</source>
-        <translation>Пожалуйста, оставьте отзыв о NSR Reader, если приложение понравилась, чтобы помочь другим узнать о нём. Спасибо!</translation>
+        <translation>Пожалуйста, оставьте отзыв о NSR Reader, если приложение понравилось, чтобы помочь другим узнать о нём. Спасибо!</translation>
     </message>
     <message>
         <source>Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.</source>
@@ -99,7 +99,7 @@
     </message>
     <message>
         <source>NSR Reader is a handy tool for reading PDF, DjVu, TIFF and TXT files. Hope you will be enjoying using it! Please take a look at the following instructions and tips to make reading more comfortable.</source>
-        <translation>NSR Reader - приложение для удобного чтения файлов PDF, DjVu, TIFF и TXT. Надеюсь, Вы получите удовольствие от его использования! Пожалуйста, потратьте немного времени на чтение следующих советов и подсказок, чтобы сделать чтение более удобным.</translation>
+        <translation>NSR Reader - приложение для удобного чтения файлов PDF, DjVu, TIFF и TXT. Надеюсь, Вы получите удовольствие от его использования! Пожалуйста, потратьте немного времени на просмотр следующих советов и подсказок, чтобы сделать чтение более удобным.</translation>
     </message>
     <message>
         <source>Logo of the app</source>
