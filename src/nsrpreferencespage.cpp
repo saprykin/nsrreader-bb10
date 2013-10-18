@@ -106,8 +106,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 									    .orientation(LayoutOrientation::LeftToRight));
 	Container *outerFourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							     .layout(StackLayout::create());
-	Label *invertInfo = Label::create (trUtf8 ("Inverted colors can save power with "
-						   "OLED display and help to read at dark."))
+	Label *invertInfo = Label::create (trUtf8 ("Inverted colors reduce OLED display power consumption "
+					       	   "and help to read at dark."))
 				   .horizontal(HorizontalAlignment::Fill)
 				   .vertical(VerticalAlignment::Center);
 	invertInfo->textStyle()->setFontSize (FontSize::XSmall);
@@ -136,8 +136,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				     	 .horizontal(HorizontalAlignment::Fill)
 				     	 .vertical(VerticalAlignment::Center)
 				     	 .multiline(true);
-	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for pure text files. "
-						    "None other format supports encoding selection."))
+	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for plain text files. "
+					       	    "None other format supports encoding selection."))
 				     .horizontal(HorizontalAlignment::Fill)
 				     .vertical(VerticalAlignment::Center);
 	encodingInfo->textStyle()->setFontSize (FontSize::XSmall);
@@ -207,8 +207,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_translator->addTranslatable ((UIObject *) invertInfo,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
-				      QString ("Inverted colors can save power with "
-					       "OLED display and help to read at dark."));
+				      QString ("Inverted colors reduce OLED display power consumption "
+					       "and help to read at dark."));
 	_translator->addTranslatable ((UIObject *) invertLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -220,7 +220,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_translator->addTranslatable ((UIObject *) encodingInfo,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
-				      QString ("Text encoding is used only for pure text files. "
+				      QString ("Text encoding is used only for plain text files. "
 					       "None other format supports encoding selection."));
 	_translator->addTranslatable ((UIObject *) cropLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,

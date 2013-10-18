@@ -407,7 +407,7 @@ NSRAboutPage::retranslateUi ()
 			    	    "display to save power.");
 	QString cropSet = trUtf8 ("<b>Crop Blank Edges</b> &ndash; automatically tries to detect and crop page's blank edges "
 				  "to reduce side-to-side scrolling, especially when page is fitted to screen width.");
-	QString encodSet = trUtf8 ("<b>Text Encoding</b> &ndash; this is only applied for plain text files (.txt). "
+	QString encodSet = trUtf8 ("<b>Text Encoding</b> &ndash; this is only applied for plain text files. "
 			    	   "Use it for files with specific national encoding.");
 	QString tip1 = trUtf8 ("NSR Reader always saves position for every file.");
 	QString tip2 = trUtf8 ("Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.");

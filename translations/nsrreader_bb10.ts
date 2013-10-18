@@ -45,7 +45,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files (.txt). Use it for files with specific national encoding.</source>
-        <translation>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files (.txt). Use it for files with specific national encoding.</translation>
+        <translation type="obsolete">&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files (.txt). Use it for files with specific national encoding.</translation>
     </message>
     <message>
         <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
@@ -152,6 +152,10 @@
     <message>
         <source>Tap to visit Facebook page</source>
         <translation>Tap to visit Facebook page</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files. Use it for files with specific national encoding.</source>
+        <translation>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files. Use it for files with specific national encoding.</translation>
     </message>
 </context>
 <context>
@@ -289,7 +293,7 @@
     </message>
     <message>
         <source>Inverted colors can save power with OLED display and help to read at dark.</source>
-        <translation>Inverted colors can save power with OLED display and help to read at dark.</translation>
+        <translation type="obsolete">Inverted colors can save power with OLED display and help to read at dark.</translation>
     </message>
     <message>
         <source>Invert Colors</source>
@@ -298,7 +302,7 @@
     </message>
     <message>
         <source>Text encoding is used only for pure text files. None other format supports encoding selection.</source>
-        <translation>Text encoding is used only for pure text files. None other format supports encoding selection.</translation>
+        <translation type="obsolete">Text encoding is used only for pure text files. None other format supports encoding selection.</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -312,6 +316,14 @@
         <source>Crop Blank Edges</source>
         <comment>Option in preferences</comment>
         <translation>Crop Blank Edges</translation>
+    </message>
+    <message>
+        <source>Inverted colors reduce OLED display power consumption and help to read at dark.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text encoding is used only for plain text files. None other format supports encoding selection.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

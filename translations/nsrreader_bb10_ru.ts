@@ -45,7 +45,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files (.txt). Use it for files with specific national encoding.</source>
-        <translation>&lt;b&gt;Кодировка текста&lt;/b&gt; &amp;ndash; применима только для чисто текстовых файлов (.txt). Используйте для файлов со специфичной национальной кодировкой.</translation>
+        <translation type="obsolete">&lt;b&gt;Кодировка текста&lt;/b&gt; &amp;ndash; применима только для чисто текстовых файлов (.txt). Используйте для файлов со специфичной национальной кодировкой.</translation>
     </message>
     <message>
         <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
@@ -164,6 +164,10 @@
     <message>
         <source>Tap to visit Facebook page</source>
         <translation>Нажмите для перехода на страницу Facebook</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files. Use it for files with specific national encoding.</source>
+        <translation>&lt;b&gt;Кодировка текста&lt;/b&gt; &amp;ndash; применима только для чисто текстовых файлов. Используйте для файлов со специфичной национальной кодировкой.</translation>
     </message>
 </context>
 <context>
@@ -301,7 +305,7 @@
     </message>
     <message>
         <source>Inverted colors can save power with OLED display and help to read at dark.</source>
-        <translation>Инвертированные цвета могут сохранить энергию OLED экрана и помогают читать в темноте.</translation>
+        <translation type="obsolete">Инвертированные цвета могут сохранить энергию OLED экрана и помогают читать в темноте.</translation>
     </message>
     <message>
         <source>Invert Colors</source>
@@ -310,7 +314,7 @@
     </message>
     <message>
         <source>Text encoding is used only for pure text files. None other format supports encoding selection.</source>
-        <translation>Кодировка используется только для чисто текстовых файлов. Другие форматы не поддерживают её выбор.</translation>
+        <translation type="obsolete">Кодировка используется только для чисто текстовых файлов. Другие форматы не поддерживают её выбор.</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -324,6 +328,14 @@
         <source>Crop Blank Edges</source>
         <comment>Option in preferences</comment>
         <translation>Обрезать пустые края</translation>
+    </message>
+    <message>
+        <source>Inverted colors reduce OLED display power consumption and help to read at dark.</source>
+        <translation>Инвертированные цвета уменьшают энергопотребление OLED экрана и помогают читать в темноте.</translation>
+    </message>
+    <message>
+        <source>Text encoding is used only for plain text files. None other format supports encoding selection.</source>
+        <translation>Кодировка используется только для чисто текстовых файлов. Другие форматы не поддерживают её выбор.</translation>
     </message>
 </context>
 <context>
