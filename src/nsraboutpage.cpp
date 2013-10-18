@@ -1,5 +1,6 @@
 #include "nsraboutpage.h"
 #include "nsrsettings.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
@@ -8,7 +9,6 @@
 #include <bb/cascades/Button>
 #include <bb/cascades/SegmentedControl>
 #include <bb/cascades/Option>
-#include <bb/cascades/WebView>
 #include <bb/cascades/WebSettings>
 #include <bb/cascades/Color>
 #include <bb/cascades/ActionItem>
@@ -26,8 +26,11 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Page (parent),
 	_aboutContainer (NULL),
 	_helpContainer (NULL),
-	_scrollView (NULL)
+	_scrollView (NULL),
+	_webHelp (NULL)
 {
+	_translator = new NSRTranslator (this);
+
 	SegmentedControl *segmentedControl = SegmentedControl::create().horizontal(HorizontalAlignment::Center)
 								       .vertical(VerticalAlignment::Top);
 	segmentedControl->add (Option::create().text (trUtf8 ("About", "About a program")));
@@ -168,6 +171,205 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 					    .vertical(VerticalAlignment::Fill)
 					    .layout(StackLayout::create ());
 
+	_webHelp = WebView::create ();
+	_webHelp->settings()->setDevicePixelRatio (1.0);
+	_webHelp->settings()->setViewportArguments (viewportMap);
+	_webHelp->settings()->setBackground (Color::fromRGBA (0.059f, 0.059f, 0.059f));
+
+	_helpContainer->add (_webHelp);
+	_helpContainer->setVisible (false);
+
+	/* And the version changes goes last */
+
+	_changesContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					       .vertical(VerticalAlignment::Fill)
+					       .layout(StackLayout::create ());
+
+	WebView *webChanges = WebView::create ();
+	webChanges->settings()->setDevicePixelRatio (1.0);
+	webChanges->settings()->setViewportArguments (viewportMap);
+	webChanges->settings()->setBackground (Color::fromRGBA (0.059f, 0.059f, 0.059f));
+	webChanges->setUrl (QUrl ("local:///assets/whats-new.html"));
+
+	_changesContainer->add (webChanges);
+	_changesContainer->setVisible (false);
+
+
+	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						      .vertical(VerticalAlignment::Fill)
+						      .layout(StackLayout::create ());
+	Container *contentContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+							 .vertical(VerticalAlignment::Fill)
+							 .layout(StackLayout::create ())
+							 .background(Color::fromRGBA (0.059f, 0.059f, 0.059f));
+
+	rootContainer->add (_aboutContainer);
+	rootContainer->add (_helpContainer);
+	rootContainer->add (_changesContainer);
+
+	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
+					  .vertical(VerticalAlignment::Fill)
+					  .content(rootContainer);
+	contentContainer->add (segmentedControl);
+	contentContainer->add (_scrollView);
+
+	setContent (contentContainer);
+
+	ActionItem *reviewAction = ActionItem::create().imageSource(QUrl ("asset:///review.png"))
+						       .title(trUtf8 ("Review", "Review the app in the store"));
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	reviewAction->accessibility()->setName (trUtf8 ("Review the app in the store"));
+#  endif
+#endif
+
+	ok = connect (reviewAction, SIGNAL (triggered ()), this, SLOT (onReviewActionTriggered ()));
+	Q_ASSERT (ok);
+
+	addAction (reviewAction, ActionBarPlacement::OnBar);
+
+	segmentedControl->setSelectedIndex ((int) section);
+
+	retranslateUi ();
+
+	_translator->addTranslatable ((UIObject *) segmentedControl->at (0),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
+				      QString ("NSRAboutPage"),
+				      QString ("About"));
+	_translator->addTranslatable ((UIObject *) segmentedControl->at (1),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
+				      QString ("NSRAboutPage"),
+				      QString ("Help"));
+	_translator->addTranslatable ((UIObject *) segmentedControl->at (2),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
+				      QString ("NSRAboutPage"),
+				      QString ("Changes"));
+	_translator->addTranslatable ((UIObject *) versionPlatform,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRAboutPage"),
+				      QString ("for BlackBerry%1 10"));
+	_translator->addTranslatable ((UIObject *) contactsInfo,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRAboutPage"),
+				      QString ("Contacts: <a href='mailto:nsr.reader@gmail.com'>"
+					       "nsr.reader@gmail.com</a>"));
+	_translator->addTranslatable ((UIObject *) reviewLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRAboutPage"),
+				      QString ("Please, leave a review if you liked this app."));
+	_translator->addTranslatable ((UIObject *) twitterInfo,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRAboutPage"),
+				      QString ("<a href='http://www.twitter.com/NSRReader'>"
+					       "Follow on Twitter</a>"));
+	_translator->addTranslatable ((UIObject *) fbInfo,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRAboutPage"),
+				      QString ("<a href='http://www.facebook.com/pages/NSR-Reader/162440877184478'>"
+					       "Visit on Facebook</a>"));
+	_translator->addTranslatable ((UIObject *) reviewAction,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRAboutPage"),
+				      QString ("Review"));
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	_translator->addTranslatable ((UIObject *) logoView->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Logo of the app"));
+	_translator->addTranslatable ((UIObject *) contactsInfo->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Contacts: nsr.reader@gmail.com - tap to write a email"));
+	_translator->addTranslatable ((UIObject *) twitterInfo->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Tap to visit Twitter page"));
+	_translator->addTranslatable ((UIObject *) twitterImage->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Twitter logo"));
+	_translator->addTranslatable ((UIObject *) fbInfo->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Tap to visit Facebook page"));
+	_translator->addTranslatable ((UIObject *) fbImage->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString (""));
+	_translator->addTranslatable ((UIObject *) fbImage->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Facebook logo"));
+	_translator->addTranslatable ((UIObject *) reviewAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Review the app in the store"));
+#  endif
+#endif
+
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		      this, SLOT (retranslateUi ()));
+	Q_ASSERT (ok);
+}
+
+NSRAboutPage::~NSRAboutPage ()
+{
+}
+
+void
+NSRAboutPage::onSelectedIndexChanged (int index)
+{
+	switch (index) {
+	case 0:
+		_aboutContainer->setVisible (true);
+		_helpContainer->setVisible (false);
+		_changesContainer->setVisible (false);
+		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
+		break;
+	case 1:
+		_aboutContainer->setVisible (false);
+		_helpContainer->setVisible (true);
+		_changesContainer->setVisible (false);
+		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
+		break;
+	case 2:
+		_aboutContainer->setVisible (false);
+		_helpContainer->setVisible (false);
+		_changesContainer->setVisible (true);
+		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
+		break;
+	default:
+		break;
+	}
+}
+
+void
+NSRAboutPage::onReviewActionTriggered ()
+{
+	InvokeManager		invokeManager;
+	InvokeRequest		invokeRequest;
+	InvokeTargetReply	*invokeReply;
+
+	invokeRequest.setUri (QUrl ("appworld://content/27985686"));
+	invokeRequest.setAction ("bb.action.OPEN");
+	invokeRequest.setTarget ("sys.appworld");
+
+	invokeReply = invokeManager.invoke (invokeRequest);
+
+	if (invokeReply != NULL) {
+		invokeReply->setParent (this);
+		bool ok = connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
+		Q_UNUSED (ok);
+		Q_ASSERT (ok);
+	}
+}
+
+void
+NSRAboutPage::retranslateUi ()
+{
 	QString welcomeTitle = trUtf8 ("Welcome!");
 	QString navTitle = trUtf8 ("Navigation", "Navigation between document pages");
 	QString settingsTitle = trUtf8 ("Settings", "Application settings");
@@ -252,120 +454,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	htmlHelp = htmlHelp.arg(tipsTitle).arg(tip1).arg(tip2).arg(tip3).arg(tip4).arg(tip5)
 			   .arg(tip6).arg(tip7).arg(tip8).arg(tip9);
 
+	_webHelp->setHtml (htmlHelp);
 
-	WebView *webHelp = WebView::create ();
-	webHelp->settings()->setDevicePixelRatio (1.0);
-	webHelp->settings()->setViewportArguments (viewportMap);
-	webHelp->settings()->setBackground (Color::fromRGBA (0.059f, 0.059f, 0.059f));
-	webHelp->setHtml (htmlHelp);
-
-	_helpContainer->add (webHelp);
-	_helpContainer->setVisible (false);
-
-	/* And the version changes goes last */
-
-	_changesContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-					       .vertical(VerticalAlignment::Fill)
-					       .layout(StackLayout::create ());
-
-	WebView *webChanges = WebView::create ();
-	webChanges->settings()->setDevicePixelRatio (1.0);
-	webChanges->settings()->setViewportArguments (viewportMap);
-	webChanges->settings()->setBackground (Color::fromRGBA (0.059f, 0.059f, 0.059f));
-	webChanges->setUrl (QUrl ("local:///assets/whats-new.html"));
-
-	_changesContainer->add (webChanges);
-	_changesContainer->setVisible (false);
-
-
-	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						      .vertical(VerticalAlignment::Fill)
-						      .layout(StackLayout::create ());
-	Container *contentContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-							 .vertical(VerticalAlignment::Fill)
-							 .layout(StackLayout::create ())
-							 .background(Color::fromRGBA (0.059f, 0.059f, 0.059f));
-
-	rootContainer->add (_aboutContainer);
-	rootContainer->add (_helpContainer);
-	rootContainer->add (_changesContainer);
-
-	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
-					  .vertical(VerticalAlignment::Fill)
-					  .content(rootContainer);
-	contentContainer->add (segmentedControl);
-	contentContainer->add (_scrollView);
-
-	setContent (contentContainer);
-
-	ActionItem *reviewAction = ActionItem::create().imageSource(QUrl ("asset:///review.png"))
-						       .title(trUtf8 ("Review", "Review the app in the store"));
-
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
-	reviewAction->accessibility()->setName (trUtf8 ("Review the app in the store"));
-#  endif
-#endif
-
-	ok = connect (reviewAction, SIGNAL (triggered ()), this, SLOT (onReviewActionTriggered ()));
-	Q_ASSERT (ok);
-
-	addAction (reviewAction, ActionBarPlacement::OnBar);
-
-	segmentedControl->setSelectedIndex ((int) section);
+	_translator->translate ();
 }
-
-NSRAboutPage::~NSRAboutPage ()
-{
-}
-
-void
-NSRAboutPage::onSelectedIndexChanged (int index)
-{
-	switch (index) {
-	case 0:
-		_aboutContainer->setVisible (true);
-		_helpContainer->setVisible (false);
-		_changesContainer->setVisible (false);
-		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
-		break;
-	case 1:
-		_aboutContainer->setVisible (false);
-		_helpContainer->setVisible (true);
-		_changesContainer->setVisible (false);
-		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
-		break;
-	case 2:
-		_aboutContainer->setVisible (false);
-		_helpContainer->setVisible (false);
-		_changesContainer->setVisible (true);
-		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
-		break;
-	default:
-		break;
-	}
-}
-
-void
-NSRAboutPage::onReviewActionTriggered ()
-{
-	InvokeManager		invokeManager;
-	InvokeRequest		invokeRequest;
-	InvokeTargetReply	*invokeReply;
-
-	invokeRequest.setUri (QUrl ("appworld://content/27985686"));
-	invokeRequest.setAction ("bb.action.OPEN");
-	invokeRequest.setTarget ("sys.appworld");
-
-	invokeReply = invokeManager.invoke (invokeRequest);
-
-	if (invokeReply != NULL) {
-		invokeReply->setParent (this);
-		bool ok = connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
-		Q_UNUSED (ok);
-		Q_ASSERT (ok);
-	}
-}
-
-
 

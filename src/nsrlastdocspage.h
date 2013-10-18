@@ -7,6 +7,7 @@
 #include <bb/cascades/OrientationSupport>
 
 #include "nsrlastdocslistview.h"
+#include "nsrtranslator.h"
 
 class NSRLastDocsPage : public bb::cascades::Page
 {
@@ -29,6 +30,7 @@ private Q_SLOTS:
 private:
 	void loadData ();
 
+	NSRTranslator			*_translator;
 	NSRLastDocsListView		*_listView;
 	bb::cascades::GridListLayout	*_listLayout;
 	bb::cascades::Label		*_emptyLabel;

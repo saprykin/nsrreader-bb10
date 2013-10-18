@@ -2,6 +2,7 @@
 #include "nsrlastdocitemfactory.h"
 #include "nsrsettings.h"
 #include "nsrthumbnailer.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/ListView>
@@ -14,9 +15,12 @@ using namespace bb::cascades;
 
 NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	Page (parent),
+	_translator (NULL),
 	_listView (NULL),
 	_listLayout (NULL)
 {
+	_translator = new NSRTranslator (this);
+
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create ());
@@ -72,6 +76,19 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 
 	ok = connect (_listView, SIGNAL (documentToBeDeleted (QString)),
 			   this, SIGNAL (documentToBeDeleted (QString)));
+	Q_ASSERT (ok);
+
+	_translator->addTranslatable ((UIObject *) _emptyLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRLastDocsPage"),
+				      QString ("No recent files"));
+	_translator->addTranslatable ((UIObject *) titleBar (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_TITLEBAR,
+				      QString ("NSRLastDocsPage"),
+				      QString ("Recent"));
+
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		      _translator, SLOT (translate ()));
 	Q_ASSERT (ok);
 }
 

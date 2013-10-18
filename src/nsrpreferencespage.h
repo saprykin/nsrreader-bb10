@@ -1,6 +1,8 @@
 #ifndef NSRPREFERENCESPAGE_H_
 #define NSRPREFERENCESPAGE_H_
 
+#include "nsrtranslator.h"
+
 #include <bb/cascades/Page>
 #include <bb/cascades/ToggleButton>
 #include <bb/cascades/DropDown>
@@ -17,7 +19,11 @@ public:
 Q_SIGNALS:
 	void switchFullscreen (bool isFullscreen);
 
+private Q_SLOTS:
+	void retranslateUi ();
+
 private:
+	NSRTranslator			*_translator;
 	bb::cascades::ToggleButton	*_isFullscreen;
 	bb::cascades::ToggleButton	*_isTextMode;
 	bb::cascades::ToggleButton	*_isInvertedColors;

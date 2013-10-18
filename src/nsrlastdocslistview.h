@@ -1,6 +1,8 @@
 #ifndef NSRLASTDOCSLISTVIEW_H_
 #define NSRLASTDOCSLISTVIEW_H_
 
+#include "nsrtranslator.h"
+
 #include <bb/cascades/ListView>
 #include <bb/cascades/Container>
 #include <bb/system/SystemUiResult>
@@ -31,6 +33,7 @@ private Q_SLOTS:
 	void onSelectionChanged ();
 
 private:
+	NSRTranslator *			_translator;
 	bb::system::SystemToast *	_toast;
 };
 

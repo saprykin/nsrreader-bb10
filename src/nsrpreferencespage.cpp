@@ -1,5 +1,6 @@
 #include "nsrpreferencespage.h"
 #include "nsrsettings.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/Color>
@@ -14,6 +15,7 @@ using namespace bb::cascades;
 
 NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Page (parent),
+	_translator (NULL),
 	_isFullscreen (NULL),
 	_isTextMode (NULL),
 	_isInvertedColors (NULL),
@@ -21,6 +23,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 {
 	NSRSettings	settings;
 	QString		defEncoding ("UTF-8");
+
+	_translator = new NSRTranslator (this);
 
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -58,12 +62,13 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	secondContainer->setLeftPadding (20);
 	secondContainer->setRightPadding (20);
 
-	secondContainer->add (Label::create(trUtf8 ("Fullscreen Mode",
-						    "Option in preferences"))
-				     .horizontal(HorizontalAlignment::Left)
-				     .vertical(VerticalAlignment::Center)
-				     .multiline(true)
-				     .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f)));
+	Label *fullscreenLabel = Label::create(trUtf8 ("Fullscreen Mode", "Option in preferences"))
+					.horizontal(HorizontalAlignment::Left)
+					.vertical(VerticalAlignment::Center)
+					.multiline(true)
+					.layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
+
+	secondContainer->add (fullscreenLabel);
 	secondContainer->add (_isFullscreen);
 
 	/* 'Text mode' option */
@@ -79,13 +84,14 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	columnInfo->textStyle()->setFontSize (FontSize::XSmall);
 	columnInfo->setMultiline (true);
 
-	thirdContainer->add (Label::create(trUtf8 ("Text Reflow",
-						   "Option in preferences, "
+	Label *columnLabel = Label::create(trUtf8 ("Text Reflow", "Option in preferences, "
 						   "reflows PDF in single text column"))
-				    .horizontal(HorizontalAlignment::Left)
-				    .vertical(VerticalAlignment::Center)
-				    .multiline(true)
-				    .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f)));
+				   .horizontal(HorizontalAlignment::Left)
+				   .vertical(VerticalAlignment::Center)
+				   .multiline(true)
+				   .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
+
+	thirdContainer->add (columnLabel);
 	thirdContainer->add (_isTextMode);
 
 	outerThirdContainer->setLeftPadding (20);
@@ -107,12 +113,13 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	invertInfo->textStyle()->setFontSize (FontSize::XSmall);
 	invertInfo->setMultiline (true);
 
-	fourthContainer->add (Label::create(trUtf8 ("Invert Colors",
-						    "Option in preferences"))
-				     .horizontal(HorizontalAlignment::Left)
-				     .vertical(VerticalAlignment::Center)
-				     .multiline(true)
-				     .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f)));
+	Label *invertLabel = Label::create(trUtf8 ("Invert Colors", "Option in preferences"))
+				  .horizontal(HorizontalAlignment::Left)
+				  .vertical(VerticalAlignment::Center)
+				  .multiline(true)
+				  .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
+
+	fourthContainer->add (invertLabel);
 	fourthContainer->add (_isInvertedColors);
 
 	outerFourthContainer->setLeftPadding (20);
@@ -149,12 +156,14 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Container *sixthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .layout(StackLayout::create()
 									    .orientation(LayoutOrientation::LeftToRight));
-	sixthContainer->add (Label::create(trUtf8 ("Crop Blank Edges",
-						   "Option in preferences"))
-				   .horizontal(HorizontalAlignment::Left)
-				   .vertical(VerticalAlignment::Center)
-				   .multiline(true)
-				   .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f)));
+
+	Label *cropLabel = Label::create(trUtf8 ("Crop Blank Edges", "Option in preferences"))
+				 .horizontal(HorizontalAlignment::Left)
+				 .vertical(VerticalAlignment::Center)
+				 .multiline(true)
+				 .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
+
+	sixthContainer->add (cropLabel);
 	sixthContainer->add (_isAutoCrop);
 
 	sixthContainer->setLeftPadding (20);
@@ -182,6 +191,49 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 			   this, SIGNAL (switchFullscreen (bool)));
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
+
+	_translator->addTranslatable ((UIObject *) fullscreenLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Fullscreen Mode"));
+	_translator->addTranslatable ((UIObject *) columnInfo,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Use Text Reflow to read files with large amount of text data."));
+	_translator->addTranslatable ((UIObject *) columnLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Text Reflow"));
+	_translator->addTranslatable ((UIObject *) invertInfo,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Inverted colors can save power with "
+					       "OLED display and help to read at dark."));
+	_translator->addTranslatable ((UIObject *) invertLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Invert Colors"));
+	_translator->addTranslatable ((UIObject *) textEncodingLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Text Encoding"));
+	_translator->addTranslatable ((UIObject *) encodingInfo,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Text encoding is used only for pure text files. "
+					       "None other format supports encoding selection."));
+	_translator->addTranslatable ((UIObject *) cropLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Crop Blank Edges"));
+	_translator->addTranslatable ((UIObject *) titleBar (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_TITLEBAR,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Settings"));
+
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		     this, SLOT (retranslateUi ()));
+	Q_ASSERT (ok);
 }
 
 NSRPreferencesPage::~NSRPreferencesPage ()
@@ -200,4 +252,21 @@ NSRPreferencesPage::saveSettings ()
 
 	if (_encodingsList->isSelectedOptionSet ())
 		settings.saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));
+}
+
+void
+NSRPreferencesPage::retranslateUi ()
+{
+	QStringList encodings = NSRSettings::getSupportedEncodings ();
+
+	int count = encodings.count ();
+	int optCount = _encodingsList->count ();
+
+	/* Sanity check */
+	if (count == optCount) {
+		for (int i = 0; i < count; ++i)
+			_encodingsList->at(i)->setText (encodings.at (i));
+	}
+
+	_translator->translate ();
 }

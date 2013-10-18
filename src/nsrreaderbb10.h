@@ -10,6 +10,7 @@
 #include "nsraboutpage.h"
 #include "nsrpageslider.h"
 #include "nsrbpseventhandler.h"
+#include "nsrtranslator.h"
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/ImageView>
@@ -77,6 +78,7 @@ private Q_SLOTS:
     void onPageSliderInteractionEnded ();
     void onPageSliderValueChanged (int value);
     void onVkbVisibilityChanged (bool visible);
+    void retranslateUi ();
 
 private:
     void initFullUI ();
@@ -100,6 +102,8 @@ private:
     NSRActionAggregator				*_actionAggregator;
     NSRPageSlider				*_slider;
     NSRBpsEventHandler				*_bpsHandler;
+    NSRTranslator				*_translator;
+    QTranslator					*_qtranslator;
     bb::cascades::NavigationPane		*_naviPane;
     bb::cascades::Page				*_page;
     bb::cascades::pickers::FilePicker		*_filePicker;

@@ -1,4 +1,5 @@
 #include "nsrpageview.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/StackLayout>
@@ -27,6 +28,7 @@ using namespace bb::device;
 
 NSRPageView::NSRPageView (Container *parent) :
 	Container (parent),
+	_translator (NULL),
 	_scrollView (NULL),
 	_textScrollView (NULL),
 	_imageView (NULL),
@@ -47,6 +49,8 @@ NSRPageView::NSRPageView (Container *parent) :
 	_isZoomingEnabled (true),
 	_hasImage (false)
 {
+	_translator = new NSRTranslator (this);
+
 	_scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 					  .vertical(VerticalAlignment::Fill)
 					  .scrollMode(ScrollMode::Both);
@@ -120,7 +124,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
 
 
-	_actionSet = ActionSet::create().title(trUtf8 ("Page")).subtitle (trUtf8 ("Graphical Mode"));
+	_actionSet = ActionSet::create ();
 	_actionSet->add (fitToWidthAction);
 	_actionSet->add (rotateLeftAction);
 	_actionSet->add (rotateRightAction);
@@ -148,6 +152,24 @@ NSRPageView::NSRPageView (Container *parent) :
 		displaySize.transpose ();
 
 	_size = displaySize;
+
+	retranslateUi ();
+
+	_translator->addTranslatable ((UIObject *) rotateLeftAction,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRPageView"),
+				      QString ("Rotate Left"));
+	_translator->addTranslatable ((UIObject *) rotateRightAction,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRPageView"),
+				      QString ("Rotate Right"));
+	_translator->addTranslatable ((UIObject *) fitToWidthAction,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRPageView"),
+				      QString ("Fit to Width"));
+
+	connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		 this, SLOT (retranslateUi ()));
 }
 
 NSRPageView::~NSRPageView ()
@@ -523,3 +545,10 @@ NSRPageView::onPinchCancelled ()
 	_isZooming = false;
 }
 
+void
+NSRPageView::retranslateUi ()
+{
+	_actionSet->setTitle (trUtf8 ("Page"));
+	_actionSet->setSubtitle (trUtf8 ("Graphical Mode"));
+	_translator->translate ();
+}

@@ -1,6 +1,8 @@
 #ifndef NSRPAGESLIDER_H_
 #define NSRPAGESLIDER_H_
 
+#include "nsrtranslator.h"
+
 #include <bb/cascades/Container>
 #include <bb/cascades/Slider>
 #include <bb/cascades/TouchEvent>
@@ -28,6 +30,7 @@ private Q_SLOTS:
 	void onSliderTouchEvent (bb::cascades::TouchEvent *event);
 
 private:
+	NSRTranslator *			_translator;
 	bb::cascades::Slider *		_slider;
 	bb::cascades::Container *	_spaceContainer;
 };

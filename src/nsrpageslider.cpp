@@ -1,4 +1,5 @@
 #include "nsrpageslider.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/StackLayoutProperties>
@@ -10,9 +11,12 @@ using namespace bb::cascades;
 
 NSRPageSlider::NSRPageSlider (Container *parent) :
 	Container (parent),
+	_translator (NULL),
 	_slider (NULL),
 	_spaceContainer (NULL)
 {
+	_translator = new NSRTranslator (this);
+
 	setLayout (StackLayout::create ());
 	setVerticalAlignment (VerticalAlignment::Bottom);
 	setHorizontalAlignment (HorizontalAlignment::Fill);
@@ -37,6 +41,11 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_slider->accessibility()->setName (trUtf8 ("Page number slider"));
+
+	_translator->addTranslatable ((UIObject *) _slider->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRPageSlider"),
+				      QString ("Page number slider"));
 #  endif
 #endif
 
@@ -47,6 +56,10 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 
 	add (_slider);
 	add (_spaceContainer);
+
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		      _translator, SLOT (translate ()));
+	Q_ASSERT (ok);
 }
 
 NSRPageSlider::~NSRPageSlider ()

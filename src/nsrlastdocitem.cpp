@@ -1,4 +1,5 @@
 #include "nsrlastdocitem.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
@@ -15,6 +16,7 @@ using namespace bb::cascades;
 
 NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	CustomControl (parent),
+	_translator (NULL),
 	_imageView (NULL),
 	_textView (NULL),
 	_label (NULL),
@@ -26,6 +28,8 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_selectAnimation (NULL),
 	_selected (false)
 {
+	_translator = new NSRTranslator (this);
+
 	memset (_solidSelect, 0, sizeof (_solidSelect));
 	memset (_innerSelect, 0, sizeof (_innerSelect));
 
@@ -181,6 +185,10 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_textView->accessibility()->addLabel (_label);
 #  endif
 #endif
+
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		      _translator, SLOT (translate ()));
+	Q_ASSERT (ok);
 }
 
 NSRLastDocItem::~NSRLastDocItem ()
@@ -274,6 +282,12 @@ QString
 NSRLastDocItem::getDocumentTitle () const
 {
 	return _label->text ();
+}
+
+NSRTranslator *
+NSRLastDocItem::getTranslator ()
+{
+	return _translator;
 }
 
 void

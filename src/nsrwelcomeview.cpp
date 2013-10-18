@@ -1,4 +1,5 @@
 #include "nsrwelcomeview.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
@@ -8,10 +9,13 @@ using namespace bb::cascades;
 
 NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 	Container (parent),
+	_translator (NULL),
 	_openButton (NULL),
 	_lastDocsButton (NULL),
 	_startLabel (NULL)
 {
+	_translator = new NSRTranslator (this);
+
 	setHorizontalAlignment (HorizontalAlignment::Fill);
 	setVerticalAlignment (VerticalAlignment::Fill);
 	setLayout (DockLayout::create ());
@@ -52,6 +56,20 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 	rootContainer->add (innerContainer);
 
 	add (rootContainer);
+
+	_translator->addTranslatable ((UIObject *) _openButton, NSRTranslator::NSR_TRANSLATOR_TYPE_BUTTON,
+				      QString ("NSRWelcomeView"),
+				      QString ("Open"));
+	_translator->addTranslatable ((UIObject *) _lastDocsButton, NSRTranslator::NSR_TRANSLATOR_TYPE_BUTTON,
+				      QString ("NSRWelcomeView"),
+				      QString ("Recent"));
+	_translator->addTranslatable ((UIObject *) _startLabel, NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRWelcomeView"),
+				      QString ("Start reading"));
+
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		      _translator, SLOT (translate ()));
+	Q_ASSERT (ok);
 }
 
 NSRWelcomeView::~NSRWelcomeView ()
@@ -65,4 +83,3 @@ NSRWelcomeView::setCardMode (bool enabled)
 	_lastDocsButton->setVisible (!enabled);
 	_startLabel->setVisible (!enabled);
 }
-

@@ -222,7 +222,7 @@ NSRSettings::getVersion()
 QStringList
 NSRSettings::getSupportedEncodings()
 {
-	static QStringList codecs = QStringList ()
+	QStringList codecs = QStringList ()
 	       << trUtf8 ("Unicode (UTF-8)") << trUtf8 ("Western European (ISO-8859-1)")
 	       << trUtf8 ("Western European (CP850)")
 	       << trUtf8 ("Western European (CP1252)") << trUtf8 ("Western European (ISO-8859-15)")

@@ -5,6 +5,7 @@
 #include "nsrlastdocspage.h"
 #include "nsrfilesharer.h"
 #include "nsrscenecover.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
@@ -55,6 +56,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_actionAggregator (NULL),
 	_slider (NULL),
 	_bpsHandler (NULL),
+	_translator (NULL),
+	_qtranslator (NULL),
 	_naviPane (NULL),
 	_page (NULL),
 	_filePicker (NULL),
@@ -93,6 +96,9 @@ NSRReaderBB10::~NSRReaderBB10 ()
 void
 NSRReaderBB10::initFullUI ()
 {
+	_translator = new NSRTranslator (this);
+	_qtranslator = new QTranslator (this);
+
 	Container *rootContainer = new Container ();
 	rootContainer->setLayout (DockLayout::create ());
 	rootContainer->setHorizontalAlignment (HorizontalAlignment::Fill);
@@ -199,6 +205,31 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
 
+	_translator->addTranslatable ((UIObject *) openAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Open"));
+	_translator->addTranslatable ((UIObject *) prevPageAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Previous"));
+	_translator->addTranslatable ((UIObject *) nextPageAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Next"));
+	_translator->addTranslatable ((UIObject *) gotoAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Go to"));
+	_translator->addTranslatable ((UIObject *) prefsAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Settings"));
+	_translator->addTranslatable ((UIObject *) recentDocsAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Recent"));
+	_translator->addTranslatable ((UIObject *) helpAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("About"));
+	_translator->addTranslatable ((UIObject *) shareAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Share"));
+
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	openAction->accessibility()->setName (trUtf8 ("Open file"));
@@ -209,6 +240,40 @@ NSRReaderBB10::initFullUI ()
 	recentDocsAction->accessibility()->setName (trUtf8 ("Open page with recent files"));
 	helpAction->accessibility()->setName (trUtf8 ("Open page with information about the app and help sections"));
 	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
+
+	_translator->addTranslatable ((UIObject *) openAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Open file"));
+	_translator->addTranslatable ((UIObject *) prevPageAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Go to previous page"));
+	_translator->addTranslatable ((UIObject *) nextPageAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Go to next page"));
+	_translator->addTranslatable ((UIObject *) gotoAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Go to arbitrary page"));
+	_translator->addTranslatable ((UIObject *) prefsAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Open Settings page"));
+	_translator->addTranslatable ((UIObject *) recentDocsAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Open page with recent files"));
+	_translator->addTranslatable ((UIObject *) helpAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Open page with information about the app and help sections"));
+	_translator->addTranslatable ((UIObject *) shareAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Share file with others"));
+
 #  endif
 #endif
 
@@ -281,7 +346,6 @@ NSRReaderBB10::initFullUI ()
 	Application::instance()->setMenu (menu);
 
 	_filePicker = new FilePicker (this);
-	_filePicker->setTitle (trUtf8 ("Select File", "Open file window"));
 	_filePicker->setMode (FilePickerMode::Picker);
 	_filePicker->setType (FileType::Other);
 	_filePicker->setFilter (QStringList ("*.pdf") << "*.djvu" << "*.djv" <<
@@ -369,6 +433,8 @@ NSRReaderBB10::initFullUI ()
 
 	ok = connect (Application::instance (), SIGNAL (manualExit ()), this, SLOT (onManualExit ()));
 	Q_ASSERT (ok);
+
+	onSystemLanguageChanged ();
 
 	/* Initial loading logic:
 	 *   - if we are launching from invoke request, wait for further request;
@@ -774,12 +840,16 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 void
 NSRReaderBB10::onSystemLanguageChanged ()
 {
-	QTranslator translator;
-	QString locale_string = QLocale().name ();
-	QString filename = QString("nsrreader_bb10_%1").arg (locale_string);
+	QString 	locale_string = QLocale().name ();
+	QString		filename = QString("nsrreader_bb10_%1").arg (locale_string);
 
-	if (translator.load (filename, "app/native/qm"))
-		QCoreApplication::instance()->installTranslator (&translator);
+	QCoreApplication::instance()->removeTranslator (_qtranslator);
+
+	if (_qtranslator->load (filename, "app/native/qm"))
+		QCoreApplication::installTranslator (_qtranslator);
+
+	retranslateUi ();
+	NSRGlobalNotifier::instance()->languageChangedSignal ();
 }
 
 void
@@ -1144,4 +1214,11 @@ NSRReaderBB10::onVkbVisibilityChanged (bool visible)
 		_slider->setVisible (false);
 	} else
 		_slider->setVisible (_wasSliderVisible);
+}
+
+void
+NSRReaderBB10::retranslateUi ()
+{
+	_filePicker->setTitle (trUtf8 ("Select File", "Open file window"));
+	_translator->translate ();
 }

@@ -1,9 +1,12 @@
 #ifndef NSRABOUTPAGE_H_
 #define NSRABOUTPAGE_H_
 
+#include "nsrtranslator.h"
+
 #include <bb/cascades/Page>
 #include <bb/cascades/Container>
 #include <bb/cascades/ScrollView>
+#include <bb/cascades/WebView>
 
 #include <QObject>
 
@@ -22,12 +25,15 @@ public:
 private Q_SLOTS:
 	void onSelectedIndexChanged (int index);
 	void onReviewActionTriggered ();
+	void retranslateUi ();
 
 private:
+	NSRTranslator			*_translator;
 	bb::cascades::Container		*_aboutContainer;
 	bb::cascades::Container		*_helpContainer;
 	bb::cascades::Container		*_changesContainer;
 	bb::cascades::ScrollView	*_scrollView;
+	bb::cascades::WebView		*_webHelp;
 };
 
 #endif /* NSRABOUTPAGE_H_ */

@@ -27,6 +27,7 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 
 	NSRLastDocsListView *listView = static_cast<NSRLastDocsListView *> (list);
 	NSRLastDocItem *item = new NSRLastDocItem ();
+	NSRTranslator *translator = item->getTranslator ();
 
 	ActionSet *actionSet = ActionSet::create().subtitle (trUtf8 ("File"));
 
@@ -41,6 +42,15 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
 	hideAction->accessibility()->setName (trUtf8 ("Remove file from the recent list only"));
+
+	translator->addTranslatable ((UIObject *) shareAction->accessibility (),
+				     NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				     QString ("NSRLastDocItemFactory"),
+				     QString ("Share file with others"));
+	translator->addTranslatable ((UIObject *) hideAction->accessibility (),
+				     NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				     QString ("NSRLastDocItemFactory"),
+				     QString ("Remove file from the recent list only"));
 #  endif
 #endif
 
@@ -59,6 +69,19 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 	actionSet->add (removeAction);
 
 	item->addActionSet (actionSet);
+
+	translator->addTranslatable ((UIObject *) shareAction,
+				     NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				     QString ("NSRLastDocItemFactory"),
+				     QString ("Share"));
+	translator->addTranslatable ((UIObject *) hideAction,
+				     NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				     QString ("NSRLastDocItemFactory"),
+				     QString ("Clear Recent"));
+	translator->addTranslatable ((UIObject *) actionSet,
+				     NSRTranslator::NSR_TRANSLATOR_TYPE_ACTIONSET_SUBTITLE,
+				     QString ("NSRLastDocItemFactory"),
+				     QString ("File"));
 
 	return item;
 }

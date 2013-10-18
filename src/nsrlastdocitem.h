@@ -1,6 +1,8 @@
 #ifndef NSRLASTDOCITEM_H_
 #define NSRLASTDOCITEM_H_
 
+#include "nsrtranslator.h"
+
 #include <bb/cascades/CustomControl>
 #include <bb/cascades/ListItemListener>
 #include <bb/cascades/ImageView>
@@ -32,6 +34,7 @@ public:
 	void activate (bool activate);
 	QString getDocumentPath () const;
 	QString getDocumentTitle () const;
+	NSRTranslator * getTranslator ();
 
 private Q_SLOTS:
 	void onImageStateChanged (bb::cascades::ResourceState::Type state);
@@ -39,6 +42,7 @@ private Q_SLOTS:
 	void onAnimationStopped ();
 
 private:
+	NSRTranslator			*_translator;
 	bb::cascades::ImageView		*_imageView;
 	bb::cascades::Label		*_textView;
 	bb::cascades::Label		*_label;

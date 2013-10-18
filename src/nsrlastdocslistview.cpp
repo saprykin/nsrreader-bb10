@@ -3,6 +3,7 @@
 #include "nsrsettings.h"
 #include "nsrfilesharer.h"
 #include "nsrthumbnailer.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/QListDataModel>
 #include <bb/cascades/MultiSelectActionItem>
@@ -19,8 +20,11 @@ using namespace bb::system;
 
 NSRLastDocsListView::NSRLastDocsListView (bb::cascades::Container *parent) :
 	ListView (parent),
+	_translator (NULL),
 	_toast (NULL)
 {
+	_translator = new NSRTranslator (this);
+
 	setMultiSelectAction (MultiSelectActionItem::create());
 	multiSelectHandler()->addAction (ActionItem::create().title(trUtf8 ("Clear Recent", "Clear recent files"))
 							     .imageSource(QUrl ("asset:///list-remove.png"))
@@ -33,6 +37,23 @@ NSRLastDocsListView::NSRLastDocsListView (bb::cascades::Container *parent) :
 	bool ok = connect (this, SIGNAL (selectionChanged (QVariantList, bool)),
 			   this, SLOT (onSelectionChanged ()));
 	Q_UNUSED (ok);
+	Q_ASSERT (ok);
+
+	_translator->addTranslatable ((UIObject *) multiSelectHandler()->actionAt (0),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRLastDocsListView"),
+				      QString ("Clear Recent"));
+	_translator->addTranslatable ((UIObject *) multiSelectHandler()->actionAt (1),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRLastDocsListView"),
+				      QString ("Share"));
+
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		      _translator, SLOT (translate ()));
+	Q_ASSERT (ok);
+
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		      this, SLOT (onSelectionChanged ()));
 	Q_ASSERT (ok);
 }
 

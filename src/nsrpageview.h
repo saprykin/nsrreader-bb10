@@ -7,6 +7,7 @@
 #include <QTimerEvent>
 
 #include "nsrrenderedpage.h"
+#include "nsrtranslator.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/ImageView>
@@ -69,8 +70,10 @@ private Q_SLOTS:
 	void onPinchUpdated (bb::cascades::PinchEvent *event);
 	void onPinchEnded (bb::cascades::PinchEvent *event);
 	void onPinchCancelled ();
+	void retranslateUi ();
 
 private:
+	NSRTranslator			*_translator;
 	bb::cascades::ScrollView	*_scrollView;
 	bb::cascades::ScrollView	*_textScrollView;
 	bb::cascades::ImageView		*_imageView;

@@ -1,6 +1,8 @@
 #ifndef NSRWELCOMEVIEW_H_
 #define NSRWELCOMEVIEW_H_
 
+#include "nsrtranslator.h"
+
 #include <bb/cascades/Container>
 #include <bb/cascades/Button>
 #include <bb/cascades/Label>
@@ -21,6 +23,7 @@ Q_SIGNALS:
 	void recentDocumentsRequested ();
 
 private:
+	NSRTranslator		*_translator;
 	bb::cascades::Button	*_openButton;
 	bb::cascades::Button	*_lastDocsButton;
 	bb::cascades::Label	*_startLabel;
