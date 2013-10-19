@@ -4,10 +4,6 @@
 <context>
     <name>NSRAboutPage</name>
     <message>
-        <source>for BlackBerry%1 10</source>
-        <translation>for BlackBerry%1 10</translation>
-    </message>
-    <message>
         <source>About</source>
         <comment>About a program</comment>
         <translation>About</translation>
@@ -32,20 +28,12 @@
         <translation>Settings</translation>
     </message>
     <message>
-        <source>Contacts: &lt;a href=&apos;mailto:nsr.reader@gmail.com&apos;&gt;nsr.reader@gmail.com&lt;/a&gt;</source>
-        <translation>Contacts: &lt;a href=&apos;mailto:nsr.reader@gmail.com&apos;&gt;nsr.reader@gmail.com&lt;/a&gt;</translation>
-    </message>
-    <message>
         <source>Tips &amp; Tricks</source>
         <translation>Tips &amp; Tricks</translation>
     </message>
     <message>
         <source>&lt;b&gt;Fullscreen Mode&lt;/b&gt; &amp;ndash; Action Bar at the bottom of the screen will be hidden (tap the screen somewhere to show or hide it again).</source>
         <translation>&lt;b&gt;Fullscreen Mode&lt;/b&gt; &amp;ndash; Action Bar at the bottom of the screen will be hidden (tap the screen somewhere to show or hide it again).</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files (.txt). Use it for files with specific national encoding.</source>
-        <translation type="obsolete">&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files (.txt). Use it for files with specific national encoding.</translation>
     </message>
     <message>
         <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
@@ -63,14 +51,6 @@
         <source>Changes</source>
         <comment>Changes in new version</comment>
         <translation>Changes</translation>
-    </message>
-    <message>
-        <source>Please, leave a review if you liked this app.</source>
-        <translation>Please, leave a review if you liked this app.</translation>
-    </message>
-    <message>
-        <source>Please leave a review for NSR Reader if you liked it to help others find it in the store. Thank you!</source>
-        <translation>Please leave a review for NSR Reader if you liked it to help others find it in the store. Thank you!</translation>
     </message>
     <message>
         <source>Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.</source>
@@ -106,14 +86,6 @@
         <translation>Logo of the app</translation>
     </message>
     <message>
-        <source>Twitter logo</source>
-        <translation>Twitter logo</translation>
-    </message>
-    <message>
-        <source>Facebook logo</source>
-        <translation>Facebook logo</translation>
-    </message>
-    <message>
         <source>Review the app in the store</source>
         <translation>Review the app in the store</translation>
     </message>
@@ -134,28 +106,35 @@
         <translation>&lt;b&gt;Crop Blank Edges&lt;/b&gt; &amp;ndash; automatically tries to detect and crop page&apos;s blank edges to reduce side-to-side scrolling, especially when page is fitted to screen width.</translation>
     </message>
     <message>
-        <source>&lt;a href=&apos;http://www.twitter.com/NSRReader&apos;&gt;Follow on Twitter&lt;/a&gt;</source>
-        <translation>&lt;a href=&apos;http://www.twitter.com/NSRReader&apos;&gt;Follow on Twitter&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Visit on Facebook&lt;/a&gt;</source>
-        <translation>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Visit on Facebook&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Contacts: nsr.reader@gmail.com - tap to write a email</source>
-        <translation>Contacts: nsr.reader@gmail.com - tap to write a email</translation>
-    </message>
-    <message>
-        <source>Tap to visit Twitter page</source>
-        <translation>Tap to visit Twitter page</translation>
-    </message>
-    <message>
-        <source>Tap to visit Facebook page</source>
-        <translation>Tap to visit Facebook page</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files. Use it for files with specific national encoding.</source>
         <translation>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files. Use it for files with specific national encoding.</translation>
+    </message>
+    <message>
+        <source>nsr.reader@gmail.com - tap to write a email</source>
+        <translation>nsr.reader@gmail.com - tap to write a email</translation>
+    </message>
+    <message>
+        <source>Visit Twitter page</source>
+        <translation>Visit Twitter page</translation>
+    </message>
+    <message>
+        <source>Visit Facebook page</source>
+        <translation>Visit Facebook page</translation>
+    </message>
+    <message>
+        <source>Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!</source>
+        <translation>Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!</translation>
+    </message>
+    <message>
+        <source>Please, leave a review if you like this app
+&lt;b&gt;Thank you!&lt;/b&gt;</source>
+        <translation>Please, leave a review if you like this app
+&lt;b&gt;Thank you!&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>for BlackBerry%1 10</source>
+        <comment>%1 will be replaced with reg in circle symbol</comment>
+        <translation>for BlackBerry%1 10</translation>
     </message>
 </context>
 <context>
@@ -242,6 +221,14 @@
         <comment>Title for window with recently opened files</comment>
         <translation>Recent</translation>
     </message>
+    <message>
+        <source>Start reading to display files here</source>
+        <translation>Start reading to display files here</translation>
+    </message>
+    <message>
+        <source>Image of document</source>
+        <translation>Image of document</translation>
+    </message>
 </context>
 <context>
     <name>NSRPageSlider</name>
@@ -292,25 +279,13 @@
         <translation>Text Reflow</translation>
     </message>
     <message>
-        <source>Inverted colors can save power with OLED display and help to read at dark.</source>
-        <translation type="obsolete">Inverted colors can save power with OLED display and help to read at dark.</translation>
-    </message>
-    <message>
         <source>Invert Colors</source>
         <comment>Option in preferences</comment>
         <translation>Invert Colors</translation>
     </message>
     <message>
-        <source>Text encoding is used only for pure text files. None other format supports encoding selection.</source>
-        <translation type="obsolete">Text encoding is used only for pure text files. None other format supports encoding selection.</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation>Settings</translation>
-    </message>
-    <message>
-        <source>Use Text Reflow to read files with large amount of text data.</source>
-        <translation>Use Text Reflow to read files with large amount of text data.</translation>
     </message>
     <message>
         <source>Crop Blank Edges</source>
@@ -318,12 +293,16 @@
         <translation>Crop Blank Edges</translation>
     </message>
     <message>
-        <source>Inverted colors reduce OLED display power consumption and help to read at dark.</source>
-        <translation type="unfinished"></translation>
+        <source>Use Text Reflow to read files with large amount of text data</source>
+        <translation>Use Text Reflow to read files with large amount of text data</translation>
     </message>
     <message>
-        <source>Text encoding is used only for plain text files. None other format supports encoding selection.</source>
-        <translation type="unfinished"></translation>
+        <source>Black background reduces OLED display power consumption and helps to read at dark</source>
+        <translation>Black background reduces OLED display power consumption and helps to read at dark</translation>
+    </message>
+    <message>
+        <source>Text encoding is used only for plain text files, none other format supports encoding selection</source>
+        <translation>Text encoding is used only for plain text files, none other format supports encoding selection</translation>
     </message>
 </context>
 <context>

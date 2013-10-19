@@ -4,10 +4,6 @@
 <context>
     <name>NSRAboutPage</name>
     <message>
-        <source>for BlackBerry%1 10</source>
-        <translation>для BlackBerry%1 10</translation>
-    </message>
-    <message>
         <source>About</source>
         <comment>About a program</comment>
         <translation>Инфо</translation>
@@ -32,20 +28,12 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <source>Contacts: &lt;a href=&apos;mailto:nsr.reader@gmail.com&apos;&gt;nsr.reader@gmail.com&lt;/a&gt;</source>
-        <translation>Контакты: &lt;a href=&apos;mailto:nsr.reader@gmail.com&apos;&gt;nsr.reader@gmail.com&lt;/a&gt;</translation>
-    </message>
-    <message>
         <source>Tips &amp; Tricks</source>
         <translation>Подсказки</translation>
     </message>
     <message>
         <source>&lt;b&gt;Fullscreen Mode&lt;/b&gt; &amp;ndash; Action Bar at the bottom of the screen will be hidden (tap the screen somewhere to show or hide it again).</source>
         <translation>&lt;b&gt;Полноэкранный режим&lt;/b&gt; &amp;ndash; скрывает панель инструментов в нижней части экрана  (коснитесь экрана, чтобы снова отобразить/скрыть её).</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files (.txt). Use it for files with specific national encoding.</source>
-        <translation type="obsolete">&lt;b&gt;Кодировка текста&lt;/b&gt; &amp;ndash; применима только для чисто текстовых файлов (.txt). Используйте для файлов со специфичной национальной кодировкой.</translation>
     </message>
     <message>
         <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
@@ -63,14 +51,6 @@
         <source>Changes</source>
         <comment>Changes in new version</comment>
         <translation>Версии</translation>
-    </message>
-    <message>
-        <source>Please, leave a review if you liked this app.</source>
-        <translation>Пожалуйста, оставьте отзыв, если приложение понравилось.</translation>
-    </message>
-    <message>
-        <source>Please leave a review for NSR Reader if you liked it to help others find it in the store. Thank you!</source>
-        <translation>Пожалуйста, оставьте отзыв о NSR Reader, если приложение понравилось, чтобы помочь другим узнать о нём. Спасибо!</translation>
     </message>
     <message>
         <source>Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.</source>
@@ -106,26 +86,6 @@
         <translation>Логотип приложения</translation>
     </message>
     <message>
-        <source>Contacts: nsr.reader@gmail.com - click to write a email</source>
-        <translation type="obsolete">Контакты: nsr.reader@gmail.com - нажмите для написания письма</translation>
-    </message>
-    <message>
-        <source>Click to visit Twitter page</source>
-        <translation type="obsolete">Нажмите для перехода на страницу Twitter</translation>
-    </message>
-    <message>
-        <source>Twitter logo</source>
-        <translation>Логотип Twitter</translation>
-    </message>
-    <message>
-        <source>Click to visit Facebook page</source>
-        <translation type="obsolete">Нажмите для перехода на страницу Facebook</translation>
-    </message>
-    <message>
-        <source>Facebook logo</source>
-        <translation>Логотип Facebook</translation>
-    </message>
-    <message>
         <source>Review the app in the store</source>
         <translation>Написать отзыв в магазине</translation>
     </message>
@@ -146,28 +106,35 @@
         <translation>&lt;b&gt;Обрезать пустые края&lt;/b&gt; &amp;ndash; автоматически пытается определить и обрезать пустые края страницы для уменьшения горизонтального пролистывания, особенно при масштабировании по ширине экрана.</translation>
     </message>
     <message>
-        <source>&lt;a href=&apos;http://www.twitter.com/NSRReader&apos;&gt;Follow on Twitter&lt;/a&gt;</source>
-        <translation>&lt;a href=&apos;http://www.twitter.com/NSRReader&apos;&gt;Читать на Twitter&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Visit on Facebook&lt;/a&gt;</source>
-        <translation>&lt;a href=&apos;http://www.facebook.com/pages/NSR-Reader/162440877184478&apos;&gt;Посетить Facebook&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <source>Contacts: nsr.reader@gmail.com - tap to write a email</source>
-        <translation>Контакты: nsr.reader@gmail.com - нажмите для написания письма</translation>
-    </message>
-    <message>
-        <source>Tap to visit Twitter page</source>
-        <translation>Нажмите для перехода на страницу Twitter</translation>
-    </message>
-    <message>
-        <source>Tap to visit Facebook page</source>
-        <translation>Нажмите для перехода на страницу Facebook</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files. Use it for files with specific national encoding.</source>
         <translation>&lt;b&gt;Кодировка текста&lt;/b&gt; &amp;ndash; применима только для чисто текстовых файлов. Используйте для файлов со специфичной национальной кодировкой.</translation>
+    </message>
+    <message>
+        <source>nsr.reader@gmail.com - tap to write a email</source>
+        <translation>nsr.reader@gmail.com - нажмите для написания письма</translation>
+    </message>
+    <message>
+        <source>Visit Twitter page</source>
+        <translation>Посетить страницу Twitter</translation>
+    </message>
+    <message>
+        <source>Visit Facebook page</source>
+        <translation>Посетить страницу Facebook</translation>
+    </message>
+    <message>
+        <source>Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!</source>
+        <translation>Пожалуйста, оставьте отзыв о NSR Reader, если приложение понравилось, чтобы помочь другим узнать о нём. Спасибо!</translation>
+    </message>
+    <message>
+        <source>Please, leave a review if you like this app
+&lt;b&gt;Thank you!&lt;/b&gt;</source>
+        <translation>Пожалуйста, оставьте отзыв, если приложение понравилось
+&lt;b&gt;Спасибо!&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>for BlackBerry%1 10</source>
+        <comment>%1 will be replaced with reg in circle symbol</comment>
+        <translation>для BlackBerry%1 10</translation>
     </message>
 </context>
 <context>
@@ -254,6 +221,14 @@
         <comment>Title for window with recently opened files</comment>
         <translation>Недавние</translation>
     </message>
+    <message>
+        <source>Start reading to display files here</source>
+        <translation>Начните читать, чтобы они появились здесь</translation>
+    </message>
+    <message>
+        <source>Image of document</source>
+        <translation>Изображение документа</translation>
+    </message>
 </context>
 <context>
     <name>NSRPageSlider</name>
@@ -304,25 +279,13 @@
         <translation>Переформатирование текста</translation>
     </message>
     <message>
-        <source>Inverted colors can save power with OLED display and help to read at dark.</source>
-        <translation type="obsolete">Инвертированные цвета могут сохранить энергию OLED экрана и помогают читать в темноте.</translation>
-    </message>
-    <message>
         <source>Invert Colors</source>
         <comment>Option in preferences</comment>
         <translation>Инвертировать цвета</translation>
     </message>
     <message>
-        <source>Text encoding is used only for pure text files. None other format supports encoding selection.</source>
-        <translation type="obsolete">Кодировка используется только для чисто текстовых файлов. Другие форматы не поддерживают её выбор.</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation>Настройки</translation>
-    </message>
-    <message>
-        <source>Use Text Reflow to read files with large amount of text data.</source>
-        <translation>Используйте переформатирование для чтения большого объёма текста.</translation>
     </message>
     <message>
         <source>Crop Blank Edges</source>
@@ -330,12 +293,16 @@
         <translation>Обрезать пустые края</translation>
     </message>
     <message>
-        <source>Inverted colors reduce OLED display power consumption and help to read at dark.</source>
-        <translation>Инвертированные цвета уменьшают энергопотребление OLED экрана и помогают читать в темноте.</translation>
+        <source>Use Text Reflow to read files with large amount of text data</source>
+        <translation>Используйте переформатирование для чтения большого объёма текста</translation>
     </message>
     <message>
-        <source>Text encoding is used only for plain text files. None other format supports encoding selection.</source>
-        <translation>Кодировка используется только для чисто текстовых файлов. Другие форматы не поддерживают её выбор.</translation>
+        <source>Black background reduces OLED display power consumption and helps to read at dark</source>
+        <translation>Чёрный фон снижает энергопотребление OLED экрана и помогает читать в темноте</translation>
+    </message>
+    <message>
+        <source>Text encoding is used only for plain text files, none other format supports encoding selection</source>
+        <translation>Кодировка используется только для чисто текстовых файлов, другие форматы не поддерживают её выбор</translation>
     </message>
 </context>
 <context>
@@ -446,10 +413,6 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
         <source>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone</source>
         <comment>Text reflow is a view mode of PDF/DjVu files when only text information without images is displayed with word wrap feature enabled. Use pinch gesture to adjust text size</comment>
         <translation>Вы используете режим переформатирования текста первый раз. Учтите, что форматирование может отличаться от оригинала, изображения не отображаются, и страница может быть пустой, если не содержит текста. Также текст может отображаться некорректно, если телефон не поддерживает соответствующий язык</translation>
-    </message>
-    <message>
-        <source>Select File</source>
-        <translation type="obsolete">Выберите файл</translation>
     </message>
 </context>
 <context>
