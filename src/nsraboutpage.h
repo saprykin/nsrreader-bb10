@@ -7,6 +7,7 @@
 #include <bb/cascades/Container>
 #include <bb/cascades/ScrollView>
 #include <bb/cascades/WebView>
+#include <bb/cascades/Label>
 
 #include <QObject>
 
@@ -38,6 +39,7 @@ private:
 	bb::cascades::Container		*_changesContainer;
 	bb::cascades::ScrollView	*_scrollView;
 	bb::cascades::WebView		*_webHelp;
+	bb::cascades::Label		*_versionPlatform;
 };
 
 #endif /* NSRABOUTPAGE_H_ */

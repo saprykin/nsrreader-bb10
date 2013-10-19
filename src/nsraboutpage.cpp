@@ -4,7 +4,6 @@
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
-#include <bb/cascades/Label>
 #include <bb/cascades/ImageView>
 #include <bb/cascades/Button>
 #include <bb/cascades/SegmentedControl>
@@ -27,7 +26,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_aboutContainer (NULL),
 	_helpContainer (NULL),
 	_scrollView (NULL),
-	_webHelp (NULL)
+	_webHelp (NULL),
+	_versionPlatform (NULL)
 {
 	_translator = new NSRTranslator (this);
 
@@ -62,10 +62,9 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 					    .text(QString ("NSR Reader ").append (NSRSettings::getVersion ()));
 	versionInfo->textStyle()->setFontSize (FontSize::Large);
 
-	Label *versionPlatform = Label::create().horizontal(HorizontalAlignment::Center)
-						.vertical(VerticalAlignment::Fill)
-						.text(trUtf8 ("for BlackBerry\u00AE 10"));
-	versionPlatform->textStyle()->setFontSize (FontSize::Small);
+	_versionPlatform = Label::create().horizontal(HorizontalAlignment::Center)
+					  .vertical(VerticalAlignment::Fill);
+	_versionPlatform->textStyle()->setFontSize (FontSize::Small);
 
 	Label *authorInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Fill)
@@ -108,7 +107,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	_aboutContainer->add (logoView);
 	_aboutContainer->add (versionInfo);
-	_aboutContainer->add (versionPlatform);
+	_aboutContainer->add (_versionPlatform);
 	_aboutContainer->add (contactsContainer);
 	_aboutContainer->add (reviewLabel);
 
@@ -210,10 +209,6 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
 				      QString ("NSRAboutPage"),
 				      QString ("Changes"));
-	_translator->addTranslatable ((UIObject *) versionPlatform,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRAboutPage"),
-				      QString ("for BlackBerry\u00AE 10"));
 	_translator->addTranslatable ((UIObject *) reviewLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRAboutPage"),
@@ -305,6 +300,9 @@ NSRAboutPage::onFacebookActionTriggered ()
 void
 NSRAboutPage::retranslateUi ()
 {
+	_versionPlatform->setText (trUtf8 ("for BlackBerry%1 10", "%1 will be replaced with reg in circle symbol")
+				   .arg (QString::fromUtf8 ("\u00AE")));
+
 	QString welcomeTitle = trUtf8 ("Welcome!");
 	QString navTitle = trUtf8 ("Navigation", "Navigation between document pages");
 	QString settingsTitle = trUtf8 ("Settings", "Application settings");
