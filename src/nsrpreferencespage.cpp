@@ -106,8 +106,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 									    .orientation(LayoutOrientation::LeftToRight));
 	Container *outerFourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							     .layout(StackLayout::create());
-	Label *invertInfo = Label::create (trUtf8 ("Inverted colors reduce OLED display power consumption "
-					       	   "and help to read at dark."))
+	Label *invertInfo = Label::create (trUtf8 ("Black background reduces OLED display power consumption "
+					       	   "and helps to read at dark."))
 				   .horizontal(HorizontalAlignment::Fill)
 				   .vertical(VerticalAlignment::Center);
 	invertInfo->textStyle()->setFontSize (FontSize::XSmall);
@@ -207,8 +207,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_translator->addTranslatable ((UIObject *) invertInfo,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
-				      QString ("Inverted colors reduce OLED display power consumption "
-					       "and help to read at dark."));
+				      QString ("Black background reduces OLED display power consumption "
+					       "and helps to read at dark."));
 	_translator->addTranslatable ((UIObject *) invertLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
