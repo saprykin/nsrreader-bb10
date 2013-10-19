@@ -43,7 +43,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	/* About section goes first */
 
-	_aboutContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+	_aboutContainer = Container::create().horizontal(HorizontalAlignment::Center)
 					     .vertical(VerticalAlignment::Fill)
 					     .layout(StackLayout::create());
 
@@ -61,93 +61,47 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 					    .vertical(VerticalAlignment::Fill)
 					    .text(QString ("NSR Reader ").append (NSRSettings::getVersion ()));
 	versionInfo->textStyle()->setFontSize (FontSize::Large);
+
 	Label *versionPlatform = Label::create().horizontal(HorizontalAlignment::Center)
 						.vertical(VerticalAlignment::Fill)
-						.text(trUtf8("for BlackBerry%1 10").arg (QString::fromUtf8 ("\u00AE")));
+						.text(trUtf8 ("for BlackBerry\u00AE 10"));
 	versionPlatform->textStyle()->setFontSize (FontSize::Small);
 
 	Label *authorInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Fill)
 					   .text(QString ("© 2011-2013 Alexander Saprykin"))
 					   .multiline(true);
+	authorInfo->textStyle()->setTextAlign (TextAlign::Center);
 
 	Label *contactsInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					     .vertical(VerticalAlignment::Fill)
-					     .text(trUtf8 ("Contacts: <a href='mailto:nsr.reader@gmail.com'>"
-							   "nsr.reader@gmail.com</a>"));
+					     .text("<a href='mailto:nsr.reader@gmail.com'>"
+						   "nsr.reader@gmail.com</a>");
 	contactsInfo->textStyle()->setFontSize (FontSize::Medium);
-	contactsInfo->setMultiline (true);
 	contactsInfo->setTextFormat (TextFormat::Html);
 	contactsInfo->content()->setFlags (TextContentFlag::ActiveText);
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
-	contactsInfo->accessibility()->setName (trUtf8 ("Contacts: nsr.reader@gmail.com - tap to write a email"));
-#  endif
-#endif
-
 	Container *contactsContainer = Container::create().horizontal(HorizontalAlignment::Center)
 							  .vertical(VerticalAlignment::Fill)
-							  .layout(DockLayout::create());
+							  .layout(StackLayout::create ());
 	contactsContainer->setTopPadding (20);
-	contactsContainer->setLeftPadding (40);
-	contactsContainer->setRightPadding (40);
 	contactsContainer->setBottomPadding (20);
+	contactsContainer->add (authorInfo);
 	contactsContainer->add (contactsInfo);
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	contactsInfo->accessibility()->setName (trUtf8 ("nsr.reader@gmail.com - tap to write a email"));
+#  endif
+#endif
 
 	Label *reviewLabel = Label::create().horizontal(HorizontalAlignment::Center)
 					    .vertical(VerticalAlignment::Fill)
 					    .multiline(true);
-	reviewLabel->setText (trUtf8 ("Please, leave a review if you liked this app."));
+	reviewLabel->setText (trUtf8 ("Please, leave a review if you like this app.\n<b>Thank you!</b>"));
 	reviewLabel->textStyle()->setFontSize (FontSize::Medium);
-
-	Container *twitterContainer = Container::create().horizontal(HorizontalAlignment::Center)
-							 .vertical(VerticalAlignment::Fill)
-							 .layout(StackLayout::create()
-							 .orientation(LayoutOrientation::LeftToRight));
-
-	ImageView *twitterImage = ImageView::create().imageSource(QUrl ("asset:///twitter.png"));
-	Label *twitterInfo = Label::create().horizontal(HorizontalAlignment::Left)
-					    .vertical(VerticalAlignment::Center)
-					    .text(trUtf8 ("<a href='http://www.twitter.com/NSRReader'>"
-							  "Follow on Twitter</a>"))
-					    .format(TextFormat::Html);
-	twitterInfo->textStyle()->setFontSize (FontSize::Medium);
-	twitterInfo->content()->setFlags (TextContentFlag::ActiveText);
-
-	twitterContainer->setLeftPadding (40);
-	twitterContainer->setRightPadding (40);
-	twitterContainer->setBottomPadding (30);
-	twitterContainer->add (twitterImage);
-	twitterContainer->add (twitterInfo);
-
-	Container *fbContainer = Container::create().horizontal(HorizontalAlignment::Center)
-						    .vertical(VerticalAlignment::Fill)
-						    .layout(StackLayout::create()
-						    .orientation(LayoutOrientation::LeftToRight));
-
-	ImageView *fbImage = ImageView::create().imageSource(QUrl ("asset:///facebook.png"));
-	Label *fbInfo = Label::create().horizontal(HorizontalAlignment::Left)
-				       .vertical(VerticalAlignment::Center)
-				       .text(trUtf8 ("<a href='http://www.facebook.com/pages/NSR-Reader/162440877184478'>"
-						     "Visit on Facebook</a>"))
-				       .format(TextFormat::Html);
-	fbInfo->textStyle()->setFontSize (FontSize::Medium);
-	fbInfo->content()->setFlags (TextContentFlag::ActiveText);
-
-	fbContainer->setLeftPadding (40);
-	fbContainer->setRightPadding (40);
-	fbContainer->add (fbImage);
-	fbContainer->add (fbInfo);
-
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
-	twitterInfo->accessibility()->setName (trUtf8 ("Tap to visit Twitter page"));
-	twitterImage->accessibility()->setName (trUtf8 ("Twitter logo"));
-	fbInfo->accessibility()->setName (trUtf8 ("Tap to visit Facebook page"));
-	fbImage->accessibility()->setName (trUtf8 ("Facebook logo"));
-#  endif
-#endif
+	reviewLabel->setTextFormat (TextFormat::Html);
+	reviewLabel->textStyle()->setTextAlign (TextAlign::Center);
 
 	_aboutContainer->setTopPadding (40);
 	_aboutContainer->setBottomPadding (40);
@@ -155,10 +109,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_aboutContainer->add (logoView);
 	_aboutContainer->add (versionInfo);
 	_aboutContainer->add (versionPlatform);
-	_aboutContainer->add (authorInfo);
 	_aboutContainer->add (contactsContainer);
-	_aboutContainer->add (twitterContainer);
-	_aboutContainer->add (fbContainer);
 	_aboutContainer->add (reviewLabel);
 
 	/* Help section goes next */
@@ -217,17 +168,31 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	ActionItem *reviewAction = ActionItem::create().imageSource(QUrl ("asset:///review.png"))
 						       .title(trUtf8 ("Review", "Review the app in the store"));
+	ActionItem *twitterAction = ActionItem::create().imageSource(QUrl ("asset:///twitter.png"))
+							.title("Twitter");
+	ActionItem *facebookAction = ActionItem::create().imageSource(QUrl ("asset:///facebook.png"))
+							 .title("Facebook");
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	reviewAction->accessibility()->setName (trUtf8 ("Review the app in the store"));
+	twitterAction->accessibility()->setName (trUtf8 ("Visit Twitter page"));
+	facebookAction->accessibility()->setName (trUtf8 ("Visit Facebook page"));
 #  endif
 #endif
 
 	ok = connect (reviewAction, SIGNAL (triggered ()), this, SLOT (onReviewActionTriggered ()));
 	Q_ASSERT (ok);
 
+	ok = connect (twitterAction, SIGNAL (triggered ()), this, SLOT (onTwitterActionTriggered ()));
+	Q_ASSERT (ok);
+
+	ok = connect (facebookAction, SIGNAL (triggered ()), this, SLOT (onFacebookActionTriggered ()));
+	Q_ASSERT (ok);
+
 	addAction (reviewAction, ActionBarPlacement::OnBar);
+	addAction (twitterAction, ActionBarPlacement::InOverflow);
+	addAction (facebookAction, ActionBarPlacement::InOverflow);
 
 	segmentedControl->setSelectedIndex ((int) section);
 
@@ -248,26 +213,11 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_translator->addTranslatable ((UIObject *) versionPlatform,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRAboutPage"),
-				      QString ("for BlackBerry%1 10"));
-	_translator->addTranslatable ((UIObject *) contactsInfo,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRAboutPage"),
-				      QString ("Contacts: <a href='mailto:nsr.reader@gmail.com'>"
-					       "nsr.reader@gmail.com</a>"));
+				      QString ("for BlackBerry\u00AE 10"));
 	_translator->addTranslatable ((UIObject *) reviewLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRAboutPage"),
-				      QString ("Please, leave a review if you liked this app."));
-	_translator->addTranslatable ((UIObject *) twitterInfo,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRAboutPage"),
-				      QString ("<a href='http://www.twitter.com/NSRReader'>"
-					       "Follow on Twitter</a>"));
-	_translator->addTranslatable ((UIObject *) fbInfo,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRAboutPage"),
-				      QString ("<a href='http://www.facebook.com/pages/NSR-Reader/162440877184478'>"
-					       "Visit on Facebook</a>"));
+				      QString ("Please, leave a review if you like this app.\n<b>Thank you!</b>"));
 	_translator->addTranslatable ((UIObject *) reviewAction,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRAboutPage"),
@@ -282,31 +232,19 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_translator->addTranslatable ((UIObject *) contactsInfo->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRAboutPage"),
-				      QString ("Contacts: nsr.reader@gmail.com - tap to write a email"));
-	_translator->addTranslatable ((UIObject *) twitterInfo->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRAboutPage"),
-				      QString ("Tap to visit Twitter page"));
-	_translator->addTranslatable ((UIObject *) twitterImage->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRAboutPage"),
-				      QString ("Twitter logo"));
-	_translator->addTranslatable ((UIObject *) fbInfo->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRAboutPage"),
-				      QString ("Tap to visit Facebook page"));
-	_translator->addTranslatable ((UIObject *) fbImage->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRAboutPage"),
-				      QString (""));
-	_translator->addTranslatable ((UIObject *) fbImage->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRAboutPage"),
-				      QString ("Facebook logo"));
+				      QString ("nsr.reader@gmail.com - tap to write a email"));
 	_translator->addTranslatable ((UIObject *) reviewAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRAboutPage"),
 				      QString ("Review the app in the store"));
+	_translator->addTranslatable ((UIObject *) twitterAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Visit Twitter page"));
+	_translator->addTranslatable ((UIObject *) facebookAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Visit Facebook page"));
 #  endif
 #endif
 
@@ -349,22 +287,19 @@ NSRAboutPage::onSelectedIndexChanged (int index)
 void
 NSRAboutPage::onReviewActionTriggered ()
 {
-	InvokeManager		invokeManager;
-	InvokeRequest		invokeRequest;
-	InvokeTargetReply	*invokeReply;
+	invokeUri ("appworld://content/27985686", "sys.appworld", "bb.action.OPEN");
+}
 
-	invokeRequest.setUri (QUrl ("appworld://content/27985686"));
-	invokeRequest.setAction ("bb.action.OPEN");
-	invokeRequest.setTarget ("sys.appworld");
+void
+NSRAboutPage::onTwitterActionTriggered ()
+{
+	invokeUri ("http://www.twitter.com/NSRReader", "sys.browser", "bb.action.OPEN");
+}
 
-	invokeReply = invokeManager.invoke (invokeRequest);
-
-	if (invokeReply != NULL) {
-		invokeReply->setParent (this);
-		bool ok = connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
-		Q_UNUSED (ok);
-		Q_ASSERT (ok);
-	}
+void
+NSRAboutPage::onFacebookActionTriggered ()
+{
+	invokeUri ("http://www.facebook.com/pages/NSR-Reader/162440877184478", "sys.browser", "bb.action.OPEN");
 }
 
 void
@@ -419,7 +354,7 @@ NSRAboutPage::retranslateUi ()
 	QString tip7 = trUtf8 ("NSR Reader caches already rendered pages to increase performance.");
 	QString tip8 = trUtf8 ("If you have any problems with the app, please contact me (see contacts on "
 			       "<i>About</i> page). Any suggestions are highly welcomed, too.");
-	QString tip9 = trUtf8 ("Please leave a review for NSR Reader if you liked it to help others find it in the store. Thank you!");
+	QString tip9 = trUtf8 ("Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!");
 
 	QString htmlHelp = QString ("<html><head/><body style=\"font-family: arial, sans-serif; "
 				    "font-size: 28pt; background: #0F0F0F; color: #E6E6E6;\">"
@@ -459,3 +394,23 @@ NSRAboutPage::retranslateUi ()
 	_translator->translate ();
 }
 
+void
+NSRAboutPage::invokeUri (const QString& uri, const QString& target, const QString& action)
+{
+	InvokeManager		invokeManager;
+	InvokeRequest		invokeRequest;
+	InvokeTargetReply	*invokeReply;
+
+	invokeRequest.setUri (QUrl (uri));
+	invokeRequest.setAction (action);
+	invokeRequest.setTarget (target);
+
+	invokeReply = invokeManager.invoke (invokeRequest);
+
+	if (invokeReply != NULL) {
+		invokeReply->setParent (this);
+		bool ok = connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
+		Q_UNUSED (ok);
+		Q_ASSERT (ok);
+	}
+}
