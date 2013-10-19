@@ -111,13 +111,14 @@ NSRReaderBB10::initFullUI ()
 	_pageView->setVerticalAlignment (VerticalAlignment::Fill);
 	_pageView->setVisible (false);
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
-						.vertical(VerticalAlignment::Fill);
-#ifndef BBNDK_VERSION_AT_LEAST
-	_indicator->setVisible (false);
-#endif
+						.vertical(VerticalAlignment::Fill)
+						.visible(false);
 
-	bool ok = connect (_pageView, SIGNAL (prevPageRequested ()), this, SLOT (onPrevPageRequested ()));
+	bool ok = connect (_indicator, SIGNAL (stopped ()), this, SLOT (onIndicatorStopped ()));
 	Q_UNUSED (ok);
+	Q_ASSERT (ok);
+
+	ok = connect (_pageView, SIGNAL (prevPageRequested ()), this, SLOT (onPrevPageRequested ()));
 	Q_ASSERT (ok);
 
 	ok = connect (_pageView, SIGNAL (nextPageRequested ()), this, SLOT (onNextPageRequested ()));
@@ -604,8 +605,6 @@ NSRReaderBB10::onPageRendered (int number)
 	_slider->setRange (1, pagesCount);
 	_slider->setValue (number);
 
-	updateVisualControls ();
-
 	/* Fit cropped page to width only in graphic mode,
 	 * cached pages should be already cropped and fitted */
 	if (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_GRAPHIC) {
@@ -772,16 +771,24 @@ NSRReaderBB10::saveSession ()
 void
 NSRReaderBB10::onIndicatorRequested (bool enabled)
 {
-	disableVisualControls ();
-#ifndef BBNDK_VERSION_AT_LEAST
-	_indicator->setVisible (enabled);
-#endif
+	if (_indicator->isRunning () == enabled)
+		return;
+
 	_pageView->setZoomEnabled (!enabled);
 
-	if (enabled)
+	if (enabled) {
+		disableVisualControls ();
+		_indicator->setVisible (true);
 		_indicator->start ();
-	else
+	} else
 		_indicator->stop ();
+}
+
+void
+NSRReaderBB10::onIndicatorStopped ()
+{
+	_indicator->setVisible (false);
+	updateVisualControls ();
 }
 
 void
