@@ -4,12 +4,16 @@
 #include "nsrthumbnailer.h"
 #include "nsrglobalnotifier.h"
 
-#include <bb/cascades/Container>
 #include <bb/cascades/ListView>
 #include <bb/cascades/DockLayout>
+#include <bb/cascades/StackLayout>
 #include <bb/cascades/Color>
 #include <bb/cascades/TitleBar>
 #include <bb/cascades/QListDataModel>
+#include <bb/cascades/Label>
+#include <bb/cascades/ImageView>
+
+#include <bbndk.h>
 
 using namespace bb::cascades;
 
@@ -17,7 +21,8 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	Page (parent),
 	_translator (NULL),
 	_listView (NULL),
-	_listLayout (NULL)
+	_listLayout (NULL),
+	_emptyContainer (NULL)
 {
 	_translator = new NSRTranslator (this);
 
@@ -42,15 +47,40 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	_listLayout->setCellAspectRatio (0.8);
 	_listView->setLayout (_listLayout);
 
-	_emptyLabel = Label::create().horizontal(HorizontalAlignment::Center)
-				     .vertical(VerticalAlignment::Center)
-				     .text(trUtf8 ("No recent files",
-						   "List of recently used files is empty"))
-				     .visible(false);
-	_emptyLabel->textStyle()->setFontSize (FontSize::Large);
+	Label *emptyLabel = Label::create().horizontal(HorizontalAlignment::Center)
+					   .vertical(VerticalAlignment::Center)
+					   .multiline(true)
+					   .text(trUtf8 ("No recent files", "List of recently used files is empty"));
+	emptyLabel->textStyle()->setFontSize (FontSize::Large);
+	emptyLabel->textStyle()->setTextAlign (TextAlign::Center);
+
+	Label *emptyMoreLabel = Label::create().horizontal(HorizontalAlignment::Center)
+					       .vertical(VerticalAlignment::Center)
+					       .multiline(true)
+					       .text(trUtf8 ("Start reading to display files here"));
+	emptyMoreLabel->textStyle()->setFontSize (FontSize::Medium);
+	emptyMoreLabel->textStyle()->setTextAlign (TextAlign::Center);
+
+	ImageView *emptyImage = ImageView::create().horizontal(HorizontalAlignment::Center)
+						   .vertical(VerticalAlignment::Center)
+						   .imageSource(QUrl ("asset:///file.png"));
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	emptyImage->accessibility()->setName (trUtf8 ("Image of document"));
+#  endif
+#endif
+
+	_emptyContainer = Container::create().horizontal(HorizontalAlignment::Center)
+					     .vertical(VerticalAlignment::Center)
+					     .layout(StackLayout::create ())
+					     .visible(false);
+	_emptyContainer->add (emptyImage);
+	_emptyContainer->add (emptyLabel);
+	_emptyContainer->add (emptyMoreLabel);
 
 	rootContainer->add (_listView);
-	rootContainer->add (_emptyLabel);
+	rootContainer->add (_emptyContainer);
 	rootContainer->setBackground (Color::Black);
 
 	setContent (rootContainer);
@@ -78,14 +108,27 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 			   this, SIGNAL (documentToBeDeleted (QString)));
 	Q_ASSERT (ok);
 
-	_translator->addTranslatable ((UIObject *) _emptyLabel,
+	_translator->addTranslatable ((UIObject *) emptyLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRLastDocsPage"),
 				      QString ("No recent files"));
+	_translator->addTranslatable ((UIObject *) emptyMoreLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRLastDocsPage"),
+				      QString ("Start reading to display files here"));
 	_translator->addTranslatable ((UIObject *) titleBar (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_TITLEBAR,
 				      QString ("NSRLastDocsPage"),
 				      QString ("Recent"));
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	_translator->addTranslatable ((UIObject *) emptyImage->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRLastDocsPage"),
+				      QString ("Image of document"));
+#  endif
+#endif
 
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		      _translator, SLOT (translate ()));
@@ -123,7 +166,7 @@ void
 NSRLastDocsPage::onModelUpdated (bool isEmpty)
 {
 	_listView->setVisible (!isEmpty);
-	_emptyLabel->setVisible (isEmpty);
+	_emptyContainer->setVisible (isEmpty);
 }
 
 void

@@ -2,9 +2,9 @@
 #define NSRLASTDOCSPAGE_H_
 
 #include <bb/cascades/Page>
-#include <bb/cascades/Label>
 #include <bb/cascades/GridListLayout>
 #include <bb/cascades/OrientationSupport>
+#include <bb/cascades/Container>
 
 #include "nsrlastdocslistview.h"
 #include "nsrtranslator.h"
@@ -33,7 +33,7 @@ private:
 	NSRTranslator			*_translator;
 	NSRLastDocsListView		*_listView;
 	bb::cascades::GridListLayout	*_listLayout;
-	bb::cascades::Label		*_emptyLabel;
+	bb::cascades::Container		*_emptyContainer;
 };
 
 #endif /* NSRLASTDOCSPAGE_H_ */
