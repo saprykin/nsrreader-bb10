@@ -75,6 +75,8 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .layout(StackLayout::create ())
 					     .visible(false);
+	_emptyContainer->setLeftPadding (20);
+	_emptyContainer->setRightPadding (20);
 	_emptyContainer->add (emptyImage);
 	_emptyContainer->add (emptyLabel);
 	_emptyContainer->add (emptyMoreLabel);
