@@ -98,7 +98,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Label *reviewLabel = Label::create().horizontal(HorizontalAlignment::Center)
 					    .vertical(VerticalAlignment::Fill)
 					    .multiline(true);
-	reviewLabel->setText (trUtf8 ("Please, leave a review if you like this app.\n<b>Thank you!</b>"));
+	reviewLabel->setText (trUtf8 ("Please, leave a review if you like this app\n<b>Thank you!</b>"));
 	reviewLabel->textStyle()->setFontSize (FontSize::Medium);
 	reviewLabel->setTextFormat (TextFormat::Html);
 	reviewLabel->textStyle()->setTextAlign (TextAlign::Center);
@@ -217,7 +217,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_translator->addTranslatable ((UIObject *) reviewLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRAboutPage"),
-				      QString ("Please, leave a review if you like this app.\n<b>Thank you!</b>"));
+				      QString ("Please, leave a review if you like this app\n<b>Thank you!</b>"));
 	_translator->addTranslatable ((UIObject *) reviewAction,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRAboutPage"),

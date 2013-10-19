@@ -78,7 +78,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Container *outerThirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							    .layout(StackLayout::create());
 	Label *columnInfo = Label::create (trUtf8 ("Use Text Reflow to read files with "
-						   "large amount of text data."))
+						   "large amount of text data"))
 				   .horizontal(HorizontalAlignment::Fill)
 				   .vertical(VerticalAlignment::Center);
 	columnInfo->textStyle()->setFontSize (FontSize::XSmall);
@@ -107,7 +107,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Container *outerFourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							     .layout(StackLayout::create());
 	Label *invertInfo = Label::create (trUtf8 ("Black background reduces OLED display power consumption "
-					       	   "and helps to read at dark."))
+					       	   "and helps to read at dark"))
 				   .horizontal(HorizontalAlignment::Fill)
 				   .vertical(VerticalAlignment::Center);
 	invertInfo->textStyle()->setFontSize (FontSize::XSmall);
@@ -136,8 +136,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				     	 .horizontal(HorizontalAlignment::Fill)
 				     	 .vertical(VerticalAlignment::Center)
 				     	 .multiline(true);
-	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for plain text files. "
-					       	    "None other format supports encoding selection."))
+	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for plain text files, "
+					       	    "none other format supports encoding selection"))
 				     .horizontal(HorizontalAlignment::Fill)
 				     .vertical(VerticalAlignment::Center);
 	encodingInfo->textStyle()->setFontSize (FontSize::XSmall);
@@ -199,7 +199,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_translator->addTranslatable ((UIObject *) columnInfo,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
-				      QString ("Use Text Reflow to read files with large amount of text data."));
+				      QString ("Use Text Reflow to read files with large amount of text data"));
 	_translator->addTranslatable ((UIObject *) columnLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -208,7 +208,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Black background reduces OLED display power consumption "
-					       "and helps to read at dark."));
+					       "and helps to read at dark"));
 	_translator->addTranslatable ((UIObject *) invertLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -220,8 +220,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_translator->addTranslatable ((UIObject *) encodingInfo,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
-				      QString ("Text encoding is used only for plain text files. "
-					       "None other format supports encoding selection."));
+				      QString ("Text encoding is used only for plain text files, "
+					       "none other format supports encoding selection"));
 	_translator->addTranslatable ((UIObject *) cropLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
