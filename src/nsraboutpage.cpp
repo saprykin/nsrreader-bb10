@@ -1,6 +1,7 @@
 #include "nsraboutpage.h"
 #include "nsrsettings.h"
 #include "nsrglobalnotifier.h"
+#include "nsrfilesharer.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
@@ -12,14 +13,9 @@
 #include <bb/cascades/Color>
 #include <bb/cascades/ActionItem>
 
-#include <bb/system/InvokeTargetReply>
-#include <bb/system/InvokeRequest>
-#include <bb/system/InvokeManager>
-
 #include <bbndk.h>
 
 using namespace bb::cascades;
-using namespace bb::system;
 
 NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Page (parent),
@@ -282,19 +278,19 @@ NSRAboutPage::onSelectedIndexChanged (int index)
 void
 NSRAboutPage::onReviewActionTriggered ()
 {
-	invokeUri ("appworld://content/27985686", "sys.appworld", "bb.action.OPEN");
+	NSRFileSharer::getInstance()->invokeUri ("appworld://content/27985686", "sys.appworld", "bb.action.OPEN");
 }
 
 void
 NSRAboutPage::onTwitterActionTriggered ()
 {
-	invokeUri ("http://www.twitter.com/NSRReader", "sys.browser", "bb.action.OPEN");
+	NSRFileSharer::getInstance()->invokeUri ("http://www.twitter.com/NSRReader", "sys.browser", "bb.action.OPEN");
 }
 
 void
 NSRAboutPage::onFacebookActionTriggered ()
 {
-	invokeUri ("http://www.facebook.com/pages/NSR-Reader/162440877184478", "sys.browser", "bb.action.OPEN");
+	NSRFileSharer::getInstance()->invokeUri ("http://www.facebook.com/pages/NSR-Reader/162440877184478", "sys.browser", "bb.action.OPEN");
 }
 
 void
@@ -392,23 +388,3 @@ NSRAboutPage::retranslateUi ()
 	_translator->translate ();
 }
 
-void
-NSRAboutPage::invokeUri (const QString& uri, const QString& target, const QString& action)
-{
-	InvokeManager		invokeManager;
-	InvokeRequest		invokeRequest;
-	InvokeTargetReply	*invokeReply;
-
-	invokeRequest.setUri (QUrl (uri));
-	invokeRequest.setAction (action);
-	invokeRequest.setTarget (target);
-
-	invokeReply = invokeManager.invoke (invokeRequest);
-
-	if (invokeReply != NULL) {
-		invokeReply->setParent (this);
-		bool ok = connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
-		Q_UNUSED (ok);
-		Q_ASSERT (ok);
-	}
-}

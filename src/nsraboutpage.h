@@ -31,8 +31,6 @@ private Q_SLOTS:
 	void retranslateUi ();
 
 private:
-	void invokeUri (const QString& uri, const QString& target, const QString& action);
-
 	NSRTranslator			*_translator;
 	bb::cascades::Container		*_aboutContainer;
 	bb::cascades::Container		*_helpContainer;

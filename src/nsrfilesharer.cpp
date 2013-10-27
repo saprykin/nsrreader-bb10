@@ -3,9 +3,14 @@
 #include <bb/cascades/Invocation>
 #include <bb/cascades/InvokeQuery>
 
+#include <bb/system/InvokeManager>
+#include <bb/system/InvokeRequest>
+#include <bb/system/InvokeTargetReply>
+
 #include <QFileInfo>
 
 using namespace bb::cascades;
+using namespace bb::system;
 
 NSRFileSharer::NSRFileSharer () :
 	QObject (NULL)
@@ -74,6 +79,27 @@ bool
 NSRFileSharer::isSharable (const QString& path)
 {
 	return !path.startsWith ("app/native/assets", Qt::CaseSensitive);
+}
+
+void
+NSRFileSharer::invokeUri (const QString& uri, const QString& target, const QString& action)
+{
+	InvokeManager		invokeManager;
+	InvokeRequest		invokeRequest;
+	InvokeTargetReply	*invokeReply;
+
+	invokeRequest.setUri (QUrl (uri));
+	invokeRequest.setAction (action);
+	invokeRequest.setTarget (target);
+
+	invokeReply = invokeManager.invoke (invokeRequest);
+
+	if (invokeReply != NULL) {
+		invokeReply->setParent (this);
+		bool ok = connect (invokeReply, SIGNAL (finished ()), invokeReply, SLOT (deleteLater ()));
+		Q_UNUSED (ok);
+		Q_ASSERT (ok);
+	}
 }
 
 void

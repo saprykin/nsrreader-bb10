@@ -9,6 +9,7 @@ class NSRFileSharer : public QObject
 public:
 	static NSRFileSharer * getInstance ();
 	void shareFiles (const QStringList& list);
+	void invokeUri (const QString& uri, const QString& target, const QString& action);
 
 	static bool isSharable (const QString& path);
 
