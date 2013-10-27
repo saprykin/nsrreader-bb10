@@ -20,10 +20,17 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 	setVerticalAlignment (VerticalAlignment::Bottom);
 	setHorizontalAlignment (HorizontalAlignment::Fill);
 	setBackground (Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f));
+
 	setLeftPadding (20);
 	setRightPadding (20);
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if !BBNDK_VERSION_AT_LEAST(10,2,0)
 	setBottomPadding (10);
 	setTopPadding (30);
+#  else
+	setTopPadding (10);
+#  endif
+#endif
 
 	_slider = Slider::create().horizontal(HorizontalAlignment::Fill)
 				  .vertical(VerticalAlignment::Center)
