@@ -1,7 +1,7 @@
 #include "nsrsettings.h"
 #include "nsrthumbnailer.h"
 
-#define NSR_READER_VERSION "1.3.1"
+#define NSR_READER_VERSION "1.3.2"
 
 #ifdef NSR_LITE_VERSION
 #  define NSR_CONFIG_DIR 	".nsrreaderlite"
