@@ -1,5 +1,6 @@
 #include "nsrlastdocitem.h"
 #include "nsrglobalnotifier.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
@@ -9,8 +10,6 @@
 #include <bb/cascades/LayoutUpdateHandler>
 
 #include <QFile>
-
-#include <bbndk.h>
 
 using namespace bb::cascades;
 

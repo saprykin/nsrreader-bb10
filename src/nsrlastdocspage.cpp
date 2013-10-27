@@ -3,6 +3,7 @@
 #include "nsrsettings.h"
 #include "nsrthumbnailer.h"
 #include "nsrglobalnotifier.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/ListView>
 #include <bb/cascades/DockLayout>
@@ -12,8 +13,6 @@
 #include <bb/cascades/QListDataModel>
 #include <bb/cascades/Label>
 #include <bb/cascades/ImageView>
-
-#include <bbndk.h>
 
 using namespace bb::cascades;
 

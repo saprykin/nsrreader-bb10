@@ -1,11 +1,10 @@
 #include "nsrpageslider.h"
 #include "nsrglobalnotifier.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/StackLayoutProperties>
 #include <bb/cascades/Color>
-
-#include <bbndk.h>
 
 using namespace bb::cascades;
 

@@ -2,6 +2,7 @@
 #include "nsrsettings.h"
 #include "nsrglobalnotifier.h"
 #include "nsrfilesharer.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
@@ -12,8 +13,6 @@
 #include <bb/cascades/WebSettings>
 #include <bb/cascades/Color>
 #include <bb/cascades/ActionItem>
-
-#include <bbndk.h>
 
 using namespace bb::cascades;
 

@@ -2,12 +2,11 @@
 #include "nsrlastdocitem.h"
 #include "nsrlastdocslistview.h"
 #include "nsrfilesharer.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/ActionItem>
 #include <bb/cascades/DeleteActionItem>
 #include <bb/cascades/ActionSet>
-
-#include <bbndk.h>
 
 using namespace bb::cascades;
 

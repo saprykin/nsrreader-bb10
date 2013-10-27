@@ -1,5 +1,6 @@
 #include "nsrpageview.h"
 #include "nsrglobalnotifier.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/StackLayout>
@@ -14,8 +15,6 @@
 #include <bb/cascades/OrientationSupport>
 
 #include <bb/device/DisplayInfo>
-
-#include <bbndk.h>
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)

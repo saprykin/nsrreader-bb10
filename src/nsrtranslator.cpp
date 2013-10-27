@@ -1,4 +1,5 @@
 #include "nsrtranslator.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/Label>
 #include <bb/cascades/ActionItem>
@@ -7,8 +8,6 @@
 #include <bb/cascades/Option>
 #include <bb/cascades/MultiSelectHandler>
 #include <bb/cascades/TitleBar>
-
-#include <bbndk.h>
 
 using namespace bb::cascades;
 

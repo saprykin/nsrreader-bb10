@@ -6,6 +6,7 @@
 #include "nsrfilesharer.h"
 #include "nsrscenecover.h"
 #include "nsrglobalnotifier.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
@@ -20,8 +21,6 @@
 #include <bb/cascades/Menu>
 #include <bb/cascades/ActionItem>
 #include <bb/cascades/NavigationPaneProperties>
-
-#include <bbndk.h>
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,1,0)
