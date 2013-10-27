@@ -1171,8 +1171,12 @@ NSRReaderBB10::onBackButtonTriggered ()
 void
 NSRReaderBB10::onTopPagePeeked (bool isPeeked)
 {
-	if (isPeeked)
-		onBackButtonTriggered ();
+	if (isPeeked) {
+		NSRLastDocsPage *page = dynamic_cast<NSRLastDocsPage *> (_naviPane->top ());
+
+		if (page != NULL)
+			page->finishToast ();
+	}
 }
 
 void
