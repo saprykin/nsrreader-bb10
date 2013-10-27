@@ -205,6 +205,10 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
+#ifdef NSR_LITE_VERSION
+	ActionItem *buyAction = ActionItem::create();
+	buyAction->setTitle (trUtf8 ("Buy", "Buy full version of the app in the store"));
+#endif
 
 	_translator->addTranslatable ((UIObject *) openAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
@@ -230,6 +234,11 @@ NSRReaderBB10::initFullUI ()
 	_translator->addTranslatable ((UIObject *) shareAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share"));
+#ifdef NSR_LITE_VERSION
+	_translator->addTranslatable ((UIObject *) buyAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Buy"));
+#endif
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
@@ -274,6 +283,12 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share file with others"));
+#    ifdef NSR_LITE_VERSION
+	_translator->addTranslatable ((UIObject *) buyAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Buy full version of the app in the store"));
+#    endif
 
 #  endif
 #endif
@@ -302,6 +317,9 @@ NSRReaderBB10::initFullUI ()
 	recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
+#ifdef NSR_LITE_VERSION
+	buyAction->setImage (QUrl ("asset:///buy.png"));
+#endif
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,1,0)
@@ -341,9 +359,17 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (shareAction, SIGNAL (triggered ()), this, SLOT (onShareActionTriggered ()));
 	Q_ASSERT (ok);
 
+#ifdef NSR_LITE_VERSION
+	ok = connect (buyAction, SIGNAL (triggered ()), this, SLOT (onBuyActionTriggered ()));
+	Q_ASSERT (ok);
+#endif
+
 	Menu *menu = new Menu ();
 	menu->addAction (helpAction);
 	menu->addAction (prefsAction);
+#ifdef NSR_LITE_VERSION
+	menu->addAction (buyAction);
+#endif
 	Application::instance()->setMenu (menu);
 
 	_filePicker = new FilePicker (this);
@@ -1237,6 +1263,12 @@ NSRReaderBB10::onLiteVersionOverPage ()
 			      "larger files, please consider buying the full "
 			      "version.").arg (NSRSettings::getMaxAllowedPages ());
 	showToast (text, false);
+}
+
+void
+NSRReaderBB10::onBuyActionTriggered ()
+{
+	NSRFileSharer::getInstance()->invokeUri ("appworld://content/27985686", "sys.appworld", "bb.action.OPEN");
 }
 #endif
 

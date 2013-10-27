@@ -431,6 +431,11 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
         <source>Lite version of NSR Reader allows to read only first %1 pages of the file. If you want to read larger files, please consider buying the full version.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Buy</source>
+        <comment>Buy full version of the app in the store</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRSettings</name>

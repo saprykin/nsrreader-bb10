@@ -81,6 +81,7 @@ private Q_SLOTS:
     void onVkbVisibilityChanged (bool visible);
 #ifdef NSR_LITE_VERSION
     void onLiteVersionOverPage ();
+    void onBuyActionTriggered ();
 #endif
     void retranslateUi ();
 
