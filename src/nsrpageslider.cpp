@@ -30,6 +30,9 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 #  else
 	setTopPadding (10);
 #  endif
+#else
+	setBottomPadding (10);
+	setTopPadding (30);
 #endif
 
 	_slider = Slider::create().horizontal(HorizontalAlignment::Fill)
