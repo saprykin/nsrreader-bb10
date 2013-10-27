@@ -24,4 +24,6 @@ If you like the app then the best support for me would be your positive review. 
 
 * IMPORTANT * Do NOT disable Shared Files permission for the app because without that it can't read files.
 
+Lite: Free version allows you to read only first 30 pages of the file.
+
 pdf reader, pdf viewer, djvu reader, djvu viewer, pdf, djvu, tiff, tif, documents, text
