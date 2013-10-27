@@ -1029,10 +1029,18 @@ NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
 	if (!ok)
 		page = -1;
 
+#ifdef NSR_LITE_VERSION
+	if (target == "com.gmail.lite.reader.nsr") {
+#else
 	if (target == "com.gmail.reader.nsr") {
+#endif
 		saveSession ();
 		loadSession (file, page);
+#ifdef NSR_LITE_VERSION
+	} else if (target == "com.gmail.lite.reader.nsr.viewer") {
+#else
 	} else if (target == "com.gmail.reader.nsr.viewer") {
+#endif
 		initCardUI ();
 		loadSession (file, page);
 	}
