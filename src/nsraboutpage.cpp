@@ -357,8 +357,8 @@ NSRAboutPage::retranslateUi ()
 {
 #ifdef NSR_LITE_VERSION
 	_liteLabel->setText (trUtf8 ("You are using the Lite version which can read only first "
-				    "%1 pages of the file. Please consider buying the full version "
-				    "if you want to read larger files.").arg (NSRSettings::getMaxAllowedPages ()));
+				     "%1 pages of the file. Please consider buying the full version "
+				     "if you want to read larger files.").arg (NSRSettings::getMaxAllowedPages ()));
 #endif
 	_versionPlatform->setText (trUtf8 ("for BlackBerry%1 10", "%1 will be replaced with reg in circle symbol")
 				   .arg (QString::fromUtf8 ("\u00AE")));

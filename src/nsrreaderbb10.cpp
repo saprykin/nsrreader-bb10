@@ -711,7 +711,7 @@ NSRReaderBB10::reloadSettings ()
 				       "file formatting may be differ than in original one, "
 				       "no images displayed and page can be empty if there is "
 				       "no text in the file. Also text may not be displayed "
-				       "properly if appropriate language is not supported by phone",
+				       "properly if appropriate language is not supported by phone.",
 				       "Text reflow is a view mode of PDF/DjVu files when "
 				       "only text information without images is displayed with "
 				       "word wrap feature enabled. Use pinch gesture to adjust "
@@ -730,7 +730,7 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 		QString errorStr = trUtf8 ("It seems that selected file doesn't exist anymore "
 					   "or NSR Reader doesn't have Shared Files permission. Please "
 					   "check permissions at Settings->Security and Privacy->"
-					   "Application Permissions");
+					   "Application Permissions.");
 
 		showToast (errorStr, true);
 		return;
@@ -868,8 +868,8 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
 				   "software :)");
 	else
 		errorStr = trUtf8 ("Unknown error! Maybe file is broken.\n"
-				   "NSR Reader tried open this file, but it can't :( "
-				   "Please check this file on desktop computer");
+				   "NSR Reader tried to open this file, but it can't :( "
+				   "Please check this file on desktop computer.");
 
 	showToast (errorStr, true);
 }

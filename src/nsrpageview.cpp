@@ -95,7 +95,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_initialFontSize = (int) _textArea->textStyle()->fontSize ();
 
 	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
-							       SLOT (onLayoutFrameChanged (QRectF)));
+							        SLOT (onLayoutFrameChanged (QRectF)));
 
 	TapHandler *tapHandler = TapHandler::create()
 					.onTapped (this, SLOT (onTapGesture (bb::cascades::TapEvent *)));
