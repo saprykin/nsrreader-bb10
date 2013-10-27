@@ -57,6 +57,9 @@ Q_SIGNALS:
 	void needPassword ();
 	void errorWhileOpening (NSRAbstractDocument::DocumentError error);
 	void needViewMode (NSRPageView::NSRViewMode mode);
+#ifdef NSR_LITE_VERSION
+	void liteVersionOverPage ();
+#endif
 
 private Q_SLOTS:
 	void onRenderDone ();

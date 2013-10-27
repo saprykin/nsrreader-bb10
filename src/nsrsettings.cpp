@@ -4,9 +4,10 @@
 #define NSR_READER_VERSION "1.3.1"
 
 #ifdef NSR_LITE_VERSION
-#  define NSR_CONFIG_DIR ".nsrreaderlite"
+#  define NSR_CONFIG_DIR 	".nsrreaderlite"
+#  define NSR_LITE_MAX_PAGES	30
 #else
-#  define NSR_CONFIG_DIR ".nsrreader"
+#  define NSR_CONFIG_DIR 	".nsrreader"
 #endif
 
 NSRSettings::NSRSettings (QObject *parent) :
@@ -309,6 +310,14 @@ NSRSettings::getSettingsDirectory ()
 {
 	return QDir::homePath () + "/"NSR_CONFIG_DIR;
 }
+
+#ifdef NSR_LITE_VERSION
+int
+NSRSettings::getMaxAllowedPages ()
+{
+	return NSR_LITE_MAX_PAGES;
+}
+#endif
 
 QString
 NSRSettings::formatFileName (const QString &name)

@@ -375,6 +375,11 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onViewModeRequested (NSRPageView::NSRViewMode)));
 	Q_ASSERT (ok);
 
+#ifdef NSR_LITE_VERSION
+	ok = connect (_core, SIGNAL (liteVersionOverPage ()), this, SLOT (onLiteVersionOverPage ()));
+	Q_ASSERT (ok);
+#endif
+
 	_naviPane = NavigationPane::create().add (_page);
 
 	ok = connect (_naviPane, SIGNAL (popTransitionEnded (bb::cascades::Page *)),
@@ -1222,6 +1227,18 @@ NSRReaderBB10::onVkbVisibilityChanged (bool visible)
 	} else
 		_slider->setVisible (_wasSliderVisible);
 }
+
+#ifdef NSR_LITE_VERSION
+void
+NSRReaderBB10::onLiteVersionOverPage ()
+{
+	QString text = trUtf8("Lite version of NSR Reader allows to read only "
+			      "first %1 pages of the file. If you want to read "
+			      "larger files, please consider buying the full "
+			      "version.").arg (NSRSettings::getMaxAllowedPages ());
+	showToast (text, false);
+}
+#endif
 
 void
 NSRReaderBB10::retranslateUi ()

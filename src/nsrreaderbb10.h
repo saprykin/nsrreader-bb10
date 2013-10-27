@@ -79,6 +79,9 @@ private Q_SLOTS:
     void onPageSliderInteractionEnded ();
     void onPageSliderValueChanged (int value);
     void onVkbVisibilityChanged (bool visible);
+#ifdef NSR_LITE_VERSION
+    void onLiteVersionOverPage ();
+#endif
     void retranslateUi ();
 
 private:

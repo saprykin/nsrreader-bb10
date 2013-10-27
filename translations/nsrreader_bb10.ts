@@ -136,6 +136,18 @@
         <comment>%1 will be replaced with reg in circle symbol</comment>
         <translation>for BlackBerry%1 10</translation>
     </message>
+    <message>
+        <source>Buy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buy full version of the app</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are using the Lite version which can read only first %1 pages of the file. Please consider buying the full version if you want to read larger files.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRAbstractDocument</name>
@@ -414,6 +426,10 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
         <source>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone</source>
         <comment>Text reflow is a view mode of PDF/DjVu files when only text information without images is displayed with word wrap feature enabled. Use pinch gesture to adjust text size</comment>
         <translation>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone</translation>
+    </message>
+    <message>
+        <source>Lite version of NSR Reader allows to read only first %1 pages of the file. If you want to read larger files, please consider buying the full version.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

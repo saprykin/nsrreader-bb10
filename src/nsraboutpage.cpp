@@ -24,6 +24,9 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_scrollView (NULL),
 	_webHelp (NULL),
 	_versionPlatform (NULL)
+#ifdef NSR_LITE_VERSION
+	,_liteLabel (NULL)
+#endif
 {
 	_translator = new NSRTranslator (this);
 
@@ -44,8 +47,13 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 					     .layout(StackLayout::create());
 
 	ImageView *logoView = ImageView::create().horizontal(HorizontalAlignment::Center)
-						 .vertical(VerticalAlignment::Center)
-						 .imageSource(QUrl ("asset:///nsrlogo.png"));
+						 .vertical(VerticalAlignment::Center);
+
+#ifndef NSR_LITE_VERSION
+	logoView->setImageSource (QUrl ("asset:///nsrlogo.png"));
+#else
+	logoView->setImageSource (QUrl ("asset:///nsrlogo-lite.png"));
+#endif
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
@@ -56,6 +64,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Label *versionInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					    .vertical(VerticalAlignment::Fill)
 					    .text(QString ("NSR Reader ").append (NSRSettings::getVersion ()));
+
 	versionInfo->textStyle()->setFontSize (FontSize::Large);
 
 	_versionPlatform = Label::create().horizontal(HorizontalAlignment::Center)
@@ -98,6 +107,13 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	reviewLabel->setTextFormat (TextFormat::Html);
 	reviewLabel->textStyle()->setTextAlign (TextAlign::Center);
 
+#ifdef NSR_LITE_VERSION
+	_liteLabel = Label::create().horizontal(HorizontalAlignment::Center)
+					  .vertical(VerticalAlignment::Fill)
+					  .multiline(true);
+	_liteLabel->textStyle()->setTextAlign(TextAlign::Center);
+#endif
+
 	_aboutContainer->setTopPadding (40);
 	_aboutContainer->setBottomPadding (40);
 
@@ -106,6 +122,10 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_aboutContainer->add (_versionPlatform);
 	_aboutContainer->add (contactsContainer);
 	_aboutContainer->add (reviewLabel);
+
+#ifdef NSR_LITE_VERSION
+	_aboutContainer->add (_liteLabel);
+#endif
 
 	/* Help section goes next */
 
@@ -167,12 +187,20 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 							.title("Twitter");
 	ActionItem *facebookAction = ActionItem::create().imageSource(QUrl ("asset:///facebook.png"))
 							 .title("Facebook");
+#ifdef NSR_LITE_VERSION
+	ActionItem *buyAction = ActionItem::create().imageSource(QUrl ("asset:///buy.png"))
+						    .title(trUtf8 ("Buy"));
+#endif
+
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	reviewAction->accessibility()->setName (trUtf8 ("Review the app in the store"));
 	twitterAction->accessibility()->setName (trUtf8 ("Visit Twitter page"));
 	facebookAction->accessibility()->setName (trUtf8 ("Visit Facebook page"));
+#    ifdef NSR_LITE_VERSION
+	buyAction->accessibility()->setName (trUtf8 ("Buy full version of the app"));
+#    endif
 #  endif
 #endif
 
@@ -185,7 +213,15 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	ok = connect (facebookAction, SIGNAL (triggered ()), this, SLOT (onFacebookActionTriggered ()));
 	Q_ASSERT (ok);
 
+#ifdef NSR_LITE_VERSION
+	ok = connect (buyAction, SIGNAL (triggered ()), this, SLOT (onBuyActionTriggered ()));
+	Q_ASSERT (ok);
+#endif
+
 	addAction (reviewAction, ActionBarPlacement::OnBar);
+#ifdef NSR_LITE_VERSION
+	addAction (buyAction, ActionBarPlacement::OnBar);
+#endif
 	addAction (twitterAction, ActionBarPlacement::InOverflow);
 	addAction (facebookAction, ActionBarPlacement::InOverflow);
 
@@ -213,6 +249,12 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRAboutPage"),
 				      QString ("Review"));
+#ifdef NSR_LITE_VERSION
+	_translator->addTranslatable ((UIObject *) buyAction,
+			      	      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+			      	      QString ("NSRAboutPage"),
+			      	      QString ("Buy"));
+#endif
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
@@ -236,6 +278,12 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRAboutPage"),
 				      QString ("Visit Facebook page"));
+#    ifdef NSR_LITE_VERSION
+	_translator->addTranslatable ((UIObject *) buyAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRAboutPage"),
+				      QString ("Buy full version of the app"));
+#    endif
 #  endif
 #endif
 
@@ -278,7 +326,11 @@ NSRAboutPage::onSelectedIndexChanged (int index)
 void
 NSRAboutPage::onReviewActionTriggered ()
 {
+#ifndef NSR_LITE_VERSION
 	NSRFileSharer::getInstance()->invokeUri ("appworld://content/27985686", "sys.appworld", "bb.action.OPEN");
+#else
+	/* TODO: Invoke store page with the lite version */
+#endif
 }
 
 void
@@ -293,9 +345,22 @@ NSRAboutPage::onFacebookActionTriggered ()
 	NSRFileSharer::getInstance()->invokeUri ("http://www.facebook.com/pages/NSR-Reader/162440877184478", "sys.browser", "bb.action.OPEN");
 }
 
+#ifdef NSR_LITE_VERSION
+void
+NSRAboutPage::onBuyActionTriggered ()
+{
+	NSRFileSharer::getInstance()->invokeUri ("appworld://content/27985686", "sys.appworld", "bb.action.OPEN");
+}
+#endif
+
 void
 NSRAboutPage::retranslateUi ()
 {
+#ifdef NSR_LITE_VERSION
+	_liteLabel->setText (trUtf8 ("You are using the Lite version which can read only first "
+				    "%1 pages of the file. Please consider buying the full version "
+				    "if you want to read larger files.").arg (NSRSettings::getMaxAllowedPages ()));
+#endif
 	_versionPlatform->setText (trUtf8 ("for BlackBerry%1 10", "%1 will be replaced with reg in circle symbol")
 				   .arg (QString::fromUtf8 ("\u00AE")));
 

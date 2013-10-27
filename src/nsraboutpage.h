@@ -28,6 +28,9 @@ private Q_SLOTS:
 	void onReviewActionTriggered ();
 	void onTwitterActionTriggered ();
 	void onFacebookActionTriggered ();
+#ifdef NSR_LITE_VERSION
+	void onBuyActionTriggered ();
+#endif
 	void retranslateUi ();
 
 private:
@@ -38,6 +41,9 @@ private:
 	bb::cascades::ScrollView	*_scrollView;
 	bb::cascades::WebView		*_webHelp;
 	bb::cascades::Label		*_versionPlatform;
+#ifdef NSR_LITE_VERSION
+	bb::cascades::Label		*_liteLabel;
+#endif
 };
 
 #endif /* NSRABOUTPAGE_H_ */
