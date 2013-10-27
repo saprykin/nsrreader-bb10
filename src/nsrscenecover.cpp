@@ -9,6 +9,8 @@
 #include <bb/cascades/Color>
 #include <bb/cascades/ImagePaint>
 
+#include <bb/system/LocaleHandler>
+
 #include <bb/device/HardwareInfo>
 
 #include <bb/ImageData>
@@ -152,10 +154,13 @@ NSRSceneCover::setPageData (const NSRRenderedPage&	page,
 	if (page.isEmpty () || title.isEmpty () || page.getNumber () < 1 || pagesTotal < page.getNumber ())
 		return;
 
+	bb::system::LocaleHandler region (bb::system::LocaleType::Region);
+
 	_pageView->setImage (page.getImage ());
 	_textView->setText (page.getText ());
 	_titleLabel->setText (title);
-	_pageNumLabel->setText(QString("%1 / %2").arg(page.getNumber ()).arg (pagesTotal));
+	_pageNumLabel->setText(QString("%1 / %2").arg(region.locale().toString (page.getNumber ()))
+						 .arg (region.locale().toString (pagesTotal)));
 
 	QString	extension = QFileInfo(title).suffix().toLower ();
 	QString background;
