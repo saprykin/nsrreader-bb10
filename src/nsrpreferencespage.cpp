@@ -85,7 +85,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	columnInfo->setMultiline (true);
 
 	Label *columnLabel = Label::create(trUtf8 ("Text Reflow", "Option in preferences, "
-						   "Reflows PDF in single text column"))
+						   "reflows PDF in single text column"))
 				   .horizontal(HorizontalAlignment::Left)
 				   .vertical(VerticalAlignment::Center)
 				   .multiline(true)

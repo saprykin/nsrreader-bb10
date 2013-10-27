@@ -128,7 +128,7 @@
     <message>
         <source>Please, leave a review if you like this app
 &lt;b&gt;Thank you!&lt;/b&gt;</source>
-        <translation type="obsolete">Пожалуйста, оставьте отзыв, если приложение понравилось
+        <translation>Пожалуйста, оставьте отзыв, если приложение понравилось
 &lt;b&gt;Спасибо!&lt;/b&gt;</translation>
     </message>
     <message>
@@ -138,20 +138,15 @@
     </message>
     <message>
         <source>Buy</source>
-        <translation type="unfinished"></translation>
+        <translation>Купить</translation>
     </message>
     <message>
         <source>Buy full version of the app</source>
-        <translation type="unfinished"></translation>
+        <translation>Купить полную версию приложения</translation>
     </message>
     <message>
         <source>You are using the Lite version which can read only first %1 pages of the file. Please consider buying the full version if you want to read larger files.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please, leave a review if you like this app.
-&lt;b&gt;Thank you!&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы используете Lite версию, которая позволяет читать только первые %1 страниц файла. Купите полную версию, если хотите читать файлы большего объёма.</translation>
     </message>
 </context>
 <context>
@@ -293,7 +288,7 @@
     <message>
         <source>Text Reflow</source>
         <comment>Option in preferences, reflows PDF in single text column</comment>
-        <translation type="obsolete">Переформатирование текста</translation>
+        <translation>Переформатирование текста</translation>
     </message>
     <message>
         <source>Invert Colors</source>
@@ -323,20 +318,20 @@
     </message>
     <message>
         <source>Use Text Reflow to read files with large amount of text data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Используйте переформатирование для чтения большого объёма текста.</translation>
     </message>
     <message>
         <source>Text Reflow</source>
         <comment>Option in preferences, Reflows PDF in single text column</comment>
-        <translation type="unfinished">Переформатирование текста</translation>
+        <translation type="obsolete">Переформатирование текста</translation>
     </message>
     <message>
         <source>Black background reduces OLED display power consumption and helps to read at dark.</source>
-        <translation type="unfinished"></translation>
+        <translation>Чёрный фон снижает энергопотребление OLED экрана и помогает читать в темноте.</translation>
     </message>
     <message>
         <source>Text encoding is used only for plain text files, none other format supports encoding selection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Кодировка используется только для чисто текстовых файлов, другие форматы не поддерживают её выбор.</translation>
     </message>
 </context>
 <context>
@@ -450,26 +445,27 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
     </message>
     <message>
         <source>Lite version of NSR Reader allows to read only first %1 pages of the file. If you want to read larger files, please consider buying the full version.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lite версия NSR Reader позволяет читать только первые %1 страниц файла. Чтобы читать файлы большего объёма, купите полную версию.</translation>
     </message>
     <message>
         <source>Buy</source>
         <comment>Buy full version of the app in the store</comment>
-        <translation type="unfinished"></translation>
+        <translation>Купить</translation>
     </message>
     <message>
         <source>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone.</source>
         <comment>Text reflow is a view mode of PDF/DjVu files when only text information without images is displayed with word wrap feature enabled. Use pinch gesture to adjust text size</comment>
-        <translation type="unfinished"></translation>
+        <translation>Вы используете режим переформатирования текста первый раз. Учтите, что форматирование может отличаться от оригинала, изображения не отображаются, и страница может быть пустой, если не содержит текста. Также текст может отображаться некорректно, если телефон не поддерживает соответствующий язык.</translation>
     </message>
     <message>
         <source>It seems that selected file doesn&apos;t exist anymore or NSR Reader doesn&apos;t have Shared Files permission. Please check permissions at Settings-&gt;Security and Privacy-&gt;Application Permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Похоже, что выбранный файл больше не существует, или у NSR Reader нет разрешения на чтение общих файлов. Пожалуйста, проверьте разрешения в Настройки-&gt;Безопасность и конфиденциальность-&gt;Права доступа приложений.</translation>
     </message>
     <message>
         <source>Unknown error! Maybe file is broken.
 NSR Reader tried to open this file, but it can&apos;t :( Please check this file on desktop computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестная ошибка! Возможно, файл повреждён.
+Приложение NSR Reader попыталось открыть этот файл, но не получилось :( Пожалуйста, проверьте файл на обычном компьютере.</translation>
     </message>
 </context>
 <context>
