@@ -878,7 +878,11 @@ void
 NSRReaderBB10::onSystemLanguageChanged ()
 {
 	QString 	locale_string = QLocale().name ();
+#ifdef NSR_LITE_VERSION
+	QString		filename = QString("nsrreader_bb10_lite_%1").arg (locale_string);
+#else
 	QString		filename = QString("nsrreader_bb10_%1").arg (locale_string);
+#endif
 
 	QCoreApplication::instance()->removeTranslator (_qtranslator);
 
