@@ -325,10 +325,10 @@ NSRAboutPage::onSelectedIndexChanged (int index)
 void
 NSRAboutPage::onReviewActionTriggered ()
 {
-#ifndef NSR_LITE_VERSION
-	NSRFileSharer::getInstance()->invokeUri ("appworld://content/27985686", "sys.appworld", "bb.action.OPEN");
+#ifdef NSR_LITE_VERSION
+	NSRFileSharer::getInstance()->invokeUri ("appworld://content/39670893", "sys.appworld", "bb.action.OPEN");
 #else
-	/* TODO: Invoke store page with the lite version */
+	NSRFileSharer::getInstance()->invokeUri ("appworld://content/27985686", "sys.appworld", "bb.action.OPEN");
 #endif
 }
 
