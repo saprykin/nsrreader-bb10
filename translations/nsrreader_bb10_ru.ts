@@ -288,7 +288,7 @@
     <message>
         <source>Text Reflow</source>
         <comment>Option in preferences, reflows PDF in single text column</comment>
-        <translation>Переформатирование текста</translation>
+        <translation type="obsolete">Переформатирование текста</translation>
     </message>
     <message>
         <source>Invert Colors</source>
@@ -318,7 +318,7 @@
     </message>
     <message>
         <source>Use Text Reflow to read files with large amount of text data.</source>
-        <translation>Используйте переформатирование для чтения большого объёма текста.</translation>
+        <translation type="obsolete">Используйте переформатирование для чтения большого объёма текста.</translation>
     </message>
     <message>
         <source>Text Reflow</source>
@@ -466,6 +466,15 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
 NSR Reader tried to open this file, but it can&apos;t :( Please check this file on desktop computer.</source>
         <translation>Неизвестная ошибка! Возможно, файл повреждён.
 Приложение NSR Reader попыталось открыть этот файл, но не получилось :( Пожалуйста, проверьте файл на обычном компьютере.</translation>
+    </message>
+    <message>
+        <source>Text Reflow</source>
+        <comment>Text mode for a file view</comment>
+        <translation type="unfinished">Переформатирование текста</translation>
+    </message>
+    <message>
+        <source>Switch text reflow mode</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

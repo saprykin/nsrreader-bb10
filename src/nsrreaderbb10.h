@@ -43,6 +43,7 @@ private Q_SLOTS:
     void onPrevPageActionTriggered ();
     void onNextPageActionTriggered ();
     void onGotoActionTriggered ();
+    void onReflowActionTriggered ();
     void onPrefsActionTriggered ();
     void onRecentDocsTriggered ();
     void onHelpActionTriggered ();

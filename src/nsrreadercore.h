@@ -18,11 +18,21 @@ class NSRReaderCore: public QObject
 {
 	Q_OBJECT
 	Q_ENUMS (PageLoad)
+	Q_ENUMS (DocumentType)
 public:
 	enum PageLoad {
 		PAGE_LOAD_PREV		= 0,
 		PAGE_LOAD_NEXT		= 1,
 		PAGE_LOAD_CUSTOM	= 2
+	};
+
+	enum DocumentType {
+		DOCUMENT_TYPE_NONE	= 0,
+		DOCUMENT_TYPE_PDF	= 1,
+		DOCUMENT_TYPE_DJVU	= 2,
+		DOCUMENT_TYPE_TIFF	= 3,
+		DOCUMENT_TYPE_TXT	= 4,
+		DOCUMENT_TYPE_UNKNOWN	= 5
 	};
 
 	NSRReaderCore (bb::system::ApplicationStartupMode::Type startMode,
@@ -33,6 +43,8 @@ public:
 	bool isDocumentOpened () const;
 	void closeDocument ();
 	QString getDocumentPath () const;
+	NSRReaderCore::DocumentType getDocumentType () const;
+
 	NSRRenderedPage getCurrentPage () const;
 	int getPagesCount () const;
 	void setPassword (const QString &pass);
@@ -50,6 +62,9 @@ public:
 	double getRotation () const;
 	void saveCurrentPagePositions (const QPointF& pos,
 				       const QPointF& textPos);
+	bool isTextReflow () const;
+	bool isTextReflowSwitchSupported () const;
+	void switchTextReflow ();
 
 Q_SIGNALS:
 	void pageRendered (int number);
@@ -72,6 +87,7 @@ private:
 	NSRAbstractDocument * copyDocument (const NSRAbstractDocument *doc);
 	NSRAbstractDocument * documentByPath (const QString& path);
 	double normalizeAngle (double angle) const;
+	bool isTextReflowPreffered (NSRReaderCore::DocumentType docType) const;
 
 	NSRAbstractDocument				*_doc;
 	NSRAbstractDocument				*_zoomDoc;

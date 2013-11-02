@@ -60,13 +60,11 @@ NSRReaderCore::openDocument (const QString &path)
 	if (_doc == NULL)
 		return;
 
-	if (_startMode == ApplicationStartupMode::InvokeCard) {
-		_doc->setTextOnly (false);
+	if (_startMode == ApplicationStartupMode::InvokeCard)
 		_doc->setInvertedColors (false);
-	} else {
+	else {
 		NSRSettings settings;
 
-		_doc->setTextOnly (settings.isWordWrap ());
 		_doc->setInvertedColors (settings.isInvertedColors ());
 		_doc->setAutoCrop (settings.isAutoCrop ());
 		_doc->setEncoding (settings.getTextEncoding ());
@@ -85,6 +83,7 @@ NSRReaderCore::openDocument (const QString &path)
 		return;
 	}
 
+	_doc->setTextOnly (isTextReflowPreffered (getDocumentType ()));
 	_thread->setRenderContext (_doc);
 
 	/* We need only graphic mode to render page on zooming */
@@ -141,6 +140,24 @@ NSRReaderCore::getDocumentPath () const
 		return _doc->getDocumentPath ();
 }
 
+NSRReaderCore::DocumentType
+NSRReaderCore::getDocumentType () const
+{
+	if (_doc == NULL)
+		return DOCUMENT_TYPE_NONE;
+
+	if (dynamic_cast<NSRPopplerDocument *> (_doc) != NULL)
+		return DOCUMENT_TYPE_PDF;
+	else if (dynamic_cast<NSRDjVuDocument *> (_doc) != NULL)
+		return DOCUMENT_TYPE_DJVU;
+	else if (dynamic_cast<NSRTIFFDocument *> (_doc) != NULL)
+		return DOCUMENT_TYPE_TIFF;
+	else if (dynamic_cast<NSRTextDocument *> (_doc) != NULL)
+		return DOCUMENT_TYPE_TXT;
+	else
+		return DOCUMENT_TYPE_UNKNOWN;
+}
+
 NSRRenderedPage
 NSRReaderCore::getCurrentPage () const
 {
@@ -170,14 +187,11 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 		return;
 
 	bool	needReload = false;
-	bool	wasTextOnly = _doc->isTextOnly ();
-	bool	isNowTextOnly = (dynamic_cast<NSRTextDocument *> (_doc) != NULL) || settings->isWordWrap ();
 	bool	wasInverted = _doc->isInvertedColors ();
 	bool	wasCropped = _doc->isAutoCrop ();
 	QString	wasEncoding = _doc->getEncoding ();
 
 	_doc->setInvertedColors (settings->isInvertedColors ());
-	_doc->setTextOnly (settings->isWordWrap ());
 	_doc->setAutoCrop (settings->isAutoCrop ());
 	_doc->setEncoding (settings->getTextEncoding ());
 
@@ -186,16 +200,10 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 		_zoomDoc->setAutoCrop (settings->isAutoCrop ());
 	}
 
-	/* Check whether we need to re-render the page */
-	if (wasTextOnly && !isNowTextOnly) {
-		_cache->removePagesWithoutImages ();
-		needReload = true;
-	}
-
 	if (wasInverted != _doc->isInvertedColors () ||
 	    wasCropped != _doc->isAutoCrop ()) {
 		/* Do not clear text from cache if text mode is remained */
-		if (wasTextOnly && isNowTextOnly)
+		if (_doc->isTextOnly ())
 			_cache->removePagesWithImages ();
 		else {
 			_cache->clearStorage ();
@@ -207,9 +215,6 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 		_cache->clearStorage ();
 		needReload = true;
 	}
-
-	if (wasTextOnly != isNowTextOnly && !needReload)
-		emit needViewMode (NSRPageView::NSR_VIEW_MODE_PREFERRED);
 
 	if (needReload)
 		loadPage (PAGE_LOAD_CUSTOM,
@@ -391,6 +396,52 @@ NSRReaderCore::saveCurrentPagePositions (const QPointF& pos,
 	_cache->updatePagePositions (_currentPage.getNumber (), pos, textPos);
 }
 
+bool
+NSRReaderCore::isTextReflow () const
+{
+	if (!isDocumentOpened ())
+		return false;
+
+	return _doc->isTextOnly ();
+}
+
+bool
+NSRReaderCore::isTextReflowSwitchSupported () const
+{
+	DocumentType docType = getDocumentType ();
+
+	return (docType == DOCUMENT_TYPE_PDF || docType == DOCUMENT_TYPE_DJVU);
+}
+
+void
+NSRReaderCore::switchTextReflow ()
+{
+	if (_doc == NULL)
+		return;
+
+	if (!isTextReflowSwitchSupported ())
+		return;
+
+	bool needReload = false;
+
+	/* Check whether we need to re-render the page */
+	if (_doc->isTextOnly ()) {
+		_cache->removePagesWithoutImages ();
+		needReload = true;
+	}
+
+	_doc->setTextOnly (!_doc->isTextOnly ());
+
+	if (!needReload)
+		emit needViewMode (_doc->isTextOnly () ? NSRPageView::NSR_VIEW_MODE_TEXT
+						       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+
+	if (needReload)
+		loadPage (PAGE_LOAD_CUSTOM,
+			  NSRRenderedPage (_currentPage.getNumber (),
+					   NSRRenderedPage::NSR_RENDER_REASON_SETTINGS));
+}
+
 void
 NSRReaderCore::onRenderDone ()
 {
@@ -403,8 +454,8 @@ NSRReaderCore::onRenderDone ()
 
 	emit needIndicator (false);
 	emit pageRendered (_currentPage.getNumber ());
-	emit needViewMode (suffix == "txt" ? NSRPageView::NSR_VIEW_MODE_TEXT
-					   : NSRPageView::NSR_VIEW_MODE_PREFERRED);
+	emit needViewMode (_doc->isTextOnly () ? NSRPageView::NSR_VIEW_MODE_TEXT
+					       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 }
 
 void
@@ -504,8 +555,8 @@ NSRReaderCore::loadPage (PageLoad		dir,
 		_currentPage = _cache->getPage (pageToLoad);
 
 		emit pageRendered (pageToLoad);
-		emit needViewMode (suffix == "txt" ? NSRPageView::NSR_VIEW_MODE_TEXT
-						   : NSRPageView::NSR_VIEW_MODE_PREFERRED);
+		emit needViewMode (_doc->isTextOnly () ? NSRPageView::NSR_VIEW_MODE_TEXT
+						       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 		return;
 	}
 
@@ -588,4 +639,13 @@ NSRReaderCore::normalizeAngle (double angle) const
 		angle = 0.0;
 
 	return angle;
+}
+
+bool
+NSRReaderCore::isTextReflowPreffered (NSRReaderCore::DocumentType docType) const
+{
+	if (docType == DOCUMENT_TYPE_TXT)
+		return true;
+	else
+		return false;
 }

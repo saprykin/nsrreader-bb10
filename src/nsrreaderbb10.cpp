@@ -199,6 +199,8 @@ NSRReaderBB10::initFullUI ()
 	nextPageAction->setTitle (trUtf8 ("Next", "Next page"));
 	ActionItem *gotoAction = ActionItem::create().enabled (false);
 	gotoAction->setTitle (trUtf8 ("Go to", "Go to page"));
+	ActionItem *reflowAction = ActionItem::create().enabled (false);
+	reflowAction->setTitle (trUtf8 ("Text Reflow", "Text mode for a file view"));
 	ActionItem *prefsAction = ActionItem::create().title(trUtf8 ("Settings"));
 	ActionItem *recentDocsAction = ActionItem::create().title (trUtf8 ("Recent"));
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
@@ -221,6 +223,9 @@ NSRReaderBB10::initFullUI ()
 	_translator->addTranslatable ((UIObject *) gotoAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Go to"));
+	_translator->addTranslatable ((UIObject *) reflowAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Text Reflow"));
 	_translator->addTranslatable ((UIObject *) prefsAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Settings"));
@@ -245,6 +250,7 @@ NSRReaderBB10::initFullUI ()
 	prevPageAction->accessibility()->setName (trUtf8 ("Go to previous page"));
 	nextPageAction->accessibility()->setName (trUtf8 ("Go to next page"));
 	gotoAction->accessibility()->setName (trUtf8 ("Go to arbitrary page"));
+	reflowAction->accessibility()->setName (trUtf8 ("Switch text reflow mode"));
 	prefsAction->accessibility()->setName (trUtf8 ("Open Settings page"));
 	recentDocsAction->accessibility()->setName (trUtf8 ("Open page with recent files"));
 	helpAction->accessibility()->setName (trUtf8 ("Open page with information about the app and help sections"));
@@ -266,6 +272,10 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Go to arbitrary page"));
+	_translator->addTranslatable ((UIObject *) reflowAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Switch text reflow mode"));
 	_translator->addTranslatable ((UIObject *) prefsAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
@@ -296,6 +306,7 @@ NSRReaderBB10::initFullUI ()
 	_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
+	_page->addAction (reflowAction, ActionBarPlacement::InOverflow);
 	_page->addAction (recentDocsAction, ActionBarPlacement::InOverflow);
 	_page->addAction (shareAction, ActionBarPlacement::InOverflow);
 
@@ -303,6 +314,7 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("prev", prevPageAction);
 	_actionAggregator->addAction ("next", nextPageAction);
 	_actionAggregator->addAction ("goto", gotoAction);
+	_actionAggregator->addAction ("reflow", reflowAction);
 	_actionAggregator->addAction ("recent-docs", recentDocsAction);
 	_actionAggregator->addAction ("share", shareAction);
 	_actionAggregator->addAction ("prefs", prefsAction);
@@ -312,6 +324,7 @@ NSRReaderBB10::initFullUI ()
 	prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
 	nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 	gotoAction->setImageSource (QUrl ("asset:///goto.png"));
+	reflowAction->setImageSource (QUrl ("asset:///text-mode.png"));
 	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
 	recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
@@ -356,6 +369,9 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	ok = connect (shareAction, SIGNAL (triggered ()), this, SLOT (onShareActionTriggered ()));
+	Q_ASSERT (ok);
+
+	ok = connect (reflowAction, SIGNAL (triggered ()), this, SLOT (onReflowActionTriggered ()));
 	Q_ASSERT (ok);
 
 #ifdef NSR_LITE_VERSION
@@ -570,6 +586,32 @@ NSRReaderBB10::onGotoActionTriggered ()
 }
 
 void
+NSRReaderBB10::onReflowActionTriggered ()
+{
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		return;
+
+	NSRSettings settings;
+
+	/* Check whether we have noted user about text mode */
+	if (!settings.isTextModeNoted ()) {
+		settings.saveTextModeNoted ();
+		QString text = trUtf8 ("You are using text reflow the first time. Note that "
+				       "file formatting may be differ than in original one, "
+				       "no images displayed and page can be empty if there is "
+				       "no text in the file. Also text may not be displayed "
+				       "properly if appropriate language is not supported by phone.",
+				       "Text reflow is a view mode of PDF/DjVu files when "
+				       "only text information without images is displayed with "
+				       "word wrap feature enabled. Use pinch gesture to adjust "
+				       "text size");
+		showToast (text, false);
+	}
+
+	_core->switchTextReflow ();
+}
+
+void
 NSRReaderBB10::onPrefsActionTriggered ()
 {
 	_actionAggregator->setActionEnabled ("prefs", false);
@@ -656,6 +698,7 @@ NSRReaderBB10::updateVisualControls ()
 	_actionAggregator->setActionEnabled ("share",
 				       	     _core->isDocumentOpened () &&
 				       	     NSRFileSharer::isSharable (_core->getDocumentPath ()));
+	_actionAggregator->setActionEnabled ("reflow", _core->isTextReflowSwitchSupported ());
 	_pageView->setVisible (_core->isDocumentOpened ());
 	_welcomeView->setVisible (!_core->isDocumentOpened ());
 	_readProgress->setVisible (!_slider->isVisible () && _core->isDocumentOpened () && _core->getPagesCount () > 1);
@@ -690,6 +733,7 @@ NSRReaderBB10::disableVisualControls ()
 	_actionAggregator->setActionEnabled ("prev", false);
 	_actionAggregator->setActionEnabled ("next", false);
 	_actionAggregator->setActionEnabled ("goto", false);
+	_actionAggregator->setActionEnabled ("reflow", false);
 	_actionAggregator->setActionEnabled ("recent-docs", false);
 	_actionAggregator->setActionEnabled ("share", false);
 	_actionAggregator->setActionEnabled ("prefs", false);
@@ -703,21 +747,6 @@ NSRReaderBB10::reloadSettings ()
 
 	_core->reloadSettings (&settings);
 	_pageView->setInvertedColors (settings.isInvertedColors ());
-
-	/* Check whether we have noted user about text mode */
-	if (settings.isWordWrap () && !settings.isTextModeNoted ()) {
-		settings.saveTextModeNoted ();
-		QString text = trUtf8 ("You are using text reflow the first time. Note that "
-				       "file formatting may be differ than in original one, "
-				       "no images displayed and page can be empty if there is "
-				       "no text in the file. Also text may not be displayed "
-				       "properly if appropriate language is not supported by phone.",
-				       "Text reflow is a view mode of PDF/DjVu files when "
-				       "only text information without images is displayed with "
-				       "word wrap feature enabled. Use pinch gesture to adjust "
-				       "text size");
-		showToast (text, false);
-	}
 }
 
 void
@@ -767,9 +796,9 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 	else {
 		_pageView->setTextZoom (session.getZoomText ());
 		_pageView->setScrollPositionOnLoad (session.getPosition (),
-				NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+						    NSRPageView::NSR_VIEW_MODE_GRAPHIC);
 		_pageView->setScrollPositionOnLoad (session.getTextPosition (),
-				NSRPageView::NSR_VIEW_MODE_TEXT);
+						    NSRPageView::NSR_VIEW_MODE_TEXT);
 	}
 
 	_core->loadSession (&session);
@@ -787,6 +816,7 @@ NSRReaderBB10::saveSession ()
 	if (!_core->isDocumentOpened () || _core->isPageRendering ())
 		return;
 
+	/* Save session */
 	session.setFile (_core->getDocumentPath ());
 	session.setPage (_core->getCurrentPage().getNumber ());
 	session.setFitToWidth (_core->isFitToWidth ());
@@ -796,6 +826,9 @@ NSRReaderBB10::saveSession ()
 	session.setPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_GRAPHIC));
 	session.setTextPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_TEXT));
 	settings.saveSession (&session);
+
+	/* Save other parameters */
+	settings.saveWordWrap (_core->isTextReflow ());
 }
 
 void
@@ -916,25 +949,15 @@ NSRReaderBB10::onPageTapped ()
 void
 NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
 {
-	NSRPageView::NSRViewMode	newMode;
-	bool				needRefit = false;
-
-	if (mode == NSRPageView::NSR_VIEW_MODE_PREFERRED) {
-		if (_startMode == ApplicationStartupMode::InvokeCard)
-			newMode = NSRPageView::NSR_VIEW_MODE_GRAPHIC;
-		else
-			newMode = NSRSettings().isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
-							      : NSRPageView::NSR_VIEW_MODE_GRAPHIC;
-	} else
-		newMode = mode;
+	bool needRefit = false;
 
 	needRefit = (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_TEXT) &&
-		    (newMode == NSRPageView::NSR_VIEW_MODE_GRAPHIC) &&
+		    (mode == NSRPageView::NSR_VIEW_MODE_GRAPHIC) &&
 		    !_core->getCurrentPage().isCached () &&
 		    _core->getCurrentPage().isCropped () &&
 		    _core->isFitToWidth ();
 
-	_pageView->setViewMode (newMode);
+	_pageView->setViewMode (mode);
 
 	if (needRefit)
 		_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);

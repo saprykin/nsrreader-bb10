@@ -17,7 +17,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Page (parent),
 	_translator (NULL),
 	_isFullscreen (NULL),
-	_isTextMode (NULL),
 	_isInvertedColors (NULL),
 	_encodingsList (NULL)
 {
@@ -31,13 +30,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 						      .layout(StackLayout::create ());
 
 	_isFullscreen = ToggleButton::create().horizontal(HorizontalAlignment::Right);
-	_isTextMode = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isInvertedColors = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isAutoCrop = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
 	_isFullscreen->setChecked (settings.isFullscreenMode ());
-	_isTextMode->setChecked (settings.isWordWrap ());
 	_isInvertedColors->setChecked (settings.isInvertedColors ());
 	_isAutoCrop->setChecked (settings.isAutoCrop ());
 	_encodingsList->setFocusPolicy (FocusPolicy::Touch);
@@ -70,35 +67,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	secondContainer->add (fullscreenLabel);
 	secondContainer->add (_isFullscreen);
-
-	/* 'Text mode' option */
-	Container *thirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						       .layout(StackLayout::create()
-						       	       	           .orientation(LayoutOrientation::LeftToRight));
-	Container *outerThirdContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-							    .layout(StackLayout::create());
-	Label *columnInfo = Label::create (trUtf8 ("Use Text Reflow to read files with "
-						   "large amount of text data."))
-				   .horizontal(HorizontalAlignment::Fill)
-				   .vertical(VerticalAlignment::Center);
-	columnInfo->textStyle()->setFontSize (FontSize::XSmall);
-	columnInfo->setMultiline (true);
-
-	Label *columnLabel = Label::create(trUtf8 ("Text Reflow", "Option in preferences, "
-						   "reflows PDF in single text column"))
-				   .horizontal(HorizontalAlignment::Left)
-				   .vertical(VerticalAlignment::Center)
-				   .multiline(true)
-				   .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
-
-	thirdContainer->add (columnLabel);
-	thirdContainer->add (_isTextMode);
-
-	outerThirdContainer->setLeftPadding (20);
-	outerThirdContainer->setRightPadding (20);
-
-	outerThirdContainer->add (thirdContainer);
-	outerThirdContainer->add (columnInfo);
 
 	/* 'Invert colors' option */
 	Container *fourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -172,8 +140,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	/* Add all options to root layout */
 	rootContainer->add (secondContainer);
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
-	rootContainer->add (outerThirdContainer);
-	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (outerFourthContainer);
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (sixthContainer);
@@ -196,14 +162,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Fullscreen Mode"));
-	_translator->addTranslatable ((UIObject *) columnInfo,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRPreferencesPage"),
-				      QString ("Use Text Reflow to read files with large amount of text data."));
-	_translator->addTranslatable ((UIObject *) columnLabel,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRPreferencesPage"),
-				      QString ("Text Reflow"));
 	_translator->addTranslatable ((UIObject *) invertInfo,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -246,7 +204,6 @@ NSRPreferencesPage::saveSettings ()
 	NSRSettings settings;
 
 	settings.saveFullscreenMode (_isFullscreen->isChecked ());
-	settings.saveWordWrap (_isTextMode->isChecked ());
 	settings.saveInvertedColors (_isInvertedColors->isChecked ());
 	settings.saveAutoCrop (_isAutoCrop->isChecked ());
 

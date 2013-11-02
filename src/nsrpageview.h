@@ -26,8 +26,7 @@ class NSRPageView: public bb::cascades::Container
 public:
 	enum NSRViewMode {
 		NSR_VIEW_MODE_GRAPHIC	= 0,
-		NSR_VIEW_MODE_TEXT	= 1,
-		NSR_VIEW_MODE_PREFERRED	= 2
+		NSR_VIEW_MODE_TEXT	= 1
 	};
 
 	NSRPageView (bb::cascades::Container *parent = 0);

@@ -369,7 +369,6 @@ NSRPageView::setScrollPosition (const QPointF& pos, NSRPageView::NSRViewMode mod
 	case NSR_VIEW_MODE_TEXT:
 		_textScrollView->scrollToPoint (pos.x (), pos.y ());
 		break;
-	case NSR_VIEW_MODE_PREFERRED:
 	default:
 		break;
 	}
@@ -383,7 +382,6 @@ NSRPageView::getScrollPosition (NSRPageView::NSRViewMode mode) const
 		return _scrollView->viewableArea().topLeft ();
 	case NSR_VIEW_MODE_TEXT:
 		return _textScrollView->viewableArea().topLeft ();
-	case NSR_VIEW_MODE_PREFERRED:
 	default:
 		return QPointF (0, 0);
 	}
@@ -399,7 +397,6 @@ NSRPageView::setScrollPositionOnLoad (const QPointF& pos, NSRPageView::NSRViewMo
 	case NSR_VIEW_MODE_TEXT:
 		_delayedTextScrollPos = pos;
 		break;
-	case NSR_VIEW_MODE_PREFERRED:
 	default:
 		break;
 	}
