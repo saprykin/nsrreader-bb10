@@ -457,12 +457,10 @@ NSRReaderBB10::initFullUI ()
 		onFullscreenSwitchRequested (true);
 	} else {
 		/* We do need it here to not to read settings in card mode */
-		NSRSettings settings;
-
-		_pageView->setInvertedColors (settings.isInvertedColors ());
-		_pageView->setViewMode (settings.isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
-							       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
-		onFullscreenSwitchRequested (settings.isFullscreenMode ());
+		_pageView->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
+		_pageView->setViewMode (NSRSettings::instance()->isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
+									       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+		onFullscreenSwitchRequested (NSRSettings::instance()->isFullscreenMode ());
 	}
 
 	ok = connect (_pageView, SIGNAL (zoomChanged (double, NSRRenderedPage::NSRRenderReason)),
@@ -494,24 +492,22 @@ NSRReaderBB10::initFullUI ()
 		return;
 	}
 
-	NSRSettings settings;
-
-	if (settings.isFirstStart ()) {
-		settings.saveFirstStart ();
-		settings.saveNewsShown ();
+	if (NSRSettings::instance()->isFirstStart ()) {
+		NSRSettings::instance()->saveFirstStart ();
+		NSRSettings::instance()->saveNewsShown ();
 		showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_HELP);
 
 		_welcomeView->setCardMode (false);
 
 		updateVisualControls ();
 	} else {
-		if (!settings.isNewsShown ()) {
-			settings.saveNewsShown ();
+		if (!NSRSettings::instance()->isNewsShown ()) {
+			NSRSettings::instance()->saveNewsShown ();
 			showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_CHANGES);
 		}
 
 		/* Load previously saved session */
-		if (QFile::exists (settings.getLastSession().getFile ()))
+		if (QFile::exists (NSRSettings::instance()->getLastSession().getFile ()))
 			loadSession ();
 		else {
 			_welcomeView->setCardMode (false);
@@ -536,8 +532,6 @@ NSRReaderBB10::initCardUI ()
 void
 NSRReaderBB10::onFileSelected (const QStringList &files)
 {
-	NSRSettings settings;
-
 	if (_core->getDocumentPath () == files.first ()) {
 		_toast->setBody (trUtf8 ("Selected file is already opened"));
 		_toast->resetButton ();
@@ -548,7 +542,7 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 	QFileInfo finfo (files.first ());
 
 	/* Save session for opened document */
-	settings.saveLastOpenDir (finfo.canonicalPath ());
+	NSRSettings::instance()->saveLastOpenDir (finfo.canonicalPath ());
 
 	saveSession ();
 	loadSession (finfo.canonicalFilePath ());
@@ -557,7 +551,7 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 void
 NSRReaderBB10::onOpenActionTriggered ()
 {
-	_filePicker->setDirectories (QStringList (NSRSettings().getLastOpenDir ()));
+	_filePicker->setDirectories (QStringList (NSRSettings::instance()->getLastOpenDir ()));
 	_filePicker->open ();
 }
 
@@ -591,11 +585,9 @@ NSRReaderBB10::onReflowActionTriggered ()
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
 
-	NSRSettings settings;
-
 	/* Check whether we have noted user about text mode */
-	if (!settings.isTextModeNoted ()) {
-		settings.saveTextModeNoted ();
+	if (!NSRSettings::instance()->isTextModeNoted ()) {
+		NSRSettings::instance()->saveTextModeNoted ();
 		QString text = trUtf8 ("You are using text reflow the first time. Note that "
 				       "file formatting may be differ than in original one, "
 				       "no images displayed and page can be empty if there is "
@@ -743,10 +735,8 @@ NSRReaderBB10::disableVisualControls ()
 void
 NSRReaderBB10::reloadSettings ()
 {
-	NSRSettings settings;
-
-	_core->reloadSettings (&settings);
-	_pageView->setInvertedColors (settings.isInvertedColors ());
+	_core->reloadSettings ();
+	_pageView->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
 }
 
 void
@@ -770,9 +760,9 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 		session.setPage (1);
 	} else {
 		if (path.isEmpty ())
-			session = NSRSettings().getLastSession ();
+			session = NSRSettings::instance()->getLastSession ();
 		else
-			session = NSRSettings().getSessionForFile (path);
+			session = NSRSettings::instance()->getSessionForFile (path);
 	}
 
 	if (page != -1)
@@ -808,7 +798,6 @@ void
 NSRReaderBB10::saveSession ()
 {
 	NSRSession	session;
-	NSRSettings	settings;
 
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
@@ -825,10 +814,10 @@ NSRReaderBB10::saveSession ()
 	session.setZoomText (_pageView->getTextZoom ());
 	session.setPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_GRAPHIC));
 	session.setTextPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_TEXT));
-	settings.saveSession (&session);
+	NSRSettings::instance()->saveSession (&session);
 
 	/* Save other parameters */
-	settings.saveWordWrap (_core->isTextReflow ());
+	NSRSettings::instance()->saveWordWrap (_core->isTextReflow ());
 }
 
 void

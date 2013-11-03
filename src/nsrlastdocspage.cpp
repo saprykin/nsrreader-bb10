@@ -174,7 +174,7 @@ void
 NSRLastDocsPage::loadData ()
 {
 	QVariantListDataModel	*model = new QVariantListDataModel ();
-	QStringList		docs = NSRSettings().getLastDocuments ();
+	QStringList		docs = NSRSettings::instance()->getLastDocuments ();
 	int			count = docs.count ();
 
 	for (int i = 0; i < count; ++i) {

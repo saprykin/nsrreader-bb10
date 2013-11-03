@@ -63,11 +63,9 @@ NSRReaderCore::openDocument (const QString &path)
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		_doc->setInvertedColors (false);
 	else {
-		NSRSettings settings;
-
-		_doc->setInvertedColors (settings.isInvertedColors ());
-		_doc->setAutoCrop (settings.isAutoCrop ());
-		_doc->setEncoding (settings.getTextEncoding ());
+		_doc->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
+		_doc->setAutoCrop (NSRSettings::instance()->isAutoCrop ());
+		_doc->setEncoding (NSRSettings::instance()->getTextEncoding ());
 	}
 
 	if (!_doc->isValid ()) {
@@ -94,7 +92,7 @@ NSRReaderCore::openDocument (const QString &path)
 	}
 
 	if (_startMode != ApplicationStartupMode::InvokeCard)
-		NSRSettings().addLastDocument (path);
+		NSRSettings::instance()->addLastDocument (path);
 }
 
 bool
@@ -181,7 +179,7 @@ NSRReaderCore::setPassword (const QString& pass)
 }
 
 void
-NSRReaderCore::reloadSettings (const NSRSettings* settings)
+NSRReaderCore::reloadSettings ()
 {
 	if (_doc == NULL)
 		return;
@@ -191,13 +189,13 @@ NSRReaderCore::reloadSettings (const NSRSettings* settings)
 	bool	wasCropped = _doc->isAutoCrop ();
 	QString	wasEncoding = _doc->getEncoding ();
 
-	_doc->setInvertedColors (settings->isInvertedColors ());
-	_doc->setAutoCrop (settings->isAutoCrop ());
-	_doc->setEncoding (settings->getTextEncoding ());
+	_doc->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
+	_doc->setAutoCrop (NSRSettings::instance()->isAutoCrop ());
+	_doc->setEncoding (NSRSettings::instance()->getTextEncoding ());
 
 	if (_zoomDoc != NULL) {
-		_zoomDoc->setInvertedColors (settings->isInvertedColors ());
-		_zoomDoc->setAutoCrop (settings->isAutoCrop ());
+		_zoomDoc->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
+		_zoomDoc->setAutoCrop (NSRSettings::instance()->isAutoCrop ());
 	}
 
 	if (wasInverted != _doc->isInvertedColors () ||

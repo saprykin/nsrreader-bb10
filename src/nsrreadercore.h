@@ -48,7 +48,7 @@ public:
 	NSRRenderedPage getCurrentPage () const;
 	int getPagesCount () const;
 	void setPassword (const QString &pass);
-	void reloadSettings (const NSRSettings *settings);
+	void reloadSettings ();
 	void loadSession (const NSRSession *session);
 	void navigateToPage (PageLoad dir, int pageNumber = 0);
 	bool isPageRendering () const;

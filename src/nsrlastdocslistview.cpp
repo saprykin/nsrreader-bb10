@@ -185,7 +185,7 @@ NSRLastDocsListView::onToastFinished (bb::system::SystemUiResult::Type result)
 	} else {
 		for (int i = list.count () - 1; i >= 0; --i) {
 			QString docPath = list.at(i).toMap()["path"].toString ();
-			NSRSettings().removeLastDocument (docPath);
+			NSRSettings::instance()->removeLastDocument (docPath);
 			NSRThumbnailer::removeThumbnail (docPath);
 		}
 	}
@@ -209,7 +209,7 @@ NSRLastDocsListView::onSystemDialogFinished (bb::system::SystemUiResult::Type re
 		for (int i = list.count () - 1; i >= 0; --i) {
 			QString docPath = list.at(i).toMap()["path"].toString ();
 			model->removeAt (list.at(i).toMap()["index"].toInt ());
-			NSRSettings().removeLastDocument (docPath);
+			NSRSettings::instance()->removeLastDocument (docPath);
 			NSRThumbnailer::removeThumbnail (docPath);
 			emit documentToBeDeleted (docPath);
 			QFile::remove (docPath);

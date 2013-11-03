@@ -20,7 +20,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isInvertedColors (NULL),
 	_encodingsList (NULL)
 {
-	NSRSettings	settings;
 	QString		defEncoding ("UTF-8");
 
 	_translator = new NSRTranslator (this);
@@ -34,12 +33,12 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isAutoCrop = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
-	_isFullscreen->setChecked (settings.isFullscreenMode ());
-	_isInvertedColors->setChecked (settings.isInvertedColors ());
-	_isAutoCrop->setChecked (settings.isAutoCrop ());
+	_isFullscreen->setChecked (NSRSettings::instance()->isFullscreenMode ());
+	_isInvertedColors->setChecked (NSRSettings::instance()->isInvertedColors ());
+	_isAutoCrop->setChecked (NSRSettings::instance()->isAutoCrop ());
 	_encodingsList->setFocusPolicy (FocusPolicy::Touch);
 
-	QString textEncoding = settings.getTextEncoding ();
+	QString textEncoding = NSRSettings::instance()->getTextEncoding ();
 	QStringList encodings = NSRSettings::getSupportedEncodings ();
 	int encodingIndex = NSRSettings::mapEncodingToIndex (textEncoding);
 
@@ -201,14 +200,12 @@ NSRPreferencesPage::~NSRPreferencesPage ()
 void
 NSRPreferencesPage::saveSettings ()
 {
-	NSRSettings settings;
-
-	settings.saveFullscreenMode (_isFullscreen->isChecked ());
-	settings.saveInvertedColors (_isInvertedColors->isChecked ());
-	settings.saveAutoCrop (_isAutoCrop->isChecked ());
+	NSRSettings::instance()->saveFullscreenMode (_isFullscreen->isChecked ());
+	NSRSettings::instance()->saveInvertedColors (_isInvertedColors->isChecked ());
+	NSRSettings::instance()->saveAutoCrop (_isAutoCrop->isChecked ());
 
 	if (_encodingsList->isSelectedOptionSet ())
-		settings.saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));
+		NSRSettings::instance()->saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));
 }
 
 void

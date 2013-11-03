@@ -9,8 +9,9 @@ class NSRSettings : public QSettings
 {
 	Q_OBJECT
 public:
-	explicit NSRSettings (QObject *parent = 0);
-	virtual ~NSRSettings () {}
+	static NSRSettings * instance ();
+	static void release ();
+
 	void saveSession (NSRSession *session);
 	NSRSession getLastSession ();
 	NSRSession getSessionForFile (const QString& file);
@@ -49,22 +50,26 @@ public:
 #endif
 
 private:
+	NSRSettings ();
+	virtual ~NSRSettings () {}
+
 	static QStringList	getSupportedEncodingsShort ();
 	QString			formatFileName (const QString& name);
 	void			readSession (const QString& name, NSRSession& session);
 	void			cleanOldFiles ();
 
-	bool		_isFullscreenMode;
-	bool		_isWordWrap;
-	bool		_isTextModeNoted;
-	bool		_isInvertedColors;
-	bool		_isAutoCrop;
-	bool		_isNewsShown;
-	bool		_isFirstStart;
-	QString		_lastOpenDir;
-	QString		_fontFamily;
-	QString		_textEncoding;
-	QStringList	_lastDocuments;
+	static NSRSettings *	_instance;
+	bool			_isFullscreenMode;
+	bool			_isWordWrap;
+	bool			_isTextModeNoted;
+	bool			_isInvertedColors;
+	bool			_isAutoCrop;
+	bool			_isNewsShown;
+	bool			_isFirstStart;
+	QString			_lastOpenDir;
+	QString			_fontFamily;
+	QString			_textEncoding;
+	QStringList		_lastDocuments;
 };
 
 #endif // NSRSETTINGS_H

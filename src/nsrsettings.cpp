@@ -10,10 +10,11 @@
 #  define NSR_CONFIG_DIR 	".nsrreader"
 #endif
 
-NSRSettings::NSRSettings (QObject *parent) :
+NSRSettings * NSRSettings::_instance = NULL;
+
+NSRSettings::NSRSettings () :
 	QSettings (NSRSettings::getSettingsDirectory () + "/config.ini",
-		   QSettings::IniFormat,
-		   parent)
+		   QSettings::IniFormat)
 {
 	QString	defPath, defFont;
 	QDir	dir;
@@ -51,6 +52,25 @@ NSRSettings::NSRSettings (QObject *parent) :
 
 	cleanOldFiles ();
 }
+
+NSRSettings *
+NSRSettings::instance ()
+{
+	if (_instance == NULL)
+		_instance = new NSRSettings ();
+
+	return _instance;
+}
+
+void
+NSRSettings::release ()
+{
+	if (_instance != NULL) {
+		delete _instance;
+		_instance = NULL;
+	}
+}
+
 
 NSRSession
 NSRSettings::getLastSession()
