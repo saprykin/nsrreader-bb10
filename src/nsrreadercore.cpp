@@ -81,7 +81,12 @@ NSRReaderCore::openDocument (const QString &path)
 		return;
 	}
 
-	_doc->setTextOnly (_doc->getPrefferedDocumentStyle () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
+	if (_startMode != ApplicationStartupMode::InvokeCard &&
+	    NSRSettings::instance()->isStarting ())
+		_doc->setTextOnly (NSRSettings::instance()->isWordWrap ());
+	else
+		_doc->setTextOnly (_doc->getPrefferedDocumentStyle () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
+
 	_thread->setRenderContext (_doc);
 
 	/* We need only graphic mode to render page on zooming */
@@ -398,9 +403,6 @@ NSRReaderCore::isTextReflowSwitchSupported () const
 void
 NSRReaderCore::switchTextReflow ()
 {
-	if (_doc == NULL)
-		return;
-
 	if (!isTextReflowSwitchSupported ())
 		return;
 
@@ -427,8 +429,6 @@ NSRReaderCore::switchTextReflow ()
 void
 NSRReaderCore::onRenderDone ()
 {
-	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
-
 	_currentPage = _thread->getRenderedPage ();
 
 	if (!_cache->isPageExists (_currentPage.getNumber ()))
@@ -443,7 +443,6 @@ NSRReaderCore::onRenderDone ()
 void
 NSRReaderCore::onZoomRenderDone ()
 {
-	QString suffix = QFileInfo(_doc->getDocumentPath ()).suffix().toLower ();
 	NSRRenderedPage page = _zoomThread->getRenderedPage ();
 
 	if (!page.isImageValid ())
