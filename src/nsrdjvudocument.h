@@ -33,8 +33,8 @@ public:
 	double getMinZoom();
 	QString getText();
 	void setZoom(double zoom);
-	bool isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const;
-	inline NSRAbstractDocument::DocumentStyle getPrefferedDocumentStyle () const {
+	bool isDocumentStyleSupported (NSRAbstractDocument::NSRDocumentStyle style) const;
+	inline NSRAbstractDocument::NSRDocumentStyle getPrefferedDocumentStyle () const {
 		return NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC;
 	}
 

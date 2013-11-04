@@ -53,10 +53,10 @@ private Q_SLOTS:
     void onIndicatorStopped ();
     void onPasswordRequested ();
     void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
-    void onErrorWhileOpening (NSRAbstractDocument::DocumentError error);
+    void onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError error);
     void onSystemLanguageChanged ();
     void onPageTapped ();
-    void onViewModeRequested (NSRPageView::NSRViewMode mode);
+    void onViewModeRequested (NSRAbstractDocument::NSRDocumentStyle mode);
     void onPopTransitionEnded (bb::cascades::Page *page);
     void onLastDocumentRequested (const QString& path);
     void onDocumentToBeDeleted (const QString& path);

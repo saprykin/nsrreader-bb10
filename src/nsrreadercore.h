@@ -59,8 +59,8 @@ Q_SIGNALS:
 	void pageRendered (int number);
 	void needIndicator (bool enabled);
 	void needPassword ();
-	void errorWhileOpening (NSRAbstractDocument::DocumentError error);
-	void needViewMode (NSRPageView::NSRViewMode mode);
+	void errorWhileOpening (NSRAbstractDocument::NSRDocumentError error);
+	void needViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
 #ifdef NSR_LITE_VERSION
 	void liteVersionOverPage ();
 #endif

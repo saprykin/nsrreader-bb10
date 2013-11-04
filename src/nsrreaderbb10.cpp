@@ -408,12 +408,12 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (_core, SIGNAL (needPassword ()), this, SLOT (onPasswordRequested ()));
 	Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::DocumentError)),
-		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::DocumentError)));
+	ok = connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::NSRDocumentError)),
+		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError)));
 	Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (needViewMode (NSRPageView::NSRViewMode)),
-		      this, SLOT (onViewModeRequested (NSRPageView::NSRViewMode)));
+	ok = connect (_core, SIGNAL (needViewMode (NSRAbstractDocument::NSRDocumentStyle)),
+		      this, SLOT (onViewModeRequested (NSRAbstractDocument::NSRDocumentStyle)));
 	Q_ASSERT (ok);
 
 #ifdef NSR_LITE_VERSION
@@ -452,14 +452,14 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
-		_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+		_pageView->setViewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		_isFullscreen = true;
 		onFullscreenSwitchRequested (true);
 	} else {
 		/* We do need it here to not to read settings in card mode */
 		_pageView->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
-		_pageView->setViewMode (NSRSettings::instance()->isWordWrap () ? NSRPageView::NSR_VIEW_MODE_TEXT
-									       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+		_pageView->setViewMode (NSRSettings::instance()->isWordWrap () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
+									       : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		onFullscreenSwitchRequested (NSRSettings::instance()->isFullscreenMode ());
 	}
 
@@ -558,16 +558,16 @@ NSRReaderBB10::onOpenActionTriggered ()
 void
 NSRReaderBB10::onPrevPageActionTriggered ()
 {
-	_core->saveCurrentPagePositions (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_GRAPHIC),
-					 _pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_TEXT));
+	_core->saveCurrentPagePositions (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC),
+					 _pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT));
 	_core->navigateToPage (NSRReaderCore::PAGE_LOAD_PREV);
 }
 
 void
 NSRReaderBB10::onNextPageActionTriggered ()
 {
-	_core->saveCurrentPagePositions (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_GRAPHIC),
-					 _pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_TEXT));
+	_core->saveCurrentPagePositions (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC),
+					 _pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT));
 	_core->navigateToPage (NSRReaderCore::PAGE_LOAD_NEXT);
 }
 
@@ -671,7 +671,7 @@ NSRReaderBB10::onPageRendered (int number)
 
 	/* Fit cropped page to width only in graphic mode,
 	 * cached pages should be already cropped and fitted */
-	if (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_GRAPHIC) {
+	if (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
 		if (_core->isFitToWidth () && page.isCropped () && !page.isCached () &&
 		    page.getRenderReason () != NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH)
 			_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
@@ -786,9 +786,9 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 	else {
 		_pageView->setTextZoom (session.getZoomText ());
 		_pageView->setScrollPositionOnLoad (session.getPosition (),
-						    NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+						    NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		_pageView->setScrollPositionOnLoad (session.getTextPosition (),
-						    NSRPageView::NSR_VIEW_MODE_TEXT);
+						    NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	}
 
 	_core->loadSession (&session);
@@ -812,8 +812,8 @@ NSRReaderBB10::saveSession ()
 	session.setZoomGraphic (_core->getZoom ());
 	session.setRotation (_core->getRotation ());
 	session.setZoomText (_pageView->getTextZoom ());
-	session.setPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_GRAPHIC));
-	session.setTextPosition (_pageView->getScrollPosition (NSRPageView::NSR_VIEW_MODE_TEXT));
+	session.setPosition (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC));
+	session.setTextPosition (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT));
 	NSRSettings::instance()->saveSession (&session);
 
 	/* Save other parameters */
@@ -878,7 +878,7 @@ NSRReaderBB10::onPasswordDialogFinished (bb::system::SystemUiResult::Type res)
 }
 
 void
-NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::DocumentError error)
+NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError error)
 {
 	QString errorStr;
 
@@ -936,12 +936,12 @@ NSRReaderBB10::onPageTapped ()
 }
 
 void
-NSRReaderBB10::onViewModeRequested (NSRPageView::NSRViewMode mode)
+NSRReaderBB10::onViewModeRequested (NSRAbstractDocument::NSRDocumentStyle mode)
 {
 	bool needRefit = false;
 
-	needRefit = (_pageView->getViewMode () == NSRPageView::NSR_VIEW_MODE_TEXT) &&
-		    (mode == NSRPageView::NSR_VIEW_MODE_GRAPHIC) &&
+	needRefit = (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT) &&
+		    (mode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) &&
 		    !_core->getCurrentPage().isCached () &&
 		    _core->getCurrentPage().isCropped () &&
 		    _core->isFitToWidth ();
@@ -1116,7 +1116,7 @@ void
 NSRReaderBB10::resetState ()
 {
 	_pageView->resetPage ();
-	_pageView->setViewMode (NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+	_pageView->setViewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 	_pageStatus->setStatus (0, 0);
 	_readProgress->setVisible (false);
 	_readProgress->setPagesCount (0);

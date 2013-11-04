@@ -36,7 +36,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textContainer (NULL),
 	_imageContainer (NULL),
 	_actionSet (NULL),
-	_viewMode (NSR_VIEW_MODE_GRAPHIC),
+	_viewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC),
 	_lastTapTime (QTime::currentTime ()),
 	_currentZoom (0.0),
 	_minZoom (0.0),
@@ -193,10 +193,10 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 
 	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_SETTINGS) {
 		/* Encoding may be changed, we must reload text data */
-		QPointF pos = getScrollPosition (NSR_VIEW_MODE_TEXT);
+		QPointF pos = getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 		_textScrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 		_textArea->setText (page.getText ());
-		setScrollPosition (pos, NSR_VIEW_MODE_TEXT);
+		setScrollPosition (pos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	} else if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION) {
 		/* Set scroll position for graphic mode */
 		if (_delayedScrollPos.isNull ())
@@ -204,7 +204,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 
 		_textScrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 		_textArea->setText (page.getText ());
-		setScrollPosition (_delayedTextScrollPos, NSR_VIEW_MODE_TEXT);
+		setScrollPosition (_delayedTextScrollPos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	}
 
 	_hasImage = page.getImage().isValid ();
@@ -214,7 +214,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 
 	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION ||
 	    !_delayedScrollPos.isNull ())
-		setScrollPosition (_delayedScrollPos, NSR_VIEW_MODE_GRAPHIC);
+		setScrollPosition (_delayedScrollPos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 
 	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_ROTATION)
 		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
@@ -236,18 +236,18 @@ NSRPageView::resetPage ()
 }
 
 void
-NSRPageView::setViewMode (NSRPageView::NSRViewMode mode)
+NSRPageView::setViewMode (NSRAbstractDocument::NSRDocumentStyle mode)
 {
 	if (_viewMode == mode)
 		return;
 
 	switch (mode) {
-	case NSR_VIEW_MODE_GRAPHIC:
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
 		_textScrollView->setVisible (false);
 		_scrollView->setVisible (true);
 		_viewMode = mode;
 		break;
-	case NSR_VIEW_MODE_TEXT:
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
 		_textScrollView->setVisible (true);
 		_scrollView->setVisible (false);
 		_viewMode = mode;
@@ -302,7 +302,7 @@ NSRPageView::setZoomRange (double minZoom, double maxZoom)
 void
 NSRPageView::fitToWidth (NSRRenderedPage::NSRRenderReason reason)
 {
-	if (_viewMode != NSR_VIEW_MODE_GRAPHIC)
+	if (_viewMode != NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC)
 		return;
 
 	if (_imageView->image().isNull ())
@@ -353,20 +353,20 @@ NSRPageView::isZoomEnabled () const
 	return _isZoomingEnabled;
 }
 
-NSRPageView::NSRViewMode
+NSRAbstractDocument::NSRDocumentStyle
 NSRPageView::getViewMode () const
 {
 	return _viewMode;
 }
 
 void
-NSRPageView::setScrollPosition (const QPointF& pos, NSRPageView::NSRViewMode mode)
+NSRPageView::setScrollPosition (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode)
 {
 	switch (mode) {
-	case NSR_VIEW_MODE_GRAPHIC:
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
 		_scrollView->scrollToPoint (pos.x (), pos.y ());
 		break;
-	case NSR_VIEW_MODE_TEXT:
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
 		_textScrollView->scrollToPoint (pos.x (), pos.y ());
 		break;
 	default:
@@ -375,12 +375,12 @@ NSRPageView::setScrollPosition (const QPointF& pos, NSRPageView::NSRViewMode mod
 }
 
 QPointF
-NSRPageView::getScrollPosition (NSRPageView::NSRViewMode mode) const
+NSRPageView::getScrollPosition (NSRAbstractDocument::NSRDocumentStyle mode) const
 {
 	switch (mode) {
-	case NSR_VIEW_MODE_GRAPHIC:
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
 		return _scrollView->viewableArea().topLeft ();
-	case NSR_VIEW_MODE_TEXT:
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
 		return _textScrollView->viewableArea().topLeft ();
 	default:
 		return QPointF (0, 0);
@@ -388,13 +388,13 @@ NSRPageView::getScrollPosition (NSRPageView::NSRViewMode mode) const
 }
 
 void
-NSRPageView::setScrollPositionOnLoad (const QPointF& pos, NSRPageView::NSRViewMode mode)
+NSRPageView::setScrollPositionOnLoad (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode)
 {
 	switch (mode) {
-	case NSR_VIEW_MODE_GRAPHIC:
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
 		_delayedScrollPos = pos;
 		break;
-	case NSR_VIEW_MODE_TEXT:
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
 		_delayedTextScrollPos = pos;
 		break;
 	default:
@@ -461,7 +461,7 @@ NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 	if (!_isZoomingEnabled)
 		return;
 
-	if (_viewMode == NSR_VIEW_MODE_TEXT)
+	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT)
 		_initialFontSize = (int) _textArea->textStyle()->fontSize ();
 	else {
 		if (!_hasImage)
@@ -484,7 +484,7 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 
 	double scale = event->pinchRatio ();
 
-	if (_viewMode == NSR_VIEW_MODE_TEXT) {
+	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT) {
 		if (scale < 1.0)
 			scale = -(1 / scale);
 
@@ -518,7 +518,7 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 
 	_isZooming = false;
 
-	if (_viewMode == NSR_VIEW_MODE_GRAPHIC) {
+	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
 		double scale = _imageView->preferredWidth () / _initialScaleSize.width ();
 
 		if (qAbs (_currentZoom * scale - _currentZoom) > 0.05) {

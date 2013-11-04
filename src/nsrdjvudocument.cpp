@@ -493,7 +493,7 @@ void NSRDjVuDocument::handleMessage(const ddjvu_message_t *msg, NSRDjVuError *er
 }
 
 bool
-NSRDjVuDocument::isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const
+NSRDjVuDocument::isDocumentStyleSupported (NSRAbstractDocument::NSRDocumentStyle style) const
 {
 	return (style == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC ||
 		style == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);

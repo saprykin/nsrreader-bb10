@@ -415,8 +415,8 @@ NSRReaderCore::switchTextReflow ()
 	_doc->setTextOnly (!_doc->isTextOnly ());
 
 	if (!needReload)
-		emit needViewMode (_doc->isTextOnly () ? NSRPageView::NSR_VIEW_MODE_TEXT
-						       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+		emit needViewMode (_doc->isTextOnly () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
+						       : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 
 	if (needReload)
 		loadPage (PAGE_LOAD_CUSTOM,
@@ -436,8 +436,8 @@ NSRReaderCore::onRenderDone ()
 
 	emit needIndicator (false);
 	emit pageRendered (_currentPage.getNumber ());
-	emit needViewMode (_doc->isTextOnly () ? NSRPageView::NSR_VIEW_MODE_TEXT
-					       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+	emit needViewMode (_doc->isTextOnly () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
+					       : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 }
 
 void
@@ -537,8 +537,8 @@ NSRReaderCore::loadPage (PageLoad		dir,
 		_currentPage = _cache->getPage (pageToLoad);
 
 		emit pageRendered (pageToLoad);
-		emit needViewMode (_doc->isTextOnly () ? NSRPageView::NSR_VIEW_MODE_TEXT
-						       : NSRPageView::NSR_VIEW_MODE_GRAPHIC);
+		emit needViewMode (_doc->isTextOnly () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
+						       : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		return;
 	}
 

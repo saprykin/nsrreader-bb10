@@ -8,6 +8,7 @@
 
 #include "nsrrenderedpage.h"
 #include "nsrtranslator.h"
+#include "nsrabstractdocument.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/ImageView>
@@ -22,23 +23,17 @@
 class NSRPageView: public bb::cascades::Container
 {
 	Q_OBJECT
-	Q_ENUMS (NSRViewMode)
 public:
-	enum NSRViewMode {
-		NSR_VIEW_MODE_GRAPHIC	= 0,
-		NSR_VIEW_MODE_TEXT	= 1
-	};
-
 	NSRPageView (bb::cascades::Container *parent = 0);
 	virtual ~NSRPageView ();
 
 	void setPage (const NSRRenderedPage& page);
 	void resetPage ();
-	void setViewMode (NSRPageView::NSRViewMode mode);
-	NSRPageView::NSRViewMode getViewMode () const;
-	void setScrollPosition (const QPointF& pos, NSRPageView::NSRViewMode mode);
-	QPointF getScrollPosition (NSRPageView::NSRViewMode mode) const;
-	void setScrollPositionOnLoad (const QPointF& pos, NSRPageView::NSRViewMode mode);
+	void setViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
+	NSRAbstractDocument::NSRDocumentStyle getViewMode () const;
+	void setScrollPosition (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode);
+	QPointF getScrollPosition (NSRAbstractDocument::NSRDocumentStyle mode) const;
+	void setScrollPositionOnLoad (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode);
 	bool isInvertedColors () const;
 	void setInvertedColors (bool inv);
 	QSize getSize () const;
@@ -72,31 +67,31 @@ private Q_SLOTS:
 	void retranslateUi ();
 
 private:
-	NSRTranslator			*_translator;
-	bb::cascades::ScrollView	*_scrollView;
-	bb::cascades::ScrollView	*_textScrollView;
-	bb::cascades::ImageView		*_imageView;
-	bb::cascades::TextArea		*_textArea;
-	bb::cascades::Container		*_rootContainer;
-	bb::cascades::Container		*_textContainer;
-	bb::cascades::Container		*_imageContainer;
-	bb::cascades::ActionSet		*_actionSet;
-	NSRViewMode			_viewMode;
-	QSize				_size;
-	QSize				_initialScaleSize;
-	QPointF				_delayedScrollPos;
-	QPointF				_delayedTextScrollPos;
-	QPointF				_initialScalePos;
-	QTime				_lastTapTime;
-	double				_currentZoom;
-	double				_minZoom;
-	double				_maxZoom;
-	int				_lastTapTimer;
-	int				_initialFontSize;
-	bool				_isInvertedColors;
-	bool				_isZooming;
-	bool				_isZoomingEnabled;
-	bool				_hasImage;
+	NSRTranslator				*_translator;
+	bb::cascades::ScrollView		*_scrollView;
+	bb::cascades::ScrollView		*_textScrollView;
+	bb::cascades::ImageView			*_imageView;
+	bb::cascades::TextArea			*_textArea;
+	bb::cascades::Container			*_rootContainer;
+	bb::cascades::Container			*_textContainer;
+	bb::cascades::Container			*_imageContainer;
+	bb::cascades::ActionSet			*_actionSet;
+	NSRAbstractDocument::NSRDocumentStyle	_viewMode;
+	QSize					_size;
+	QSize					_initialScaleSize;
+	QPointF					_delayedScrollPos;
+	QPointF					_delayedTextScrollPos;
+	QPointF					_initialScalePos;
+	QTime					_lastTapTime;
+	double					_currentZoom;
+	double					_minZoom;
+	double					_maxZoom;
+	int					_lastTapTimer;
+	int					_initialFontSize;
+	bool					_isInvertedColors;
+	bool					_isZooming;
+	bool					_isZoomingEnabled;
+	bool					_hasImage;
 };
 
 #endif /* NSRPAGEVIEW_H_ */

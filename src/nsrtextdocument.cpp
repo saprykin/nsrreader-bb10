@@ -131,7 +131,7 @@ bool NSRTextDocument::isAutoCrop () const
 }
 
 bool
-NSRTextDocument::isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const
+NSRTextDocument::isDocumentStyleSupported (NSRAbstractDocument::NSRDocumentStyle style) const
 {
 	return (style == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 }

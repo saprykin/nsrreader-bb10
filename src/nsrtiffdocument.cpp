@@ -300,7 +300,7 @@ NSRTIFFDocument::rotateRightMirrorHorizontal (QImage** const image, char **buf)
 }
 
 bool
-NSRTIFFDocument::isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const
+NSRTIFFDocument::isDocumentStyleSupported (NSRAbstractDocument::NSRDocumentStyle style) const
 {
 	return (style == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 }

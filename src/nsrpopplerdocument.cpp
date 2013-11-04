@@ -236,7 +236,7 @@ void NSRPopplerDocument::setPassword(const QString &passwd)
 }
 
 bool
-NSRPopplerDocument::isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const
+NSRPopplerDocument::isDocumentStyleSupported (NSRAbstractDocument::NSRDocumentStyle style) const
 {
 	return (style == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC ||
 		style == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);

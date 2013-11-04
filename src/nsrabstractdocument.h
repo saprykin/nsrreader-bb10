@@ -12,16 +12,16 @@
 class NSRAbstractDocument : public QObject
 {
 	Q_OBJECT
-	Q_ENUMS (DocumentError)
-	Q_ENUMS (DocumentStyle)
+	Q_ENUMS (NSRDocumentError)
+	Q_ENUMS (NSRDocumentStyle)
 public:
-	enum DocumentError {
+	enum NSRDocumentError {
 		NSR_DOCUMENT_ERROR_NO		= 0,
 		NSR_DOCUMENT_ERROR_PASSWD	= 1,
 		NSR_DOCUMENT_ERROR_TOO_LARGE	= 2,
 		NSR_DOCUMENT_ERROR_UNKNOWN	= 3
 	};
-	enum DocumentStyle {
+	enum NSRDocumentStyle {
 		NSR_DOCUMENT_STYLE_GRAPHIC	= 1,
 		NSR_DOCUMENT_STYLE_TEXT		= 2
 	};
@@ -52,7 +52,7 @@ public:
 	bool isInvertedColors () const {return _invertedColors;}
 	void setAutoCrop (bool isAutoCrop) {_autoCrop = isAutoCrop;}
 	bool isAutoCrop () const {return _autoCrop;}
-	DocumentError getLastError () const {return _lastError;}
+	NSRDocumentError getLastError () const {return _lastError;}
 	virtual void setPassword (const QString& passwd) {_password = passwd;}
 	virtual QString getPassword () const {return _password;}
 	virtual void setEncoding (const QString& enc);
@@ -60,12 +60,12 @@ public:
 	virtual bool isEncodingUsed () const {return false;}
 	void setMaximumPageSize (const QSize& size) {_maxPageSize = size;}
 	QSize getMaximumPageSize () const {return _maxPageSize;}
-	virtual bool isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const = 0;
-	virtual NSRAbstractDocument::DocumentStyle getPrefferedDocumentStyle () const = 0;
+	virtual bool isDocumentStyleSupported (NSRAbstractDocument::NSRDocumentStyle style) const = 0;
+	virtual NSRAbstractDocument::NSRDocumentStyle getPrefferedDocumentStyle () const = 0;
 
 protected:
 	void setZoomToWidth (bool toWidth) {_zoomToWidth = toWidth;}
-	void setLastError (DocumentError err) {_lastError = err;}
+	void setLastError (NSRDocumentError err) {_lastError = err;}
 	QString processText(const QString& text);
 	double validateMaxZoom (const QSize& pageSize, double zoom) const;
 
@@ -78,7 +78,7 @@ private:
 	bool		_textOnly;
 	bool		_invertedColors;
 	bool		_autoCrop;
-	DocumentError	_lastError;
+	NSRDocumentError	_lastError;
 	QString		_encoding;
 	int		_rotation;
 	QSize		_maxPageSize;
