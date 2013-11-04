@@ -81,7 +81,7 @@ NSRReaderCore::openDocument (const QString &path)
 		return;
 	}
 
-	_doc->setTextOnly (isTextReflowPreffered (getDocumentType ()));
+	_doc->setTextOnly (_doc->getPrefferedDocumentStyle () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	_thread->setRenderContext (_doc);
 
 	/* We need only graphic mode to render page on zooming */
@@ -136,24 +136,6 @@ NSRReaderCore::getDocumentPath () const
 		return QString ();
 	else
 		return _doc->getDocumentPath ();
-}
-
-NSRReaderCore::DocumentType
-NSRReaderCore::getDocumentType () const
-{
-	if (_doc == NULL)
-		return DOCUMENT_TYPE_NONE;
-
-	if (dynamic_cast<NSRPopplerDocument *> (_doc) != NULL)
-		return DOCUMENT_TYPE_PDF;
-	else if (dynamic_cast<NSRDjVuDocument *> (_doc) != NULL)
-		return DOCUMENT_TYPE_DJVU;
-	else if (dynamic_cast<NSRTIFFDocument *> (_doc) != NULL)
-		return DOCUMENT_TYPE_TIFF;
-	else if (dynamic_cast<NSRTextDocument *> (_doc) != NULL)
-		return DOCUMENT_TYPE_TXT;
-	else
-		return DOCUMENT_TYPE_UNKNOWN;
 }
 
 NSRRenderedPage
@@ -406,9 +388,11 @@ NSRReaderCore::isTextReflow () const
 bool
 NSRReaderCore::isTextReflowSwitchSupported () const
 {
-	DocumentType docType = getDocumentType ();
+	if (!isDocumentOpened ())
+		return false;
 
-	return (docType == DOCUMENT_TYPE_PDF || docType == DOCUMENT_TYPE_DJVU);
+	return (_doc->isDocumentStyleSupported (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) &&
+		_doc->isDocumentStyleSupported (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT));
 }
 
 void
@@ -639,11 +623,3 @@ NSRReaderCore::normalizeAngle (double angle) const
 	return angle;
 }
 
-bool
-NSRReaderCore::isTextReflowPreffered (NSRReaderCore::DocumentType docType) const
-{
-	if (docType == DOCUMENT_TYPE_TXT)
-		return true;
-	else
-		return false;
-}
