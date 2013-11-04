@@ -39,6 +39,12 @@ public:
 	void addLastDocument (const QString& path);
 	bool isFirstStart () const {return _isFirstStart;}
 	void saveFirstStart ();
+	inline bool isStarting () const {
+		return _isStarting;
+	}
+	inline void setStarting (bool starting) {
+		_isStarting = starting;
+	}
 
 	static QString getVersion ();
 	static QStringList getSupportedEncodings ();
@@ -66,6 +72,7 @@ private:
 	bool			_isAutoCrop;
 	bool			_isNewsShown;
 	bool			_isFirstStart;
+	bool			_isStarting;
 	QString			_lastOpenDir;
 	QString			_fontFamily;
 	QString			_textEncoding;

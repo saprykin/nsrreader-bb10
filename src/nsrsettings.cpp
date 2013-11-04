@@ -14,7 +14,8 @@ NSRSettings * NSRSettings::_instance = NULL;
 
 NSRSettings::NSRSettings () :
 	QSettings (NSRSettings::getSettingsDirectory () + "/config.ini",
-		   QSettings::IniFormat)
+		   QSettings::IniFormat),
+	_isStarting (false)
 {
 	QString	defPath, defFont;
 	QDir	dir;
@@ -49,7 +50,6 @@ NSRSettings::NSRSettings () :
 		_textEncoding = QString ("UTF-8");
 
 	endGroup ();
-
 	cleanOldFiles ();
 }
 

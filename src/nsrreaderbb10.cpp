@@ -95,6 +95,8 @@ NSRReaderBB10::~NSRReaderBB10 ()
 void
 NSRReaderBB10::initFullUI ()
 {
+	NSRSettings::instance()->setStarting (true);
+
 	_translator = new NSRTranslator (this);
 	_qtranslator = new QTranslator (this);
 
@@ -489,6 +491,7 @@ NSRReaderBB10::initFullUI ()
 	if (_startMode == ApplicationStartupMode::InvokeApplication ||
 	    _startMode == ApplicationStartupMode::InvokeCard) {
 		updateVisualControls ();
+		NSRSettings::instance()->setStarting (false);
 		return;
 	}
 
@@ -514,6 +517,8 @@ NSRReaderBB10::initFullUI ()
 			updateVisualControls ();
 		}
 	}
+
+	NSRSettings::instance()->setStarting (false);
 }
 
 void
