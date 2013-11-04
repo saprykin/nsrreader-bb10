@@ -29,14 +29,13 @@ public:
 		       QObject *parent = 0);
 	virtual ~NSRReaderCore ();
 
-	void openDocument (const QString &path);
+	void openDocument (const QString &path, const QString& password = QString ());
 	bool isDocumentOpened () const;
 	void closeDocument ();
 	QString getDocumentPath () const;
 
 	NSRRenderedPage getCurrentPage () const;
 	int getPagesCount () const;
-	void setPassword (const QString &pass);
 	void reloadSettings ();
 	void loadSession (const NSRSession *session);
 	void navigateToPage (PageLoad dir, int pageNumber = 0);
@@ -54,11 +53,11 @@ public:
 	bool isTextReflow () const;
 	bool isTextReflowSwitchSupported () const;
 	void switchTextReflow ();
+	bool isPasswordProtected (const QString& file) const;
 
 Q_SIGNALS:
 	void pageRendered (int number);
 	void needIndicator (bool enabled);
-	void needPassword ();
 	void errorWhileOpening (NSRAbstractDocument::NSRDocumentError error);
 	void needViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
 #ifdef NSR_LITE_VERSION
@@ -74,7 +73,7 @@ private:
 	void loadPage (PageLoad			dir,
 		       const NSRRenderedPage&	request = NSRRenderedPage (0, NULL));
 	NSRAbstractDocument * copyDocument (const NSRAbstractDocument *doc);
-	NSRAbstractDocument * documentByPath (const QString& path);
+	NSRAbstractDocument * documentByPath (const QString& path) const;
 	double normalizeAngle (double angle) const;
 
 	NSRAbstractDocument				*_doc;

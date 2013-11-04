@@ -51,7 +51,6 @@ private Q_SLOTS:
     void onPageRendered (int number);
     void onIndicatorRequested (bool enabled);
     void onIndicatorStopped ();
-    void onPasswordRequested ();
     void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
     void onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError error);
     void onSystemLanguageChanged ();

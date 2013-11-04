@@ -407,11 +407,8 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (_core, SIGNAL (needIndicator (bool)), this, SLOT (onIndicatorRequested (bool)));
 	Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (needPassword ()), this, SLOT (onPasswordRequested ()));
-	Q_ASSERT (ok);
-
-	ok = connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::NSRDocumentError)),
-		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError)));
+	ok = connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::DocumentError)),
+		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::DocumentError)));
 	Q_ASSERT (ok);
 
 	ok = connect (_core, SIGNAL (needViewMode (NSRAbstractDocument::NSRDocumentStyle)),
@@ -798,7 +795,30 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 						    NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	}
 
-	_core->loadSession (&session);
+	if (_core->isPasswordProtected (session.getFile ())) {
+		if (_prompt != NULL)
+			return;
+
+		_prompt = new SystemPrompt (this);
+
+		_prompt->setTitle (trUtf8 ("Enter Password"));
+		_prompt->inputField()->setEmptyText (trUtf8 ("Enter file password"));
+		_prompt->inputField()->setInputMode (SystemUiInputMode::Password);
+		_prompt->setDismissAutomatically (false);
+
+		bool res = connect (_prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+				    this, SLOT (onPasswordDialogFinished (bb::system::SystemUiResult::Type)));
+
+		if (res) {
+			NSRSession *newSession = new NSRSession (session);
+			_prompt->setProperty ("session", qVariantFromValue (reinterpret_cast<void *> (newSession)));
+			_prompt->show ();
+		} else {
+			_prompt->deleteLater ();
+			_prompt = NULL;
+		}
+	} else
+		_core->loadSession (&session);
 }
 
 void
@@ -850,34 +870,17 @@ NSRReaderBB10::onIndicatorStopped ()
 }
 
 void
-NSRReaderBB10::onPasswordRequested ()
-{
-	if (_prompt != NULL)
-		return;
-
-	_prompt = new SystemPrompt (this);
-
-	_prompt->setTitle (trUtf8 ("Enter Password"));
-	_prompt->inputField()->setEmptyText (trUtf8 ("Enter file password"));
-	_prompt->inputField()->setInputMode (SystemUiInputMode::Password);
-	_prompt->setDismissAutomatically (false);
-
-	bool res = connect (_prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
-			    this, SLOT (onPasswordDialogFinished (bb::system::SystemUiResult::Type)));
-
-	if (res)
-		_prompt->exec ();
-	else {
-		_prompt->deleteLater ();
-		_prompt = NULL;
-	}
-}
-
-void
 NSRReaderBB10::onPasswordDialogFinished (bb::system::SystemUiResult::Type res)
 {
-	if (res == SystemUiResult::ConfirmButtonSelection)
-		_core->setPassword (_prompt->inputFieldTextEntry ());
+	if (res == SystemUiResult::ConfirmButtonSelection) {
+		NSRSession *session = reinterpret_cast<NSRSession *> (_prompt->property("session").value<void *> ());
+
+		if (session != NULL) {
+			session->setPassword (_prompt->inputFieldTextEntry ());
+			_core->loadSession (session);
+			delete session;
+		}
+	}
 
 	_prompt->deleteLater ();
 	_prompt = NULL;
