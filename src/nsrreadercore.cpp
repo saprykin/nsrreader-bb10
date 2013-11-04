@@ -51,7 +51,7 @@ NSRReaderCore::~NSRReaderCore ()
 }
 
 void
-NSRReaderCore::openDocument (const QString &path)
+NSRReaderCore::openDocument (const QString &path,  const QString& password)
 {
 	closeDocument ();
 
@@ -59,6 +59,8 @@ NSRReaderCore::openDocument (const QString &path)
 
 	if (_doc == NULL)
 		return;
+
+	_doc->setPassword (password);
 
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
 		_doc->setTextOnly (false);
@@ -70,12 +72,6 @@ NSRReaderCore::openDocument (const QString &path)
 		_doc->setInvertedColors (settings.isInvertedColors ());
 		_doc->setAutoCrop (settings.isAutoCrop ());
 		_doc->setEncoding (settings.getTextEncoding ());
-	}
-
-	if (!_doc->isValid ()) {
-		/* Check if we need password */
-		if (_doc->getLastError () == NSRAbstractDocument::NSR_DOCUMENT_ERROR_PASSWD)
-			emit needPassword ();
 	}
 
 	if (!_doc->isValid ()) {
@@ -157,13 +153,6 @@ NSRReaderCore::getPagesCount () const
 }
 
 void
-NSRReaderCore::setPassword (const QString& pass)
-{
-	if (_doc != NULL)
-		_doc->setPassword (pass);
-}
-
-void
 NSRReaderCore::reloadSettings (const NSRSettings* settings)
 {
 	if (_doc == NULL)
@@ -226,7 +215,7 @@ NSRReaderCore::loadSession (const NSRSession *session)
 	QString file = session->getFile ();
 
 	if (QFile::exists (file)) {
-		openDocument (file);
+		openDocument (file, session->getPassword ());
 
 		if (isDocumentOpened ()) {
 			_doc->setRotation (session->getRotation ());
@@ -555,11 +544,10 @@ NSRReaderCore::copyDocument (const NSRAbstractDocument* doc)
 }
 
 NSRAbstractDocument*
-NSRReaderCore::documentByPath (const QString& path)
+NSRReaderCore::documentByPath (const QString& path) const
 {
 	NSRAbstractDocument	*res = NULL;
-	QFileInfo		fileInfo (path);
-	QString			suffix = fileInfo.suffix().toLower ();
+	QString			suffix = QFileInfo(path).suffix().toLower ();
 
 	if (!QFile::exists (path))
 		return NULL;
@@ -573,6 +561,24 @@ NSRReaderCore::documentByPath (const QString& path)
 	else
 		res = new NSRTextDocument (path);
 
+	return res;
+}
+
+bool
+NSRReaderCore::isPasswordProtected (const QString& file) const
+{
+	QString			suffix = QFileInfo(file).suffix().toLower ();
+	bool			res = false;
+
+	if (suffix != "pdf")
+		return res;
+
+	NSRAbstractDocument *doc = documentByPath (file);
+
+	if (doc->getLastError () == NSRAbstractDocument::NSR_DOCUMENT_ERROR_PASSWD)
+		res = true;
+
+	delete doc;
 	return res;
 }
 

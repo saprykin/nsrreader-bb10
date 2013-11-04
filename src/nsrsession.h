@@ -25,6 +25,7 @@ public:
 	inline QPointF getPosition () const {return _pos;}
 	inline QPointF getTextPosition () const {return _textPos;}
 	inline double getRotation () const {return _angle;}
+	inline QString getPassword () const {return _passwd;}
 
 	inline void setFile (const QString& file) {_file = file;}
 	inline void setPage (int page) {_page = page;}
@@ -35,9 +36,11 @@ public:
 	inline void setPosition (const QPointF& pos) {_pos = pos;}
 	inline void setTextPosition (const QPointF& pos) {_textPos = pos;}
 	inline void setRotation (double angle) {_angle = angle;}
+	inline void setPassword (const QString& password) {_passwd = password;}
 
 private:
 	QString _file;
+	QString	_passwd;
 	QPointF	_pos;
 	QPointF	_textPos;
 	double	_zoomGraphic;
