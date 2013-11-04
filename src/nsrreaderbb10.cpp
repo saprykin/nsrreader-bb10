@@ -682,6 +682,8 @@ NSRReaderBB10::onPageRendered (int number)
 			_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
 	}
 
+	updateVisualControls ();
+
 	if (_isActiveFrame)
 		onThumbnail ();
 }
@@ -845,7 +847,6 @@ void
 NSRReaderBB10::onIndicatorStopped ()
 {
 	_indicator->setVisible (false);
-	updateVisualControls ();
 }
 
 void
