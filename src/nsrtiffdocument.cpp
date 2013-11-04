@@ -299,6 +299,12 @@ NSRTIFFDocument::rotateRightMirrorHorizontal (QImage** const image, char **buf)
 	*buf = newBuf;
 }
 
+bool
+NSRTIFFDocument::isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const
+{
+	return (style == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
+}
+
 void
 NSRTIFFDocument::rotateRightMirrorVertical (QImage** const image, char **buf)
 {

@@ -13,12 +13,17 @@ class NSRAbstractDocument : public QObject
 {
 	Q_OBJECT
 	Q_ENUMS (DocumentError)
+	Q_ENUMS (DocumentStyle)
 public:
 	enum DocumentError {
 		NSR_DOCUMENT_ERROR_NO		= 0,
 		NSR_DOCUMENT_ERROR_PASSWD	= 1,
 		NSR_DOCUMENT_ERROR_TOO_LARGE	= 2,
 		NSR_DOCUMENT_ERROR_UNKNOWN	= 3
+	};
+	enum DocumentStyle {
+		NSR_DOCUMENT_STYLE_GRAPHIC	= 1,
+		NSR_DOCUMENT_STYLE_TEXT		= 2
 	};
 
 	explicit NSRAbstractDocument(const QString& file, QObject *parent = 0);
@@ -55,6 +60,8 @@ public:
 	virtual bool isEncodingUsed () const {return false;}
 	void setMaximumPageSize (const QSize& size) {_maxPageSize = size;}
 	QSize getMaximumPageSize () const {return _maxPageSize;}
+	virtual bool isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const = 0;
+	virtual NSRAbstractDocument::DocumentStyle getPrefferedDocumentStyle () const = 0;
 
 protected:
 	void setZoomToWidth (bool toWidth) {_zoomToWidth = toWidth;}

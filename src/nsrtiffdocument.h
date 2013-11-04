@@ -17,6 +17,10 @@ public:
 	bool isValid() const;
 	double getMaxZoom();
 	double getMinZoom();
+	bool isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const;
+	inline NSRAbstractDocument::DocumentStyle getPrefferedDocumentStyle () const {
+		return NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC;
+	}
 
 private:
 	void updateCropPads ();

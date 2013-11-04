@@ -27,6 +27,10 @@ public:
 	double getMinZoom();
 	QString getText();
 	void setPassword(const QString &passwd);
+	bool isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const;
+	inline NSRAbstractDocument::DocumentStyle getPrefferedDocumentStyle () const {
+		return NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC;
+	}
 
 private:
 	void createInternalDoc(QString passwd = QString());

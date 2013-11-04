@@ -22,6 +22,10 @@ public:
 	QString getText ();
 	bool isEncodingUsed () const;
 	bool isAutoCrop () const;
+	bool isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const;
+	inline NSRAbstractDocument::DocumentStyle getPrefferedDocumentStyle () const {
+		return NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT;
+	}
 
 private:
 	QString			_text;

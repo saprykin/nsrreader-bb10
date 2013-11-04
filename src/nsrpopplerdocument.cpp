@@ -235,6 +235,13 @@ void NSRPopplerDocument::setPassword(const QString &passwd)
 	createInternalDoc (passwd);
 }
 
+bool
+NSRPopplerDocument::isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const
+{
+	return (style == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC ||
+		style == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
+}
+
 void NSRPopplerDocument::createInternalDoc(QString passwd)
 {
 	SplashColor	bgColor;

@@ -33,6 +33,10 @@ public:
 	double getMinZoom();
 	QString getText();
 	void setZoom(double zoom);
+	bool isDocumentStyleSupported (NSRAbstractDocument::DocumentStyle style) const;
+	inline NSRAbstractDocument::DocumentStyle getPrefferedDocumentStyle () const {
+		return NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC;
+	}
 
 private:
 	void handleEvents (ddjvu_context_t* context, bool wait, NSRDjVuError *error);
