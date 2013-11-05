@@ -407,8 +407,8 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (_core, SIGNAL (needIndicator (bool)), this, SLOT (onIndicatorRequested (bool)));
 	Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::DocumentError)),
-		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::DocumentError)));
+	ok = connect (_core, SIGNAL (errorWhileOpening (NSRAbstractDocument::NSRDocumentError)),
+		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError)));
 	Q_ASSERT (ok);
 
 	ok = connect (_core, SIGNAL (needViewMode (NSRAbstractDocument::NSRDocumentStyle)),
