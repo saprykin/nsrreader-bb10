@@ -54,6 +54,8 @@ public:
 	bool isTextReflowSwitchSupported () const;
 	void switchTextReflow ();
 	bool isPasswordProtected (const QString& file) const;
+	void invertColors ();
+	bool isInvertedColors () const;
 
 Q_SIGNALS:
 	void pageRendered (int number);

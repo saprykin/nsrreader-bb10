@@ -161,21 +161,16 @@ NSRReaderCore::reloadSettings ()
 		return;
 
 	bool	needReload = false;
-	bool	wasInverted = _doc->isInvertedColors ();
 	bool	wasCropped = _doc->isAutoCrop ();
 	QString	wasEncoding = _doc->getEncoding ();
 
-	_doc->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
 	_doc->setAutoCrop (NSRSettings::instance()->isAutoCrop ());
 	_doc->setEncoding (NSRSettings::instance()->getTextEncoding ());
 
-	if (_zoomDoc != NULL) {
-		_zoomDoc->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
+	if (_zoomDoc != NULL)
 		_zoomDoc->setAutoCrop (NSRSettings::instance()->isAutoCrop ());
-	}
 
-	if (wasInverted != _doc->isInvertedColors () ||
-	    wasCropped != _doc->isAutoCrop ()) {
+	if (wasCropped != _doc->isAutoCrop ()) {
 		/* Do not clear text from cache if text mode is remained */
 		if (_doc->isTextOnly ())
 			_cache->removePagesWithImages ();
@@ -612,6 +607,43 @@ NSRReaderCore::isPasswordProtected (const QString& file) const
 
 	delete doc;
 	return res;
+}
+
+void
+NSRReaderCore::invertColors ()
+{
+	if (!isDocumentOpened ())
+		return;
+
+	bool	needReload = false;
+
+	_doc->setInvertedColors (!_doc->isInvertedColors ());
+
+	if (_zoomDoc != NULL)
+		_zoomDoc->setInvertedColors (!_doc->isInvertedColors ());
+
+	/* Do not clear text from cache if text mode is remained */
+	if (_doc->isTextOnly ())
+		_cache->removePagesWithImages ();
+	else {
+		_cache->clearStorage ();
+		needReload = true;
+	}
+
+	if (needReload)
+		loadPage (PAGE_LOAD_CUSTOM,
+			  NSRRenderedPage (_currentPage.getNumber (),
+					   NSRRenderedPage::NSR_RENDER_REASON_SETTINGS));
+
+}
+
+bool
+NSRReaderCore::isInvertedColors () const
+{
+	if (!isDocumentOpened ())
+		return false;
+
+	return _doc->isInvertedColors ();
 }
 
 double
