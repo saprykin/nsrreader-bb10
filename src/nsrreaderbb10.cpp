@@ -388,6 +388,9 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (reflowAction, SIGNAL (triggered ()), this, SLOT (onReflowActionTriggered ()));
 	Q_ASSERT (ok);
 
+	ok = connect (invertAction, SIGNAL (triggered ()), this, SLOT (onInvertActionTriggered ()));
+	Q_ASSERT (ok);
+
 #ifdef NSR_LITE_VERSION
 	ok = connect (buyAction, SIGNAL (triggered ()), this, SLOT (onBuyActionTriggered ()));
 	Q_ASSERT (ok);
@@ -596,11 +599,8 @@ NSRReaderBB10::onGotoActionTriggered ()
 void
 NSRReaderBB10::onReflowActionTriggered ()
 {
-	if (_startMode == ApplicationStartupMode::InvokeCard)
-		return;
-
 	/* Check whether we have noted user about text mode */
-	if (!NSRSettings::instance()->isTextModeNoted ()) {
+	if (_startMode != ApplicationStartupMode::InvokeCard && !NSRSettings::instance()->isTextModeNoted ()) {
 		NSRSettings::instance()->saveTextModeNoted ();
 		QString text = trUtf8 ("You are using text reflow the first time. Note that "
 				       "file formatting may be differ than in original one, "
@@ -615,6 +615,24 @@ NSRReaderBB10::onReflowActionTriggered ()
 	}
 
 	_core->switchTextReflow ();
+
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		NSRSettings::instance()->saveWordWrapWithoutSync (_core->isTextReflow ());
+	else
+		NSRSettings::instance()->saveWordWrap (_core->isTextReflow ());
+}
+
+void
+NSRReaderBB10::onInvertActionTriggered ()
+{
+	_pageView->setInvertedColors (!_pageView->isInvertedColors ());
+	_core->invertColors ();
+
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		NSRSettings::instance()->saveInvertedColorsWithoutSync (_core->isInvertedColors ());
+	else
+		NSRSettings::instance()->saveInvertedColors (_core->isInvertedColors ());
+
 }
 
 void
@@ -749,13 +767,6 @@ NSRReaderBB10::disableVisualControls ()
 }
 
 void
-NSRReaderBB10::reloadSettings ()
-{
-	_core->reloadSettings ();
-	_pageView->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
-}
-
-void
 NSRReaderBB10::loadSession (const QString& path, int page)
 {
 	NSRSession	session;
@@ -854,9 +865,6 @@ NSRReaderBB10::saveSession ()
 	session.setPosition (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC));
 	session.setTextPosition (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT));
 	NSRSettings::instance()->saveSession (&session);
-
-	/* Save other parameters */
-	NSRSettings::instance()->saveWordWrap (_core->isTextReflow ());
 }
 
 void
@@ -979,9 +987,7 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 	if (dynamic_cast<NSRPreferencesPage *> (page) != NULL) {
 		NSRPreferencesPage *prefsPage = dynamic_cast<NSRPreferencesPage *> (page);
 		prefsPage->saveSettings ();
-
-		reloadSettings ();
-
+		_core->reloadSettings ();
 		_actionAggregator->setActionEnabled ("prefs", true);
 	} else if (dynamic_cast<NSRAboutPage *> (page) != NULL)
 		_actionAggregator->setActionEnabled ("help", true);

@@ -44,6 +44,7 @@ private Q_SLOTS:
     void onNextPageActionTriggered ();
     void onGotoActionTriggered ();
     void onReflowActionTriggered ();
+    void onInvertActionTriggered ();
     void onPrefsActionTriggered ();
     void onRecentDocsTriggered ();
     void onHelpActionTriggered ();
@@ -90,7 +91,6 @@ private:
     void initCardUI ();
     void updateVisualControls ();
     void disableVisualControls ();
-    void reloadSettings ();
     void loadSession (const QString& path = "", int page = -1);
     void saveSession ();
     void resetState ();
