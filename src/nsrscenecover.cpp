@@ -106,7 +106,7 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 
 	_textContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
-					    .layout(DockLayout::create())
+					    .layout(StackLayout::create())
 					    .background(Color::White)
 					    .visible(false);
 	_textView = TextArea::create().horizontal(HorizontalAlignment::Fill)
@@ -118,7 +118,8 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 						  TextInputFlag::AutoCorrectionOff |
 						  TextInputFlag::AutoPeriodOff |
 						  TextInputFlag::WordSubstitutionOff |
-						  TextInputFlag::VirtualKeyboardOff);
+						  TextInputFlag::VirtualKeyboardOff)
+				      .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0));
 	_textView->setTopPadding (0);
 	_textView->setBottomPadding (0);
 	_textView->setTextFormat (TextFormat::Plain);
