@@ -21,10 +21,12 @@ public:
 	void saveLastOpenDir (const QString& dir);
 	QString getLastOpenDir () const {return _lastOpenDir;}
 	void saveWordWrap (bool wrap);
+	void saveWordWrapWithoutSync (bool wrap);
 	bool isWordWrap () const {return _isWordWrap;}
 	void saveTextModeNoted ();
 	bool isTextModeNoted () const {return _isTextModeNoted;}
 	void saveInvertedColors (bool inverted);
+	void saveInvertedColorsWithoutSync (bool inverted);
 	bool isInvertedColors () const {return _isInvertedColors;}
 	void saveAutoCrop (bool crop);
 	bool isAutoCrop () const {return _isAutoCrop;}

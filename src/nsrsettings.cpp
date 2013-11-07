@@ -165,6 +165,12 @@ NSRSettings::saveWordWrap (bool wrap)
 }
 
 void
+NSRSettings::saveWordWrapWithoutSync (bool wrap)
+{
+	_isWordWrap = wrap;
+}
+
+void
 NSRSettings::saveTextModeNoted ()
 {
 	_isTextModeNoted = true;
@@ -184,6 +190,12 @@ NSRSettings::saveInvertedColors (bool inverted)
 	endGroup ();
 
 	sync ();
+}
+
+void
+NSRSettings::saveInvertedColorsWithoutSync (bool inverted)
+{
+	_isInvertedColors = inverted;
 }
 
 void
