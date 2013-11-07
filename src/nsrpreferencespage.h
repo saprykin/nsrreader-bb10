@@ -25,7 +25,6 @@ private Q_SLOTS:
 private:
 	NSRTranslator			*_translator;
 	bb::cascades::ToggleButton	*_isFullscreen;
-	bb::cascades::ToggleButton	*_isInvertedColors;
 	bb::cascades::ToggleButton	*_isAutoCrop;
 	bb::cascades::DropDown		*_encodingsList;
 };

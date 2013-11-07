@@ -17,7 +17,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Page (parent),
 	_translator (NULL),
 	_isFullscreen (NULL),
-	_isInvertedColors (NULL),
 	_encodingsList (NULL)
 {
 	QString		defEncoding ("UTF-8");
@@ -29,12 +28,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 						      .layout(StackLayout::create ());
 
 	_isFullscreen = ToggleButton::create().horizontal(HorizontalAlignment::Right);
-	_isInvertedColors = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isAutoCrop = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
 	_isFullscreen->setChecked (NSRSettings::instance()->isFullscreenMode ());
-	_isInvertedColors->setChecked (NSRSettings::instance()->isInvertedColors ());
 	_isAutoCrop->setChecked (NSRSettings::instance()->isAutoCrop ());
 	_encodingsList->setFocusPolicy (FocusPolicy::Touch);
 
@@ -49,7 +46,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	/* First container is out - was to save last positions */
 
-	/* 'Fullscreen mode' option */
+	/* 'Fullscreen Mode' option */
 	Container *secondContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							.layout(StackLayout::create()
 									    .orientation(LayoutOrientation::LeftToRight));
@@ -67,35 +64,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	secondContainer->add (fullscreenLabel);
 	secondContainer->add (_isFullscreen);
 
-	/* 'Invert colors' option */
-	Container *fourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-							.layout(StackLayout::create()
-									    .orientation(LayoutOrientation::LeftToRight));
-	Container *outerFourthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-							     .layout(StackLayout::create());
-	Label *invertInfo = Label::create (trUtf8 ("Black background reduces OLED display power consumption "
-					       	   "and helps to read at dark."))
-				   .horizontal(HorizontalAlignment::Fill)
-				   .vertical(VerticalAlignment::Center);
-	invertInfo->textStyle()->setFontSize (FontSize::XSmall);
-	invertInfo->setMultiline (true);
-
-	Label *invertLabel = Label::create(trUtf8 ("Invert Colors", "Option in preferences"))
-				  .horizontal(HorizontalAlignment::Left)
-				  .vertical(VerticalAlignment::Center)
-				  .multiline(true)
-				  .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
-
-	fourthContainer->add (invertLabel);
-	fourthContainer->add (_isInvertedColors);
-
-	outerFourthContainer->setLeftPadding (20);
-	outerFourthContainer->setRightPadding (20);
-
-	outerFourthContainer->add (fourthContainer);
-	outerFourthContainer->add (invertInfo);
-
-	/* 'Text encoding' drop down list */
+	/* 'Text Encoding' drop down list */
 	Container *fifthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .layout(StackLayout::create());
 	Label *textEncodingLabel = Label::create(trUtf8 ("Text Encoding", "Option in preferences, "
@@ -118,8 +87,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	fifthContainer->add (_encodingsList);
 	fifthContainer->add (encodingInfo);
 
-	/* 'Crop blank edges' option */
-	/* 'Invert colors' option */
+	/* 'Crop Blank Edges' option */
 	Container *sixthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .layout(StackLayout::create()
 									    .orientation(LayoutOrientation::LeftToRight));
@@ -138,8 +106,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	/* Add all options to root layout */
 	rootContainer->add (secondContainer);
-	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
-	rootContainer->add (outerFourthContainer);
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (sixthContainer);
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
@@ -161,15 +127,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Fullscreen Mode"));
-	_translator->addTranslatable ((UIObject *) invertInfo,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRPreferencesPage"),
-				      QString ("Black background reduces OLED display power consumption "
-					       "and helps to read at dark."));
-	_translator->addTranslatable ((UIObject *) invertLabel,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRPreferencesPage"),
-				      QString ("Invert Colors"));
 	_translator->addTranslatable ((UIObject *) textEncodingLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -201,7 +158,6 @@ void
 NSRPreferencesPage::saveSettings ()
 {
 	NSRSettings::instance()->saveFullscreenMode (_isFullscreen->isChecked ());
-	NSRSettings::instance()->saveInvertedColors (_isInvertedColors->isChecked ());
 	NSRSettings::instance()->saveAutoCrop (_isAutoCrop->isChecked ());
 
 	if (_encodingsList->isSelectedOptionSet ())
