@@ -203,6 +203,8 @@ NSRReaderBB10::initFullUI ()
 	gotoAction->setTitle (trUtf8 ("Go to", "Go to page"));
 	ActionItem *reflowAction = ActionItem::create().enabled (false);
 	reflowAction->setTitle (trUtf8 ("Text Reflow", "Text mode for a file view"));
+	ActionItem *invertAction = ActionItem::create();//.enabled (false);
+	invertAction->setTitle (trUtf8 ("Invert Colors"));
 	ActionItem *prefsAction = ActionItem::create().title(trUtf8 ("Settings"));
 	ActionItem *recentDocsAction = ActionItem::create().title (trUtf8 ("Recent"));
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
@@ -228,6 +230,9 @@ NSRReaderBB10::initFullUI ()
 	_translator->addTranslatable ((UIObject *) reflowAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Text Reflow"));
+	_translator->addTranslatable ((UIObject *) invertAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Invert Colors"));
 	_translator->addTranslatable ((UIObject *) prefsAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Settings"));
@@ -278,6 +283,10 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Switch text reflow mode"));
+	_translator->addTranslatable ((UIObject *) invertAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Invert page colors"));
 	_translator->addTranslatable ((UIObject *) prefsAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
@@ -309,6 +318,7 @@ NSRReaderBB10::initFullUI ()
 	_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
 	_page->addAction (reflowAction, ActionBarPlacement::InOverflow);
+	_page->addAction (invertAction, ActionBarPlacement::InOverflow);
 	_page->addAction (recentDocsAction, ActionBarPlacement::InOverflow);
 	_page->addAction (shareAction, ActionBarPlacement::InOverflow);
 
@@ -317,6 +327,7 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("next", nextPageAction);
 	_actionAggregator->addAction ("goto", gotoAction);
 	_actionAggregator->addAction ("reflow", reflowAction);
+	_actionAggregator->addAction ("invert", invertAction);
 	_actionAggregator->addAction ("recent-docs", recentDocsAction);
 	_actionAggregator->addAction ("share", shareAction);
 	_actionAggregator->addAction ("prefs", prefsAction);
@@ -327,6 +338,7 @@ NSRReaderBB10::initFullUI ()
 	nextPageAction->setImageSource (QUrl ("asset:///next.png"));
 	gotoAction->setImageSource (QUrl ("asset:///goto.png"));
 	reflowAction->setImageSource (QUrl ("asset:///text-mode.png"));
+	invertAction->setImageSource (QUrl ("asset:///invert.png"));
 	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
 	recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
