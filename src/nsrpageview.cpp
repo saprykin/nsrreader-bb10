@@ -122,7 +122,6 @@ NSRPageView::NSRPageView (Container *parent) :
 								  	   "Fit image to screen width"));
 	fitToWidthAction->setImageSource (QUrl ("asset:///fit-to-width.png"));
 
-
 	_actionSet = ActionSet::create ();
 	_actionSet->add (fitToWidthAction);
 	_actionSet->add (rotateLeftAction);
@@ -139,6 +138,13 @@ NSRPageView::NSRPageView (Container *parent) :
 	Q_ASSERT (ok);
 
 	_scrollView->addActionSet (_actionSet);
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	_textArea->accessibility()->setName (trUtf8 ("Page text"));
+	_imageView->accessibility()->setName (trUtf8 ("Page image"));
+#  endif
+#endif
 
 	setLayout (DockLayout::create ());
 	add (_scrollView);
@@ -166,6 +172,18 @@ NSRPageView::NSRPageView (Container *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRPageView"),
 				      QString ("Fit to Width"));
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	_translator->addTranslatable ((UIObject *) _textArea->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRPageView"),
+				      QString ("Page text"));
+	_translator->addTranslatable ((UIObject *) _imageView->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRPageView"),
+				      QString ("Page image"));
+#  endif
+#endif
 
 	connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		 this, SLOT (retranslateUi ()));
