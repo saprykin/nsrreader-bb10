@@ -725,18 +725,20 @@ NSRReaderBB10::updateVisualControls ()
 		}
 	}
 
+	bool isDocumentOpened = _core->isDocumentOpened ();
+
 	_actionAggregator->setActionEnabled ("open", true);
 	_actionAggregator->setActionEnabled ("prefs", true);
 	_actionAggregator->setActionEnabled ("share",
-				       	     _core->isDocumentOpened () &&
-				       	     NSRFileSharer::isSharable (_core->getDocumentPath ()));
+				       	     isDocumentOpened && NSRFileSharer::isSharable (_core->getDocumentPath ()));
 	_actionAggregator->setActionEnabled ("reflow", _core->isTextReflowSwitchSupported ());
-	_pageView->setVisible (_core->isDocumentOpened ());
-	_welcomeView->setVisible (!_core->isDocumentOpened ());
-	_readProgress->setVisible (!_slider->isVisible () && _core->isDocumentOpened () && _core->getPagesCount () > 1);
-	_slider->setEnabled (_core->isDocumentOpened ());
+	_actionAggregator->setActionEnabled ("invert", isDocumentOpened);
+	_pageView->setVisible (isDocumentOpened);
+	_welcomeView->setVisible (!isDocumentOpened);
+	_readProgress->setVisible (!_slider->isVisible () && isDocumentOpened && _core->getPagesCount () > 1);
+	_slider->setEnabled (isDocumentOpened);
 
-	if (!_core->isDocumentOpened ()) {
+	if (!isDocumentOpened) {
 		_actionAggregator->setActionEnabled ("prev", false);
 		_actionAggregator->setActionEnabled ("next", false);
 		_actionAggregator->setActionEnabled ("goto", false);
@@ -773,6 +775,7 @@ NSRReaderBB10::disableVisualControls ()
 	_actionAggregator->setActionEnabled ("next", false);
 	_actionAggregator->setActionEnabled ("goto", false);
 	_actionAggregator->setActionEnabled ("reflow", false);
+	_actionAggregator->setActionEnabled ("invert", false);
 	_actionAggregator->setActionEnabled ("share", false);
 	_actionAggregator->setActionEnabled ("prefs", false);
 	_slider->setEnabled (false);
