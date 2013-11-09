@@ -107,8 +107,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
-	_isFullscreen->accessibility()->setName (fullscreenLabel->text ());
-	_isAutoCrop->accessibility()->setName (cropLabel->text ());
+	_isFullscreen->accessibility()->addLabel (fullscreenLabel);
+	_isAutoCrop->accessibility()->addLabel (cropLabel);
 #  endif
 #endif
 
@@ -152,18 +152,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_TITLEBAR,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Settings"));
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
-	_translator->addTranslatable ((UIObject *) _isFullscreen->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRPreferencesPage"),
-				      QString ("Fullscreen Mode"));
-	_translator->addTranslatable ((UIObject *) _isAutoCrop->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRPreferencesPage"),
-				      QString ("Crop Blank Edges"));
-#  endif
-#endif
 
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		     this, SLOT (retranslateUi ()));
