@@ -1026,6 +1026,11 @@ void
 NSRReaderBB10::onLastDocumentRequested (const QString& path)
 {
 	onFileSelected (QStringList (path));
+
+	TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+
+	if (pane != NULL)
+		pane->setActiveTab (pane->at (NSR_MAIN_TAB_INDEX));
 }
 
 void
