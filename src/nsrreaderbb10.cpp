@@ -21,6 +21,8 @@
 #include <bb/cascades/Menu>
 #include <bb/cascades/ActionItem>
 #include <bb/cascades/NavigationPaneProperties>
+#include <bb/cascades/TabbedPane>
+#include <bb/cascades/Tab>
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,1,0)
@@ -44,6 +46,8 @@ using namespace bb::multimedia;
 
 #define NSR_ACTION_BAR_NORMAL_HEIGHT	140
 #define NSR_ACTION_BAR_REDUCED_HEIGHT	100
+#define NSR_MAIN_TAB_INDEX		0
+#define NSR_RECENT_TAB_INDEX		1
 
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
@@ -149,7 +153,7 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (_welcomeView, SIGNAL (openDocumentRequested ()), this, SLOT (onOpenActionTriggered ()));
 	Q_ASSERT (ok);
 
-	ok = connect (_welcomeView, SIGNAL (recentDocumentsRequested ()), this, SLOT (onRecentDocsTriggered ()));
+	ok = connect (_welcomeView, SIGNAL (recentDocumentsRequested ()), this, SLOT (onRecentDocumentsRequested ()));
 	Q_ASSERT (ok);
 
 	_slider = new NSRPageSlider ();
@@ -186,9 +190,6 @@ NSRReaderBB10::initFullUI ()
 	_page = Page::create().content (mainContainer);
 	_actionAggregator = new NSRActionAggregator (this);
 
-	ok = connect (_page, SIGNAL (peekedAtChanged (bool)), this, SLOT (onTopPagePeeked (bool)));
-	Q_ASSERT (ok);
-
 	_bpsHandler = new NSRBpsEventHandler (this);
 	ok = connect (_bpsHandler, SIGNAL (vkbVisibilityChanged (bool)),
 		      this, SLOT (onVkbVisibilityChanged (bool)));
@@ -206,7 +207,6 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *invertAction = ActionItem::create();//.enabled (false);
 	invertAction->setTitle (trUtf8 ("Invert Colors"));
 	ActionItem *prefsAction = ActionItem::create().title(trUtf8 ("Settings"));
-	ActionItem *recentDocsAction = ActionItem::create().title (trUtf8 ("Recent"));
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
@@ -236,9 +236,6 @@ NSRReaderBB10::initFullUI ()
 	_translator->addTranslatable ((UIObject *) prefsAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Settings"));
-	_translator->addTranslatable ((UIObject *) recentDocsAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
-				      QString ("NSRReaderBB10"),
-				      QString ("Recent"));
 	_translator->addTranslatable ((UIObject *) helpAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("About"));
@@ -259,7 +256,6 @@ NSRReaderBB10::initFullUI ()
 	gotoAction->accessibility()->setName (trUtf8 ("Go to arbitrary page"));
 	reflowAction->accessibility()->setName (trUtf8 ("Switch text reflow mode"));
 	prefsAction->accessibility()->setName (trUtf8 ("Open Settings page"));
-	recentDocsAction->accessibility()->setName (trUtf8 ("Open page with recent files"));
 	helpAction->accessibility()->setName (trUtf8 ("Open page with information about the app and help sections"));
 	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
 
@@ -291,10 +287,6 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Open Settings page"));
-	_translator->addTranslatable ((UIObject *) recentDocsAction->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRReaderBB10"),
-				      QString ("Open page with recent files"));
 	_translator->addTranslatable ((UIObject *) helpAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
@@ -319,7 +311,6 @@ NSRReaderBB10::initFullUI ()
 	_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
 	_page->addAction (reflowAction, ActionBarPlacement::InOverflow);
 	_page->addAction (invertAction, ActionBarPlacement::InOverflow);
-	_page->addAction (recentDocsAction, ActionBarPlacement::InOverflow);
 	_page->addAction (shareAction, ActionBarPlacement::InOverflow);
 
 	_actionAggregator->addAction ("open", openAction);
@@ -328,7 +319,6 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("goto", gotoAction);
 	_actionAggregator->addAction ("reflow", reflowAction);
 	_actionAggregator->addAction ("invert", invertAction);
-	_actionAggregator->addAction ("recent-docs", recentDocsAction);
 	_actionAggregator->addAction ("share", shareAction);
 	_actionAggregator->addAction ("prefs", prefsAction);
 	_actionAggregator->addAction ("help", helpAction);
@@ -340,7 +330,6 @@ NSRReaderBB10::initFullUI ()
 	reflowAction->setImageSource (QUrl ("asset:///text-mode.png"));
 	invertAction->setImageSource (QUrl ("asset:///invert.png"));
 	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
-	recentDocsAction->setImageSource (QUrl ("asset:///recent-documents.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
 #ifdef NSR_LITE_VERSION
@@ -374,9 +363,6 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	ok = connect (prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
-	Q_ASSERT (ok);
-
-	ok = connect (recentDocsAction, SIGNAL (triggered ()), this, SLOT (onRecentDocsTriggered ()));
 	Q_ASSERT (ok);
 
 	ok = connect (helpAction, SIGNAL (triggered ()), this, SLOT (onHelpActionTriggered ()));
@@ -441,7 +427,22 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onPopTransitionEnded (bb::cascades::Page *)));
 	Q_ASSERT (ok);
 
-	Application::instance()->setScene (_naviPane);
+	NSRLastDocsPage *recentPage = new NSRLastDocsPage ();
+
+	ok = connect (recentPage, SIGNAL (requestDocument (QString)), this, SLOT (onLastDocumentRequested (QString)));
+	Q_ASSERT (ok);
+
+	ok = connect (recentPage, SIGNAL (documentToBeDeleted (QString)), this, SLOT (onDocumentToBeDeleted (QString)));
+	Q_ASSERT (ok);
+
+	TabbedPane *tabbedPane = TabbedPane::create().add(Tab::create().content(_naviPane)
+								       .title(trUtf8 ("Reading"))
+								       .imageSource(QUrl ("asset:///main-tab.png")))
+						     .add(Tab::create().content(recentPage)
+								       .title("Recent")
+								       .imageSource(QUrl ("asset:///recent.png")));
+
+	Application::instance()->setScene (tabbedPane);
 
 	MediaKeyWatcher *volumeUpWatcher = new MediaKeyWatcher (MediaKey::VolumeUp, this);
 	MediaKeyWatcher *volumeDownWatcher = new MediaKeyWatcher (MediaKey::VolumeDown, this);
@@ -540,8 +541,12 @@ NSRReaderBB10::initCardUI ()
 		return;
 
 	_page->removeAction (_actionAggregator->removeAction ("open"));
-	_page->removeAction (_actionAggregator->removeAction ("recent-docs"));
 	_page->removeAction (_actionAggregator->removeAction ("share"));
+
+	TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+
+	if (pane != NULL)
+		pane->remove (pane->at (NSR_RECENT_TAB_INDEX));
 
 	_pageView->setInvertedColors (false);
 }
@@ -651,27 +656,6 @@ NSRReaderBB10::onPrefsActionTriggered ()
 }
 
 void
-NSRReaderBB10::onRecentDocsTriggered ()
-{
-	NSRLastDocsPage *page = new NSRLastDocsPage ();
-
-	bool ok = connect (page, SIGNAL (requestDocument (QString)), this, SLOT (onLastDocumentRequested (QString)));
-	Q_UNUSED (ok);
-	Q_ASSERT (ok);
-
-	ok = connect (page, SIGNAL (documentToBeDeleted (QString)), this, SLOT (onDocumentToBeDeleted (QString)));
-	Q_ASSERT (ok);
-
-	ActionItem *pageBackAction = ActionItem::create();
-	page->setPaneProperties (NavigationPaneProperties::create().backButton(pageBackAction));
-
-	ok = connect (pageBackAction, SIGNAL (triggered ()), this, SLOT (onBackButtonTriggered ()));
-	Q_ASSERT (ok);
-
-	_naviPane->push (page);
-}
-
-void
 NSRReaderBB10::onHelpActionTriggered ()
 {
 	showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_MAIN);
@@ -718,9 +702,17 @@ NSRReaderBB10::onPageRendered (int number)
 void
 NSRReaderBB10::updateVisualControls ()
 {
+	if (_startMode != ApplicationStartupMode::InvokeCard) {
+		TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+
+		if (pane != NULL) {
+			pane->at(NSR_RECENT_TAB_INDEX)->setEnabled (true);
+			pane->resetSidebarState ();
+		}
+	}
+
 	_actionAggregator->setActionEnabled ("open", true);
 	_actionAggregator->setActionEnabled ("prefs", true);
-	_actionAggregator->setActionEnabled ("recent-docs", true);
 	_actionAggregator->setActionEnabled ("share",
 				       	     _core->isDocumentOpened () &&
 				       	     NSRFileSharer::isSharable (_core->getDocumentPath ()));
@@ -755,12 +747,18 @@ NSRReaderBB10::updateVisualControls ()
 void
 NSRReaderBB10::disableVisualControls ()
 {
+	if (_startMode != ApplicationStartupMode::InvokeCard) {
+		TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+
+		if (pane != NULL)
+			pane->at(NSR_RECENT_TAB_INDEX)->setEnabled (false);
+	}
+
 	_actionAggregator->setActionEnabled ("open", false);
 	_actionAggregator->setActionEnabled ("prev", false);
 	_actionAggregator->setActionEnabled ("next", false);
 	_actionAggregator->setActionEnabled ("goto", false);
 	_actionAggregator->setActionEnabled ("reflow", false);
-	_actionAggregator->setActionEnabled ("recent-docs", false);
 	_actionAggregator->setActionEnabled ("share", false);
 	_actionAggregator->setActionEnabled ("prefs", false);
 	_slider->setEnabled (false);
@@ -890,6 +888,17 @@ NSRReaderBB10::onIndicatorStopped ()
 }
 
 void
+NSRReaderBB10::onRecentDocumentsRequested ()
+{
+	if (_startMode != ApplicationStartupMode::InvokeCard) {
+		TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+
+		if (pane != NULL)
+			pane->setActiveTab (pane->at (NSR_RECENT_TAB_INDEX));
+	}
+}
+
+void
 NSRReaderBB10::onPasswordDialogFinished (bb::system::SystemUiResult::Type res)
 {
 	if (res == SystemUiResult::ConfirmButtonSelection) {
@@ -999,8 +1008,6 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 void
 NSRReaderBB10::onLastDocumentRequested (const QString& path)
 {
-	_naviPane->pop ();
-
 	onFileSelected (QStringList (path));
 }
 
@@ -1204,28 +1211,6 @@ NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Ty
 			return NSR_ACTION_BAR_NORMAL_HEIGHT;
 		else
 			return NSR_ACTION_BAR_REDUCED_HEIGHT;
-	}
-}
-
-void
-NSRReaderBB10::onBackButtonTriggered ()
-{
-	NSRLastDocsPage *page = dynamic_cast<NSRLastDocsPage *> (_naviPane->top ());
-
-	if (page != NULL)
-		page->finishToast ();
-
-	_naviPane->pop ();
-}
-
-void
-NSRReaderBB10::onTopPagePeeked (bool isPeeked)
-{
-	if (isPeeked) {
-		NSRLastDocsPage *page = dynamic_cast<NSRLastDocsPage *> (_naviPane->top ());
-
-		if (page != NULL)
-			page->finishToast ();
 	}
 }
 

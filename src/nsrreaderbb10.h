@@ -46,12 +46,12 @@ private Q_SLOTS:
     void onReflowActionTriggered ();
     void onInvertActionTriggered ();
     void onPrefsActionTriggered ();
-    void onRecentDocsTriggered ();
     void onHelpActionTriggered ();
     void onShareActionTriggered ();
     void onPageRendered (int number);
     void onIndicatorRequested (bool enabled);
     void onIndicatorStopped ();
+    void onRecentDocumentsRequested ();
     void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
     void onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError error);
     void onSystemLanguageChanged ();
@@ -71,8 +71,6 @@ private Q_SLOTS:
     void onFullscreenSwitchRequested (bool isFullscreen);
     void onCardPooled (const bb::system::CardDoneMessage& message);
     void onCardResize (const bb::system::CardResizeMessage& message);
-    void onBackButtonTriggered ();
-    void onTopPagePeeked (bool isPeeked);
     void onThumbnail ();
     void onFullscreen ();
     void onOrientationAboutToChange (bb::cascades::UIOrientation::Type orientation);
