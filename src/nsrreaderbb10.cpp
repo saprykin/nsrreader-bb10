@@ -435,12 +435,26 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (recentPage, SIGNAL (documentToBeDeleted (QString)), this, SLOT (onDocumentToBeDeleted (QString)));
 	Q_ASSERT (ok);
 
-	TabbedPane *tabbedPane = TabbedPane::create().add(Tab::create().content(_naviPane)
-								       .title(trUtf8 ("Reading"))
-								       .imageSource(QUrl ("asset:///main-tab.png")))
-						     .add(Tab::create().content(recentPage)
-								       .title("Recent")
-								       .imageSource(QUrl ("asset:///recent.png")));
+	Tab *mainTab = Tab::create().content(_naviPane).title(trUtf8 ("Reading")).imageSource(QUrl ("asset:///main-tab.png"));
+	Tab *recentTab = Tab::create().content(recentPage).title("Recent").imageSource(QUrl ("asset:///recent.png"));
+
+	TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab);
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+	mainTab->accessibility()->setName (trUtf8 ("Main file reading page"));
+	recentTab->accessibility()->setName (trUtf8 ("Page with recent files"));
+
+	_translator->addTranslatable ((UIObject *) mainTab->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Main file reading page"));
+	_translator->addTranslatable ((UIObject *) recentTab->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Page with recent files"));
+#  endif
+#endif
 
 	Application::instance()->setScene (tabbedPane);
 
