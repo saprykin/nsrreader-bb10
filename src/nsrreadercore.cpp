@@ -94,6 +94,8 @@ NSRReaderCore::openDocument (const QString &path,  const QString& password)
 
 	if (_startMode != ApplicationStartupMode::InvokeCard)
 		NSRSettings::instance()->addLastDocument (path);
+
+	emit documentOpened (path);
 }
 
 bool
@@ -108,7 +110,10 @@ NSRReaderCore::isDocumentOpened () const
 void
 NSRReaderCore::closeDocument ()
 {
+	QString path;
+
 	if (_doc != NULL) {
+		path = _doc->getDocumentPath ();
 		delete _doc;
 		_doc = NULL;
 		_thread->setRenderContext (NULL);
@@ -128,6 +133,9 @@ NSRReaderCore::closeDocument ()
 
 	_currentPage = NSRRenderedPage ();
 	_cache->clearStorage ();
+
+	if (!path.isEmpty ())
+		emit documentClosed (path);
 }
 
 QString
