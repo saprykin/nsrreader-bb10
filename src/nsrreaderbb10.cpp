@@ -998,8 +998,7 @@ NSRReaderBB10::onPageTapped ()
 	if (!_core->isDocumentOpened ())
 		return;
 
-	if (!_pageStatus->isVisible ())
-		_pageStatus->setOnScreen (true);
+	_pageStatus->setOnScreen (!_pageStatus->isVisible ());
 
 	if (!_isFullscreen)
 		return;
