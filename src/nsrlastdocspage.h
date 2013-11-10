@@ -22,6 +22,10 @@ Q_SIGNALS:
 	void requestDocument (const QString& path);
 	void documentToBeDeleted (const QString& path);
 
+public Q_SLOTS:
+	void onDocumentOpened ();
+	void onDocumentPageRendered (const QString& file);
+
 private Q_SLOTS:
 	void onOrientationAboutToChange (bb::cascades::UIOrientation::Type type);
 	void onListItemTriggered (QVariantList indexPath);
@@ -29,11 +33,13 @@ private Q_SLOTS:
 
 private:
 	void loadData ();
+	QVariant createModelItem (const QString& file);
 
 	NSRTranslator			*_translator;
 	NSRLastDocsListView		*_listView;
 	bb::cascades::GridListLayout	*_listLayout;
 	bb::cascades::Container		*_emptyContainer;
+	bool				_prepareForUpdate;
 };
 
 #endif /* NSRLASTDOCSPAGE_H_ */

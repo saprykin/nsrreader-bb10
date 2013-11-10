@@ -440,6 +440,9 @@ NSRReaderBB10::initFullUI ()
 
 	TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab);
 
+	ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened ()));
+	Q_ASSERT (ok);
+
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	mainTab->accessibility()->setName (trUtf8 ("Main file reading page"));
@@ -557,7 +560,8 @@ NSRReaderBB10::initCardUI ()
 	_page->removeAction (_actionAggregator->removeAction ("open"));
 	_page->removeAction (_actionAggregator->removeAction ("share"));
 
-	TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	Q_ASSERT (pane != NULL);
 
 	if (pane != NULL)
 		pane->remove (pane->at (NSR_RECENT_TAB_INDEX));
@@ -579,6 +583,8 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 
 	/* Save session for opened document */
 	NSRSettings::instance()->saveLastOpenDir (finfo.canonicalPath ());
+
+
 
 	saveSession ();
 	loadSession (finfo.canonicalFilePath ());
@@ -707,6 +713,19 @@ NSRReaderBB10::onPageRendered (int number)
 			_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
 	}
 
+	if (_startMode != ApplicationStartupMode::InvokeCard) {
+		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+		Q_ASSERT (pane != NULL);
+
+		if (pane != NULL) {
+			NSRLastDocsPage *recentPage = dynamic_cast < NSRLastDocsPage * > (pane->at(NSR_RECENT_TAB_INDEX)->content ());
+			Q_ASSERT (recentPage != NULL);
+
+			if (recentPage != NULL)
+				recentPage->onDocumentPageRendered (_core->getDocumentPath ());
+		}
+	}
+
 	updateVisualControls ();
 
 	if (_isActiveFrame)
@@ -717,7 +736,8 @@ void
 NSRReaderBB10::updateVisualControls ()
 {
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
-		TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+		Q_ASSERT (pane != NULL);
 
 		if (pane != NULL) {
 			pane->at(NSR_RECENT_TAB_INDEX)->setEnabled (true);
@@ -764,7 +784,8 @@ void
 NSRReaderBB10::disableVisualControls ()
 {
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
-		TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+		Q_ASSERT (pane != NULL);
 
 		if (pane != NULL)
 			pane->at(NSR_RECENT_TAB_INDEX)->setEnabled (false);
@@ -908,7 +929,8 @@ void
 NSRReaderBB10::onRecentDocumentsRequested ()
 {
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
-		TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+		Q_ASSERT (pane != NULL);
 
 		if (pane != NULL)
 			pane->setActiveTab (pane->at (NSR_RECENT_TAB_INDEX));
@@ -919,7 +941,7 @@ void
 NSRReaderBB10::onPasswordDialogFinished (bb::system::SystemUiResult::Type res)
 {
 	if (res == SystemUiResult::ConfirmButtonSelection) {
-		NSRSession *session = reinterpret_cast<NSRSession *> (_prompt->property("session").value<void *> ());
+		NSRSession *session = reinterpret_cast < NSRSession * > (_prompt->property("session").value<void *> ());
 
 		if (session != NULL) {
 			session->setPassword (_prompt->inputFieldTextEntry ());
@@ -1011,11 +1033,11 @@ void
 NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 {
 	if (dynamic_cast<NSRPreferencesPage *> (page) != NULL) {
-		NSRPreferencesPage *prefsPage = dynamic_cast<NSRPreferencesPage *> (page);
+		NSRPreferencesPage *prefsPage = dynamic_cast < NSRPreferencesPage * > (page);
 		prefsPage->saveSettings ();
 		_core->reloadSettings ();
 		_actionAggregator->setActionEnabled ("prefs", true);
-	} else if (dynamic_cast<NSRAboutPage *> (page) != NULL)
+	} else if (dynamic_cast < NSRAboutPage * > (page) != NULL)
 		_actionAggregator->setActionEnabled ("help", true);
 
 	if (page != NULL)
@@ -1027,7 +1049,8 @@ NSRReaderBB10::onLastDocumentRequested (const QString& path)
 {
 	onFileSelected (QStringList (path));
 
-	TabbedPane *pane = dynamic_cast<TabbedPane *> (Application::instance()->scene ());
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	Q_ASSERT (pane != NULL);
 
 	if (pane != NULL)
 		pane->setActiveTab (pane->at (NSR_MAIN_TAB_INDEX));
@@ -1239,7 +1262,7 @@ NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Ty
 void
 NSRReaderBB10::onThumbnail ()
 {
-	NSRSceneCover *cover = dynamic_cast<NSRSceneCover *> (Application::instance()->cover ());
+	NSRSceneCover *cover = dynamic_cast < NSRSceneCover * > (Application::instance()->cover ());
 
 	if (cover == NULL)
 		return;
@@ -1263,7 +1286,7 @@ NSRReaderBB10::onThumbnail ()
 void
 NSRReaderBB10::onFullscreen ()
 {
-	NSRSceneCover *cover = dynamic_cast<NSRSceneCover *> (Application::instance()->cover ());
+	NSRSceneCover *cover = dynamic_cast < NSRSceneCover * > (Application::instance()->cover ());
 
 	if (cover == NULL)
 		return;

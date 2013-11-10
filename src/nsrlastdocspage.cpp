@@ -21,7 +21,8 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	_translator (NULL),
 	_listView (NULL),
 	_listLayout (NULL),
-	_emptyContainer (NULL)
+	_emptyContainer (NULL),
+	_prepareForUpdate (false)
 {
 	_translator = new NSRTranslator (this);
 
@@ -147,6 +148,39 @@ NSRLastDocsPage::finishToast ()
 }
 
 void
+NSRLastDocsPage::onDocumentOpened ()
+{
+	_prepareForUpdate = true;
+}
+
+void
+NSRLastDocsPage::onDocumentPageRendered (const QString& file)
+{
+	if (!_prepareForUpdate)
+		return;
+
+	finishToast ();
+
+	QVariantListDataModel *model = static_cast < QVariantListDataModel * > (_listView->dataModel ());
+
+	int count = model->size ();
+	bool findItem = false;
+
+	for (int i = 0; i < count; ++i) {
+		if (model->value(i).toMap()["path"] == file) {
+			findItem = true;
+			model->move (i, 0);
+			break;
+		}
+	}
+
+	if (!findItem)
+		model->insert (0, createModelItem (file));
+
+	onModelUpdated (model->size () == 0);
+}
+
+void
 NSRLastDocsPage::onOrientationAboutToChange (bb::cascades::UIOrientation::Type type)
 {
 	if (type == UIOrientation::Portrait)
@@ -177,23 +211,9 @@ NSRLastDocsPage::loadData ()
 	QStringList		docs = NSRSettings::instance()->getLastDocuments ();
 	int			count = docs.count ();
 
-	for (int i = 0; i < count; ++i) {
-		if (QFile::exists (docs.at (i))) {
-			QVariantMap	map;
-			bool 		isEncrypted = NSRThumbnailer::isThumbnailEncrypted (docs.at (i));
-
-			map["title"] = QFileInfo(docs.at (i)).fileName ();
-			map["path"] = docs.at (i);
-			map["encrypted"] = isEncrypted;
-
-			if (!isEncrypted) {
-				map["image"] = NSRThumbnailer::getThumnailPath (docs.at (i));
-				map["text"] = NSRThumbnailer::getThumbnailText (docs.at (i));
-			}
-
-			model->append (map);
-		}
-	}
+	for (int i = 0; i < count; ++i)
+		if (QFile::exists (docs.at (i)))
+			model->append (createModelItem (docs.at (i)));
 
 	_listView->setDataModel (model);
 
@@ -201,4 +221,20 @@ NSRLastDocsPage::loadData ()
 		onModelUpdated (true);
 }
 
+QVariant
+NSRLastDocsPage::createModelItem (const QString& file)
+{
+	QVariantMap	map;
+	bool 		isEncrypted = NSRThumbnailer::isThumbnailEncrypted (file);
 
+	map["title"] = QFileInfo(file).fileName ();
+	map["path"] = file;
+	map["encrypted"] = isEncrypted;
+
+	if (!isEncrypted) {
+		map["image"] = NSRThumbnailer::getThumnailPath (file);
+		map["text"] = NSRThumbnailer::getThumbnailText (file);
+	}
+
+	return map;
+}
