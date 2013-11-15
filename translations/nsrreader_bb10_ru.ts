@@ -272,6 +272,14 @@
         <source>Graphical Mode</source>
         <translation>Графический режим</translation>
     </message>
+    <message>
+        <source>Page text</source>
+        <translation>Текст страницы</translation>
+    </message>
+    <message>
+        <source>Page image</source>
+        <translation>Изображение страницы</translation>
+    </message>
 </context>
 <context>
     <name>NSRPreferencesPage</name>
@@ -286,16 +294,6 @@
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <source>Text Reflow</source>
-        <comment>Option in preferences, reflows PDF in single text column</comment>
-        <translation type="obsolete">Переформатирование текста</translation>
-    </message>
-    <message>
-        <source>Invert Colors</source>
-        <comment>Option in preferences</comment>
-        <translation>Инвертировать цвета</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
@@ -303,31 +301,6 @@
         <source>Crop Blank Edges</source>
         <comment>Option in preferences</comment>
         <translation>Обрезать пустые края</translation>
-    </message>
-    <message>
-        <source>Use Text Reflow to read files with large amount of text data</source>
-        <translation type="obsolete">Используйте переформатирование для чтения большого объёма текста</translation>
-    </message>
-    <message>
-        <source>Black background reduces OLED display power consumption and helps to read at dark</source>
-        <translation type="obsolete">Чёрный фон снижает энергопотребление OLED экрана и помогает читать в темноте</translation>
-    </message>
-    <message>
-        <source>Text encoding is used only for plain text files, none other format supports encoding selection</source>
-        <translation type="obsolete">Кодировка используется только для чисто текстовых файлов, другие форматы не поддерживают её выбор</translation>
-    </message>
-    <message>
-        <source>Use Text Reflow to read files with large amount of text data.</source>
-        <translation type="obsolete">Используйте переформатирование для чтения большого объёма текста.</translation>
-    </message>
-    <message>
-        <source>Text Reflow</source>
-        <comment>Option in preferences, Reflows PDF in single text column</comment>
-        <translation type="obsolete">Переформатирование текста</translation>
-    </message>
-    <message>
-        <source>Black background reduces OLED display power consumption and helps to read at dark.</source>
-        <translation>Чёрный фон снижает энергопотребление OLED экрана и помогает читать в темноте.</translation>
     </message>
     <message>
         <source>Text encoding is used only for plain text files, none other format supports encoding selection.</source>
@@ -375,10 +348,6 @@ Please do not blame hard NSR Reader for that because it is only a piece of softw
         <translation>Похоже, что введён неверный пароль, или алгоритм шифрования не поддерживается. Пожалуйста, не вините сильно NSR Reader за это - ведь это всего лишь программное обеспечение :)</translation>
     </message>
     <message>
-        <source>Recent</source>
-        <translation>Недавние</translation>
-    </message>
-    <message>
         <source>Open</source>
         <comment>Open file</comment>
         <translation>Открыть</translation>
@@ -391,12 +360,6 @@ Please do not blame hard NSR Reader for that because it is only a piece of softw
     <message>
         <source>Selected file is already opened</source>
         <translation>Выбранный файл уже открыт</translation>
-    </message>
-    <message>
-        <source>Unknown error! Maybe file is broken.
-NSR Reader tried open this file, but it can&apos;t :( Please check this file on desktop computer</source>
-        <translation type="obsolete">Неизвестная ошибка! Возможно, файл повреждён.
-Приложение NSR Reader попыталось открыть этот файл, но не получилось :( Пожалуйста, проверьте файл на обычном компьютере</translation>
     </message>
     <message>
         <source>Enter file password</source>
@@ -423,25 +386,12 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
         <translation>Открыть страницу с настройками приложения</translation>
     </message>
     <message>
-        <source>Open page with recent files</source>
-        <translation>Открыть страницу с недавними файлами</translation>
-    </message>
-    <message>
         <source>Open page with information about the app and help sections</source>
         <translation>Открыть страницу с информацией о приложении и разделами помощи</translation>
     </message>
     <message>
         <source>Share file with others</source>
         <translation>Поделиться файлом с другими</translation>
-    </message>
-    <message>
-        <source>It seems that selected file doesn&apos;t exist anymore or NSR Reader doesn&apos;t have Shared Files permission. Please check permissions at Settings-&gt;Security and Privacy-&gt;Application Permissions</source>
-        <translation type="obsolete">Похоже, что выбранный файл больше не существует, или у NSR Reader нет разрешения на чтение общих файлов. Пожалуйста, проверьте разрешения в Настройки-&gt;Безопасность и конфиденциальность-&gt;Права доступа приложений</translation>
-    </message>
-    <message>
-        <source>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone</source>
-        <comment>Text reflow is a view mode of PDF/DjVu files when only text information without images is displayed with word wrap feature enabled. Use pinch gesture to adjust text size</comment>
-        <translation type="obsolete">Вы используете режим переформатирования текста первый раз. Учтите, что форматирование может отличаться от оригинала, изображения не отображаются, и страница может быть пустой, если не содержит текста. Также текст может отображаться некорректно, если телефон не поддерживает соответствующий язык</translation>
     </message>
     <message>
         <source>Lite version of NSR Reader allows to read only first %1 pages of the file. If you want to read larger files, please consider buying the full version.</source>
@@ -470,11 +420,27 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>Text Reflow</source>
         <comment>Text mode for a file view</comment>
-        <translation type="unfinished">Переформатирование текста</translation>
+        <translation>Переформатирование текста</translation>
     </message>
     <message>
         <source>Switch text reflow mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Переключить режим переформатирования текста</translation>
+    </message>
+    <message>
+        <source>Invert Colors</source>
+        <translation>Инвертировать цвета</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>Чтение</translation>
+    </message>
+    <message>
+        <source>Main file reading page</source>
+        <translation>Основная страница чтения файла</translation>
+    </message>
+    <message>
+        <source>Page with recent files</source>
+        <translation>Страница с недавними файлами</translation>
     </message>
 </context>
 <context>

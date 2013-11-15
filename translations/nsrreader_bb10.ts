@@ -272,6 +272,14 @@
         <source>Graphical Mode</source>
         <translation>Graphical Mode</translation>
     </message>
+    <message>
+        <source>Page text</source>
+        <translation>Page text</translation>
+    </message>
+    <message>
+        <source>Page image</source>
+        <translation>Page image</translation>
+    </message>
 </context>
 <context>
     <name>NSRPreferencesPage</name>
@@ -286,16 +294,6 @@
         <translation>Fullscreen Mode</translation>
     </message>
     <message>
-        <source>Text Reflow</source>
-        <comment>Option in preferences, reflows PDF in single text column</comment>
-        <translation type="obsolete">Text Reflow</translation>
-    </message>
-    <message>
-        <source>Invert Colors</source>
-        <comment>Option in preferences</comment>
-        <translation>Invert Colors</translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
@@ -303,31 +301,6 @@
         <source>Crop Blank Edges</source>
         <comment>Option in preferences</comment>
         <translation>Crop Blank Edges</translation>
-    </message>
-    <message>
-        <source>Use Text Reflow to read files with large amount of text data</source>
-        <translation type="obsolete">Use Text Reflow to read files with large amount of text data</translation>
-    </message>
-    <message>
-        <source>Black background reduces OLED display power consumption and helps to read at dark</source>
-        <translation type="obsolete">Black background reduces OLED display power consumption and helps to read at dark</translation>
-    </message>
-    <message>
-        <source>Text encoding is used only for plain text files, none other format supports encoding selection</source>
-        <translation type="obsolete">Text encoding is used only for plain text files, none other format supports encoding selection</translation>
-    </message>
-    <message>
-        <source>Use Text Reflow to read files with large amount of text data.</source>
-        <translation type="obsolete">Use Text Reflow to read files with large amount of text data.</translation>
-    </message>
-    <message>
-        <source>Text Reflow</source>
-        <comment>Option in preferences, Reflows PDF in single text column</comment>
-        <translation type="obsolete">Text Reflow</translation>
-    </message>
-    <message>
-        <source>Black background reduces OLED display power consumption and helps to read at dark.</source>
-        <translation>Black background reduces OLED display power consumption and helps to read at dark.</translation>
     </message>
     <message>
         <source>Text encoding is used only for plain text files, none other format supports encoding selection.</source>
@@ -376,10 +349,6 @@ Please do not blame hard NSR Reader for that because it is only a piece of softw
 Please do not blame hard NSR Reader for that because it is only a piece of software :)</translation>
     </message>
     <message>
-        <source>Recent</source>
-        <translation>Recent</translation>
-    </message>
-    <message>
         <source>Open</source>
         <comment>Open file</comment>
         <translation>Open</translation>
@@ -392,12 +361,6 @@ Please do not blame hard NSR Reader for that because it is only a piece of softw
     <message>
         <source>Selected file is already opened</source>
         <translation>Selected file is already opened</translation>
-    </message>
-    <message>
-        <source>Unknown error! Maybe file is broken.
-NSR Reader tried open this file, but it can&apos;t :( Please check this file on desktop computer</source>
-        <translation type="obsolete">Unknown error! Maybe file is broken.
-NSR Reader tried open this file, but it can&apos;t :( Please check this file on desktop computer</translation>
     </message>
     <message>
         <source>Enter file password</source>
@@ -424,25 +387,12 @@ NSR Reader tried open this file, but it can&apos;t :( Please check this file on 
         <translation>Open Settings page</translation>
     </message>
     <message>
-        <source>Open page with recent files</source>
-        <translation>Open page with recent files</translation>
-    </message>
-    <message>
         <source>Open page with information about the app and help sections</source>
         <translation>Open page with information about the app and help sections</translation>
     </message>
     <message>
         <source>Share file with others</source>
         <translation>Share file with others</translation>
-    </message>
-    <message>
-        <source>It seems that selected file doesn&apos;t exist anymore or NSR Reader doesn&apos;t have Shared Files permission. Please check permissions at Settings-&gt;Security and Privacy-&gt;Application Permissions</source>
-        <translation type="obsolete">It seems that selected file doesn&apos;t exist anymore or NSR Reader doesn&apos;t have Shared Files permission. Please check permissions at Settings-&gt;Security and Privacy-&gt;Application Permissions</translation>
-    </message>
-    <message>
-        <source>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone</source>
-        <comment>Text reflow is a view mode of PDF/DjVu files when only text information without images is displayed with word wrap feature enabled. Use pinch gesture to adjust text size</comment>
-        <translation type="obsolete">You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone</translation>
     </message>
     <message>
         <source>Lite version of NSR Reader allows to read only first %1 pages of the file. If you want to read larger files, please consider buying the full version.</source>
@@ -471,11 +421,27 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>Text Reflow</source>
         <comment>Text mode for a file view</comment>
-        <translation type="unfinished">Text Reflow</translation>
+        <translation>Text Reflow</translation>
     </message>
     <message>
         <source>Switch text reflow mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Switch text reflow mode</translation>
+    </message>
+    <message>
+        <source>Invert Colors</source>
+        <translation>Invert Colors</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>Reading</translation>
+    </message>
+    <message>
+        <source>Main file reading page</source>
+        <translation>Main file reading page</translation>
+    </message>
+    <message>
+        <source>Page with recent files</source>
+        <translation>Page with recent files</translation>
     </message>
 </context>
 <context>
