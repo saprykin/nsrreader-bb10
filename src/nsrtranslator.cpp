@@ -8,6 +8,7 @@
 #include <bb/cascades/Option>
 #include <bb/cascades/MultiSelectHandler>
 #include <bb/cascades/TitleBar>
+#include <bb/cascades/Tab>
 
 using namespace bb::cascades;
 
@@ -146,6 +147,14 @@ NSRTranslator::translate ()
 
 			if (bar != NULL)
 				bar->setTitle (translated);
+		}
+		break;
+		case NSR_TRANSLATOR_TYPE_TAB:
+		{
+			Tab *tab = dynamic_cast<Tab *> (list.at (i));
+
+			if (tab != NULL)
+				tab->setTitle (translated);
 		}
 		break;
 		default:
