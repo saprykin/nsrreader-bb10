@@ -3,6 +3,7 @@
 #include "nsrsession.h"
 #include "nsrpreferencespage.h"
 #include "nsrlastdocspage.h"
+#include "nsrbookmarkspage.h"
 #include "nsrfilesharer.h"
 #include "nsrscenecover.h"
 #include "nsrglobalnotifier.h"
@@ -48,6 +49,7 @@ using namespace bb::multimedia;
 #define NSR_ACTION_BAR_REDUCED_HEIGHT	100
 #define NSR_MAIN_TAB_INDEX		0
 #define NSR_RECENT_TAB_INDEX		1
+#define NSR_BOOKMARKS_TAB_INDE		2
 
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
@@ -437,11 +439,25 @@ NSRReaderBB10::initFullUI ()
 
 	Tab *mainTab = Tab::create().content(_naviPane).title(trUtf8 ("Reading")).imageSource(QUrl ("asset:///main-tab.png"));
 	Tab *recentTab = Tab::create().content(recentPage).title("Recent").imageSource(QUrl ("asset:///recent.png"));
+	Tab *bookmarksTab = Tab::create().content(new NSRBookmarksPage ()).title("Bookmarks").imageSource(QUrl ("asset:///bookmarks.png"));
 
-	TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab);
+	TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
 
 	ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened ()));
 	Q_ASSERT (ok);
+
+	_translator->addTranslatable ((UIObject *) mainTab,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+				      QString ("NSRReaderBB10"),
+				      QString ("Reading"));
+	_translator->addTranslatable ((UIObject *) recentTab,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+				      QString ("NSRReaderBB10"),
+				      QString ("Recent"));
+	_translator->addTranslatable ((UIObject *) bookmarksTab,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+				      QString ("NSRReaderBB10"),
+				      QString ("Bookmarks"));
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
@@ -456,6 +472,10 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Page with recent files"));
+	_translator->addTranslatable ((UIObject *) bookmarksTab->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Page with bookmarks"));
 #  endif
 #endif
 
