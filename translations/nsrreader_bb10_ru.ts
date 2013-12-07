@@ -157,6 +157,35 @@
     </message>
 </context>
 <context>
+    <name>NSRBookmarksPage</name>
+    <message>
+        <source>No bookmarks</source>
+        <comment>List bookmarks related to opened file</comment>
+        <translation>Нет закладок</translation>
+    </message>
+    <message>
+        <source>Add bookmarks to display them here</source>
+        <translation>Добавьте закладки для отображения здесь</translation>
+    </message>
+    <message>
+        <source>Image of bookmark</source>
+        <translation>Изображение закладки</translation>
+    </message>
+    <message>
+        <source>Bookmarks</source>
+        <comment>Title for window with bookmarks</comment>
+        <translation>Закладки</translation>
+    </message>
+    <message>
+        <source>Open file to display bookmarks</source>
+        <translation>Откройте файл для отображения закладок</translation>
+    </message>
+    <message>
+        <source>Page %1</source>
+        <translation>Страница %1</translation>
+    </message>
+</context>
+<context>
     <name>NSRLastDocItemFactory</name>
     <message>
         <source>File</source>

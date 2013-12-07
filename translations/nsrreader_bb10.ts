@@ -157,6 +157,35 @@
     </message>
 </context>
 <context>
+    <name>NSRBookmarksPage</name>
+    <message>
+        <source>No bookmarks</source>
+        <comment>List bookmarks related to opened file</comment>
+        <translation>No bookmarks</translation>
+    </message>
+    <message>
+        <source>Add bookmarks to display them here</source>
+        <translation>Add bookmarks to display them here</translation>
+    </message>
+    <message>
+        <source>Image of bookmark</source>
+        <translation>Image of bookmark</translation>
+    </message>
+    <message>
+        <source>Bookmarks</source>
+        <comment>Title for window with bookmarks</comment>
+        <translation>Bookmarks</translation>
+    </message>
+    <message>
+        <source>Open file to display bookmarks</source>
+        <translation>Open file to display bookmarks</translation>
+    </message>
+    <message>
+        <source>Page %1</source>
+        <translation>Page %1</translation>
+    </message>
+</context>
+<context>
     <name>NSRLastDocItemFactory</name>
     <message>
         <source>File</source>
