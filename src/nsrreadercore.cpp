@@ -628,7 +628,7 @@ NSRReaderCore::invertColors ()
 	_doc->setInvertedColors (!_doc->isInvertedColors ());
 
 	if (_zoomDoc != NULL)
-		_zoomDoc->setInvertedColors (!_doc->isInvertedColors ());
+		_zoomDoc->setInvertedColors (_doc->isInvertedColors ());
 
 	/* Do not clear text from cache if text mode is remained */
 	if (_doc->isTextOnly ())
