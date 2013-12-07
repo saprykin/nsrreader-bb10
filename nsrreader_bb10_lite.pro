@@ -1,6 +1,7 @@
 APP_NAME = nsrreader_bb10_lite
 
 CONFIG += qt warn_on cascades10
+QT += xml
 
 DEFINES += HAVE_CONFIG_H
 DEFINES += NSR_LITE_VERSION

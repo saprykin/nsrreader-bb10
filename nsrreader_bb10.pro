@@ -1,6 +1,7 @@
 APP_NAME = nsrreader_bb10
 
 CONFIG += qt warn_on cascades10
+QT += xml
 
 DEFINES += HAVE_CONFIG_H
 

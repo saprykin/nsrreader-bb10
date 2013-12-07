@@ -5,6 +5,7 @@
 #include <bb/cascades/ListView>
 #include <bb/cascades/Container>
 #include <bb/cascades/Label>
+#include <bb/cascades/GroupDataModel>
 
 #include "nsrtranslator.h"
 
@@ -14,13 +15,29 @@ class NSRBookmarksPage : public bb::cascades::Page
 public:
 	NSRBookmarksPage (QObject *parent = 0);
 	virtual ~NSRBookmarksPage ();
+	bool hasBookmark (int page);
+
+public Q_SLOTS:
+	void onDocumentOpened (const QString& file);
+	void onDocumentClosed ();
+	void onDocumentToBeDeleted (const QString& file);
+	void addBookmark (const QString& title, int page);
+
+private Q_SLOTS:
+	void retranslateUi ();
 
 private:
+	void loadData (const QString& file);
+	void saveData ();
+	void unloadData ();
+
 	NSRTranslator *			_translator;
+	bb::cascades::GroupDataModel *	_model;
 	bb::cascades::ListView *	_listView;
 	bb::cascades::Container *	_emptyContainer;
 	bb::cascades::Label		*_noBookmarksLabel;
 	bb::cascades::Label		*_noFileLabel;
+	QString				_openedFile;
 };
 
 #endif /* NSRBOOKMARKSPAGE_H_ */

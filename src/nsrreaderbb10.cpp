@@ -430,6 +430,7 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	NSRLastDocsPage *recentPage = new NSRLastDocsPage ();
+	NSRBookmarksPage *bookmarksPage = new NSRBookmarksPage ();
 
 	ok = connect (recentPage, SIGNAL (requestDocument (QString)), this, SLOT (onLastDocumentRequested (QString)));
 	Q_ASSERT (ok);
@@ -437,13 +438,22 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (recentPage, SIGNAL (documentToBeDeleted (QString)), this, SLOT (onDocumentToBeDeleted (QString)));
 	Q_ASSERT (ok);
 
+	ok = connect (recentPage, SIGNAL (documentToBeDeleted (QString)), bookmarksPage, SLOT (onDocumentToBeDeleted (QString)));
+	Q_ASSERT (ok);
+
 	Tab *mainTab = Tab::create().content(_naviPane).title(trUtf8 ("Reading")).imageSource(QUrl ("asset:///main-tab.png"));
 	Tab *recentTab = Tab::create().content(recentPage).title("Recent").imageSource(QUrl ("asset:///recent.png"));
-	Tab *bookmarksTab = Tab::create().content(new NSRBookmarksPage ()).title("Bookmarks").imageSource(QUrl ("asset:///bookmarks.png"));
+	Tab *bookmarksTab = Tab::create().content(bookmarksPage).title("Bookmarks").imageSource(QUrl ("asset:///bookmarks.png"));
 
 	TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
 
 	ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened ()));
+	Q_ASSERT (ok);
+
+	ok = connect (_core, SIGNAL (documentOpened (QString)), bookmarksPage, SLOT (onDocumentOpened (QString)));
+	Q_ASSERT (ok);
+
+	ok = connect (_core, SIGNAL (documentClosed (QString)), bookmarksPage, SLOT (onDocumentClosed ()));
 	Q_ASSERT (ok);
 
 	_translator->addTranslatable ((UIObject *) mainTab,
