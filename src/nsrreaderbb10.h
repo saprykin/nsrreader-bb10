@@ -48,11 +48,13 @@ private Q_SLOTS:
     void onPrefsActionTriggered ();
     void onHelpActionTriggered ();
     void onShareActionTriggered ();
+    void onAddBookmarkActionTriggered ();
     void onPageRendered (int number);
     void onIndicatorRequested (bool enabled);
     void onIndicatorStopped ();
     void onRecentDocumentsRequested ();
     void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
+    void onAddBookmarkDialogFinished (bb::system::SystemUiResult::Type res);
     void onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError error);
     void onSystemLanguageChanged ();
     void onPageTapped ();

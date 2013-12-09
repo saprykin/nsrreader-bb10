@@ -105,7 +105,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	_translator->addTranslatable ((UIObject *) emptyImage->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRBookmarksPage"),
-				      QString ("Image of bookmarks"));
+				      QString ("Image of bookmark"));
 #  endif
 #endif
 

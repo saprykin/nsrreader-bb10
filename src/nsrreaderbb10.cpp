@@ -206,12 +206,13 @@ NSRReaderBB10::initFullUI ()
 	gotoAction->setTitle (trUtf8 ("Go to", "Go to page"));
 	ActionItem *reflowAction = ActionItem::create().enabled (false);
 	reflowAction->setTitle (trUtf8 ("Text Reflow", "Text mode for a file view"));
-	ActionItem *invertAction = ActionItem::create();//.enabled (false);
+	ActionItem *invertAction = ActionItem::create();
 	invertAction->setTitle (trUtf8 ("Invert Colors"));
-	ActionItem *prefsAction = ActionItem::create().title(trUtf8 ("Settings"));
+	ActionItem *prefsAction = ActionItem::create().title (trUtf8 ("Settings"));
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
+	ActionItem *addBookmarkAction = ActionItem::create().title(trUtf8 ("Add Bookmark")).enabled(false);
 #ifdef NSR_LITE_VERSION
 	ActionItem *buyAction = ActionItem::create();
 	buyAction->setTitle (trUtf8 ("Buy", "Buy full version of the app in the store"));
@@ -244,6 +245,9 @@ NSRReaderBB10::initFullUI ()
 	_translator->addTranslatable ((UIObject *) shareAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share"));
+	_translator->addTranslatable ((UIObject *) addBookmarkAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+				      QString ("NSRReaderBB10"),
+				      QString ("Add Bookmark"));
 #ifdef NSR_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
@@ -260,6 +264,7 @@ NSRReaderBB10::initFullUI ()
 	prefsAction->accessibility()->setName (trUtf8 ("Open Settings page"));
 	helpAction->accessibility()->setName (trUtf8 ("Open page with information about the app and help sections"));
 	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
+	addBookmarkAction->accessibility()->setName (trUtf8 ("Add bookmark for current page"));
 
 	_translator->addTranslatable ((UIObject *) openAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
@@ -297,6 +302,10 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share file with others"));
+	_translator->addTranslatable ((UIObject *) addBookmarkAction->accessibility (),
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				      QString ("NSRReaderBB10"),
+				      QString ("Add bookmark for current page"));
 #    ifdef NSR_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
@@ -311,6 +320,7 @@ NSRReaderBB10::initFullUI ()
 	_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
+	_page->addAction (addBookmarkAction, ActionBarPlacement::InOverflow);
 	_page->addAction (reflowAction, ActionBarPlacement::InOverflow);
 	_page->addAction (invertAction, ActionBarPlacement::InOverflow);
 	_page->addAction (shareAction, ActionBarPlacement::InOverflow);
@@ -319,6 +329,7 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("prev", prevPageAction);
 	_actionAggregator->addAction ("next", nextPageAction);
 	_actionAggregator->addAction ("goto", gotoAction);
+	_actionAggregator->addAction ("add-bookmark", addBookmarkAction);
 	_actionAggregator->addAction ("reflow", reflowAction);
 	_actionAggregator->addAction ("invert", invertAction);
 	_actionAggregator->addAction ("share", shareAction);
@@ -334,6 +345,7 @@ NSRReaderBB10::initFullUI ()
 	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
+	addBookmarkAction->setImageSource (QUrl ("asset:///bookmark-add.png"));
 #ifdef NSR_LITE_VERSION
 	buyAction->setImage (QUrl ("asset:///buy.png"));
 #endif
@@ -362,6 +374,9 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	ok = connect (gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
+	Q_ASSERT (ok);
+
+	ok = connect (addBookmarkAction, SIGNAL (triggered ()), this, SLOT (onAddBookmarkActionTriggered ()));
 	Q_ASSERT (ok);
 
 	ok = connect (prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
@@ -614,8 +629,6 @@ NSRReaderBB10::onFileSelected (const QStringList &files)
 	/* Save session for opened document */
 	NSRSettings::instance()->saveLastOpenDir (finfo.canonicalPath ());
 
-
-
 	saveSession ();
 	loadSession (finfo.canonicalFilePath ());
 }
@@ -721,6 +734,29 @@ NSRReaderBB10::onShareActionTriggered ()
 }
 
 void
+NSRReaderBB10::onAddBookmarkActionTriggered ()
+{
+	if (_prompt != NULL)
+		return;
+
+	_prompt = new SystemPrompt (this);
+
+	_prompt->setTitle (trUtf8 ("Enter Bookmark"));
+	_prompt->inputField()->setEmptyText (trUtf8 ("Enter bookmark title"));
+	_prompt->setDismissAutomatically (false);
+
+	bool res = connect (_prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+			    this, SLOT (onAddBookmarkDialogFinished (bb::system::SystemUiResult::Type)));
+
+	if (res)
+		_prompt->show ();
+	else {
+		_prompt->deleteLater ();
+		_prompt = NULL;
+	}
+}
+
+void
 NSRReaderBB10::onPageRendered (int number)
 {
 	int pagesCount = _core->getPagesCount ();
@@ -783,6 +819,7 @@ NSRReaderBB10::updateVisualControls ()
 				       	     isDocumentOpened && NSRFileSharer::isSharable (_core->getDocumentPath ()));
 	_actionAggregator->setActionEnabled ("reflow", _core->isTextReflowSwitchSupported ());
 	_actionAggregator->setActionEnabled ("invert", isDocumentOpened);
+	_actionAggregator->setActionEnabled ("add-bookmark", isDocumentOpened);
 	_pageView->setVisible (isDocumentOpened);
 	_welcomeView->setVisible (!isDocumentOpened);
 	_readProgress->setVisible (!_slider->isVisible () && isDocumentOpened && _core->getPagesCount () > 1);
@@ -825,6 +862,7 @@ NSRReaderBB10::disableVisualControls ()
 	_actionAggregator->setActionEnabled ("prev", false);
 	_actionAggregator->setActionEnabled ("next", false);
 	_actionAggregator->setActionEnabled ("goto", false);
+	_actionAggregator->setActionEnabled ("add-bookmark", false);
 	_actionAggregator->setActionEnabled ("reflow", false);
 	_actionAggregator->setActionEnabled ("invert", false);
 	_actionAggregator->setActionEnabled ("share", false);
@@ -977,6 +1015,25 @@ NSRReaderBB10::onPasswordDialogFinished (bb::system::SystemUiResult::Type res)
 			session->setPassword (_prompt->inputFieldTextEntry ());
 			_core->loadSession (session);
 			delete session;
+		}
+	}
+
+	_prompt->deleteLater ();
+	_prompt = NULL;
+}
+
+void
+NSRReaderBB10::onAddBookmarkDialogFinished (bb::system::SystemUiResult::Type res)
+{
+	if (res == SystemUiResult::ConfirmButtonSelection) {
+		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+		Q_ASSERT (pane != NULL);
+
+		if (pane != NULL) {
+			NSRBookmarksPage *bookmarks = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDE)->content ());
+
+			if (bookmarks != NULL)
+				bookmarks->addBookmark (_prompt->inputFieldTextEntry (), _core->getCurrentPage().getNumber ());
 		}
 	}
 
