@@ -244,6 +244,8 @@ NSRBookmarksPage::addBookmark (const QString& title, int page)
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
+	emit bookmarkChanged (page, false);
+
 	_toast->show ();
 }
 
@@ -259,6 +261,8 @@ NSRBookmarksPage::removeBookmark (int page)
 		_model->removeAt (result);
 
 	updateUi ();
+
+	emit bookmarkChanged (page, true);
 }
 
 void

@@ -49,7 +49,7 @@ using namespace bb::multimedia;
 #define NSR_ACTION_BAR_REDUCED_HEIGHT	100
 #define NSR_MAIN_TAB_INDEX		0
 #define NSR_RECENT_TAB_INDEX		1
-#define NSR_BOOKMARKS_TAB_INDE		2
+#define NSR_BOOKMARKS_TAB_INDEX		2
 
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
@@ -471,6 +471,9 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (_core, SIGNAL (documentClosed (QString)), bookmarksPage, SLOT (onDocumentClosed ()));
 	Q_ASSERT (ok);
 
+	ok = connect (bookmarksPage, SIGNAL (bookmarkChanged (int, bool)), this, SLOT (onBookmarkChanged (int, bool)));
+	Q_ASSERT (ok);
+
 	_translator->addTranslatable ((UIObject *) mainTab,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
 				      QString ("NSRReaderBB10"),
@@ -604,12 +607,15 @@ NSRReaderBB10::initCardUI ()
 
 	_page->removeAction (_actionAggregator->removeAction ("open"));
 	_page->removeAction (_actionAggregator->removeAction ("share"));
+	_page->removeAction (_actionAggregator->removeAction ("add-bookmark"));
 
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 	Q_ASSERT (pane != NULL);
 
-	if (pane != NULL)
+	if (pane != NULL) {
+		pane->remove (pane->at (NSR_BOOKMARKS_TAB_INDEX));
 		pane->remove (pane->at (NSR_RECENT_TAB_INDEX));
+	}
 
 	_pageView->setInvertedColors (false);
 }
@@ -818,11 +824,11 @@ NSRReaderBB10::onPageRendered (int number)
 void
 NSRReaderBB10::updateVisualControls ()
 {
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	Q_ASSERT (pane != NULL);
+
 	if (_startMode != ApplicationStartupMode::InvokeCard &&
 	    _core->getCurrentPage().getRenderReason () != NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH) {
-		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-		Q_ASSERT (pane != NULL);
-
 		if (pane != NULL) {
 			pane->at(NSR_RECENT_TAB_INDEX)->setEnabled (true);
 			pane->resetSidebarState ();
@@ -830,6 +836,9 @@ NSRReaderBB10::updateVisualControls ()
 	}
 
 	bool isDocumentOpened = _core->isDocumentOpened ();
+	bool hasBookmark = false;
+
+	ActionItem *bookmarkAction = static_cast < ActionItem *> (_actionAggregator->actionByName ("add-bookmark"));
 
 	_actionAggregator->setActionEnabled ("open", true);
 	_actionAggregator->setActionEnabled ("prefs", true);
@@ -837,7 +846,6 @@ NSRReaderBB10::updateVisualControls ()
 				       	     isDocumentOpened && NSRFileSharer::isSharable (_core->getDocumentPath ()));
 	_actionAggregator->setActionEnabled ("reflow", _core->isTextReflowSwitchSupported ());
 	_actionAggregator->setActionEnabled ("invert", isDocumentOpened);
-	_actionAggregator->setActionEnabled ("add-bookmark", isDocumentOpened);
 	_pageView->setVisible (isDocumentOpened);
 	_welcomeView->setVisible (!isDocumentOpened);
 	_readProgress->setVisible (!_slider->isVisible () && isDocumentOpened && _core->getPagesCount () > 1);
@@ -862,6 +870,20 @@ NSRReaderBB10::updateVisualControls ()
 		/* Maybe action bar is not autohidden after previous document failed to be opened? */
 		if (_isFullscreen && _page->actionBarVisibility () == ChromeVisibility::Visible)
 			_page->setActionBarVisibility (ChromeVisibility::Hidden);
+
+		if (pane != NULL) {
+			NSRBookmarksPage *bookmarksPage = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
+
+			if (bookmarksPage != NULL)
+				hasBookmark = bookmarksPage->hasBookmark (currentPage);
+		}
+	}
+
+	if (bookmarkAction != NULL) {
+		bookmarkAction->setEnabled (isDocumentOpened);
+		bookmarkAction->setTitle (hasBookmark ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
+		bookmarkAction->setProperty ("action-mode", hasBookmark ? QString ("edit") : QString ("add"));
+		bookmarkAction->setImageSource (hasBookmark ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
 	}
 }
 
@@ -1048,7 +1070,7 @@ NSRReaderBB10::onAddBookmarkDialogFinished (bb::system::SystemUiResult::Type res
 		Q_ASSERT (pane != NULL);
 
 		if (pane != NULL) {
-			NSRBookmarksPage *bookmarks = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDE)->content ());
+			NSRBookmarksPage *bookmarks = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
 
 			if (bookmarks != NULL)
 				bookmarks->addBookmark (_prompt->inputFieldTextEntry (), _core->getCurrentPage().getNumber ());
@@ -1440,6 +1462,26 @@ NSRReaderBB10::onVkbVisibilityChanged (bool visible)
 		_slider->setVisible (false);
 	} else
 		_slider->setVisible (_wasSliderVisible);
+}
+
+void
+NSRReaderBB10::onBookmarkChanged (int page, bool removed)
+{
+	/* It's a crap, that shouldn't be happened */
+	if (!_core->isDocumentOpened ())
+		return;
+
+	if (page != _core->getCurrentPage().getNumber ())
+		return;
+
+	ActionItem *bookmarkAction = static_cast < ActionItem * > (_actionAggregator->actionByName ("add-bookmark"));
+
+	if (bookmarkAction == NULL)
+		return;
+
+	bookmarkAction->setTitle (!removed ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
+	bookmarkAction->setProperty ("action-mode", !removed ? QString ("edit") : QString ("add"));
+	bookmarkAction->setImageSource (!removed ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
 }
 
 #ifdef NSR_LITE_VERSION

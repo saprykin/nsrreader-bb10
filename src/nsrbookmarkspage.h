@@ -18,6 +18,9 @@ public:
 	virtual ~NSRBookmarksPage ();
 	bool hasBookmark (int page);
 
+Q_SIGNALS:
+	void bookmarkChanged (int page, bool removed);
+
 public Q_SLOTS:
 	void onDocumentOpened (const QString& file);
 	void onDocumentClosed ();

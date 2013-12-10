@@ -80,6 +80,7 @@ private Q_SLOTS:
     void onPageSliderInteractionEnded ();
     void onPageSliderValueChanged (int value);
     void onVkbVisibilityChanged (bool visible);
+    void onBookmarkChanged (int page, bool removed);
 #ifdef NSR_LITE_VERSION
     void onLiteVersionOverPage ();
     void onBuyActionTriggered ();
