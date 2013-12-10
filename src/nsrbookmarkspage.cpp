@@ -17,8 +17,8 @@ using namespace bb::system;
 NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	Page (parent),
 	_translator (NULL),
-	_model (NULL),
 	_listView (NULL),
+	_model (NULL),
 	_emptyContainer (NULL),
 	_noBookmarksLabel (NULL),
 	_noFileLabel (NULL),
@@ -30,10 +30,17 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create ());
 
-	_listView = ListView::create().visible(false);
+	_listView = new NSRBookmarksListView ();
+	_listView->setVisible (false);
 	_listView->setVerticalAlignment (VerticalAlignment::Fill);
 	_listView->setHorizontalAlignment (HorizontalAlignment::Fill);
 	_listView->setListItemProvider (new NSRBookmarkItemFactory ());
+
+	bool ok = connect (_listView, SIGNAL (bookmarkChanged (int, bool)), this, SIGNAL (bookmarkChanged (int, bool)));
+	Q_UNUSED (ok);
+	Q_ASSERT (ok);
+
+	ok = connect (_listView, SIGNAL (modelUpdated ()), this, SLOT (saveData ()));
 
 	Label *emptyLabel = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Center)
@@ -111,9 +118,8 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 #  endif
 #endif
 
-	bool ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
-			   this, SLOT (retranslateUi ()));
-	Q_UNUSED (ok);
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		      this, SLOT (retranslateUi ()));
 	Q_ASSERT (ok);
 
 	_model = new GroupDataModel ();
@@ -130,12 +136,15 @@ NSRBookmarksPage::~NSRBookmarksPage ()
 }
 
 bool
-NSRBookmarksPage::hasBookmark (int page)
+NSRBookmarksPage::hasBookmark (int page, QString *title)
 {
 	QVariantList query;
 	query.append (QVariant (page));
 
 	QVariantList result = _model->find (query);
+
+	if (!result.isEmpty () && title != NULL)
+		*title = _model->data(result).toMap()["title"].toString ();
 
 	return !result.isEmpty ();
 }
@@ -287,10 +296,8 @@ NSRBookmarksPage::onToastFinished (bb::system::SystemUiResult::Type result)
 	if (_toast == NULL)
 		return;
 
-	if (result == SystemUiResult::ButtonSelection) {
-		int page = _toast->property("page-number").toInt ();
+	if (result == SystemUiResult::ButtonSelection)
 		removeBookmark (_toast->property("page-number").toInt ());
-	}
 
 	_toast->deleteLater ();
 	_toast = NULL;

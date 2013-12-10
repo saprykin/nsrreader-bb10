@@ -25,7 +25,7 @@ NSRLastDocsListView::NSRLastDocsListView (bb::cascades::Container *parent) :
 {
 	_translator = new NSRTranslator (this);
 
-	setMultiSelectAction (MultiSelectActionItem::create());
+	setMultiSelectAction (MultiSelectActionItem::create ());
 	multiSelectHandler()->addAction (ActionItem::create().title(trUtf8 ("Clear Recent", "Clear recent files"))
 							     .imageSource(QUrl ("asset:///list-remove.png"))
 							     .onTriggered (this, SLOT (onHideActionTriggered ())));
