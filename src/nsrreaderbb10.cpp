@@ -716,12 +716,29 @@ NSRReaderBB10::onPrefsActionTriggered ()
 	Q_ASSERT (ok);
 
 	_naviPane->push (prefsPage);
+
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	Q_ASSERT (pane != NULL);
+
+	if (pane != NULL) {
+		pane->setActiveTab (pane->at(NSR_MAIN_TAB_INDEX));
+		pane->resetSidebarState ();
+	}
 }
 
 void
 NSRReaderBB10::onHelpActionTriggered ()
 {
 	showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_MAIN);
+
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	Q_ASSERT (pane != NULL);
+
+	if (pane != NULL) {
+		pane->setActiveTab (pane->at(NSR_MAIN_TAB_INDEX));
+		pane->resetSidebarState ();
+	}
+
 }
 
 void
