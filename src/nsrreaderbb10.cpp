@@ -818,7 +818,8 @@ NSRReaderBB10::onPageRendered (int number)
 void
 NSRReaderBB10::updateVisualControls ()
 {
-	if (_startMode != ApplicationStartupMode::InvokeCard) {
+	if (_startMode != ApplicationStartupMode::InvokeCard &&
+	    _core->getCurrentPage().getRenderReason () != NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH) {
 		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 		Q_ASSERT (pane != NULL);
 
