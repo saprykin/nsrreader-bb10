@@ -12,6 +12,7 @@
 #include <QtXml/QDomDocument>
 
 using namespace bb::cascades;
+using namespace bb::system;
 
 NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	Page (parent),
@@ -20,7 +21,8 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	_listView (NULL),
 	_emptyContainer (NULL),
 	_noBookmarksLabel (NULL),
-	_noFileLabel (NULL)
+	_noFileLabel (NULL),
+	_toast (NULL)
 {
 	_translator = new NSRTranslator (this);
 
@@ -28,7 +30,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create ());
 
-	_listView = new ListView ();
+	_listView = ListView::create().visible(false);
 	_listView->setVerticalAlignment (VerticalAlignment::Fill);
 	_listView->setHorizontalAlignment (HorizontalAlignment::Fill);
 	_listView->setListItemProvider (new NSRBookmarkItemFactory ());
@@ -119,12 +121,11 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	_model->setSortingKeys (QStringList ("page-number"));
 
 	_listView->setDataModel (_model);
-
-	unloadData ();
 }
 
 NSRBookmarksPage::~NSRBookmarksPage ()
 {
+	finishToast ();
 	_model->clear ();
 }
 
@@ -205,10 +206,7 @@ NSRBookmarksPage::loadData (const QString& file)
 		n = n.nextSibling ();
 	}
 
-	_listView->setVisible (_model->size () > 0);
-	_emptyContainer->setVisible (_model->size () == 0);
-	_noFileLabel->setVisible (false);
-	_noBookmarksLabel->setVisible (_model->size () == 0);
+	updateUi ();
 }
 
 void
@@ -232,11 +230,35 @@ NSRBookmarksPage::addBookmark (const QString& title, int page)
 	}
 
 	saveData ();
+	updateUi ();
+	finishToast ();
 
-	_listView->setVisible (_model->size () > 0);
-	_emptyContainer->setVisible (_model->size () == 0);
-	_noFileLabel->setVisible (false);
-	_noBookmarksLabel->setVisible (_model->size () == 0);
+	_toast = new SystemToast (this);
+	_toast->setBody (trUtf8 ("Bookmark added"));
+	_toast->button()->setLabel (trUtf8 ("Undo"));
+	_toast->setPosition (SystemUiPosition::BottomCenter);
+	_toast->setProperty ("page-number", page);
+
+	bool ok = connect (_toast, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+			   this, SLOT (onToastFinished (bb::system::SystemUiResult::Type)));
+	Q_UNUSED (ok);
+	Q_ASSERT (ok);
+
+	_toast->show ();
+}
+
+void
+NSRBookmarksPage::removeBookmark (int page)
+{
+	QVariantList query;
+	query.append (QVariant (page));
+
+	QVariantList result = _model->find (query);
+
+	if (!result.isEmpty ())
+		_model->removeAt (result);
+
+	updateUi ();
 }
 
 void
@@ -253,6 +275,21 @@ NSRBookmarksPage::retranslateUi ()
 
 		_model->updateItem (query, val);
 	}
+}
+
+void
+NSRBookmarksPage::onToastFinished (bb::system::SystemUiResult::Type result)
+{
+	if (_toast == NULL)
+		return;
+
+	if (result == SystemUiResult::ButtonSelection) {
+		int page = _toast->property("page-number").toInt ();
+		removeBookmark (_toast->property("page-number").toInt ());
+	}
+
+	_toast->deleteLater ();
+	_toast = NULL;
 }
 
 void
@@ -279,11 +316,30 @@ NSRBookmarksPage::saveData ()
 	NSRBookmarksStorage::instance()->saveBookmarks (_openedFile, doc.toString ());
 }
 
-void NSRBookmarksPage::unloadData ()
+void
+NSRBookmarksPage::unloadData ()
 {
 	_model->clear ();
 	_listView->setVisible (false);
 	_emptyContainer->setVisible (true);
 	_noFileLabel->setVisible (true);
 	_noBookmarksLabel->setVisible (false);
+}
+
+void
+NSRBookmarksPage::finishToast ()
+{
+	if (_toast != NULL) {
+		_toast->cancel ();
+		onToastFinished (SystemUiResult::TimeOut);
+	}
+}
+
+void
+NSRBookmarksPage::updateUi ()
+{
+	_listView->setVisible (_model->size () > 0);
+	_emptyContainer->setVisible (_model->size () == 0);
+	_noFileLabel->setVisible (false);
+	_noBookmarksLabel->setVisible (_model->size () == 0);
 }

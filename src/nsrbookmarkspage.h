@@ -6,6 +6,7 @@
 #include <bb/cascades/Container>
 #include <bb/cascades/Label>
 #include <bb/cascades/GroupDataModel>
+#include <bb/system/SystemToast>
 
 #include "nsrtranslator.h"
 
@@ -22,14 +23,18 @@ public Q_SLOTS:
 	void onDocumentClosed ();
 	void onDocumentToBeDeleted (const QString& file);
 	void addBookmark (const QString& title, int page);
+	void removeBookmark (int page);
 
 private Q_SLOTS:
 	void retranslateUi ();
+	void onToastFinished (bb::system::SystemUiResult::Type result);
 
 private:
 	void loadData (const QString& file);
 	void saveData ();
 	void unloadData ();
+	void finishToast ();
+	void updateUi ();
 
 	NSRTranslator *			_translator;
 	bb::cascades::GroupDataModel *	_model;
@@ -37,6 +42,7 @@ private:
 	bb::cascades::Container *	_emptyContainer;
 	bb::cascades::Label		*_noBookmarksLabel;
 	bb::cascades::Label		*_noFileLabel;
+	bb::system::SystemToast		*_toast;
 	QString				_openedFile;
 };
 
