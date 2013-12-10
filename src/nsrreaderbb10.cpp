@@ -762,10 +762,22 @@ NSRReaderBB10::onAddBookmarkActionTriggered ()
 	if (_prompt != NULL)
 		return;
 
+	QString bookmarkTitle;
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	Q_ASSERT (pane != NULL);
+
+	if (pane != NULL) {
+		NSRBookmarksPage *bookmarks = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
+
+		if (bookmarks != NULL)
+			bookmarks->hasBookmark (_core->getCurrentPage().getNumber (), &bookmarkTitle);
+	}
+
 	_prompt = new SystemPrompt (this);
 
 	_prompt->setTitle (trUtf8 ("Enter Bookmark"));
 	_prompt->inputField()->setEmptyText (trUtf8 ("Enter bookmark title"));
+	_prompt->inputField()->setDefaultText (bookmarkTitle);
 	_prompt->setDismissAutomatically (false);
 
 	bool res = connect (_prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
