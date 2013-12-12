@@ -33,12 +33,12 @@ private Q_SLOTS:
 	void retranslateUi ();
 	void onToastFinished (bb::system::SystemUiResult::Type result);
 	void saveData ();
+	void updateUi ();
 
 private:
 	void loadData (const QString& file);
 	void unloadData ();
 	void finishToast ();
-	void updateUi ();
 
 	NSRTranslator *			_translator;
 	NSRBookmarksListView *		_listView;

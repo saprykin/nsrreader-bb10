@@ -5,6 +5,8 @@
 #include <bb/cascades/MultiSelectHandler>
 #include <bb/cascades/MultiSelectActionItem>
 #include <bb/cascades/GroupDataModel>
+#include <bb/system/SystemPrompt>
+#include <bb/system/SystemDialog>
 
 #include <QVariantList>
 
@@ -12,9 +14,7 @@ using namespace bb::cascades;
 using namespace bb::system;
 
 NSRBookmarksListView::NSRBookmarksListView (bb::cascades::Container *parent) :
-	ListView (parent),
-	_toast (NULL),
-	_prompt (NULL)
+	ListView (parent)
 {
 	setMultiSelectAction (MultiSelectActionItem::create ());
 	multiSelectHandler()->addAction (DeleteActionItem::create().onTriggered (this, SLOT (onRemoveActionTriggered ())));
@@ -31,128 +31,102 @@ NSRBookmarksListView::NSRBookmarksListView (bb::cascades::Container *parent) :
 
 NSRBookmarksListView::~NSRBookmarksListView ()
 {
-	finishToast ();
 }
 
 void
 NSRBookmarksListView::onEditActionTriggered ()
 {
-	finishToast ();
-
-	if (_prompt != NULL)
-		return;
-
 	if (selectionList().count () == 0)
 		return;
 
 	GroupDataModel *model = static_cast < GroupDataModel * > (dataModel ());
+	SystemPrompt *prompt = new SystemPrompt (this);
 
-	_prompt = new SystemPrompt (this);
+	prompt->setTitle (trUtf8 ("Enter Bookmark"));
+	prompt->inputField()->setEmptyText (trUtf8 ("Enter bookmark title"));
+	prompt->inputField()->setDefaultText (model->data(selectionList().first().toList ()).toMap()["title"].toString ());
+	prompt->setDismissAutomatically (false);
+	prompt->setProperty ("data", selectionList().first().toList ());
 
-	_prompt->setTitle (trUtf8 ("Enter Bookmark"));
-	_prompt->inputField()->setEmptyText (trUtf8 ("Enter bookmark title"));
-	_prompt->inputField()->setDefaultText (model->data(selectionList().first().toList ()).toMap()["title"].toString ());
-	_prompt->setDismissAutomatically (false);
-	_prompt->setProperty ("data", selectionList().first().toList ());
-
-	bool res = connect (_prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+	bool res = connect (prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
 			    this, SLOT (onEditDialogFinished (bb::system::SystemUiResult::Type)));
 
 	if (res)
-		_prompt->show ();
+		prompt->show ();
 	else {
-		_prompt->deleteLater ();
-		_prompt = NULL;
+		prompt->deleteLater ();
+		prompt = NULL;
 	}
 }
 
 void
 NSRBookmarksListView::onRemoveActionTriggered ()
 {
-	GroupDataModel *	model = static_cast < GroupDataModel * > (dataModel ());
-	QVariantList 		list;
-
 	int count = selectionList().count ();
 
 	if (count == 0)
 		return;
 
-	finishToast ();
+	SystemDialog *dialog = new SystemDialog (this);
+	dialog->setTitle (trUtf8 ("Delete"));
+	dialog->setBody (trUtf8("Delete selected bookmarks: %1?").arg (count));
+	dialog->confirmButton()->setLabel (trUtf8 ("Delete"));
+	dialog->cancelButton()->setLabel (trUtf8 ("Cancel"));
+	dialog->setProperty ("undo-data", selectionList ());
 
-	for (int i = count - 1; i >= 0; --i) {
-		emit bookmarkChanged (model->data(selectionList().at(i).toList ()).toMap()["page-number"].toInt (), true);
-		list.append (model->data (selectionList().at(i).toList ()));
-		model->removeAt (selectionList().at(i).toList ());
-	}
-
-	_toast = new SystemToast (this);
-	_toast->setBody (trUtf8("Bookmarks deleted: %1").arg (count));
-	_toast->button()->setLabel (trUtf8 ("Undo"));
-	_toast->setPosition (SystemUiPosition::BottomCenter);
-	_toast->setProperty ("undo-data", list);
-
-	bool ok = connect (_toast, SIGNAL (finished (bb::system::SystemUiResult::Type)),
-			   this, SLOT (onToastFinished (bb::system::SystemUiResult::Type)));
+	bool ok = connect (dialog, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+			   this, SLOT (onRemoveDialogFinished (bb::system::SystemUiResult::Type)));
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
-	_toast->show ();
-
-	emit modelUpdated ();
+	dialog->show ();
 }
 
 void
 NSRBookmarksListView::onEditDialogFinished (bb::system::SystemUiResult::Type res)
 {
-	if (_prompt == NULL)
+	if (sender () == NULL)
 		return;
 
+	SystemPrompt *prompt = static_cast<SystemPrompt *> (sender ());
 	GroupDataModel *model = static_cast < GroupDataModel * > (dataModel ());
 
 	if (res == SystemUiResult::ConfirmButtonSelection) {
-		QVariantList list = _prompt->property("data").toList ();
+		QVariantList list = prompt->property("data").toList ();
 		QVariantMap map = model->data(list).toMap ();
 
-		map["title"] = _prompt->inputFieldTextEntry ();
+		map["title"] = prompt->inputFieldTextEntry ();
 		model->updateItem (list, map);
 
 		emit modelUpdated ();
 	}
 
-	_prompt->deleteLater ();
-	_prompt = NULL;
+	prompt->deleteLater ();
 }
 
 void
-NSRBookmarksListView::finishToast ()
+NSRBookmarksListView::onRemoveDialogFinished (bb::system::SystemUiResult::Type res)
 {
-	if (_toast != NULL) {
-		_toast->cancel ();
-		onToastFinished (SystemUiResult::TimeOut);
-	}
-}
-
-void
-NSRBookmarksListView::onToastFinished (bb::system::SystemUiResult::Type result)
-{
-	if (_toast == NULL)
+	if (sender () == NULL)
 		return;
 
-	if (result == SystemUiResult::ButtonSelection) {
-		QVariantList	list = _toast->property("undo-data").toList ();
-		int		count = list.count ();
-		GroupDataModel	*model = static_cast < GroupDataModel * > (dataModel ());
+	SystemDialog *dialog = static_cast<SystemDialog *> (sender ());
+	GroupDataModel *model = static_cast < GroupDataModel * > (dataModel ());
 
-		for (int i = 0; i < count; ++i) {
-			model->insert (list.at(i).toMap ());
-			emit bookmarkChanged (list.at(i).toMap()["page-number"].toInt (), false);
+	if (res == SystemUiResult::ConfirmButtonSelection) {
+		QVariantList list = dialog->property("undo-data").toList ();
+		int count = list.count ();
+
+		for (int i = count - 1; i >= 0; --i) {
+			int page = model->data(list.at(i).toList ()).toMap()["page-number"].toInt ();
+			model->removeAt (list.at(i).toList ());
+			emit bookmarkChanged (page, true);
 		}
 
 		emit modelUpdated ();
 	}
 
-	_toast->deleteLater ();
-	_toast = NULL;
+	dialog->deleteLater ();
 }
 
 void

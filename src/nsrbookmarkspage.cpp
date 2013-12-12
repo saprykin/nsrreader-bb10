@@ -41,6 +41,10 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	Q_ASSERT (ok);
 
 	ok = connect (_listView, SIGNAL (modelUpdated ()), this, SLOT (saveData ()));
+	Q_ASSERT (ok);
+
+	ok = connect (_listView, SIGNAL (modelUpdated ()), this, SLOT (updateUi ()));
+	Q_ASSERT (ok);
 
 	Label *emptyLabel = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Center)
