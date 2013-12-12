@@ -4,6 +4,7 @@
 #include <bb/cascades/ListView>
 #include <bb/cascades/Container>
 #include <bb/system/SystemToast>
+#include <bb/system/SystemPrompt>
 
 #include <QObject>
 
@@ -21,6 +22,7 @@ Q_SIGNALS:
 public Q_SLOTS:
 	void onEditActionTriggered ();
 	void onRemoveActionTriggered ();
+	void onEditDialogFinished (bb::system::SystemUiResult::Type res);
 	void finishToast ();
 
 private Q_SLOTS:
@@ -29,6 +31,7 @@ private Q_SLOTS:
 
 private:
 	bb::system::SystemToast *	_toast;
+	bb::system::SystemPrompt *	_prompt;
 };
 
 #endif /* NSRBOOKMARKSLISTVIEW_H_ */

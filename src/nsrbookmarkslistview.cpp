@@ -13,7 +13,8 @@ using namespace bb::system;
 
 NSRBookmarksListView::NSRBookmarksListView (bb::cascades::Container *parent) :
 	ListView (parent),
-	_toast (NULL)
+	_toast (NULL),
+	_prompt (NULL)
 {
 	setMultiSelectAction (MultiSelectActionItem::create ());
 	multiSelectHandler()->addAction (DeleteActionItem::create().onTriggered (this, SLOT (onRemoveActionTriggered ())));
@@ -36,7 +37,33 @@ NSRBookmarksListView::~NSRBookmarksListView ()
 void
 NSRBookmarksListView::onEditActionTriggered ()
 {
+	finishToast ();
 
+	if (_prompt != NULL)
+		return;
+
+	if (selectionList().count () == 0)
+		return;
+
+	GroupDataModel *model = static_cast < GroupDataModel * > (dataModel ());
+
+	_prompt = new SystemPrompt (this);
+
+	_prompt->setTitle (trUtf8 ("Enter Bookmark"));
+	_prompt->inputField()->setEmptyText (trUtf8 ("Enter bookmark title"));
+	_prompt->inputField()->setDefaultText (model->data(selectionList().first().toList ()).toMap()["title"].toString ());
+	_prompt->setDismissAutomatically (false);
+	_prompt->setProperty ("data", selectionList().first().toList ());
+
+	bool res = connect (_prompt, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+			    this, SLOT (onEditDialogFinished (bb::system::SystemUiResult::Type)));
+
+	if (res)
+		_prompt->show ();
+	else {
+		_prompt->deleteLater ();
+		_prompt = NULL;
+	}
 }
 
 void
@@ -72,6 +99,28 @@ NSRBookmarksListView::onRemoveActionTriggered ()
 	_toast->show ();
 
 	emit modelUpdated ();
+}
+
+void
+NSRBookmarksListView::onEditDialogFinished (bb::system::SystemUiResult::Type res)
+{
+	if (_prompt == NULL)
+		return;
+
+	GroupDataModel *model = static_cast < GroupDataModel * > (dataModel ());
+
+	if (res == SystemUiResult::ConfirmButtonSelection) {
+		QVariantList list = _prompt->property("data").toList ();
+		QVariantMap map = model->data(list).toMap ();
+
+		map["title"] = _prompt->inputFieldTextEntry ();
+		model->updateItem (list, map);
+
+		emit modelUpdated ();
+	}
+
+	_prompt->deleteLater ();
+	_prompt = NULL;
 }
 
 void
