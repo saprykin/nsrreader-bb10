@@ -94,7 +94,7 @@ NSRLastDocsListView::onRemoveActionTriggered ()
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
-	dialog->exec ();
+	dialog->show ();
 }
 
 void
