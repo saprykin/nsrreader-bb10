@@ -157,6 +157,53 @@
     </message>
 </context>
 <context>
+    <name>NSRBookmarkItemFactory</name>
+    <message>
+        <source>Bookmark</source>
+        <translation>Закладка</translation>
+    </message>
+    <message>
+        <source>Edit Bookmark</source>
+        <translation>Редакт. закладку</translation>
+    </message>
+    <message>
+        <source>Edit bookmark title</source>
+        <translation>Редактировать название закладки</translation>
+    </message>
+</context>
+<context>
+    <name>NSRBookmarksListView</name>
+    <message>
+        <source>Selected: %1</source>
+        <comment>Items selected</comment>
+        <translation>Выбрано: %1</translation>
+    </message>
+    <message>
+        <source>No items selected</source>
+        <translation>Нет выбранных элементов</translation>
+    </message>
+    <message>
+        <source>Enter Bookmark</source>
+        <translation>Введите закладку</translation>
+    </message>
+    <message>
+        <source>Enter bookmark title</source>
+        <translation>Введите название закладки</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Delete selected bookmarks: %1?</source>
+        <translation>Удалить выбранные закладки: %1?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
     <name>NSRBookmarksPage</name>
     <message>
         <source>No bookmarks</source>
@@ -183,6 +230,14 @@
     <message>
         <source>Page %1</source>
         <translation>Страница %1</translation>
+    </message>
+    <message>
+        <source>Bookmark added</source>
+        <translation>Закладка добавлена</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -449,7 +504,7 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>Text Reflow</source>
         <comment>Text mode for a file view</comment>
-        <translation>Переформатирование текста</translation>
+        <translation>Переформатировать</translation>
     </message>
     <message>
         <source>Switch text reflow mode</source>
@@ -470,6 +525,34 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>Page with recent files</source>
         <translation>Страница с недавними файлами</translation>
+    </message>
+    <message>
+        <source>Add Bookmark</source>
+        <translation>Добавить закладку</translation>
+    </message>
+    <message>
+        <source>Add bookmark for current page</source>
+        <translation>Добавить закладку на текущую страницу</translation>
+    </message>
+    <message>
+        <source>Enter Bookmark</source>
+        <translation>Введите закладку</translation>
+    </message>
+    <message>
+        <source>Enter bookmark title</source>
+        <translation>Введите название закладки</translation>
+    </message>
+    <message>
+        <source>Edit Bookmark</source>
+        <translation>Редакт. закладку</translation>
+    </message>
+    <message>
+        <source>Recent</source>
+        <translation>Недавние</translation>
+    </message>
+    <message>
+        <source>Bookmarks</source>
+        <translation>Закладки</translation>
     </message>
 </context>
 <context>

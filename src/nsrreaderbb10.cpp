@@ -457,8 +457,8 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	Tab *mainTab = Tab::create().content(_naviPane).title(trUtf8 ("Reading")).imageSource(QUrl ("asset:///main-tab.png"));
-	Tab *recentTab = Tab::create().content(recentPage).title("Recent").imageSource(QUrl ("asset:///recent.png"));
-	Tab *bookmarksTab = Tab::create().content(bookmarksPage).title("Bookmarks").imageSource(QUrl ("asset:///bookmarks.png"));
+	Tab *recentTab = Tab::create().content(recentPage).title(trUtf8 ("Recent")).imageSource(QUrl ("asset:///recent.png"));
+	Tab *bookmarksTab = Tab::create().content(bookmarksPage).title(trUtf8 ("Bookmarks")).imageSource(QUrl ("asset:///bookmarks.png"));
 
 	TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
 

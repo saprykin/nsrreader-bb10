@@ -157,6 +157,53 @@
     </message>
 </context>
 <context>
+    <name>NSRBookmarkItemFactory</name>
+    <message>
+        <source>Bookmark</source>
+        <translation>Bookmark</translation>
+    </message>
+    <message>
+        <source>Edit Bookmark</source>
+        <translation>Edit Bookmark</translation>
+    </message>
+    <message>
+        <source>Edit bookmark title</source>
+        <translation>Edit bookmark title</translation>
+    </message>
+</context>
+<context>
+    <name>NSRBookmarksListView</name>
+    <message>
+        <source>Selected: %1</source>
+        <comment>Items selected</comment>
+        <translation>Selected: %1</translation>
+    </message>
+    <message>
+        <source>No items selected</source>
+        <translation>No items selected</translation>
+    </message>
+    <message>
+        <source>Enter Bookmark</source>
+        <translation>Enter Bookmark</translation>
+    </message>
+    <message>
+        <source>Enter bookmark title</source>
+        <translation>Enter bookmark title</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Delete</translation>
+    </message>
+    <message>
+        <source>Delete selected bookmarks: %1?</source>
+        <translation>Delete selected bookmarks: %1?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+</context>
+<context>
     <name>NSRBookmarksPage</name>
     <message>
         <source>No bookmarks</source>
@@ -183,6 +230,14 @@
     <message>
         <source>Page %1</source>
         <translation>Page %1</translation>
+    </message>
+    <message>
+        <source>Bookmark added</source>
+        <translation>Bookmark added</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation>Undo</translation>
     </message>
 </context>
 <context>
@@ -471,6 +526,34 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>Page with recent files</source>
         <translation>Page with recent files</translation>
+    </message>
+    <message>
+        <source>Add Bookmark</source>
+        <translation>Add Bookmark</translation>
+    </message>
+    <message>
+        <source>Add bookmark for current page</source>
+        <translation>Add bookmark for current page</translation>
+    </message>
+    <message>
+        <source>Enter Bookmark</source>
+        <translation>Enter Bookmark</translation>
+    </message>
+    <message>
+        <source>Enter bookmark title</source>
+        <translation>Enter bookmark title</translation>
+    </message>
+    <message>
+        <source>Edit Bookmark</source>
+        <translation>Edit Bookmark</translation>
+    </message>
+    <message>
+        <source>Recent</source>
+        <translation>Recent</translation>
+    </message>
+    <message>
+        <source>Bookmarks</source>
+        <translation>Bookmarks</translation>
     </message>
 </context>
 <context>
