@@ -21,6 +21,7 @@ public:
 
 Q_SIGNALS:
 	void bookmarkChanged (int page, bool removed);
+	void pageRequested (int page);
 
 public Q_SLOTS:
 	void onDocumentOpened (const QString& file);
@@ -34,6 +35,7 @@ private Q_SLOTS:
 	void onToastFinished (bb::system::SystemUiResult::Type result);
 	void saveData ();
 	void updateUi ();
+	void onListItemTriggered (QVariantList indexPath);
 
 private:
 	void loadData (const QString& file);

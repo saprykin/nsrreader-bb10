@@ -474,6 +474,9 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (bookmarksPage, SIGNAL (bookmarkChanged (int, bool)), this, SLOT (onBookmarkChanged (int, bool)));
 	Q_ASSERT (ok);
 
+	ok = connect (bookmarksPage, SIGNAL (pageRequested (int)), this, SLOT (onBookmarkPageRequested (int)));
+	Q_ASSERT (ok);
+
 	_translator->addTranslatable ((UIObject *) mainTab,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
 				      QString ("NSRReaderBB10"),
@@ -1494,6 +1497,19 @@ NSRReaderBB10::onBookmarkChanged (int page, bool removed)
 	bookmarkAction->setTitle (!removed ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
 	bookmarkAction->setProperty ("action-mode", !removed ? QString ("edit") : QString ("add"));
 	bookmarkAction->setImageSource (!removed ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
+}
+
+void
+NSRReaderBB10::onBookmarkPageRequested (int page)
+{
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	Q_ASSERT (pane != NULL);
+
+	if (pane != NULL)
+		pane->setActiveTab (pane->at (NSR_MAIN_TAB_INDEX));
+
+	if (page != _core->getCurrentPage().getNumber ())
+		_core->navigateToPage (NSRReaderCore::PAGE_LOAD_CUSTOM, page);
 }
 
 #ifdef NSR_LITE_VERSION

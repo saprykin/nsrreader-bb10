@@ -40,6 +40,9 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
+	ok = connect (_listView, SIGNAL (triggered (QVariantList)), this, SLOT (onListItemTriggered (QVariantList)));
+	Q_ASSERT (ok);
+
 	ok = connect (_listView, SIGNAL (modelUpdated ()), this, SLOT (saveData ()));
 	Q_ASSERT (ok);
 
@@ -357,4 +360,12 @@ NSRBookmarksPage::updateUi ()
 	_emptyContainer->setVisible (_model->size () == 0);
 	_noFileLabel->setVisible (false);
 	_noBookmarksLabel->setVisible (_model->size () == 0);
+}
+
+void
+NSRBookmarksPage::onListItemTriggered (QVariantList indexPath)
+{
+	QVariantMap map = _listView->dataModel()->data(indexPath).toMap ();
+
+	emit pageRequested (map["page-number"].toInt ());
 }
