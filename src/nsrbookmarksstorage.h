@@ -13,6 +13,7 @@ public:
 	QString getBookmarks (const QString& file);
 	void saveBookmarks (const QString& file, const QString& bookmarks);
 	void removeBookmarks (const QString& file);
+	void cleanOldFiles ();
 
 private:
 	QString filePathToHash (const QString& path);

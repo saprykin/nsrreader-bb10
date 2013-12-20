@@ -1,5 +1,6 @@
 #include "nsrsettings.h"
 #include "nsrthumbnailer.h"
+#include "nsrbookmarksstorage.h"
 
 #define NSR_READER_VERSION "1.3.3"
 
@@ -445,4 +446,5 @@ NSRSettings::cleanOldFiles ()
 	sync ();
 
 	NSRThumbnailer::cleanOldFiles ();
+	NSRBookmarksStorage::instance()->cleanOldFiles ();
 }

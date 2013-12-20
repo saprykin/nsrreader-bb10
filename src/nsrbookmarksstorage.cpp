@@ -51,7 +51,11 @@ NSRBookmarksStorage::saveBookmarks (const QString& file,
 	if (file.isEmpty ())
 		return;
 
-	setValue (filePathToHash (file) + "/bookmarks", bookmarks);
+	beginGroup (filePathToHash (file));
+	setValue ("bookmarks", bookmarks);
+	setValue ("file", file);
+	endGroup ();
+
 	sync ();
 }
 
@@ -62,6 +66,19 @@ NSRBookmarksStorage::removeBookmarks (const QString& file)
 		return;
 
 	remove (filePathToHash (file));
+	sync ();
+}
+
+void
+NSRBookmarksStorage::cleanOldFiles ()
+{
+	QStringList childs = childGroups ();
+	int count = childs.count ();
+
+	for (int i = 0; i < count; ++i)
+		if (!QFile::exists (value(childs.at (i) + "/file", "").toString ()))
+			remove (childs.at(i));
+
 	sync ();
 }
 
