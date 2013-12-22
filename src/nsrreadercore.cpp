@@ -642,7 +642,6 @@ NSRReaderCore::invertColors ()
 		loadPage (PAGE_LOAD_CUSTOM,
 			  NSRRenderedPage (_currentPage.getNumber (),
 					   NSRRenderedPage::NSR_RENDER_REASON_SETTINGS));
-
 }
 
 bool
