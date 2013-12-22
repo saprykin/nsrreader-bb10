@@ -897,7 +897,6 @@ NSRReaderBB10::updateVisualControls ()
 	if (bookmarkAction != NULL) {
 		bookmarkAction->setEnabled (isDocumentOpened);
 		bookmarkAction->setTitle (hasBookmark ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
-		bookmarkAction->setProperty ("action-mode", hasBookmark ? QString ("edit") : QString ("add"));
 		bookmarkAction->setImageSource (hasBookmark ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
 	}
 }
@@ -1495,7 +1494,6 @@ NSRReaderBB10::onBookmarkChanged (int page, bool removed)
 		return;
 
 	bookmarkAction->setTitle (!removed ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
-	bookmarkAction->setProperty ("action-mode", !removed ? QString ("edit") : QString ("add"));
 	bookmarkAction->setImageSource (!removed ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
 }
 
