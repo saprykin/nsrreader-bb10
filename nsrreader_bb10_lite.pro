@@ -3,10 +3,13 @@ APP_NAME = nsrreader_bb10_lite
 CONFIG += qt warn_on cascades10
 QT += xml
 
-DEFINES += HAVE_CONFIG_H
-DEFINES += NSR_LITE_VERSION
+include ($$_PRO_FILE_PWD_/src/nsrreadercore/nsrreadercore_blackberry.pri)
 
-INCLUDEPATH += $$_PRO_FILE_PWD_/src/poppler
+DEFINES += NSR_LITE_VERSION
+DEFINES += $$NSRREADERCORE_DEFINES
+
+INCLUDEPATH += $$_PRO_FILE_PWD_/src/nsrreadercore/3dparty/poppler
+INCLUDEPATH += $$_PRO_FILE_PWD_/src/nsrreadercore/3dparty
 
 LIBS += -lpng
 LIBS += -liconv
@@ -23,4 +26,4 @@ LIBS += -lbbutility
 LIBS += -lbbdevice
 LIBS += -lbbmultimedia
 
-include(config.pri)
+include (config.pri)

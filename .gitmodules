@@ -1,0 +1,3 @@
+[submodule "src/nsrreadercore"]
+	path = src/nsrreadercore
+	url = git@github.com:saprykin/nsrreadercore.git
