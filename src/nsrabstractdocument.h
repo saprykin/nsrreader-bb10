@@ -70,18 +70,18 @@ protected:
 	double validateMaxZoom (const QSize& pageSize, double zoom) const;
 
 private:
-	QString		_docPath;
-	QString		_password;
-	double		_zoom;
-	int		_screenWidth;
-	bool		_zoomToWidth;
-	bool		_textOnly;
-	bool		_invertedColors;
-	bool		_autoCrop;
+	QString			_docPath;
+	QString			_password;
+	double			_zoom;
+	int			_screenWidth;
+	bool			_zoomToWidth;
+	bool			_textOnly;
+	bool			_invertedColors;
+	bool			_autoCrop;
 	NSRDocumentError	_lastError;
-	QString		_encoding;
-	int		_rotation;
-	QSize		_maxPageSize;
+	QString			_encoding;
+	int			_rotation;
+	QSize			_maxPageSize;
 };
 
 #endif // NSRABSTRACTDOCUMENT_H
