@@ -62,7 +62,11 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	Label *versionInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					    .vertical(VerticalAlignment::Fill)
-					    .text(QString ("NSR Reader ").append (NSRSettings::getVersion ()));
+#ifdef NSR_CORE_LITE_VERSION
+					    .text(QString("NSR Reader Lite ").append (NSRSettings::getVersion ()));
+#else
+					    .text(QString("NSR Reader ").append (NSRSettings::getVersion ()));
+#endif
 
 	versionInfo->textStyle()->setFontSize (FontSize::Large);
 
@@ -72,7 +76,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	Label *authorInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Fill)
-					   .text(QString ("� 2011-2013 Alexander Saprykin"))
+					   .text(QString::fromUtf8 ("© 2011-2013 Alexander Saprykin"))
 					   .multiline(true);
 	authorInfo->textStyle()->setTextAlign (TextAlign::Center);
 
