@@ -213,7 +213,7 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
 	ActionItem *addBookmarkAction = ActionItem::create().title(trUtf8 ("Add Bookmark")).enabled(false);
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 	ActionItem *buyAction = ActionItem::create();
 	buyAction->setTitle (trUtf8 ("Buy", "Buy full version of the app in the store"));
 #endif
@@ -248,7 +248,7 @@ NSRReaderBB10::initFullUI ()
 	_translator->addTranslatable ((UIObject *) addBookmarkAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Add Bookmark"));
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Buy"));
@@ -306,7 +306,7 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Add bookmark for current page"));
-#    ifdef NSR_LITE_VERSION
+#    ifdef NSR_CORE_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
@@ -346,7 +346,7 @@ NSRReaderBB10::initFullUI ()
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
 	addBookmarkAction->setImageSource (QUrl ("asset:///bookmark-add.png"));
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 	buyAction->setImage (QUrl ("asset:///buy.png"));
 #endif
 
@@ -394,7 +394,7 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (invertAction, SIGNAL (triggered ()), this, SLOT (onInvertActionTriggered ()));
 	Q_ASSERT (ok);
 
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 	ok = connect (buyAction, SIGNAL (triggered ()), this, SLOT (onBuyActionTriggered ()));
 	Q_ASSERT (ok);
 #endif
@@ -402,7 +402,7 @@ NSRReaderBB10::initFullUI ()
 	Menu *menu = new Menu ();
 	menu->addAction (helpAction);
 	menu->addAction (prefsAction);
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 	menu->addAction (buyAction);
 #endif
 	Application::instance()->setMenu (menu);
@@ -433,7 +433,7 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onViewModeRequested (NSRAbstractDocument::NSRDocumentStyle)));
 	Q_ASSERT (ok);
 
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 	ok = connect (_core, SIGNAL (liteVersionOverPage ()), this, SLOT (onLiteVersionOverPage ()));
 	Q_ASSERT (ok);
 #endif
@@ -1118,7 +1118,7 @@ void
 NSRReaderBB10::onSystemLanguageChanged ()
 {
 	QString 	locale_string = QLocale().name ();
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 	QString		filename = QString("nsrreader_bb10_lite_%1").arg (locale_string);
 #else
 	QString		filename = QString("nsrreader_bb10_%1").arg (locale_string);
@@ -1264,14 +1264,14 @@ NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
 	if (!ok)
 		page = -1;
 
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 	if (target == "com.gmail.lite.reader.nsr") {
 #else
 	if (target == "com.gmail.reader.nsr") {
 #endif
 		saveSession ();
 		loadSession (file, page);
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 	} else if (target == "com.gmail.lite.reader.nsr.viewer") {
 #else
 	} else if (target == "com.gmail.reader.nsr.viewer") {
@@ -1510,7 +1510,7 @@ NSRReaderBB10::onBookmarkPageRequested (int page)
 		_core->navigateToPage (NSRReaderCore::PAGE_LOAD_CUSTOM, page);
 }
 
-#ifdef NSR_LITE_VERSION
+#ifdef NSR_CORE_LITE_VERSION
 void
 NSRReaderBB10::onLiteVersionOverPage ()
 {
