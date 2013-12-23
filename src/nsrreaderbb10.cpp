@@ -413,7 +413,7 @@ NSRReaderBB10::initFullUI ()
 	_filePicker->setFilter (QStringList ("*.pdf") << "*.djvu" << "*.djv" <<
 					     "*.tiff" << "*.tif" << "*.txt");
 
-	_core = new NSRReaderCore (_startMode, this);
+	_core = new NSRReaderCore (_startMode == ApplicationStartupMode::InvokeCard, this);
 
 	ok = connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
 		      this, SLOT (onFileSelected (const QStringList&)));
