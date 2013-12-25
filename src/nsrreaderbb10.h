@@ -71,6 +71,7 @@ private Q_SLOTS:
     void onRotateLeftRequested ();
     void onRotateRightRequested ();
     void onFullscreenSwitchRequested (bool isFullscreen);
+    void onPreventScreenLockSwitchRequested (bool isPreventScreenLock);
     void onCardPooled (const bb::system::CardDoneMessage& message);
     void onCardResize (const bb::system::CardResizeMessage& message);
     void onThumbnail ();

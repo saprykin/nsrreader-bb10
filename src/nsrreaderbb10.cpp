@@ -24,6 +24,8 @@
 #include <bb/cascades/NavigationPaneProperties>
 #include <bb/cascades/TabbedPane>
 #include <bb/cascades/Tab>
+#include <bb/cascades/Window>
+#include <bb/cascades/ScreenIdleMode>
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,1,0)
@@ -544,6 +546,7 @@ NSRReaderBB10::initFullUI ()
 		_pageView->setViewMode (NSRSettings::instance()->isWordWrap () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
 									       : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		onFullscreenSwitchRequested (NSRSettings::instance()->isFullscreenMode ());
+		onPreventScreenLockSwitchRequested (NSRSettings::instance()->isPreventScreenLock ());
 	}
 
 	ok = connect (_pageView, SIGNAL (zoomChanged (double, NSRRenderedPage::NSRRenderReason)),
@@ -722,6 +725,10 @@ NSRReaderBB10::onPrefsActionTriggered ()
 	bool ok = connect (prefsPage, SIGNAL (switchFullscreen (bool)),
 			   this, SLOT (onFullscreenSwitchRequested (bool)));
 	Q_UNUSED (ok);
+	Q_ASSERT (ok);
+
+	ok = connect (prefsPage, SIGNAL (switchPreventScreenLock (bool)),
+		      this, SLOT (onPreventScreenLockSwitchRequested (bool)));
 	Q_ASSERT (ok);
 
 	_naviPane->push (prefsPage);
@@ -1312,6 +1319,15 @@ NSRReaderBB10::onFullscreenSwitchRequested (bool isFullscreen)
 		_page->setActionBarVisibility (ChromeVisibility::Visible);
 
 	_slider->setBottomSpace (getActionBarHeight ());
+}
+
+void
+NSRReaderBB10::onPreventScreenLockSwitchRequested (bool isPreventScreenLock)
+{
+	if (isPreventScreenLock)
+		Application::instance()->mainWindow()->setScreenIdleMode (ScreenIdleMode::KeepAwake);
+	else
+		Application::instance()->mainWindow()->setScreenIdleMode (ScreenIdleMode::Normal);
 }
 
 void

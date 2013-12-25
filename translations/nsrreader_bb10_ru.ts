@@ -390,6 +390,15 @@
         <source>Text encoding is used only for plain text files, none other format supports encoding selection.</source>
         <translation>Кодировка используется только для чисто текстовых файлов, другие форматы не поддерживают её выбор.</translation>
     </message>
+    <message>
+        <source>Prevent Screen Locking</source>
+        <comment>Option in preferences</comment>
+        <translation>Не блокировать экран</translation>
+    </message>
+    <message>
+        <source>Do not automatically lock screen while reading.</source>
+        <translation>Не блокировать экран автоматически во время чтения.</translation>
+    </message>
 </context>
 <context>
     <name>NSRReaderBB10</name>

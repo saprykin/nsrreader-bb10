@@ -18,9 +18,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Page (parent),
 	_translator (NULL),
 	_isFullscreen (NULL),
+	_isAutoCrop (NULL),
+	_isPreventScreenLock (NULL),
 	_encodingsList (NULL)
 {
-	QString		defEncoding ("UTF-8");
+	QString defEncoding ("UTF-8");
 
 	_translator = new NSRTranslator (this);
 
@@ -30,10 +32,12 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	_isFullscreen = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isAutoCrop = ToggleButton::create().horizontal(HorizontalAlignment::Right);
+	_isPreventScreenLock = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
 	_isFullscreen->setChecked (NSRSettings::instance()->isFullscreenMode ());
 	_isAutoCrop->setChecked (NSRSettings::instance()->isAutoCrop ());
+	_isPreventScreenLock->setChecked (NSRSettings::instance()->isPreventScreenLock ());
 	_encodingsList->setFocusPolicy (FocusPolicy::Touch);
 
 	QString textEncoding = NSRSettings::instance()->getTextEncoding ();
@@ -105,10 +109,41 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	sixthContainer->setLeftPadding (20);
 	sixthContainer->setRightPadding (20);
 
+	/* 'Prevent Screen Locking' option */
+	Container *firstInnerContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						   .layout(StackLayout::create()
+								       .orientation(LayoutOrientation::LeftToRight));
+
+	Label *preventScreenLockLabel = Label::create(trUtf8 ("Prevent Screen Locking", "Option in preferences"))
+					      .horizontal(HorizontalAlignment::Left)
+					      .vertical(VerticalAlignment::Center)
+					      .multiline(true)
+					      .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
+
+	Label *screenLockInfo = Label::create(trUtf8 ("Do not automatically lock screen while reading."))
+				      .horizontal(HorizontalAlignment::Fill)
+				      .vertical(VerticalAlignment::Center);
+	screenLockInfo->textStyle()->setFontSize (FontSize::XSmall);
+	screenLockInfo->setMultiline (true);
+
+	Container *firstContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						       .layout(StackLayout::create ());
+
+	firstInnerContainer->add (preventScreenLockLabel);
+	firstInnerContainer->add (_isPreventScreenLock);
+
+	firstContainer->add (firstInnerContainer);
+	firstContainer->add (screenLockInfo);
+
+	firstContainer->setLeftPadding (20);
+	firstContainer->setRightPadding (20);
+	firstContainer->setBottomPadding (20);
+
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_isFullscreen->accessibility()->addLabel (fullscreenLabel);
 	_isAutoCrop->accessibility()->addLabel (cropLabel);
+	_isPreventScreenLock->accessibility()->addLabel (preventScreenLockLabel);
 #  endif
 #endif
 
@@ -116,6 +151,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	rootContainer->add (secondContainer);
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (sixthContainer);
+	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
+	rootContainer->add (firstContainer);
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
 	rootContainer->add (fifthContainer);
 
@@ -129,6 +166,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	bool ok = connect (_isFullscreen, SIGNAL (checkedChanged (bool)),
 			   this, SIGNAL (switchFullscreen (bool)));
 	Q_UNUSED (ok);
+	Q_ASSERT (ok);
+
+	ok = connect (_isPreventScreenLock, SIGNAL (checkedChanged (bool)),
+		      this, SIGNAL (switchPreventScreenLock (bool)));
 	Q_ASSERT (ok);
 
 	_translator->addTranslatable ((UIObject *) fullscreenLabel,
@@ -148,6 +189,14 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Crop Blank Edges"));
+	_translator->addTranslatable ((UIObject *) preventScreenLockLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Prevent Screen Locking"));
+	_translator->addTranslatable ((UIObject *) screenLockInfo,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Do not automatically lock screen while reading."));
 	_translator->addTranslatable ((UIObject *) titleBar (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_TITLEBAR,
 				      QString ("NSRPreferencesPage"),
@@ -167,6 +216,7 @@ NSRPreferencesPage::saveSettings ()
 {
 	NSRSettings::instance()->saveFullscreenMode (_isFullscreen->isChecked ());
 	NSRSettings::instance()->saveAutoCrop (_isAutoCrop->isChecked ());
+	NSRSettings::instance()->savePreventScreenLock (_isPreventScreenLock->isChecked ());
 
 	if (_encodingsList->isSelectedOptionSet ())
 		NSRSettings::instance()->saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));
