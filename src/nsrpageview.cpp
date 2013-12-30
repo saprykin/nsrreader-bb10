@@ -209,13 +209,13 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_delayedTextScrollPos.isNull ())
 		_delayedTextScrollPos = page.getLastTextPosition ();
 
-	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_SETTINGS) {
+	if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_SETTINGS) {
 		/* Encoding may be changed, we must reload text data */
 		QPointF pos = getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 		_textScrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 		_textArea->setText (page.getText ());
 		setScrollPosition (pos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
-	} else if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION) {
+	} else if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_NAVIGATION) {
 		/* Set scroll position for graphic mode */
 		if (_delayedScrollPos.isNull ())
 			_delayedScrollPos = QPointF (_scrollView->viewableArea().left (), 0);
@@ -230,11 +230,11 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
 	_currentZoom = page.getZoom ();
 
-	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_NAVIGATION ||
+	if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_NAVIGATION ||
 	    !_delayedScrollPos.isNull ())
 		setScrollPosition (_delayedScrollPos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 
-	if (page.getRenderReason () == NSRRenderedPage::NSR_RENDER_REASON_ROTATION)
+	if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_ROTATION)
 		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 
 	_delayedScrollPos = QPointF (0, 0);
@@ -318,7 +318,7 @@ NSRPageView::setZoomRange (double minZoom, double maxZoom)
 }
 
 void
-NSRPageView::fitToWidth (NSRRenderedPage::NSRRenderReason reason)
+NSRPageView::fitToWidth (NSRRenderRequest::NSRRenderReason reason)
 {
 	if (_viewMode != NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC)
 		return;
@@ -541,7 +541,7 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 
 		if (qAbs (_currentZoom * scale - _currentZoom) > 0.05) {
 			_currentZoom *= scale;
-			emit zoomChanged (_currentZoom, NSRRenderedPage::NSR_RENDER_REASON_ZOOM);
+			emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
 		}
 	}
 

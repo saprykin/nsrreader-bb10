@@ -160,8 +160,8 @@ NSRSceneCover::setPageData (const NSRRenderedPage&	page,
 	_pageView->setImage (page.getImage ());
 	_textView->setText (page.getText ());
 	_titleLabel->setText (title);
-	_pageNumLabel->setText(QString("%1 / %2").arg(region.locale().toString (page.getNumber ()))
-						 .arg (region.locale().toString (pagesTotal)));
+	_pageNumLabel->setText (QString("%1 / %2").arg(region.locale().toString (page.getNumber ()))
+						  .arg (region.locale().toString (pagesTotal)));
 
 	QString	extension = QFileInfo(title).suffix().toLower ();
 	QString background;

@@ -549,8 +549,8 @@ NSRReaderBB10::initFullUI ()
 		onPreventScreenLockSwitchRequested (NSRSettings::instance()->isPreventScreenLock ());
 	}
 
-	ok = connect (_pageView, SIGNAL (zoomChanged (double, NSRRenderedPage::NSRRenderReason)),
-		      this, SLOT (onZoomChanged (double, NSRRenderedPage::NSRRenderReason)));
+	ok = connect (_pageView, SIGNAL (zoomChanged (double, NSRRenderRequest::NSRRenderReason)),
+		      this, SLOT (onZoomChanged (double, NSRRenderRequest::NSRRenderReason)));
 	Q_ASSERT (ok);
 
 	Application::instance()->setCover (new NSRSceneCover ());
@@ -819,9 +819,9 @@ NSRReaderBB10::onPageRendered (int number)
 	/* Fit cropped page to width only in graphic mode,
 	 * cached pages should be already cropped and fitted */
 	if (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
-		if (_core->isFitToWidth () && page.isCropped () && !page.isCached () &&
-		    page.getRenderReason () != NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH)
-			_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
+		if (_core->isFitToWidth () && page.isAutoCrop () && !page.isCached () &&
+		    page.getRenderReason () != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH)
+			_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH);
 	}
 
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
@@ -850,7 +850,7 @@ NSRReaderBB10::updateVisualControls ()
 	Q_ASSERT (pane != NULL);
 
 	if (_startMode != ApplicationStartupMode::InvokeCard &&
-	    _core->getCurrentPage().getRenderReason () != NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH) {
+	    _core->getCurrentPage().getRenderReason () != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH) {
 		if (pane != NULL) {
 			pane->at(NSR_RECENT_TAB_INDEX)->setEnabled (true);
 			pane->resetSidebarState ();
@@ -1167,13 +1167,13 @@ NSRReaderBB10::onViewModeRequested (NSRAbstractDocument::NSRDocumentStyle mode)
 	needRefit = (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT) &&
 		    (mode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) &&
 		    !_core->getCurrentPage().isCached () &&
-		    _core->getCurrentPage().isCropped () &&
+		    _core->getCurrentPage().isAutoCrop () &&
 		    _core->isFitToWidth ();
 
 	_pageView->setViewMode (mode);
 
 	if (needRefit)
-		_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH);
+		_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH);
 }
 
 void
@@ -1216,10 +1216,10 @@ NSRReaderBB10::onDocumentToBeDeleted (const QString& path)
 }
 
 void
-NSRReaderBB10::onZoomChanged (double zoom, NSRRenderedPage::NSRRenderReason reason)
+NSRReaderBB10::onZoomChanged (double zoom, NSRRenderRequest::NSRRenderReason reason)
 {
-	if (reason == NSRRenderedPage::NSR_RENDER_REASON_ZOOM_TO_WIDTH ||
-	    reason == NSRRenderedPage::NSR_RENDER_REASON_CROP_TO_WIDTH)
+	if (reason == NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH ||
+	    reason == NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH)
 		_core->setScreenWidth (_pageView->getSize().width ());
 
 	_core->setZoom (zoom, reason);
@@ -1257,7 +1257,7 @@ NSRReaderBB10::onNextPageRequested ()
 void
 NSRReaderBB10::onFitToWidthRequested ()
 {
-	_pageView->fitToWidth (NSRRenderedPage::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
+	_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
 }
 
 void
