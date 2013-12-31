@@ -431,10 +431,6 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError)));
 	Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (needViewMode (NSRAbstractDocument::NSRDocumentStyle)),
-		      this, SLOT (onViewModeRequested (NSRAbstractDocument::NSRDocumentStyle)));
-	Q_ASSERT (ok);
-
 #ifdef NSR_CORE_LITE_VERSION
 	ok = connect (_core, SIGNAL (liteVersionOverPage ()), this, SLOT (onLiteVersionOverPage ()));
 	Q_ASSERT (ok);
@@ -679,6 +675,9 @@ NSRReaderBB10::onGotoActionTriggered ()
 void
 NSRReaderBB10::onReflowActionTriggered ()
 {
+	if (!_core->isTextReflowSwitchSupported ())
+		return;
+
 	/* Check whether we have noted user about text mode */
 	if (_startMode != ApplicationStartupMode::InvokeCard && !NSRSettings::instance()->isTextModeNoted ()) {
 		NSRSettings::instance()->saveTextModeNoted ();
@@ -695,6 +694,9 @@ NSRReaderBB10::onReflowActionTriggered ()
 	}
 
 	_core->switchTextReflow ();
+
+	if (!_core->isPageRendering ())
+		setViewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		NSRSettings::instance()->saveWordWrapWithoutSync (_core->isTextReflow ());
@@ -841,6 +843,9 @@ NSRReaderBB10::onPageRendered (int number)
 
 	if (_isActiveFrame)
 		onThumbnail ();
+
+	setViewMode (_core->isTextReflow () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
+					    : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 }
 
 void
@@ -1157,23 +1162,6 @@ NSRReaderBB10::onPageTapped ()
 		_page->setActionBarVisibility (ChromeVisibility::Hidden);
 
 	_slider->setBottomSpace (getActionBarHeight ());
-}
-
-void
-NSRReaderBB10::onViewModeRequested (NSRAbstractDocument::NSRDocumentStyle mode)
-{
-	bool needRefit = false;
-
-	needRefit = (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT) &&
-		    (mode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) &&
-		    !_core->getCurrentPage().isCached () &&
-		    _core->getCurrentPage().isAutoCrop () &&
-		    _core->isFitToWidth ();
-
-	_pageView->setViewMode (mode);
-
-	if (needRefit)
-		_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH);
 }
 
 void
@@ -1549,4 +1537,21 @@ NSRReaderBB10::retranslateUi ()
 {
 	_filePicker->setTitle (trUtf8 ("Select File", "Open file window"));
 	_translator->translate ();
+}
+
+void
+NSRReaderBB10::setViewMode (NSRAbstractDocument::NSRDocumentStyle mode)
+{
+	bool needRefit = false;
+
+	needRefit = (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT) &&
+		    (mode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) &&
+		    !_core->getCurrentPage().isCached () &&
+		    _core->getCurrentPage().isAutoCrop () &&
+		    _core->isFitToWidth ();
+
+	_pageView->setViewMode (mode);
+
+	if (needRefit)
+		_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH);
 }

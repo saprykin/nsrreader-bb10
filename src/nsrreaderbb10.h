@@ -58,7 +58,6 @@ private Q_SLOTS:
     void onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError error);
     void onSystemLanguageChanged ();
     void onPageTapped ();
-    void onViewModeRequested (NSRAbstractDocument::NSRDocumentStyle mode);
     void onPopTransitionEnded (bb::cascades::Page *page);
     void onLastDocumentRequested (const QString& path);
     void onDocumentToBeDeleted (const QString& path);
@@ -101,6 +100,7 @@ private:
     void showToast (const QString& text, bool reset);
     int getActionBarHeight ();
     int getActionBarHeightForOrientation (bb::cascades::UIOrientation::Type orientation);
+    void setViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
 
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;
