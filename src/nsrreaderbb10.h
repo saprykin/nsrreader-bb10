@@ -12,6 +12,7 @@
 #include "nsrtranslator.h"
 
 #include <bb/cascades/pickers/FilePicker>
+#include <bb/cascades/Application>
 #include <bb/cascades/ImageView>
 #include <bb/cascades/ActivityIndicator>
 #include <bb/cascades/Page>
@@ -26,8 +27,6 @@
 #include <bb/system/CardDoneMessage>
 
 #include <QObject>
-
-namespace bb { namespace cascades { class Application; }}
 
 class NSRReaderBB10 : public QObject
 {

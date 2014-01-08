@@ -9,7 +9,6 @@
 #include "nsrglobalnotifier.h"
 #include "nsrreader.h"
 
-#include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/Container>
 #include <bb/cascades/DockLayout>
