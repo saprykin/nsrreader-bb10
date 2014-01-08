@@ -31,7 +31,6 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 						      .layout(DockLayout::create ());
 
 	_listView = new NSRBookmarksListView ();
-	_listView->setVisible (false);
 	_listView->setVerticalAlignment (VerticalAlignment::Fill);
 	_listView->setHorizontalAlignment (HorizontalAlignment::Fill);
 	_listView->setListItemProvider (new NSRBookmarkItemFactory ());
@@ -59,8 +58,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	_noBookmarksLabel = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Center)
 					   .multiline(true)
-					   .text(trUtf8 ("Add bookmarks to display them here"))
-					   .visible(false);
+					   .text(trUtf8 ("Add bookmarks to display them here"));
 	_noBookmarksLabel->textStyle()->setFontSize (FontSize::Medium);
 	_noBookmarksLabel->textStyle()->setTextAlign (TextAlign::Center);
 
@@ -83,8 +81,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 
 	_emptyContainer = Container::create().horizontal(HorizontalAlignment::Center)
 					     .vertical(VerticalAlignment::Center)
-					     .layout(StackLayout::create ())
-					     .visible(false);
+					     .layout(StackLayout::create ());
 	_emptyContainer->setLeftPadding (20);
 	_emptyContainer->setRightPadding (20);
 	_emptyContainer->add (emptyImage);
@@ -134,6 +131,9 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	_model->setSortingKeys (QStringList ("page-number"));
 
 	_listView->setDataModel (_model);
+
+	/* Show empty label and image */
+	unloadData ();
 }
 
 NSRBookmarksPage::~NSRBookmarksPage ()
