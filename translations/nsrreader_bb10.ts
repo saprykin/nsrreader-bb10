@@ -568,6 +568,10 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
         <source>Edit bookmark for current page</source>
         <translation>Edit bookmark for current page</translation>
     </message>
+    <message>
+        <source>Invert page colors</source>
+        <translation>Invert page colors</translation>
+    </message>
 </context>
 <context>
     <name>NSRSettings</name>

@@ -250,6 +250,7 @@ NSRReaderBB10::initFullUI ()
 	nextPageAction->accessibility()->setName (trUtf8 ("Go to next page"));
 	gotoAction->accessibility()->setName (trUtf8 ("Go to arbitrary page"));
 	reflowAction->accessibility()->setName (trUtf8 ("Switch text reflow mode"));
+	invertAction->accessibility()->setName (trUtf8 ("Invert page colors"));
 	prefsAction->accessibility()->setName (trUtf8 ("Open Settings page"));
 	helpAction->accessibility()->setName (trUtf8 ("Open page with information about the app and help sections"));
 	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
@@ -300,6 +301,19 @@ NSRReaderBB10::initFullUI ()
 #  endif
 #endif
 
+	openAction->setImageSource (QUrl ("asset:///open.png"));
+	prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
+	nextPageAction->setImageSource (QUrl ("asset:///next.png"));
+	gotoAction->setImageSource (QUrl ("asset:///goto.png"));
+	reflowAction->setImageSource (QUrl ("asset:///text-mode.png"));
+	invertAction->setImageSource (QUrl ("asset:///invert.png"));
+	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
+	helpAction->setImageSource (QUrl ("asset:///about.png"));
+	shareAction->setImageSource (QUrl ("asset:///share.png"));
+#ifdef NSR_CORE_LITE_VERSION
+	buyAction->setImage (QUrl ("asset:///buy.png"));
+#endif
+
 	_page->addAction (openAction, ActionBarPlacement::OnBar);
 	_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
@@ -319,19 +333,6 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("share", shareAction);
 	_actionAggregator->addAction ("prefs", prefsAction);
 	_actionAggregator->addAction ("help", helpAction);
-
-	openAction->setImageSource (QUrl ("asset:///open.png"));
-	prevPageAction->setImageSource (QUrl ("asset:///previous.png"));
-	nextPageAction->setImageSource (QUrl ("asset:///next.png"));
-	gotoAction->setImageSource (QUrl ("asset:///goto.png"));
-	reflowAction->setImageSource (QUrl ("asset:///text-mode.png"));
-	invertAction->setImageSource (QUrl ("asset:///invert.png"));
-	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
-	helpAction->setImageSource (QUrl ("asset:///about.png"));
-	shareAction->setImageSource (QUrl ("asset:///share.png"));
-#ifdef NSR_CORE_LITE_VERSION
-	buyAction->setImage (QUrl ("asset:///buy.png"));
-#endif
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,1,0)
