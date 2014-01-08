@@ -85,6 +85,7 @@ private Q_SLOTS:
     void onBuyActionTriggered ();
 #endif
     void retranslateUi ();
+    void retranslateBookmarkAction (bool hasBookmark);
 
 private:
     void initFullUI ();

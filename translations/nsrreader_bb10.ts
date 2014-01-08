@@ -564,6 +564,10 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
         <source>Bookmarks</source>
         <translation>Bookmarks</translation>
     </message>
+    <message>
+        <source>Edit bookmark for current page</source>
+        <translation>Edit bookmark for current page</translation>
+    </message>
 </context>
 <context>
     <name>NSRSettings</name>

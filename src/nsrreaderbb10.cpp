@@ -204,7 +204,7 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
-	ActionItem *bookmarkAction = ActionItem::create().title(trUtf8 ("Add Bookmark")).enabled(false);
+	ActionItem *bookmarkAction = ActionItem::create().enabled (false);
 #ifdef NSR_CORE_LITE_VERSION
 	ActionItem *buyAction = ActionItem::create();
 	buyAction->setTitle (trUtf8 ("Buy", "Buy full version of the app in the store"));
@@ -237,9 +237,6 @@ NSRReaderBB10::initFullUI ()
 	_translator->addTranslatable ((UIObject *) shareAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share"));
-	_translator->addTranslatable ((UIObject *) bookmarkAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
-				      QString ("NSRReaderBB10"),
-				      QString ("Add Bookmark"));
 #ifdef NSR_CORE_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
@@ -256,7 +253,6 @@ NSRReaderBB10::initFullUI ()
 	prefsAction->accessibility()->setName (trUtf8 ("Open Settings page"));
 	helpAction->accessibility()->setName (trUtf8 ("Open page with information about the app and help sections"));
 	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
-	bookmarkAction->accessibility()->setName (trUtf8 ("Add bookmark for current page"));
 
 	_translator->addTranslatable ((UIObject *) openAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
@@ -294,10 +290,6 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share file with others"));
-	_translator->addTranslatable ((UIObject *) bookmarkAction->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRReaderBB10"),
-				      QString ("Add bookmark for current page"));
 #    ifdef NSR_CORE_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
@@ -337,7 +329,6 @@ NSRReaderBB10::initFullUI ()
 	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
-	bookmarkAction->setImageSource (QUrl ("asset:///bookmark-add.png"));
 #ifdef NSR_CORE_LITE_VERSION
 	buyAction->setImage (QUrl ("asset:///buy.png"));
 #endif
@@ -901,8 +892,7 @@ NSRReaderBB10::updateVisualControls ()
 
 	if (bookmarkAction != NULL) {
 		bookmarkAction->setEnabled (isDocumentOpened);
-		bookmarkAction->setTitle (hasBookmark ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
-		bookmarkAction->setImageSource (hasBookmark ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
+		retranslateBookmarkAction (hasBookmark);
 	}
 }
 
@@ -1480,13 +1470,7 @@ NSRReaderBB10::onBookmarkChanged (int page, bool removed)
 	if (page != _core->getCurrentPage().getNumber ())
 		return;
 
-	ActionItem *bookmarkAction = static_cast < ActionItem * > (_actionAggregator->actionByName ("bookmark"));
-
-	if (bookmarkAction == NULL)
-		return;
-
-	bookmarkAction->setTitle (!removed ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
-	bookmarkAction->setImageSource (!removed ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
+	retranslateBookmarkAction (!removed);
 }
 
 void
@@ -1524,7 +1508,40 @@ void
 NSRReaderBB10::retranslateUi ()
 {
 	_filePicker->setTitle (trUtf8 ("Select File", "Open file window"));
+
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	Q_ASSERT (pane != NULL);
+
+	bool hasBookmark = false;
+
+	if (pane != NULL) {
+		NSRBookmarksPage *bookmarksPage = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
+
+		if (bookmarksPage != NULL)
+			hasBookmark = bookmarksPage->hasBookmark (_core->getCurrentPage().getNumber ());
+	}
+
+	retranslateBookmarkAction (hasBookmark);
+
 	_translator->translate ();
+}
+
+void
+NSRReaderBB10::retranslateBookmarkAction (bool hasBookmark)
+{
+	ActionItem *bookmarkAction = static_cast < ActionItem *> (_actionAggregator->actionByName ("bookmark"));
+
+	if (bookmarkAction != NULL) {
+		bookmarkAction->setTitle (hasBookmark ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
+		bookmarkAction->setImageSource (hasBookmark ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
+
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+		bookmarkAction->accessibility()->setName (hasBookmark ? trUtf8 ("Add bookmark for current page")
+								      : trUtf8 ("Edit bookmark for current page"));
+#  endif
+#endif
+	}
 }
 
 void

@@ -563,6 +563,10 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
         <source>Bookmarks</source>
         <translation>Закладки</translation>
     </message>
+    <message>
+        <source>Edit bookmark for current page</source>
+        <translation>Редактировать закладку на текущую страницу</translation>
+    </message>
 </context>
 <context>
     <name>NSRSettings</name>
