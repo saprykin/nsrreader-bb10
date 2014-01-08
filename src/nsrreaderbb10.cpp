@@ -333,6 +333,9 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("share", shareAction);
 	_actionAggregator->addAction ("prefs", prefsAction);
 	_actionAggregator->addAction ("help", helpAction);
+#ifdef NSR_CORE_LITE_VERSION
+	_actionAggregator->addAction ("buy", buyAction);
+#endif
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,1,0)
