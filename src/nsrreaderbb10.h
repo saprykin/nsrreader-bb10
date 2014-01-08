@@ -46,7 +46,7 @@ private Q_SLOTS:
     void onPrefsActionTriggered ();
     void onHelpActionTriggered ();
     void onShareActionTriggered ();
-    void onAddBookmarkActionTriggered ();
+    void onBookmarkActionTriggered ();
     void onPageRendered (int number);
     void onIndicatorRequested (bool enabled);
     void onIndicatorStopped ();

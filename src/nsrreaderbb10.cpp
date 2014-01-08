@@ -204,7 +204,7 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *helpAction = ActionItem::create().title (trUtf8 ("About", "About a program, window title"));
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
-	ActionItem *addBookmarkAction = ActionItem::create().title(trUtf8 ("Add Bookmark")).enabled(false);
+	ActionItem *bookmarkAction = ActionItem::create().title(trUtf8 ("Add Bookmark")).enabled(false);
 #ifdef NSR_CORE_LITE_VERSION
 	ActionItem *buyAction = ActionItem::create();
 	buyAction->setTitle (trUtf8 ("Buy", "Buy full version of the app in the store"));
@@ -237,7 +237,7 @@ NSRReaderBB10::initFullUI ()
 	_translator->addTranslatable ((UIObject *) shareAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share"));
-	_translator->addTranslatable ((UIObject *) addBookmarkAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
+	_translator->addTranslatable ((UIObject *) bookmarkAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Add Bookmark"));
 #ifdef NSR_CORE_LITE_VERSION
@@ -256,7 +256,7 @@ NSRReaderBB10::initFullUI ()
 	prefsAction->accessibility()->setName (trUtf8 ("Open Settings page"));
 	helpAction->accessibility()->setName (trUtf8 ("Open page with information about the app and help sections"));
 	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
-	addBookmarkAction->accessibility()->setName (trUtf8 ("Add bookmark for current page"));
+	bookmarkAction->accessibility()->setName (trUtf8 ("Add bookmark for current page"));
 
 	_translator->addTranslatable ((UIObject *) openAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
@@ -294,7 +294,7 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share file with others"));
-	_translator->addTranslatable ((UIObject *) addBookmarkAction->accessibility (),
+	_translator->addTranslatable ((UIObject *) bookmarkAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Add bookmark for current page"));
@@ -312,7 +312,7 @@ NSRReaderBB10::initFullUI ()
 	_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
 	_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
-	_page->addAction (addBookmarkAction, ActionBarPlacement::InOverflow);
+	_page->addAction (bookmarkAction, ActionBarPlacement::InOverflow);
 	_page->addAction (reflowAction, ActionBarPlacement::InOverflow);
 	_page->addAction (invertAction, ActionBarPlacement::InOverflow);
 	_page->addAction (shareAction, ActionBarPlacement::InOverflow);
@@ -321,7 +321,7 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("prev", prevPageAction);
 	_actionAggregator->addAction ("next", nextPageAction);
 	_actionAggregator->addAction ("goto", gotoAction);
-	_actionAggregator->addAction ("add-bookmark", addBookmarkAction);
+	_actionAggregator->addAction ("add-bookmark", bookmarkAction);
 	_actionAggregator->addAction ("reflow", reflowAction);
 	_actionAggregator->addAction ("invert", invertAction);
 	_actionAggregator->addAction ("share", shareAction);
@@ -337,7 +337,7 @@ NSRReaderBB10::initFullUI ()
 	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
-	addBookmarkAction->setImageSource (QUrl ("asset:///bookmark-add.png"));
+	bookmarkAction->setImageSource (QUrl ("asset:///bookmark-add.png"));
 #ifdef NSR_CORE_LITE_VERSION
 	buyAction->setImage (QUrl ("asset:///buy.png"));
 #endif
@@ -346,13 +346,19 @@ NSRReaderBB10::initFullUI ()
 #  if BBNDK_VERSION_AT_LEAST(10,1,0)
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
-	Shortcut *openShortcut = Shortcut::create().key("Ctrl + O");
-	Shortcut *gotoShortcut = Shortcut::create().key("Ctrl + G");
+	Shortcut *openShortcut = Shortcut::create().key ("Ctrl + O");
+	Shortcut *gotoShortcut = Shortcut::create().key ("Ctrl + G");
+	Shortcut *reflowShortcut = Shortcut::create().key ("Ctrl + T");
+	Shortcut *invertShortcut = Shortcut::create().key ("Ctrl + I");
+	Shortcut *bookmarkShortcut = Shortcut::create().key ("Ctrl + B");
 
 	prevPageAction->addShortcut (prevShortcut);
 	nextPageAction->addShortcut (nextShortcut);
 	openAction->addShortcut (openShortcut);
 	gotoAction->addShortcut (gotoShortcut);
+	reflowAction->addShortcut (reflowShortcut);
+	invertAction->addShortcut (invertShortcut);
+	bookmarkAction->addShortcut (bookmarkShortcut);
 #  endif
 #endif
 
@@ -368,7 +374,7 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (gotoAction, SIGNAL (triggered ()), this, SLOT (onGotoActionTriggered ()));
 	Q_ASSERT (ok);
 
-	ok = connect (addBookmarkAction, SIGNAL (triggered ()), this, SLOT (onAddBookmarkActionTriggered ()));
+	ok = connect (bookmarkAction, SIGNAL (triggered ()), this, SLOT (onBookmarkActionTriggered ()));
 	Q_ASSERT (ok);
 
 	ok = connect (prefsAction, SIGNAL (triggered ()), this, SLOT (onPrefsActionTriggered ()));
@@ -761,7 +767,7 @@ NSRReaderBB10::onShareActionTriggered ()
 }
 
 void
-NSRReaderBB10::onAddBookmarkActionTriggered ()
+NSRReaderBB10::onBookmarkActionTriggered ()
 {
 	if (_prompt != NULL)
 		return;
