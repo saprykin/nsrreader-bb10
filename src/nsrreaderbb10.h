@@ -4,7 +4,6 @@
 #include "nsrpageview.h"
 #include "nsrreadercore.h"
 #include "nsrpagestatus.h"
-#include "nsrreadprogress.h"
 #include "nsrwelcomeview.h"
 #include "nsractionaggregator.h"
 #include "nsraboutpage.h"
@@ -105,7 +104,6 @@ private:
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;
     NSRPageStatus				*_pageStatus;
-    NSRReadProgress				*_readProgress;
     NSRWelcomeView				*_welcomeView;
     NSRActionAggregator				*_actionAggregator;
     NSRPageSlider				*_slider;

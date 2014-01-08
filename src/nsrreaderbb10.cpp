@@ -59,7 +59,6 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_core (NULL),
 	_pageView (NULL),
 	_pageStatus (NULL),
-	_readProgress (NULL),
 	_welcomeView (NULL),
 	_actionAggregator (NULL),
 	_slider (NULL),
@@ -109,10 +108,10 @@ NSRReaderBB10::initFullUI ()
 	_translator = new NSRTranslator (this);
 	_qtranslator = new QTranslator (this);
 
-	Container *rootContainer = new Container ();
-	rootContainer->setLayout (DockLayout::create ());
-	rootContainer->setHorizontalAlignment (HorizontalAlignment::Fill);
-	rootContainer->setVerticalAlignment (VerticalAlignment::Fill);
+	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						      .vertical(VerticalAlignment::Fill)
+						      .background(Color::Black)
+						      .layout(DockLayout::create());
 
 	_toast = new SystemToast (this);
 
@@ -182,20 +181,8 @@ NSRReaderBB10::initFullUI ()
 	rootContainer->add (_indicator);
 	rootContainer->add (_pageStatus);
 	rootContainer->add (_slider);
-	rootContainer->setBackground (Color::Black);
-	rootContainer->setLayoutProperties (StackLayoutProperties::create().spaceQuota (1.0));
 
-	_readProgress = new NSRReadProgress ();
-
-	Container *mainContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						      .vertical(VerticalAlignment::Fill)
-						      .layout(StackLayout::create ())
-						      .background(Color::Black);
-
-	mainContainer->add (rootContainer);
-	mainContainer->add (_readProgress);
-
-	_page = Page::create().content (mainContainer);
+	_page = Page::create().content (rootContainer);
 	_actionAggregator = new NSRActionAggregator (this);
 
 	_bpsHandler = new NSRBpsEventHandler (this);
@@ -673,7 +660,6 @@ NSRReaderBB10::onGotoActionTriggered ()
 {
 	_slider->setBottomSpace (getActionBarHeight ());
 	_slider->setVisible (!_slider->isVisible ());
-	_readProgress->setVisible (!_slider->isVisible ());
 
 	if (_slider->isVisible ())
 		_pageStatus->setVisible (true);
@@ -820,8 +806,6 @@ NSRReaderBB10::onPageRendered (int number)
 	_pageView->setPage (page);
 
 	_pageStatus->setStatus (number, pagesCount);
-	_readProgress->setCurrentPage (number);
-	_readProgress->setPagesCount (pagesCount);
 	_slider->setRange (1, pagesCount);
 	_slider->setValue (number);
 
@@ -880,7 +864,6 @@ NSRReaderBB10::updateVisualControls ()
 	_actionAggregator->setActionEnabled ("invert", isDocumentOpened);
 	_pageView->setVisible (isDocumentOpened);
 	_welcomeView->setVisible (!isDocumentOpened);
-	_readProgress->setVisible (!_slider->isVisible () && isDocumentOpened && _core->getPagesCount () > 1);
 	_slider->setEnabled (isDocumentOpened);
 
 	if (!isDocumentOpened) {
@@ -1347,9 +1330,6 @@ NSRReaderBB10::resetState ()
 	_pageView->resetPage ();
 	_pageView->setViewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 	_pageStatus->setStatus (0, 0);
-	_readProgress->setVisible (false);
-	_readProgress->setPagesCount (0);
-	_readProgress->setCurrentPage (0);
 	_slider->setVisible (false);
 	_slider->setRange (0, 0);
 	_slider->setValue (0);
