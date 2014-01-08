@@ -52,6 +52,7 @@ using namespace bb::multimedia;
 #define NSR_MAIN_TAB_INDEX		0
 #define NSR_RECENT_TAB_INDEX		1
 #define NSR_BOOKMARKS_TAB_INDEX		2
+#define NSR_CROP_TO_WIDTH_THRESHOLD	4
 
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
@@ -821,11 +822,9 @@ NSRReaderBB10::onPageRendered (int number)
 	_slider->setRange (1, pagesCount);
 	_slider->setValue (number);
 
-	/* Fit cropped page to width only in graphic mode,
-	 * cached pages should be already cropped and fitted */
 	if (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
-		if (_core->isFitToWidth () && page.isAutoCrop () && !page.isCached () &&
-		    page.getRenderReason () != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH)
+		if (_core->isFitToWidth () && page.isAutoCrop () &&
+		    qAbs (page.getSize().width () - _pageView->getSize().width ()) > NSR_CROP_TO_WIDTH_THRESHOLD)
 			_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH);
 	}
 
