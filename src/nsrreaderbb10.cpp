@@ -321,7 +321,7 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("prev", prevPageAction);
 	_actionAggregator->addAction ("next", nextPageAction);
 	_actionAggregator->addAction ("goto", gotoAction);
-	_actionAggregator->addAction ("add-bookmark", bookmarkAction);
+	_actionAggregator->addAction ("bookmark", bookmarkAction);
 	_actionAggregator->addAction ("reflow", reflowAction);
 	_actionAggregator->addAction ("invert", invertAction);
 	_actionAggregator->addAction ("share", shareAction);
@@ -605,7 +605,7 @@ NSRReaderBB10::initCardUI ()
 
 	_page->removeAction (_actionAggregator->removeAction ("open"));
 	_page->removeAction (_actionAggregator->removeAction ("share"));
-	_page->removeAction (_actionAggregator->removeAction ("add-bookmark"));
+	_page->removeAction (_actionAggregator->removeAction ("bookmark"));
 
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 	Q_ASSERT (pane != NULL);
@@ -859,7 +859,7 @@ NSRReaderBB10::updateVisualControls ()
 	bool isDocumentOpened = _core->isDocumentOpened ();
 	bool hasBookmark = false;
 
-	ActionItem *bookmarkAction = static_cast < ActionItem *> (_actionAggregator->actionByName ("add-bookmark"));
+	ActionItem *bookmarkAction = static_cast < ActionItem *> (_actionAggregator->actionByName ("bookmark"));
 
 	_actionAggregator->setActionEnabled ("open", true);
 	_actionAggregator->setActionEnabled ("prefs", true);
@@ -921,7 +921,7 @@ NSRReaderBB10::disableVisualControls ()
 	_actionAggregator->setActionEnabled ("prev", false);
 	_actionAggregator->setActionEnabled ("next", false);
 	_actionAggregator->setActionEnabled ("goto", false);
-	_actionAggregator->setActionEnabled ("add-bookmark", false);
+	_actionAggregator->setActionEnabled ("bookmark", false);
 	_actionAggregator->setActionEnabled ("reflow", false);
 	_actionAggregator->setActionEnabled ("invert", false);
 	_actionAggregator->setActionEnabled ("share", false);
@@ -1480,7 +1480,7 @@ NSRReaderBB10::onBookmarkChanged (int page, bool removed)
 	if (page != _core->getCurrentPage().getNumber ())
 		return;
 
-	ActionItem *bookmarkAction = static_cast < ActionItem * > (_actionAggregator->actionByName ("add-bookmark"));
+	ActionItem *bookmarkAction = static_cast < ActionItem * > (_actionAggregator->actionByName ("bookmark"));
 
 	if (bookmarkAction == NULL)
 		return;
