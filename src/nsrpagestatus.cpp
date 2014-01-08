@@ -9,25 +9,36 @@ using namespace bb::cascades;
 
 NSRPageStatus::NSRPageStatus (bb::cascades::Container *parent) :
 	Container (parent),
+	_backgroundContainer (NULL),
 	_statusLabel (NULL),
 	_timerId (-1),
 	_autoHide (true)
 {
-	_statusLabel = Label::create().horizontal(HorizontalAlignment::Fill)
-				      .vertical(VerticalAlignment::Center);
-	_statusLabel->textStyle()->setColor (Color::White);
-	_statusLabel->textStyle()->setFontSize (FontSize::Small);
-
+	setBackground (Color::Transparent);
 	setLayout (DockLayout::create ());
-	setBackground (ImagePaint (QUrl ("asset:///border-white.amd")));
-	setOpacity (0.6);
-	setLeftPadding (10);
-	setRightPadding (10);
-	setTopPadding (6);
-	setBottomPadding (10);
-	setLeftMargin (50);
 
-	add (_statusLabel);
+	_backgroundContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						  .vertical(VerticalAlignment::Fill)
+						  .background(Color::Gray)
+						  .opacity(0.5);
+
+	Container *labelContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						       .vertical(VerticalAlignment::Fill)
+						       .background(Color::Transparent)
+						       .layout(DockLayout::create());
+
+	labelContainer->setLeftPadding (5);
+	labelContainer->setRightPadding (5);
+	labelContainer->setTopPadding (5);
+	labelContainer->setBottomPadding (5);
+
+	_statusLabel = Label::create().horizontal(HorizontalAlignment::Fill)
+				       .vertical(VerticalAlignment::Fill);
+
+	labelContainer->add (_statusLabel);
+
+	add (_backgroundContainer);
+	add (labelContainer);
 }
 
 NSRPageStatus::~NSRPageStatus ()
@@ -51,6 +62,11 @@ NSRPageStatus::setStatus (int page, int totalPages)
 
 	_statusLabel->setText (QString("%1/%2").arg(region.locale().toString (page))
 					       .arg (region.locale().toString (totalPages)));
+}
+
+void NSRPageStatus::resetStatus ()
+{
+	_statusLabel->resetText ();
 }
 
 void
@@ -87,6 +103,24 @@ NSRPageStatus::setAutoHide (bool autoHide)
 	}
 
 	_autoHide = autoHide;
+}
+
+void
+NSRPageStatus::setStatusBackground (const bb::cascades::Paint& paint)
+{
+	_backgroundContainer->setBackground (paint);
+}
+
+void
+NSRPageStatus::setStatusBackgroundOpacity (float opacity)
+{
+	_backgroundContainer->setOpacity (opacity);
+}
+
+void
+NSRPageStatus::setFontSize (bb::cascades::FontSize::Type size)
+{
+	_statusLabel->textStyle()->setFontSize (size);
 }
 
 void

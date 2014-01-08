@@ -21,14 +21,13 @@ using namespace bb::device;
 
 NSRSceneCover::NSRSceneCover (QObject *parent) :
 	SceneCover (parent),
+	_pageStatus (NULL),
 	_titleLabel (NULL),
 	_backView (NULL),
 	_logoView (NULL),
 	_pageView (NULL),
 	_textView (NULL),
 	_textContainer (NULL),
-	_pageNumContainer (NULL),
-	_pageNumLabel (NULL),
 	_isTextOnly (false)
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -80,29 +79,13 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 				       .scalingMethod(ScalingMethod::AspectFill)
 				       .visible(false);
 
-	_pageNumContainer = Container::create().horizontal(HorizontalAlignment::Left)
-					       .vertical(VerticalAlignment::Top)
-					       .background(Color::Transparent)
-					       .layout(DockLayout::create())
-					       .visible(false);
-
-	Container *numContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						     .vertical(VerticalAlignment::Fill)
-						     .background(Color::Black)
-						     .opacity(0.5);
-
-	Container *numLabelContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-							       .vertical(VerticalAlignment::Fill)
-							       .background(Color::Transparent)
-							       .layout(DockLayout::create());
-	numLabelContainer->setLeftPadding (5);
-	numLabelContainer->setRightPadding (5);
-	numLabelContainer->setTopPadding (5);
-	numLabelContainer->setBottomPadding (5);
-
-	_pageNumLabel = Label::create().horizontal(HorizontalAlignment::Fill)
-				       .vertical(VerticalAlignment::Fill);
-	_pageNumLabel->textStyle()->setFontSize(FontSize::XXSmall);
+	_pageStatus = new NSRPageStatus ();
+	_pageStatus->setAutoHide (false);
+	_pageStatus->setStatusBackground (Color::Black);
+	_pageStatus->setStatusBackgroundOpacity (0.5f);
+	_pageStatus->setFontSize (FontSize::XXSmall);
+	_pageStatus->setHorizontalAlignment (HorizontalAlignment::Left);
+	_pageStatus->setVerticalAlignment (VerticalAlignment::Top);
 
 	_textContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
@@ -127,15 +110,11 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	_textView->textStyle()->setFontSize (FontSize::XSmall);
 	_textContainer->add (_textView);
 
-	numLabelContainer->add (_pageNumLabel);
-	_pageNumContainer->add (numContainer);
-	_pageNumContainer->add (numLabelContainer);
-
 	imageContainer->add (_backView);
 	imageContainer->add (_logoView);
 	imageContainer->add (_pageView);
 	imageContainer->add (_textContainer);
-	imageContainer->add (_pageNumContainer);
+	imageContainer->add (_pageStatus);
 
 	rootContainer->add (_titleContainer);
 	rootContainer->add (imageContainer);
@@ -160,8 +139,7 @@ NSRSceneCover::setPageData (const NSRRenderedPage&	page,
 	_pageView->setImage (page.getImage ());
 	_textView->setText (page.getText ());
 	_titleLabel->setText (title);
-	_pageNumLabel->setText (QString("%1 / %2").arg(region.locale().toString (page.getNumber ()))
-						  .arg (region.locale().toString (pagesTotal)));
+	_pageStatus->setStatus (page.getNumber (), pagesTotal);
 
 	QString	extension = QFileInfo(title).suffix().toLower ();
 	QString background;
@@ -186,7 +164,7 @@ NSRSceneCover::resetPageData ()
 	_titleLabel->resetText ();
 	_pageView->resetImage ();
 	_pageView->resetImageSource ();
-	_pageNumLabel->resetText ();
+	_pageStatus->resetStatus ();
 	_textView->resetText ();
 	_isTextOnly = false;
 }
@@ -199,5 +177,5 @@ NSRSceneCover::setStatic (bool isStatic)
 	_logoView->setVisible (isStatic);
 	_pageView->setVisible (!isStatic && !_isTextOnly);
 	_textContainer->setVisible (_isTextOnly);
-	_pageNumContainer->setVisible (!isStatic);
+	_pageStatus->setVisible (!isStatic);
 }

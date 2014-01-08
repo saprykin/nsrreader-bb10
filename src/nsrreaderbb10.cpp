@@ -143,8 +143,11 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	_pageStatus = new NSRPageStatus ();
-	_pageStatus->setHorizontalAlignment(HorizontalAlignment::Left);
-	_pageStatus->setVerticalAlignment(VerticalAlignment::Top);
+	_pageStatus->setAutoHide (false);
+	_pageStatus->setHorizontalAlignment (HorizontalAlignment::Left);
+	_pageStatus->setVerticalAlignment (VerticalAlignment::Top);
+	_pageStatus->setStatusBackground (Color::Gray);
+	_pageStatus->setStatusBackgroundOpacity (0.4f);
 	_pageStatus->setStatus (0, 0);
 
 	ok = connect (_pageView, SIGNAL (viewTapped ()), this, SLOT (onPageTapped ()));

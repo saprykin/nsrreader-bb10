@@ -2,6 +2,7 @@
 #define NSRSCENECOVER_H_
 
 #include "nsrrenderedpage.h"
+#include "nsrpagestatus.h"
 
 #include <bb/cascades/SceneCover>
 #include <bb/cascades/ImageView>
@@ -26,6 +27,7 @@ public:
 	void setStatic (bool isStatic);
 
 private:
+	NSRPageStatus *			_pageStatus;
 	bb::cascades::Container *	_titleContainer;
 	bb::cascades::Label *		_titleLabel;
 	bb::cascades::ImageView *	_backView;
@@ -33,8 +35,6 @@ private:
 	bb::cascades::ImageView *	_pageView;
 	bb::cascades::TextArea *	_textView;
 	bb::cascades::Container *	_textContainer;
-	bb::cascades::Container *	_pageNumContainer;
-	bb::cascades::Label *		_pageNumLabel;
 	bool				_isTextOnly;
 };
 
