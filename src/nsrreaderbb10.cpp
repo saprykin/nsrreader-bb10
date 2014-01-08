@@ -674,6 +674,9 @@ NSRReaderBB10::onGotoActionTriggered ()
 	_slider->setBottomSpace (getActionBarHeight ());
 	_slider->setVisible (!_slider->isVisible ());
 	_readProgress->setVisible (!_slider->isVisible ());
+
+	if (_slider->isVisible ())
+		_pageStatus->setVisible (true);
 }
 
 void
