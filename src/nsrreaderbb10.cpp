@@ -1154,7 +1154,7 @@ NSRReaderBB10::onPageTapped ()
 	if (!_core->isDocumentOpened ())
 		return;
 
-	_pageStatus->setOnScreen (!_pageStatus->isVisible ());
+	_pageStatus->setVisible (!_pageStatus->isVisible ());
 
 	if (!_isFullscreen)
 		return;
@@ -1304,9 +1304,10 @@ NSRReaderBB10::onFullscreenSwitchRequested (bool isFullscreen)
 
 	_isFullscreen = isFullscreen;
 
-	if (_isFullscreen)
+	if (_isFullscreen) {
 		_page->setActionBarVisibility (ChromeVisibility::Hidden);
-	else
+		_pageStatus->setVisible (false);
+	} else
 		_page->setActionBarVisibility (ChromeVisibility::Visible);
 
 	_slider->setBottomSpace (getActionBarHeight ());
@@ -1454,15 +1455,12 @@ NSRReaderBB10::onOrientationAboutToChange (bb::cascades::UIOrientation::Type ori
 void
 NSRReaderBB10::onPageSliderInteractionStarted ()
 {
-	_pageStatus->setAutoHide (false);
-	_pageStatus->setOnScreen (true);
+	_pageStatus->setVisible (true);
 }
 
 void
 NSRReaderBB10::onPageSliderInteractionEnded ()
 {
-	_pageStatus->setAutoHide (true);
-
 	int pageNum = _slider->getValue ();
 
 	if (pageNum != _core->getCurrentPage().getNumber ())
