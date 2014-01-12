@@ -1295,6 +1295,9 @@ NSRReaderBB10::onFullscreenSwitchRequested (bool isFullscreen)
 
 	_isFullscreen = isFullscreen;
 
+	if (!_core->isDocumentOpened ())
+		return;
+
 	if (_isFullscreen) {
 		_page->setActionBarVisibility (ChromeVisibility::Hidden);
 		_pageStatus->setVisible (false);
