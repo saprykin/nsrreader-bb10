@@ -422,6 +422,12 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError)));
 	Q_ASSERT (ok);
 
+	ok = connect (_core, SIGNAL (documentOpened (QString)), this, SLOT (onDocumentOpened ()));
+	Q_ASSERT (ok);
+
+	ok = connect (_core, SIGNAL (documentClosed (QString)), this, SLOT (onDocumentClosed ()));
+	Q_ASSERT (ok);
+
 #ifdef NSR_CORE_LITE_VERSION
 	ok = connect (_core, SIGNAL (liteVersionOverPage ()), this, SLOT (onLiteVersionOverPage ()));
 	Q_ASSERT (ok);
@@ -533,7 +539,6 @@ NSRReaderBB10::initFullUI ()
 		_pageView->setViewMode (NSRSettings::instance()->isWordWrap () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
 									       : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		onFullscreenSwitchRequested (NSRSettings::instance()->isFullscreenMode ());
-		onPreventScreenLockSwitchRequested (NSRSettings::instance()->isPreventScreenLock ());
 	}
 
 	ok = connect (_pageView, SIGNAL (zoomChanged (double, NSRRenderRequest::NSRRenderReason)),
@@ -722,9 +727,11 @@ NSRReaderBB10::onPrefsActionTriggered ()
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
-	ok = connect (prefsPage, SIGNAL (switchPreventScreenLock (bool)),
-		      this, SLOT (onPreventScreenLockSwitchRequested (bool)));
-	Q_ASSERT (ok);
+	if (_core->isDocumentOpened ()) {
+		ok = connect (prefsPage, SIGNAL (switchPreventScreenLock (bool)),
+				this, SLOT (onPreventScreenLockSwitchRequested (bool)));
+		Q_ASSERT (ok);
+	}
 
 	_naviPane->push (prefsPage);
 
@@ -1488,6 +1495,24 @@ NSRReaderBB10::onBookmarkPageRequested (int page)
 
 	if (page != _core->getCurrentPage().getNumber ())
 		_core->navigateToPage (NSRReaderCore::PAGE_LOAD_CUSTOM, page);
+}
+
+void
+NSRReaderBB10::onDocumentOpened ()
+{
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		return;
+
+	onPreventScreenLockSwitchRequested (NSRSettings::instance()->isPreventScreenLock ());
+}
+
+void
+NSRReaderBB10::onDocumentClosed ()
+{
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		return;
+
+	onPreventScreenLockSwitchRequested (false);
 }
 
 #ifdef NSR_CORE_LITE_VERSION
