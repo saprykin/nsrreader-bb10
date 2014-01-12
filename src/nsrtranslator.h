@@ -35,6 +35,8 @@ public:
 			      const QString&		disamb = QString ());
 	void removeTranslatable (bb::cascades::UIObject *obj);
 
+	static QString translatePath (const QString& path);
+
 public Q_SLOTS:
 	void translate ();
 

@@ -243,10 +243,6 @@
 <context>
     <name>NSRLastDocItemFactory</name>
     <message>
-        <source>File</source>
-        <translation>File</translation>
-    </message>
-    <message>
         <source>Share</source>
         <translation>Share</translation>
     </message>
@@ -794,6 +790,17 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>WINSAMI2</source>
         <translation>WINSAMI2</translation>
+    </message>
+</context>
+<context>
+    <name>NSRTranslator</name>
+    <message>
+        <source>Device</source>
+        <translation>Device</translation>
+    </message>
+    <message>
+        <source>Media Card</source>
+        <translation>Media Card</translation>
     </message>
 </context>
 <context>

@@ -40,6 +40,7 @@ private Q_SLOTS:
 	void onImageStateChanged (bb::cascades::ResourceState::Type state);
 	void onLayoutFrameChanged (const QRectF& rect);
 	void onAnimationStopped ();
+	void retranslateUi ();
 
 private:
 	NSRTranslator			*_translator;

@@ -28,7 +28,7 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 	NSRLastDocItem *item = new NSRLastDocItem ();
 	NSRTranslator *translator = item->getTranslator ();
 
-	ActionSet *actionSet = ActionSet::create().subtitle (trUtf8 ("File"));
+	ActionSet *actionSet = ActionSet::create ();
 
 	ActionItem *shareAction = ActionItem::create().title (trUtf8 ("Share"));
 	ActionItem *hideAction = ActionItem::create().title (trUtf8 ("Clear Recent", "Clear recent files"));
@@ -104,6 +104,7 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 
 	if (item->actionSetCount () > 0) {
 		item->actionSetAt(0)->setTitle (map["title"].toString ());
+		item->actionSetAt(0)->setSubtitle (NSRTranslator::translatePath (QFileInfo(docPath).canonicalPath ()));
 		item->actionSetAt(0)->at(0)->setEnabled (NSRFileSharer::isSharable (docPath));
 	}
 
@@ -113,5 +114,3 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 			  map["path"].toString (),
 			  map["encrypted"].toBool ());
 }
-
-

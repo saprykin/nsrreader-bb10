@@ -60,6 +60,17 @@ NSRTranslator::removeTranslatable (bb::cascades::UIObject* obj)
 		delete info;
 }
 
+QString
+NSRTranslator::translatePath (const QString& path)
+{
+	QString ret = path;
+
+	ret.replace (QRegExp ("^/accounts/[^/]*/shared"), trUtf8 ("Device"));
+	ret.replace (QRegExp ("^/accounts/[^/]*/removable/sdcard"), trUtf8 ("Media Card"));
+
+	return ret;
+}
+
 void
 NSRTranslator::translate ()
 {

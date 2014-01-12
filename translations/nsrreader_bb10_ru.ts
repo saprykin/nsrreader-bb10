@@ -243,10 +243,6 @@
 <context>
     <name>NSRLastDocItemFactory</name>
     <message>
-        <source>File</source>
-        <translation>Файл</translation>
-    </message>
-    <message>
         <source>Share</source>
         <translation>Поделиться</translation>
     </message>
@@ -793,6 +789,17 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>WINSAMI2</source>
         <translation>WINSAMI2</translation>
+    </message>
+</context>
+<context>
+    <name>NSRTranslator</name>
+    <message>
+        <source>Device</source>
+        <translation>Устройство</translation>
+    </message>
+    <message>
+        <source>Media Card</source>
+        <translation>Карта памяти</translation>
     </message>
 </context>
 <context>

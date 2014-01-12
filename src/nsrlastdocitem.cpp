@@ -8,6 +8,7 @@
 #include <bb/cascades/Color>
 #include <bb/cascades/ImagePaint>
 #include <bb/cascades/LayoutUpdateHandler>
+#include <bb/cascades/ActionSet>
 
 #include <QFile>
 
@@ -186,7 +187,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 #endif
 
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
-		      _translator, SLOT (translate ()));
+		      this, SLOT (retranslateUi ()));
 	Q_ASSERT (ok);
 }
 
@@ -321,4 +322,13 @@ NSRLastDocItem::onAnimationStopped ()
 {
 	_innerContainer->setOpacity (1.0);
 	_solidContainer->setOpacity (1.0);
+}
+
+void
+NSRLastDocItem::retranslateUi ()
+{
+	if (actionSetCount () > 0)
+		actionSetAt(0)->setSubtitle (NSRTranslator::translatePath (QFileInfo(_path).canonicalPath ()));
+
+	_translator->translate ();
 }
