@@ -531,7 +531,6 @@ NSRReaderBB10::initFullUI ()
 
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
 		_pageView->setViewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
-		_isFullscreen = true;
 		onFullscreenSwitchRequested (true);
 	} else {
 		/* We do need it here to not to read settings in card mode */
