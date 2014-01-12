@@ -19,8 +19,17 @@ public:
 		return _translator;
 	}
 
+	void setPageTitle (const QString& title);
+	void setPageNumber (int page);
+
+private Q_SLOTS:
+	void retranslateUi ();
+
 private:
+	void retranslateSubtitle ();
+
 	NSRTranslator *	_translator;
+	int		_page;
 };
 
 #endif /* NSRBOOKMARKITEM_H_ */

@@ -157,11 +157,14 @@
     </message>
 </context>
 <context>
-    <name>NSRBookmarkItemFactory</name>
+    <name>NSRBookmarkItem</name>
     <message>
-        <source>Bookmark</source>
-        <translation>Bookmark</translation>
+        <source>Page %1</source>
+        <translation>Page %1</translation>
     </message>
+</context>
+<context>
+    <name>NSRBookmarkItemFactory</name>
     <message>
         <source>Edit Bookmark</source>
         <translation>Edit Bookmark</translation>
@@ -226,10 +229,6 @@
     <message>
         <source>Open file to display bookmarks</source>
         <translation>Open file to display bookmarks</translation>
-    </message>
-    <message>
-        <source>Page %1</source>
-        <translation>Page %1</translation>
     </message>
     <message>
         <source>Bookmark added</source>

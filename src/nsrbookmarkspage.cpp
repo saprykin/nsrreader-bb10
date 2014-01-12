@@ -212,7 +212,6 @@ NSRBookmarksPage::loadData (const QString& file)
 				QVariantMap map;
 
 				map["title"] = title;
-				map["description"] = trUtf8("Page %1").arg (page);
 				map["page-number"] = page.toInt ();
 
 				_model->insert (map);
@@ -240,7 +239,6 @@ NSRBookmarksPage::addBookmark (const QString& title, int page)
 		_model->updateItem (query, val);
 	} else {
 		val["title"] = title;
-		val["description"] = trUtf8("Page %1").arg (page);
 		val["page-number"] = page;
 		_model->insert (val);
 	}
@@ -289,11 +287,8 @@ NSRBookmarksPage::retranslateUi ()
 	for (int i = 0; i < _model->size (); ++i) {
 		QVariantList query;
 		query.append (QVariant (i));
-		QVariantMap val = _model->data(query).toMap ();
 
-		val["description"] = trUtf8("Page %1").arg (val["page-number"].toInt ());
-
-		_model->updateItem (query, val);
+		_model->updateItem (query, _model->data(query).toMap ());
 	}
 }
 

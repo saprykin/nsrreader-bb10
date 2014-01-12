@@ -27,7 +27,7 @@ NSRBookmarkItemFactory::createItem (bb::cascades::ListView* list, const QString&
 	NSRBookmarksListView *listView = static_cast < NSRBookmarksListView * > (list);
 	NSRTranslator *translator = item->getTranslator ();
 
-	ActionSet *actionSet = ActionSet::create().subtitle (trUtf8 ("Bookmark"));
+	ActionSet *actionSet = ActionSet::create ();
 
 	ActionItem *editAction = ActionItem::create().title (trUtf8 ("Edit Bookmark"));
 	DeleteActionItem *removeAction = DeleteActionItem::create ();
@@ -83,6 +83,6 @@ NSRBookmarkItemFactory::updateItem (bb::cascades::ListView * 	list,
 	QVariantMap map = data.value<QVariantMap> ();
 	NSRBookmarkItem *item = static_cast < NSRBookmarkItem * > (listItem);
 
-	item->setTitle (map["title"].toString ());
-	item->setDescription (map["description"].toString ());
+	item->setPageTitle (map["title"].toString ());
+	item->setPageNumber (map["page-number"].toInt ());
 }
