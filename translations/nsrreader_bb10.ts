@@ -339,17 +339,9 @@
         <translation>Rotate Right</translation>
     </message>
     <message>
-        <source>Page</source>
-        <translation>Page</translation>
-    </message>
-    <message>
         <source>Fit to Width</source>
         <comment>Fit image to screen width</comment>
         <translation>Fit to Width</translation>
-    </message>
-    <message>
-        <source>Graphical Mode</source>
-        <translation>Graphical Mode</translation>
     </message>
     <message>
         <source>Page text</source>
@@ -358,6 +350,10 @@
     <message>
         <source>Page image</source>
         <translation>Page image</translation>
+    </message>
+    <message>
+        <source>Page %1</source>
+        <translation>Page %1</translation>
     </message>
 </context>
 <context>

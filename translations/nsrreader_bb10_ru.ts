@@ -339,17 +339,9 @@
         <translation>Повернуть вправо</translation>
     </message>
     <message>
-        <source>Page</source>
-        <translation>Страница</translation>
-    </message>
-    <message>
         <source>Fit to Width</source>
         <comment>Fit image to screen width</comment>
         <translation>По ширине</translation>
-    </message>
-    <message>
-        <source>Graphical Mode</source>
-        <translation>Графический режим</translation>
     </message>
     <message>
         <source>Page text</source>
@@ -358,6 +350,10 @@
     <message>
         <source>Page image</source>
         <translation>Изображение страницы</translation>
+    </message>
+    <message>
+        <source>Page %1</source>
+        <translation>Страница %1</translation>
     </message>
 </context>
 <context>

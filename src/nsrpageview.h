@@ -67,6 +67,9 @@ private Q_SLOTS:
 	void retranslateUi ();
 
 private:
+	void retranslateTitle ();
+
+	NSRRenderedPage				_page;
 	NSRTranslator				*_translator;
 	bb::cascades::ScrollView		*_scrollView;
 	bb::cascades::ScrollView		*_textScrollView;

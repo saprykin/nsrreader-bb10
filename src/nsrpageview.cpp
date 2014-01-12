@@ -239,6 +239,9 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 
 	_delayedScrollPos = QPointF (0, 0);
 	_delayedTextScrollPos = QPointF (0, 0);
+	_page = page;
+
+	retranslateTitle ();
 }
 
 void
@@ -247,6 +250,7 @@ NSRPageView::resetPage ()
 	_imageView->resetImage ();
 	_imageView->resetImageSource ();
 	_imageView->setRotationZ (0.0);
+	_page = NSRRenderedPage ();
 	_scrollView->removeActionSet (_actionSet);
 	_textArea->resetText ();
 	_currentZoom = 100;
@@ -562,7 +566,14 @@ NSRPageView::onPinchCancelled ()
 void
 NSRPageView::retranslateUi ()
 {
-	_actionSet->setTitle (trUtf8 ("Page"));
-	_actionSet->setSubtitle (trUtf8 ("Graphical Mode"));
+	retranslateTitle ();
+
 	_translator->translate ();
+}
+
+void
+NSRPageView::retranslateTitle ()
+{
+	if (_scrollView->actionSetCount () > 0)
+		_scrollView->actionSetAt(0)->setTitle (trUtf8("Page %1").arg (_page.getNumber ()));
 }
