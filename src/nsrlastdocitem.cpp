@@ -230,6 +230,11 @@ NSRLastDocItem::updateItem (const QString&	title,
 		_viewContainer->setRightPadding (12);
 		_viewContainer->setBottomPadding (12);
 	}
+
+	if (actionSetCount () > 0)
+		actionSetAt(0)->setTitle (title);
+
+	retranslateSubtitle ();
 }
 
 void
@@ -327,8 +332,14 @@ NSRLastDocItem::onAnimationStopped ()
 void
 NSRLastDocItem::retranslateUi ()
 {
-	if (actionSetCount () > 0)
-		actionSetAt(0)->setSubtitle (NSRTranslator::translatePath (QFileInfo(_path).canonicalPath ()));
+	retranslateSubtitle ();
 
 	_translator->translate ();
+}
+
+void
+NSRLastDocItem::retranslateSubtitle ()
+{
+	if (actionSetCount () > 0)
+		actionSetAt(0)->setSubtitle (NSRTranslator::translatePath (QFileInfo(_path).canonicalPath ()));
 }

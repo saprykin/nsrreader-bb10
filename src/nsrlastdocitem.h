@@ -43,6 +43,8 @@ private Q_SLOTS:
 	void retranslateUi ();
 
 private:
+	void retranslateSubtitle ();
+
 	NSRTranslator			*_translator;
 	bb::cascades::ImageView		*_imageView;
 	bb::cascades::Label		*_textView;

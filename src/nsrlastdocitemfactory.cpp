@@ -96,17 +96,11 @@ NSRLastDocItemFactory::updateItem (bb::cascades::ListView*	list,
 	Q_UNUSED (type);
 	Q_UNUSED (indexPath);
 
-	QString docPath;
 	QVariantMap map = data.value<QVariantMap> ();
 	NSRLastDocItem *item = static_cast<NSRLastDocItem *> (listItem);
 
-	docPath = map["path"].toString ();
-
-	if (item->actionSetCount () > 0) {
-		item->actionSetAt(0)->setTitle (map["title"].toString ());
-		item->actionSetAt(0)->setSubtitle (NSRTranslator::translatePath (QFileInfo(docPath).canonicalPath ()));
-		item->actionSetAt(0)->at(0)->setEnabled (NSRFileSharer::isSharable (docPath));
-	}
+	if (item->actionSetCount () > 0)
+		item->actionSetAt(0)->at(0)->setEnabled (NSRFileSharer::isSharable (map["path"].toString ()));
 
 	item->updateItem (map["title"].toString (),
 			  map["image"].toString (),
