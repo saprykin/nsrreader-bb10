@@ -76,7 +76,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 
 	Label *authorInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Fill)
-					   .text(QString::fromUtf8 ("© 2011-2013 Alexander Saprykin"))
+					   .text(QString::fromUtf8 ("© 2011-2014 Alexander Saprykin"))
 					   .multiline(true);
 	authorInfo->textStyle()->setTextAlign (TextAlign::Center);
 
@@ -389,6 +389,9 @@ NSRAboutPage::retranslateUi ()
 			    	    	    "<li><b>N</b> key to navigate to next page</li>"
 					    "<li><b>Ctrl + G</b> to go to arbitrary page</li>"
 					    "<li><b>Ctrl + O</b> to open another file</li>"
+					    "<li><b>Ctrl + B</b> to add or edit bookmark</li>"
+					    "<li><b>Ctrl + T</b> to switch text reflow mode</li>"
+					    "<li><b>Ctrl + I</b> to invert colors</li>"
 					    "<li><b>Space</b> to scroll down one screen</li>"
 					    "<li><b>Shift + Space</b> to scroll up one screen</li>"
 					    "<li><b>B</b> to scroll to bottom</li>"
@@ -397,26 +400,22 @@ NSRAboutPage::retranslateUi ()
 			    	    	    "Use <b>Go to</b> page slider to move to arbitrary page.");
 	QString fullScrSet = trUtf8 ("<b>Fullscreen Mode</b> &ndash; Action Bar at the bottom of the screen will "
 			    	     "be hidden (tap the screen somewhere to show or hide it again).");
-	QString reflowSet = trUtf8 ("<b>Text Reflow</b> &ndash; this is a special mode for files which contain a lot of "
-			    	    "text information. In this mode NSR Reader will display only text data and wrap lines "
-			    	    "for comfortable reading.");
-	QString invertSet = trUtf8 ("<b>Invert Colors</b> &ndash; use this feature during dark days or if you have OLED "
-			    	    "display to save power.");
 	QString cropSet = trUtf8 ("<b>Crop Blank Edges</b> &ndash; automatically tries to detect and crop page's blank edges "
 				  "to reduce side-to-side scrolling, especially when page is fitted to screen width.");
+	QString screenLockSet = trUtf8 ("<b>Prevent Screen Locking</b> &ndash; disables screen autolocking feature "
+					"while you are reading the file.");
 	QString encodSet = trUtf8 ("<b>Text Encoding</b> &ndash; this is only applied for plain text files. "
 			    	   "Use it for files with specific national encoding.");
 	QString tip1 = trUtf8 ("NSR Reader always saves position for every file.");
-	QString tip2 = trUtf8 ("Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.");
-	QString tip3 = trUtf8 ("Just tap the screen to see current page and overall page count at the top left corner.");
-	QString tip4 = trUtf8 ("Use <i>Recent</i> page to get fast access to files you have been reading.");
-	QString tip5 = trUtf8 ("Use pinch gesture for zooming (increase/decrease font size in text reflow mode).");
-	QString tip6 = trUtf8 ("NSR Reader supports password protected PDF files (except for latest "
+	QString tip2 = trUtf8 ("Just tap the screen to see current page and overall page count at the top left corner.");
+	QString tip3 = trUtf8 ("Use <i>Recent</i> tab to get fast access to files you have been reading.");
+	QString tip4 = trUtf8 ("Use pinch gesture for zooming and to increase/decrease font size in text reflow mode.");
+	QString tip5 = trUtf8 ("NSR Reader supports password protected PDF files (except for latest "
 			       "Adobe&reg; Reader&reg; X encryption algorithm), so don't scary them!");
-	QString tip7 = trUtf8 ("NSR Reader caches already rendered pages to increase performance.");
-	QString tip8 = trUtf8 ("If you have any problems with the app, please contact me (see contacts on "
+	QString tip6 = trUtf8 ("NSR Reader caches already rendered pages to increase performance.");
+	QString tip7 = trUtf8 ("If you have any problems with the app, please contact me (see contacts on "
 			       "<i>About</i> page). Any suggestions are highly welcomed, too.");
-	QString tip9 = trUtf8 ("Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!");
+	QString tip8 = trUtf8 ("Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!");
 
 	QString htmlHelp = QString ("<html><head/><body style=\"font-family: arial, sans-serif; "
 				    "font-size: 28pt; background: #0F0F0F; color: #E6E6E6;\">"
@@ -432,9 +431,9 @@ NSRAboutPage::retranslateUi ()
 				    "<div><p>%7</p></div>"
 				    "<div><p>%8</p></div>"
 				    "<div><p>%9</p></div>"
-				    "<div><p>%10</p></div>"
 				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
-				    "border-bottom: 1px solid white; font-size: 30pt;\">%11</div></div>"
+				    "border-bottom: 1px solid white; font-size: 30pt;\">%10</div></div>"
+				    "<div><p>%11</p></div>"
 				    "<div><p>%12</p></div>"
 				    "<div><p>%13</p></div>"
 				    "<div><p>%14</p></div>"
@@ -442,14 +441,11 @@ NSRAboutPage::retranslateUi ()
 				    "<div><p>%16</p></div>"
 				    "<div><p>%17</p></div>"
 				    "<div><p>%18</p></div>"
-				    "<div><p>%19</p></div>"
-				    "<div><p>%20</p></div>"
 				    "</body></html>");
 	htmlHelp = htmlHelp.arg(welcomeTitle).arg(welcomeSection).arg(navTitle).arg(navigationSection);
-	htmlHelp = htmlHelp.arg(settingsTitle).arg(fullScrSet).arg(reflowSet)
-			   .arg(invertSet).arg(cropSet).arg(encodSet);
+	htmlHelp = htmlHelp.arg(settingsTitle).arg(fullScrSet).arg(cropSet).arg(screenLockSet).arg(encodSet);
 	htmlHelp = htmlHelp.arg(tipsTitle).arg(tip1).arg(tip2).arg(tip3).arg(tip4).arg(tip5)
-			   .arg(tip6).arg(tip7).arg(tip8).arg(tip9);
+			   .arg(tip6).arg(tip7).arg(tip8);
 
 	_webHelp->setHtml (htmlHelp);
 
