@@ -223,7 +223,8 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 		_textScrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 		_textArea->setText (page.getText ());
 		setScrollPosition (_delayedTextScrollPos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
-	}
+	} else if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH)
+		_delayedScrollPos = getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 
 	_hasImage = page.getImage().isValid ();
 	_imageView->setImage (page.getImage ());
