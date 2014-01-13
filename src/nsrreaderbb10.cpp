@@ -3,7 +3,6 @@
 #include "nsrsession.h"
 #include "nsrpreferencespage.h"
 #include "nsrlastdocspage.h"
-#include "nsrbookmarkspage.h"
 #include "nsrfilesharer.h"
 #include "nsrscenecover.h"
 #include "nsrglobalnotifier.h"
@@ -774,15 +773,10 @@ NSRReaderBB10::onBookmarkActionTriggered ()
 		return;
 
 	QString bookmarkTitle;
-	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-	Q_ASSERT (pane != NULL);
+	NSRBookmarksPage *bookmarksPage = getBookmarksPage ();
 
-	if (pane != NULL) {
-		NSRBookmarksPage *bookmarks = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
-
-		if (bookmarks != NULL)
-			bookmarks->hasBookmark (_core->getCurrentPage().getNumber (), &bookmarkTitle);
-	}
+	if (bookmarksPage != NULL)
+		bookmarksPage->hasBookmark (_core->getCurrentPage().getNumber (), &bookmarkTitle);
 
 	_prompt = new SystemPrompt (this);
 
@@ -892,12 +886,10 @@ NSRReaderBB10::updateVisualControls ()
 		if (_isFullscreen && _page->actionBarVisibility () == ChromeVisibility::Visible)
 			_page->setActionBarVisibility (ChromeVisibility::Hidden);
 
-		if (pane != NULL) {
-			NSRBookmarksPage *bookmarksPage = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
+		NSRBookmarksPage *bookmarksPage = getBookmarksPage ();
 
-			if (bookmarksPage != NULL)
-				hasBookmark = bookmarksPage->hasBookmark (currentPage);
-		}
+		if (bookmarksPage != NULL)
+			hasBookmark = bookmarksPage->hasBookmark (currentPage);
 	}
 
 	if (bookmarkAction != NULL) {
@@ -1085,15 +1077,10 @@ void
 NSRReaderBB10::onAddBookmarkDialogFinished (bb::system::SystemUiResult::Type res)
 {
 	if (res == SystemUiResult::ConfirmButtonSelection) {
-		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-		Q_ASSERT (pane != NULL);
+		NSRBookmarksPage *bookmarksPage = getBookmarksPage ();
 
-		if (pane != NULL) {
-			NSRBookmarksPage *bookmarks = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
-
-			if (bookmarks != NULL)
-				bookmarks->addBookmark (_prompt->inputFieldTextEntry (), _core->getCurrentPage().getNumber ());
-		}
+		if (bookmarksPage != NULL)
+			bookmarksPage->addBookmark (_prompt->inputFieldTextEntry (), _core->getCurrentPage().getNumber ());
 	}
 
 	_prompt->deleteLater ();
@@ -1540,17 +1527,11 @@ NSRReaderBB10::retranslateUi ()
 {
 	_filePicker->setTitle (trUtf8 ("Select File", "Open file window"));
 
-	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-	Q_ASSERT (pane != NULL);
-
 	bool hasBookmark = false;
+	NSRBookmarksPage *bookmarksPage = getBookmarksPage ();
 
-	if (pane != NULL) {
-		NSRBookmarksPage *bookmarksPage = dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
-
-		if (bookmarksPage != NULL)
-			hasBookmark = bookmarksPage->hasBookmark (_core->getCurrentPage().getNumber ());
-	}
+	if (bookmarksPage != NULL)
+		hasBookmark = bookmarksPage->hasBookmark (_core->getCurrentPage().getNumber ());
 
 	retranslateBookmarkAction (hasBookmark);
 
@@ -1590,4 +1571,16 @@ NSRReaderBB10::setViewMode (NSRAbstractDocument::NSRDocumentStyle mode)
 
 	if (needRefit)
 		_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH);
+}
+
+NSRBookmarksPage *
+NSRReaderBB10::getBookmarksPage () const
+{
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	Q_ASSERT (pane != NULL);
+
+	if (pane != NULL)
+		return dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
+	else
+		return NULL;
 }

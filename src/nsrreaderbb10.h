@@ -10,6 +10,7 @@
 #include "nsrpageslider.h"
 #include "nsrbpseventhandler.h"
 #include "nsrtranslator.h"
+#include "nsrbookmarkspage.h"
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/Application>
@@ -102,6 +103,7 @@ private:
     int getActionBarHeight ();
     int getActionBarHeightForOrientation (bb::cascades::UIOrientation::Type orientation);
     void setViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
+    NSRBookmarksPage * getBookmarksPage () const;
 
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;
