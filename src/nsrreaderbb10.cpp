@@ -1582,6 +1582,10 @@ NSRReaderBB10::setViewMode (NSRAbstractDocument::NSRDocumentStyle mode)
 NSRBookmarksPage *
 NSRReaderBB10::getBookmarksPage () const
 {
+
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		return NULL;
+
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 	Q_ASSERT (pane != NULL);
 
