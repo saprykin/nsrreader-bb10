@@ -43,6 +43,14 @@ public:
 	void setTextZoom (int fontSize);
 	void setZoomEnabled (bool enabled);
 	bool isZoomEnabled () const;
+	void setActionsEnabled (bool enabled);
+	void setGesturesEnabled (bool enabled);
+	inline bool isActionsEnabled () const {
+		return _isActionsEnabled;
+	}
+	inline bool isGesturesEnabled () const {
+		return _isGesturesEnabled;
+	}
 
 Q_SIGNALS:
 	void viewTapped ();
@@ -95,6 +103,8 @@ private:
 	bool					_isZooming;
 	bool					_isZoomingEnabled;
 	bool					_hasImage;
+	bool					_isActionsEnabled;
+	bool					_isGesturesEnabled;
 };
 
 #endif /* NSRPAGEVIEW_H_ */

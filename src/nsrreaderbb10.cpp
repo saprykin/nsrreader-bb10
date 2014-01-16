@@ -120,6 +120,7 @@ NSRReaderBB10::initFullUI ()
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
 						.vertical(VerticalAlignment::Fill)
 						.visible(false);
+	_indicator->setTouchPropagationMode (TouchPropagationMode::None);
 
 	bool ok = connect (_indicator, SIGNAL (stopped ()), this, SLOT (onIndicatorStopped ()));
 	Q_UNUSED (ok);
@@ -1029,6 +1030,11 @@ NSRReaderBB10::onIndicatorRequested (bool enabled)
 		return;
 
 	_pageView->setZoomEnabled (!enabled);
+	_pageView->setActionsEnabled (!enabled);
+	_pageView->setGesturesEnabled (!enabled);
+
+	_indicator->setTouchPropagationMode (_pageView->isVisible () ? TouchPropagationMode::None
+								     : TouchPropagationMode::Full);
 
 	if (enabled) {
 		disableVisualControls ();

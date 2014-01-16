@@ -46,7 +46,9 @@ NSRPageView::NSRPageView (Container *parent) :
 	_isInvertedColors (false),
 	_isZooming (false),
 	_isZoomingEnabled (true),
-	_hasImage (false)
+	_hasImage (false),
+	_isActionsEnabled (true),
+	_isGesturesEnabled (true)
 {
 	_translator = new NSRTranslator (this);
 
@@ -200,7 +202,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_isZooming)
 		return;
 
-	if (_scrollView->actionSetCount () == 0)
+	if (_isActionsEnabled && _scrollView->actionSetCount () == 0)
 		_scrollView->addActionSet (_actionSet);
 
 	if (_delayedScrollPos.isNull ())
@@ -376,6 +378,32 @@ NSRPageView::isZoomEnabled () const
 	return _isZoomingEnabled;
 }
 
+void
+NSRPageView::setActionsEnabled (bool enabled)
+{
+	if (_isActionsEnabled == enabled)
+		return;
+
+	if (enabled) {
+		if (_page.isValid () && _scrollView->actionSetCount () == 0)
+			_scrollView->addActionSet (_actionSet);
+	} else
+		_scrollView->removeActionSet (_actionSet);
+
+	_textArea->setTouchPropagationMode (enabled ? TouchPropagationMode::Full : TouchPropagationMode::None);
+
+	_isActionsEnabled = enabled;
+}
+
+void
+NSRPageView::setGesturesEnabled (bool enabled)
+{
+	if (_isGesturesEnabled == enabled)
+		return;
+
+	_isGesturesEnabled = enabled;
+}
+
 NSRAbstractDocument::NSRDocumentStyle
 NSRPageView::getViewMode () const
 {
@@ -454,6 +482,9 @@ NSRPageView::onTapGesture (bb::cascades::TapEvent *ev)
 void
 NSRPageView::onDoubleTappedGesture (bb::cascades::DoubleTapEvent* ev)
 {
+	if (!_isGesturesEnabled)
+		return;
+
 	_lastTapTime = QTime::currentTime ();
 
 	if (_lastTapTimer != -1) {
