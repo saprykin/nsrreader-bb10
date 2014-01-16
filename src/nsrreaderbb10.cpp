@@ -692,8 +692,8 @@ NSRReaderBB10::onReflowActionTriggered ()
 
 	_core->switchTextReflow ();
 
-	if (!_core->isPageRendering ())
-		setViewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
+	if (!_core->isPageRendering () && _core->isTextReflow ())
+		_pageView->setViewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		NSRSettings::instance()->saveWordWrapWithoutSync (_core->isTextReflow ());
