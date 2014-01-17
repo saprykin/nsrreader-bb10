@@ -1132,16 +1132,17 @@ NSRReaderBB10::onPageTapped ()
 	if (!_core->isDocumentOpened ())
 		return;
 
-	_pageStatus->setVisible (!_pageStatus->isVisible ());
-
-	if (!_isFullscreen)
+	if (!_isFullscreen) {
+		_pageStatus->setVisible (!_pageStatus->isVisible ());
 		return;
+	}
 
 	if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
 		_page->setActionBarVisibility (ChromeVisibility::Overlay);
 	else
 		_page->setActionBarVisibility (ChromeVisibility::Hidden);
 
+	_pageStatus->setVisible (_page->actionBarVisibility () == ChromeVisibility::Overlay);
 	_slider->setBottomSpace (getActionBarHeight ());
 }
 
