@@ -314,14 +314,26 @@ NSRReaderBB10::initFullUI ()
 	buyAction->setImage (QUrl ("asset:///buy.png"));
 #endif
 
-	_page->addAction (openAction, ActionBarPlacement::OnBar);
-	_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
-	_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
-	_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
-	_page->addAction (bookmarkAction, ActionBarPlacement::InOverflow);
-	_page->addAction (reflowAction, ActionBarPlacement::InOverflow);
-	_page->addAction (invertAction, ActionBarPlacement::InOverflow);
-	_page->addAction (shareAction, ActionBarPlacement::InOverflow);
+	if (_startMode == ApplicationStartupMode::InvokeCard) {
+		_page->addAction (shareAction, ActionBarPlacement::OnBar);
+		_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
+		_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
+		_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
+		_page->addAction (reflowAction, ActionBarPlacement::InOverflow);
+		_page->addAction (invertAction, ActionBarPlacement::InOverflow);
+
+		openAction->setParent (_page);
+		bookmarkAction->setParent (_page);
+	} else {
+		_page->addAction (openAction, ActionBarPlacement::OnBar);
+		_page->addAction (prevPageAction, ActionBarPlacement::OnBar);
+		_page->addAction (nextPageAction, ActionBarPlacement::OnBar);
+		_page->addAction (gotoAction, ActionBarPlacement::InOverflow);
+		_page->addAction (bookmarkAction, ActionBarPlacement::InOverflow);
+		_page->addAction (reflowAction, ActionBarPlacement::InOverflow);
+		_page->addAction (invertAction, ActionBarPlacement::InOverflow);
+		_page->addAction (shareAction, ActionBarPlacement::InOverflow);
+	}
 
 	_actionAggregator->addAction ("open", openAction);
 	_actionAggregator->addAction ("prev", prevPageAction);
@@ -341,19 +353,23 @@ NSRReaderBB10::initFullUI ()
 #  if BBNDK_VERSION_AT_LEAST(10,1,0)
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
-	Shortcut *openShortcut = Shortcut::create().key ("Ctrl + O");
 	Shortcut *gotoShortcut = Shortcut::create().key ("Ctrl + G");
 	Shortcut *reflowShortcut = Shortcut::create().key ("Ctrl + T");
 	Shortcut *invertShortcut = Shortcut::create().key ("Ctrl + I");
-	Shortcut *bookmarkShortcut = Shortcut::create().key ("Ctrl + B");
 
 	prevPageAction->addShortcut (prevShortcut);
 	nextPageAction->addShortcut (nextShortcut);
-	openAction->addShortcut (openShortcut);
 	gotoAction->addShortcut (gotoShortcut);
 	reflowAction->addShortcut (reflowShortcut);
 	invertAction->addShortcut (invertShortcut);
-	bookmarkAction->addShortcut (bookmarkShortcut);
+
+	if (_startMode != ApplicationStartupMode::InvokeCard) {
+		Shortcut *openShortcut = Shortcut::create().key ("Ctrl + O");
+		Shortcut *bookmarkShortcut = Shortcut::create().key ("Ctrl + B");
+
+		openAction->addShortcut (openShortcut);
+		bookmarkAction->addShortcut (bookmarkShortcut);
+	}
 #  endif
 #endif
 
@@ -439,73 +455,77 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onPopTransitionEnded (bb::cascades::Page *)));
 	Q_ASSERT (ok);
 
-	NSRLastDocsPage *recentPage = new NSRLastDocsPage ();
-	NSRBookmarksPage *bookmarksPage = new NSRBookmarksPage ();
+	if (_startMode == ApplicationStartupMode::InvokeCard) {
+		Application::instance()->setScene (_naviPane);
+	} else {
+		NSRLastDocsPage *recentPage = new NSRLastDocsPage ();
+		NSRBookmarksPage *bookmarksPage = new NSRBookmarksPage ();
 
-	ok = connect (recentPage, SIGNAL (requestDocument (QString)), this, SLOT (onLastDocumentRequested (QString)));
-	Q_ASSERT (ok);
+		ok = connect (recentPage, SIGNAL (requestDocument (QString)), this, SLOT (onLastDocumentRequested (QString)));
+		Q_ASSERT (ok);
 
-	ok = connect (recentPage, SIGNAL (documentToBeDeleted (QString)), this, SLOT (onDocumentToBeDeleted (QString)));
-	Q_ASSERT (ok);
+		ok = connect (recentPage, SIGNAL (documentToBeDeleted (QString)), this, SLOT (onDocumentToBeDeleted (QString)));
+		Q_ASSERT (ok);
 
-	ok = connect (recentPage, SIGNAL (documentToBeDeleted (QString)), bookmarksPage, SLOT (onDocumentToBeDeleted (QString)));
-	Q_ASSERT (ok);
+		ok = connect (recentPage, SIGNAL (documentToBeDeleted (QString)), bookmarksPage, SLOT (onDocumentToBeDeleted (QString)));
+		Q_ASSERT (ok);
 
-	Tab *mainTab = Tab::create().content(_naviPane).title(trUtf8 ("Reading")).imageSource(QUrl ("asset:///main-tab.png"));
-	Tab *recentTab = Tab::create().content(recentPage).title(trUtf8 ("Recent")).imageSource(QUrl ("asset:///recent.png"));
-	Tab *bookmarksTab = Tab::create().content(bookmarksPage).title(trUtf8 ("Bookmarks")).imageSource(QUrl ("asset:///bookmarks.png"));
+		Tab *mainTab = Tab::create().content(_naviPane).title(trUtf8 ("Reading")).imageSource(QUrl ("asset:///main-tab.png"));
+		Tab *recentTab = Tab::create().content(recentPage).title(trUtf8 ("Recent")).imageSource(QUrl ("asset:///recent.png"));
+		Tab *bookmarksTab = Tab::create().content(bookmarksPage).title(trUtf8 ("Bookmarks")).imageSource(QUrl ("asset:///bookmarks.png"));
 
-	TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
+		TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
 
-	ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened ()));
-	Q_ASSERT (ok);
+		ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened ()));
+		Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (documentOpened (QString)), bookmarksPage, SLOT (onDocumentOpened (QString)));
-	Q_ASSERT (ok);
+		ok = connect (_core, SIGNAL (documentOpened (QString)), bookmarksPage, SLOT (onDocumentOpened (QString)));
+		Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (documentClosed (QString)), bookmarksPage, SLOT (onDocumentClosed ()));
-	Q_ASSERT (ok);
+		ok = connect (_core, SIGNAL (documentClosed (QString)), bookmarksPage, SLOT (onDocumentClosed ()));
+		Q_ASSERT (ok);
 
-	ok = connect (bookmarksPage, SIGNAL (bookmarkChanged (int, bool)), this, SLOT (onBookmarkChanged (int, bool)));
-	Q_ASSERT (ok);
+		ok = connect (bookmarksPage, SIGNAL (bookmarkChanged (int, bool)), this, SLOT (onBookmarkChanged (int, bool)));
+		Q_ASSERT (ok);
 
-	ok = connect (bookmarksPage, SIGNAL (pageRequested (int)), this, SLOT (onBookmarkPageRequested (int)));
-	Q_ASSERT (ok);
+		ok = connect (bookmarksPage, SIGNAL (pageRequested (int)), this, SLOT (onBookmarkPageRequested (int)));
+		Q_ASSERT (ok);
 
-	_translator->addTranslatable ((UIObject *) mainTab,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
-				      QString ("NSRReaderBB10"),
-				      QString ("Reading"));
-	_translator->addTranslatable ((UIObject *) recentTab,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
-				      QString ("NSRReaderBB10"),
-				      QString ("Recent"));
-	_translator->addTranslatable ((UIObject *) bookmarksTab,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
-				      QString ("NSRReaderBB10"),
-				      QString ("Bookmarks"));
+		_translator->addTranslatable ((UIObject *) mainTab,
+				NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+				QString ("NSRReaderBB10"),
+				QString ("Reading"));
+		_translator->addTranslatable ((UIObject *) recentTab,
+				NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+				QString ("NSRReaderBB10"),
+				QString ("Recent"));
+		_translator->addTranslatable ((UIObject *) bookmarksTab,
+				NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+				QString ("NSRReaderBB10"),
+				QString ("Bookmarks"));
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
-	mainTab->accessibility()->setName (trUtf8 ("Main file reading page"));
-	recentTab->accessibility()->setName (trUtf8 ("Page with recent files"));
+		mainTab->accessibility()->setName (trUtf8 ("Main file reading page"));
+		recentTab->accessibility()->setName (trUtf8 ("Page with recent files"));
 
-	_translator->addTranslatable ((UIObject *) mainTab->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRReaderBB10"),
-				      QString ("Main file reading page"));
-	_translator->addTranslatable ((UIObject *) recentTab->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRReaderBB10"),
-				      QString ("Page with recent files"));
-	_translator->addTranslatable ((UIObject *) bookmarksTab->accessibility (),
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				      QString ("NSRReaderBB10"),
-				      QString ("Page with bookmarks"));
+		_translator->addTranslatable ((UIObject *) mainTab->accessibility (),
+				NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				QString ("NSRReaderBB10"),
+				QString ("Main file reading page"));
+		_translator->addTranslatable ((UIObject *) recentTab->accessibility (),
+				NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				QString ("NSRReaderBB10"),
+				QString ("Page with recent files"));
+		_translator->addTranslatable ((UIObject *) bookmarksTab->accessibility (),
+				NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+				QString ("NSRReaderBB10"),
+				QString ("Page with bookmarks"));
 #  endif
 #endif
 
-	Application::instance()->setScene (tabbedPane);
+		Application::instance()->setScene (tabbedPane);
+	}
 
 	MediaKeyWatcher *volumeUpWatcher = new MediaKeyWatcher (MediaKey::VolumeUp, this);
 	MediaKeyWatcher *volumeDownWatcher = new MediaKeyWatcher (MediaKey::VolumeDown, this);
@@ -531,6 +551,7 @@ NSRReaderBB10::initFullUI ()
 
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
 		_pageView->setViewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
+		_pageView->setInvertedColors (false);
 		onFullscreenSwitchRequested (true);
 	} else {
 		/* We do need it here to not to read settings in card mode */
@@ -594,27 +615,6 @@ NSRReaderBB10::initFullUI ()
 	}
 
 	NSRSettings::instance()->setStarting (false);
-}
-
-void
-NSRReaderBB10::initCardUI ()
-{
-	if (_startMode != ApplicationStartupMode::InvokeCard)
-		return;
-
-	_page->removeAction (_actionAggregator->removeAction ("open"));
-	_page->removeAction (_actionAggregator->removeAction ("share"));
-	_page->removeAction (_actionAggregator->removeAction ("bookmark"));
-
-	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-	Q_ASSERT (pane != NULL);
-
-	if (pane != NULL) {
-		pane->remove (pane->at (NSR_BOOKMARKS_TAB_INDEX));
-		pane->remove (pane->at (NSR_RECENT_TAB_INDEX));
-	}
-
-	_pageView->setInvertedColors (false);
 }
 
 void
@@ -735,7 +735,6 @@ NSRReaderBB10::onPrefsActionTriggered ()
 	_naviPane->push (prefsPage);
 
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-	Q_ASSERT (pane != NULL);
 
 	if (pane != NULL) {
 		pane->setActiveTab (pane->at(NSR_MAIN_TAB_INDEX));
@@ -749,7 +748,6 @@ NSRReaderBB10::onHelpActionTriggered ()
 	showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_MAIN);
 
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-	Q_ASSERT (pane != NULL);
 
 	if (pane != NULL) {
 		pane->setActiveTab (pane->at(NSR_MAIN_TAB_INDEX));
@@ -818,7 +816,6 @@ NSRReaderBB10::onPageRendered (int number)
 
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
 		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-		Q_ASSERT (pane != NULL);
 
 		if (pane != NULL) {
 			NSRLastDocsPage *recentPage = dynamic_cast < NSRLastDocsPage * > (pane->at(NSR_RECENT_TAB_INDEX)->content ());
@@ -842,7 +839,6 @@ void
 NSRReaderBB10::updateVisualControls ()
 {
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-	Q_ASSERT (pane != NULL);
 
 	if (_startMode != ApplicationStartupMode::InvokeCard &&
 	    _core->getCurrentPage().getRenderReason () != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH) {
@@ -884,7 +880,8 @@ NSRReaderBB10::updateVisualControls ()
 			_slider->setVisible (false);
 
 		/* Maybe action bar is not autohidden after previous document failed to be opened? */
-		if (_isFullscreen && _page->actionBarVisibility () == ChromeVisibility::Visible)
+		if (_startMode != ApplicationStartupMode::InvokeCard &&
+		    _isFullscreen && _page->actionBarVisibility () == ChromeVisibility::Visible)
 			_page->setActionBarVisibility (ChromeVisibility::Hidden);
 
 		NSRBookmarksPage *bookmarksPage = getBookmarksPage ();
@@ -904,7 +901,6 @@ NSRReaderBB10::disableVisualControls ()
 {
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
 		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-		Q_ASSERT (pane != NULL);
 
 		if (pane != NULL)
 			pane->at(NSR_RECENT_TAB_INDEX)->setEnabled (false);
@@ -1055,7 +1051,6 @@ NSRReaderBB10::onRecentDocumentsRequested ()
 {
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
 		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-		Q_ASSERT (pane != NULL);
 
 		if (pane != NULL)
 			pane->setActiveTab (pane->at (NSR_RECENT_TAB_INDEX));
@@ -1171,7 +1166,6 @@ NSRReaderBB10::onLastDocumentRequested (const QString& path)
 	onFileSelected (QStringList (path));
 
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-	Q_ASSERT (pane != NULL);
 
 	if (pane != NULL)
 		pane->setActiveTab (pane->at (NSR_MAIN_TAB_INDEX));
@@ -1253,13 +1247,11 @@ NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
 		saveSession ();
 		loadSession (file, page);
 #ifdef NSR_CORE_LITE_VERSION
-	} else if (target == "com.gmail.lite.reader.nsr.viewer") {
+	} else if (target == "com.gmail.lite.reader.nsr.viewer")
 #else
-	} else if (target == "com.gmail.reader.nsr.viewer") {
+	} else if (target == "com.gmail.reader.nsr.viewer")
 #endif
-		initCardUI ();
 		loadSession (file, page);
-	}
 
 	if (!_core->isDocumentOpened ())
 		_welcomeView->setCardMode (_startMode == ApplicationStartupMode::InvokeCard);
@@ -1483,7 +1475,6 @@ void
 NSRReaderBB10::onBookmarkPageRequested (int page)
 {
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-	Q_ASSERT (pane != NULL);
 
 	if (pane != NULL)
 		pane->setActiveTab (pane->at (NSR_MAIN_TAB_INDEX));
@@ -1587,7 +1578,6 @@ NSRReaderBB10::getBookmarksPage () const
 		return NULL;
 
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-	Q_ASSERT (pane != NULL);
 
 	if (pane != NULL)
 		return dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());

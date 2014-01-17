@@ -92,7 +92,6 @@ private Q_SLOTS:
 
 private:
     void initFullUI ();
-    void initCardUI ();
     void updateVisualControls ();
     void disableVisualControls ();
     void loadSession (const QString& path = "", int page = -1);
