@@ -809,9 +809,10 @@ NSRReaderBB10::onPageRendered (int number)
 	_slider->setValue (number);
 
 	if (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
-		if (_core->isFitToWidth () && page.isAutoCrop () &&
+		if (_core->isFitToWidth () &&
 		    qAbs (page.getSize().width () - _pageView->getSize().width ()) > NSR_CROP_TO_WIDTH_THRESHOLD)
-			_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH);
+			_pageView->fitToWidth (page.isAutoCrop () ? NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH
+								  : NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
 	}
 
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
