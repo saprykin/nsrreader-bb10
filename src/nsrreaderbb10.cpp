@@ -45,14 +45,14 @@ using namespace bb::cascades::pickers;
 using namespace bb::device;
 using namespace bb::multimedia;
 
-#define NSR_GUI_VERSION			"1.4.0"
+#define NSR_GUI_VERSION				"1.4.0"
 
-#define NSR_ACTION_BAR_NORMAL_HEIGHT	140
-#define NSR_ACTION_BAR_REDUCED_HEIGHT	100
-#define NSR_MAIN_TAB_INDEX		0
-#define NSR_RECENT_TAB_INDEX		1
-#define NSR_BOOKMARKS_TAB_INDEX		2
-#define NSR_CROP_TO_WIDTH_THRESHOLD	4
+#define NSR_GUI_ACTION_BAR_NORMAL_HEIGHT	140
+#define NSR_GUI_ACTION_BAR_REDUCED_HEIGHT	100
+#define NSR_GUI_MAIN_TAB_INDEX			0
+#define NSR_GUI_RECENT_TAB_INDEX		1
+#define NSR_GUI_BOOKMARKS_TAB_INDEX		2
+#define NSR_GUI_CROP_TO_WIDTH_THRESHOLD		4
 
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
@@ -745,7 +745,7 @@ NSRReaderBB10::onPrefsActionTriggered ()
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
 	if (pane != NULL) {
-		pane->setActiveTab (pane->at(NSR_MAIN_TAB_INDEX));
+		pane->setActiveTab (pane->at(NSR_GUI_MAIN_TAB_INDEX));
 		pane->resetSidebarState ();
 	}
 }
@@ -758,7 +758,7 @@ NSRReaderBB10::onHelpActionTriggered ()
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
 	if (pane != NULL) {
-		pane->setActiveTab (pane->at(NSR_MAIN_TAB_INDEX));
+		pane->setActiveTab (pane->at(NSR_GUI_MAIN_TAB_INDEX));
 		pane->resetSidebarState ();
 	}
 
@@ -818,7 +818,7 @@ NSRReaderBB10::onPageRendered (int number)
 
 	if (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
 		if (_core->isFitToWidth () &&
-		    qAbs (page.getSize().width () - _pageView->getSize().width ()) > NSR_CROP_TO_WIDTH_THRESHOLD)
+		    qAbs (page.getSize().width () - _pageView->getSize().width ()) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD)
 			_pageView->fitToWidth (page.isAutoCrop () ? NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH
 								  : NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
 	}
@@ -827,7 +827,7 @@ NSRReaderBB10::onPageRendered (int number)
 		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
 		if (pane != NULL) {
-			NSRLastDocsPage *recentPage = dynamic_cast < NSRLastDocsPage * > (pane->at(NSR_RECENT_TAB_INDEX)->content ());
+			NSRLastDocsPage *recentPage = dynamic_cast < NSRLastDocsPage * > (pane->at(NSR_GUI_RECENT_TAB_INDEX)->content ());
 			Q_ASSERT (recentPage != NULL);
 
 			if (recentPage != NULL)
@@ -852,7 +852,7 @@ NSRReaderBB10::updateVisualControls ()
 	if (_startMode != ApplicationStartupMode::InvokeCard &&
 	    _core->getCurrentPage().getRenderReason () != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH) {
 		if (pane != NULL) {
-			pane->at(NSR_RECENT_TAB_INDEX)->setEnabled (true);
+			pane->at(NSR_GUI_RECENT_TAB_INDEX)->setEnabled (true);
 			pane->resetSidebarState ();
 		}
 	}
@@ -912,7 +912,7 @@ NSRReaderBB10::disableVisualControls ()
 		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
 		if (pane != NULL)
-			pane->at(NSR_RECENT_TAB_INDEX)->setEnabled (false);
+			pane->at(NSR_GUI_RECENT_TAB_INDEX)->setEnabled (false);
 	}
 
 	_actionAggregator->setActionEnabled ("open", false);
@@ -1062,7 +1062,7 @@ NSRReaderBB10::onRecentDocumentsRequested ()
 		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
 		if (pane != NULL)
-			pane->setActiveTab (pane->at (NSR_RECENT_TAB_INDEX));
+			pane->setActiveTab (pane->at (NSR_GUI_RECENT_TAB_INDEX));
 	}
 }
 
@@ -1178,7 +1178,7 @@ NSRReaderBB10::onLastDocumentRequested (const QString& path)
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
 	if (pane != NULL)
-		pane->setActiveTab (pane->at (NSR_MAIN_TAB_INDEX));
+		pane->setActiveTab (pane->at (NSR_GUI_MAIN_TAB_INDEX));
 }
 
 void
@@ -1383,12 +1383,12 @@ NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Ty
 	QSize	displaySize = DisplayInfo().pixelSize ();
 
 	if (displaySize.width () == displaySize.height ())
-		return NSR_ACTION_BAR_REDUCED_HEIGHT;
+		return NSR_GUI_ACTION_BAR_REDUCED_HEIGHT;
 	else {
 		if (orientation == UIOrientation::Portrait)
-			return NSR_ACTION_BAR_NORMAL_HEIGHT;
+			return NSR_GUI_ACTION_BAR_NORMAL_HEIGHT;
 		else
-			return NSR_ACTION_BAR_REDUCED_HEIGHT;
+			return NSR_GUI_ACTION_BAR_REDUCED_HEIGHT;
 	}
 }
 
@@ -1487,7 +1487,7 @@ NSRReaderBB10::onBookmarkPageRequested (int page)
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
 	if (pane != NULL)
-		pane->setActiveTab (pane->at (NSR_MAIN_TAB_INDEX));
+		pane->setActiveTab (pane->at (NSR_GUI_MAIN_TAB_INDEX));
 
 	if (page != _core->getCurrentPage().getNumber ())
 		_core->navigateToPage (NSRReaderCore::PAGE_LOAD_CUSTOM, page);
@@ -1590,7 +1590,7 @@ NSRReaderBB10::getBookmarksPage () const
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
 	if (pane != NULL)
-		return dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_BOOKMARKS_TAB_INDEX)->content ());
+		return dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_GUI_BOOKMARKS_TAB_INDEX)->content ());
 	else
 		return NULL;
 }
