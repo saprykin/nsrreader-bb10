@@ -41,6 +41,7 @@ private:
 	bb::cascades::ScrollView	*_scrollView;
 	bb::cascades::WebView		*_webHelp;
 	bb::cascades::Label		*_versionPlatform;
+	bb::cascades::Label		*_versionEngine;
 #ifdef NSR_CORE_LITE_VERSION
 	bb::cascades::Label		*_liteLabel;
 #endif

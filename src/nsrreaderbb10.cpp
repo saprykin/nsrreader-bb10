@@ -45,6 +45,8 @@ using namespace bb::cascades::pickers;
 using namespace bb::device;
 using namespace bb::multimedia;
 
+#define NSR_GUI_VERSION			"1.4.0"
+
 #define NSR_ACTION_BAR_NORMAL_HEIGHT	140
 #define NSR_ACTION_BAR_REDUCED_HEIGHT	100
 #define NSR_MAIN_TAB_INDEX		0
@@ -96,6 +98,12 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 NSRReaderBB10::~NSRReaderBB10 ()
 {
+}
+
+QString
+NSRReaderBB10::getVersion ()
+{
+	return QString (NSR_GUI_VERSION);
 }
 
 void
@@ -593,15 +601,15 @@ NSRReaderBB10::initFullUI ()
 
 	if (NSRSettings::instance()->isFirstStart ()) {
 		NSRSettings::instance()->saveFirstStart ();
-		NSRSettings::instance()->saveNewsShown ();
+		NSRSettings::instance()->saveNewsShown (getVersion ());
 		showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_HELP);
 
 		_welcomeView->setCardMode (false);
 
 		updateVisualControls ();
 	} else {
-		if (!NSRSettings::instance()->isNewsShown ()) {
-			NSRSettings::instance()->saveNewsShown ();
+		if (!NSRSettings::instance()->isNewsShown (getVersion ())) {
+			NSRSettings::instance()->saveNewsShown (getVersion ());
 			showAboutPage (NSRAboutPage::NSR_ABOUT_SECTION_CHANGES);
 		}
 

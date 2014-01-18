@@ -36,6 +36,8 @@ public:
     NSRReaderBB10 (bb::cascades::Application *app);
     virtual ~NSRReaderBB10 ();
 
+    static QString getVersion ();
+
 private Q_SLOTS:
     void onFileSelected (const QStringList& files);
     void onOpenActionTriggered ();

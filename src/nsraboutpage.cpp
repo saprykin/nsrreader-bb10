@@ -3,6 +3,7 @@
 #include "nsrglobalnotifier.h"
 #include "nsrfilesharer.h"
 #include "nsrreader.h"
+#include "nsrreaderbb10.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
@@ -22,7 +23,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_helpContainer (NULL),
 	_scrollView (NULL),
 	_webHelp (NULL),
-	_versionPlatform (NULL)
+	_versionPlatform (NULL),
+	_versionEngine (NULL)
 #ifdef NSR_CORE_LITE_VERSION
 	,_liteLabel (NULL)
 #endif
@@ -63,9 +65,9 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Label *versionInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					    .vertical(VerticalAlignment::Fill)
 #ifdef NSR_CORE_LITE_VERSION
-					    .text(QString("NSR Reader Lite ").append (NSRSettings::getVersion ()));
+					    .text(QString("NSR Reader Lite ").append (NSRReaderBB10::getVersion ()));
 #else
-					    .text(QString("NSR Reader ").append (NSRSettings::getVersion ()));
+					    .text(QString("NSR Reader ").append (NSRReaderBB10::getVersion ()));
 #endif
 
 	versionInfo->textStyle()->setFontSize (FontSize::Large);
@@ -73,6 +75,10 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_versionPlatform = Label::create().horizontal(HorizontalAlignment::Center)
 					  .vertical(VerticalAlignment::Fill);
 	_versionPlatform->textStyle()->setFontSize (FontSize::Small);
+
+	_versionEngine = Label::create().horizontal(HorizontalAlignment::Center)
+					.vertical(VerticalAlignment::Fill);
+	_versionEngine->textStyle()->setFontSize (FontSize::Small);
 
 	Label *authorInfo = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Fill)
@@ -123,6 +129,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_aboutContainer->add (logoView);
 	_aboutContainer->add (versionInfo);
 	_aboutContainer->add (_versionPlatform);
+	_aboutContainer->add (_versionEngine);
 	_aboutContainer->add (contactsContainer);
 	_aboutContainer->add (reviewLabel);
 
@@ -364,8 +371,9 @@ NSRAboutPage::retranslateUi ()
 				     "%1 pages of the file. Please consider buying the full version "
 				     "if you want to read larger files.").arg (NSRSettings::getMaxAllowedPages ()));
 #endif
-	_versionPlatform->setText (trUtf8 ("for BlackBerry%1 10", "%1 will be replaced with reg in circle symbol")
+	_versionPlatform->setText (trUtf8("for BlackBerry%1 10", "%1 will be replaced with reg in circle symbol")
 				   .arg (QString::fromUtf8 ("\u00AE")));
+	_versionEngine->setText (trUtf8("Rendering engine %1").arg (NSRSettings::getVersion ()));
 
 	QString welcomeTitle = trUtf8 ("Welcome!");
 	QString navTitle = trUtf8 ("Navigation", "Navigation between document pages");
@@ -451,4 +459,3 @@ NSRAboutPage::retranslateUi ()
 
 	_translator->translate ();
 }
-
