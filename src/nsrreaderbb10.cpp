@@ -1117,6 +1117,9 @@ NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError error)
 				   "NSR Reader tried to open this file, but it can't :( "
 				   "Please check this file on desktop computer.");
 
+	/* Reset flag to prevent slider visible after password entering */
+	_wasSliderVisible = false;
+
 	showToast (errorStr, true);
 }
 
