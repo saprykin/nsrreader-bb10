@@ -485,7 +485,7 @@ NSRReaderBB10::initFullUI ()
 		TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
 		tabbedPane->setPeekEnabled (false);
 
-		ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened ()));
+		ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened (QString)));
 		Q_ASSERT (ok);
 
 		ok = connect (_core, SIGNAL (documentOpened (QString)), bookmarksPage, SLOT (onDocumentOpened (QString)));
@@ -832,7 +832,7 @@ NSRReaderBB10::onPageRendered (int number)
 			Q_ASSERT (recentPage != NULL);
 
 			if (recentPage != NULL)
-				recentPage->onDocumentPageRendered (_core->getDocumentPath ());
+				recentPage->onDocumentPageRendered ();
 		}
 	}
 

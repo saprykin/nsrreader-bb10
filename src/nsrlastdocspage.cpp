@@ -148,13 +148,14 @@ NSRLastDocsPage::finishToast ()
 }
 
 void
-NSRLastDocsPage::onDocumentOpened ()
+NSRLastDocsPage::onDocumentOpened (const QString& file)
 {
 	_prepareForUpdate = true;
+	_lastOpenedFile = file;
 }
 
 void
-NSRLastDocsPage::onDocumentPageRendered (const QString& file)
+NSRLastDocsPage::onDocumentPageRendered ()
 {
 	if (!_prepareForUpdate)
 		return;
@@ -167,7 +168,7 @@ NSRLastDocsPage::onDocumentPageRendered (const QString& file)
 	bool findItem = false;
 
 	for (int i = 0; i < count; ++i) {
-		if (model->value(i).toMap()["path"] == file) {
+		if (model->value(i).toMap()["path"] == _lastOpenedFile) {
 			findItem = true;
 			model->move (i, 0);
 			break;
@@ -175,9 +176,11 @@ NSRLastDocsPage::onDocumentPageRendered (const QString& file)
 	}
 
 	if (!findItem)
-		model->insert (0, createModelItem (file));
+		model->insert (0, createModelItem (_lastOpenedFile));
 
 	onModelUpdated (model->size () == 0);
+
+	_prepareForUpdate = false;
 }
 
 void

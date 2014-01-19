@@ -23,8 +23,8 @@ Q_SIGNALS:
 	void documentToBeDeleted (const QString& path);
 
 public Q_SLOTS:
-	void onDocumentOpened ();
-	void onDocumentPageRendered (const QString& file);
+	void onDocumentOpened (const QString& file);
+	void onDocumentPageRendered ();
 
 private Q_SLOTS:
 	void onOrientationAboutToChange (bb::cascades::UIOrientation::Type type);
@@ -35,6 +35,7 @@ private:
 	void loadData ();
 	QVariant createModelItem (const QString& file);
 
+	QString				_lastOpenedFile;
 	NSRTranslator			*_translator;
 	NSRLastDocsListView		*_listView;
 	bb::cascades::GridListLayout	*_listLayout;
