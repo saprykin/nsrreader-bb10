@@ -850,10 +850,15 @@ NSRReaderBB10::updateVisualControls ()
 {
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
-	if (_startMode != ApplicationStartupMode::InvokeCard &&
-	    _core->getCurrentPage().getRenderReason () != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH) {
-		if (pane != NULL) {
+	if (_startMode != ApplicationStartupMode::InvokeCard) {
+		NSRRenderRequest::NSRRenderReason reason = _core->getCurrentPage().getRenderReason ();
+
+		if (pane != NULL &&
+		    reason != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH &&
+		    reason != NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH &&
+		    reason != NSRRenderRequest::NSR_RENDER_REASON_ZOOM) {
 			pane->at(NSR_GUI_RECENT_TAB_INDEX)->setEnabled (true);
+			pane->at(NSR_GUI_BOOKMARKS_TAB_INDEX)->setEnabled (true);
 			pane->resetSidebarState ();
 		}
 	}
@@ -912,8 +917,10 @@ NSRReaderBB10::disableVisualControls ()
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
 		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
-		if (pane != NULL)
+		if (pane != NULL) {
 			pane->at(NSR_GUI_RECENT_TAB_INDEX)->setEnabled (false);
+			pane->at(NSR_GUI_BOOKMARKS_TAB_INDEX)->setEnabled (false);
+		}
 	}
 
 	_actionAggregator->setActionEnabled ("open", false);
