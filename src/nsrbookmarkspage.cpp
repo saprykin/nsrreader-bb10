@@ -237,6 +237,7 @@ NSRBookmarksPage::addBookmark (const QString& title, int page)
 		val = _model->data(result).toMap ();
 		val["title"] = title;
 		_model->updateItem (query, val);
+		_model->updateItem (result, val);
 	} else {
 		val["title"] = title;
 		val["page-number"] = page;
