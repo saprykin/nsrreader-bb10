@@ -53,21 +53,9 @@
         <translation>Версии</translation>
     </message>
     <message>
-        <source>Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.</source>
-        <translation type="obsolete">Видите оранжевую полосу над нижней панелью инструментов? Это индикатор уже прочитанных страниц.</translation>
-    </message>
-    <message>
         <source>Review</source>
         <comment>Review the app in the store</comment>
         <translation>Отзыв</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text Reflow&lt;/b&gt; &amp;ndash; this is a special mode for files which contain a lot of text information. In this mode NSR Reader will display only text data and wrap lines for comfortable reading.</source>
-        <translation type="obsolete">&lt;b&gt;Переформатирование текста&lt;/b&gt; &amp;ndash; специальный режим для файлов, содержащих большой объём текстовой информации. В этом режиме NSR Reader будет отображать только текст с переносом строк для комфортного чтения.</translation>
-    </message>
-    <message>
-        <source>Use &lt;i&gt;Recent&lt;/i&gt; page to get fast access to files you have been reading.</source>
-        <translation type="obsolete">Используйте страницу &lt;i&gt;Недавние&lt;/i&gt; для быстрого доступа к последним читаемым файлам.</translation>
     </message>
     <message>
         <source>NSR Reader supports password protected PDF files (except for latest Adobe&amp;reg; Reader&amp;reg; X encryption algorithm), so don&apos;t scary them!</source>
@@ -88,18 +76,6 @@
     <message>
         <source>Review the app in the store</source>
         <translation>Написать отзыв в магазине</translation>
-    </message>
-    <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</source>
-        <translation type="obsolete">Используйте стрелки на нижней панели инструментов для навигации. Двойное касание левой части экрана загружает предыдущую страницу, правой части - следующую страницу, а двойное касание по середине масштабирует страницу по ширине экрана. Также можно перемещаться между страницами, используя аппаратные кнопки регулировки громкости: &lt;i&gt;Увеличить громкость&lt;/i&gt; для перехода на предыдущую страницу и &lt;i&gt;Уменьшить громкость&lt;/i&gt; для перехода на следующую страницу.&lt;p&gt;&lt;/p&gt;Если у телефона есть физическая клавиатура, то можно использовать следующие клавиши (могут меняться в зависимости от используемого языка): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; для прехода на предыдущую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; для перехода на следующую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; для перехода на произвольную страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; для открытия другого файла&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; для пролистывания одного экрана вниз&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; для пролистывания одного экрана вверх&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; для пролистывания до конца&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; для пролистывания наверх&lt;/li&gt;&lt;/ul&gt;Используйте бегунок &lt;b&gt;Перейти к&lt;/b&gt; для перехода к произвольной странице.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Invert Colors&lt;/b&gt; &amp;ndash; use this feature during dark days or if you have OLED display to save power.</source>
-        <translation type="obsolete">&lt;b&gt;Инвертировать цвета&lt;/b&gt; &amp;ndash; используйте эту функцию для чтения в тёмное время суток или для того, чтобы сэкономить энергию при наличии экрана, выполненного по технологии OLED.</translation>
-    </message>
-    <message>
-        <source>Use pinch gesture for zooming (increase/decrease font size in text reflow mode).</source>
-        <translation type="obsolete">Используйте жест сведения и разведения пальцев для масштабирования (увеличения/уменьшения размера шрифта при включённом переформатировании текста).</translation>
     </message>
     <message>
         <source>&lt;b&gt;Crop Blank Edges&lt;/b&gt; &amp;ndash; automatically tries to detect and crop page&apos;s blank edges to reduce side-to-side scrolling, especially when page is fitted to screen width.</source>
@@ -147,10 +123,6 @@
     <message>
         <source>You are using the Lite version which can read only first %1 pages of the file. Please consider buying the full version if you want to read larger files.</source>
         <translation>Вы используете Lite версию, которая позволяет читать только первые %1 страниц файла. Купите полную версию, если хотите читать файлы большего объёма.</translation>
-    </message>
-    <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + B&lt;/b&gt; to add/edit bookmark&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + T&lt;/b&gt; to switch text reflow mode&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + I&lt;/b&gt; to invert colors&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</source>
-        <translation type="obsolete">Используйте стрелки на нижней панели инструментов для навигации. Двойное касание левой части экрана загружает предыдущую страницу, правой части - следующую страницу, а двойное касание по середине масштабирует страницу по ширине экрана. Также можно перемещаться между страницами, используя аппаратные кнопки регулировки громкости: &lt;i&gt;Увеличить громкость&lt;/i&gt; для перехода на предыдущую страницу и &lt;i&gt;Уменьшить громкость&lt;/i&gt; для перехода на следующую страницу.&lt;p&gt;&lt;/p&gt;Если у телефона есть физическая клавиатура, то можно использовать следующие клавиши (могут меняться в зависимости от используемого языка): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; для прехода на предыдущую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; для перехода на следующую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; для перехода на произвольную страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; для открытия другого файла&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + B&lt;/b&gt; для добавления или редактирования закладки&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + T&lt;/b&gt; для переключения режима переформатирования текста&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + I&lt;/b&gt; для инвертирования цветов&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; для пролистывания одного экрана вниз&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; для пролистывания одного экрана вверх&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; для пролистывания до конца&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; для пролистывания наверх&lt;/li&gt;&lt;/ul&gt;Используйте бегунок &lt;b&gt;Перейти к&lt;/b&gt; для перехода к произвольной странице.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Prevent Screen Locking&lt;/b&gt; &amp;ndash; disables screen autolocking feature while you are reading the file.</source>
@@ -238,10 +210,6 @@
         <translation>Нет закладок</translation>
     </message>
     <message>
-        <source>Add bookmarks to display them here</source>
-        <translation>Добавьте закладки для отображения здесь</translation>
-    </message>
-    <message>
         <source>Image of bookmark</source>
         <translation>Изображение закладки</translation>
     </message>
@@ -261,6 +229,10 @@
     <message>
         <source>Undo</source>
         <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Add bookmarks to display them</source>
+        <translation>Добавьте закладки для отображения</translation>
     </message>
 </context>
 <context>

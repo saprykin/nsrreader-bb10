@@ -58,7 +58,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	_noBookmarksLabel = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Center)
 					   .multiline(true)
-					   .text(trUtf8 ("Add bookmarks to display them here"));
+					   .text(trUtf8 ("Add bookmarks to display them"));
 	_noBookmarksLabel->textStyle()->setFontSize (FontSize::Medium);
 	_noBookmarksLabel->textStyle()->setTextAlign (TextAlign::Center);
 
@@ -103,7 +103,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	_translator->addTranslatable ((UIObject *) _noBookmarksLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRBookmarksPage"),
-				      QString ("Add bookmarks to display them here"));
+				      QString ("Add bookmarks to display them"));
 	_translator->addTranslatable ((UIObject *) _noFileLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRBookmarksPage"),

@@ -53,21 +53,9 @@
         <translation>Changes</translation>
     </message>
     <message>
-        <source>Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.</source>
-        <translation type="obsolete">Do you see orange bar above the bottom Action Bar? This is a progress reading indicator.</translation>
-    </message>
-    <message>
         <source>Review</source>
         <comment>Review the app in the store</comment>
         <translation>Review</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text Reflow&lt;/b&gt; &amp;ndash; this is a special mode for files which contain a lot of text information. In this mode NSR Reader will display only text data and wrap lines for comfortable reading.</source>
-        <translation type="obsolete">&lt;b&gt;Text Reflow&lt;/b&gt; &amp;ndash; this is a special mode for files which contain a lot of text information. In this mode NSR Reader will display only text data and wrap lines for comfortable reading.</translation>
-    </message>
-    <message>
-        <source>Use &lt;i&gt;Recent&lt;/i&gt; page to get fast access to files you have been reading.</source>
-        <translation type="obsolete">Use &lt;i&gt;Recent&lt;/i&gt; page to get fast access to files you have been reading.</translation>
     </message>
     <message>
         <source>NSR Reader supports password protected PDF files (except for latest Adobe&amp;reg; Reader&amp;reg; X encryption algorithm), so don&apos;t scary them!</source>
@@ -88,18 +76,6 @@
     <message>
         <source>Review the app in the store</source>
         <translation>Review the app in the store</translation>
-    </message>
-    <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</source>
-        <translation type="obsolete">Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Invert Colors&lt;/b&gt; &amp;ndash; use this feature during dark days or if you have OLED display to save power.</source>
-        <translation type="obsolete">&lt;b&gt;Invert Colors&lt;/b&gt; &amp;ndash; use this feature during dark days or if you have OLED display to save power.</translation>
-    </message>
-    <message>
-        <source>Use pinch gesture for zooming (increase/decrease font size in text reflow mode).</source>
-        <translation type="obsolete">Use pinch gesture for zooming (increase/decrease font size in text reflow mode).</translation>
     </message>
     <message>
         <source>&lt;b&gt;Crop Blank Edges&lt;/b&gt; &amp;ndash; automatically tries to detect and crop page&apos;s blank edges to reduce side-to-side scrolling, especially when page is fitted to screen width.</source>
@@ -147,10 +123,6 @@
     <message>
         <source>You are using the Lite version which can read only first %1 pages of the file. Please consider buying the full version if you want to read larger files.</source>
         <translation>You are using the Lite version which can read only first %1 pages of the file. Please consider buying the full version if you want to read larger files.</translation>
-    </message>
-    <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + B&lt;/b&gt; to add/edit bookmark&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + T&lt;/b&gt; to switch text reflow mode&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + I&lt;/b&gt; to invert colors&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</source>
-        <translation type="obsolete">Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + B&lt;/b&gt; to add/edit bookmark&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + T&lt;/b&gt; to switch text reflow mode&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + I&lt;/b&gt; to invert colors&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Prevent Screen Locking&lt;/b&gt; &amp;ndash; disables screen autolocking feature while you are reading the file.</source>
@@ -238,10 +210,6 @@
         <translation>No bookmarks</translation>
     </message>
     <message>
-        <source>Add bookmarks to display them here</source>
-        <translation>Add bookmarks to display them here</translation>
-    </message>
-    <message>
         <source>Image of bookmark</source>
         <translation>Image of bookmark</translation>
     </message>
@@ -261,6 +229,10 @@
     <message>
         <source>Undo</source>
         <translation>Undo</translation>
+    </message>
+    <message>
+        <source>Add bookmarks to display them</source>
+        <translation>Add bookmarks to display them</translation>
     </message>
 </context>
 <context>
