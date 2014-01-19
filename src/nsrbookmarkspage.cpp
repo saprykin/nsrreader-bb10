@@ -227,16 +227,17 @@ NSRBookmarksPage::loadData (const QString& file)
 void
 NSRBookmarksPage::addBookmark (const QString& title, int page)
 {
-	QVariantList query, result;
-	QVariantMap val;
+	QVariantList	query, result;
+	QVariantMap	val;
+	bool 		exists;
 
 	query.append (QVariant (page));
 	result = _model->find (query);
+	exists = !result.isEmpty ();
 
-	if (!result.isEmpty ()) {
+	if (exists) {
 		val = _model->data(result).toMap ();
 		val["title"] = title;
-		_model->updateItem (query, val);
 		_model->updateItem (result, val);
 	} else {
 		val["title"] = title;
@@ -248,20 +249,22 @@ NSRBookmarksPage::addBookmark (const QString& title, int page)
 	updateUi ();
 	finishToast ();
 
-	_toast = new SystemToast (this);
-	_toast->setBody (trUtf8 ("Bookmark added"));
-	_toast->button()->setLabel (trUtf8 ("Undo"));
-	_toast->setPosition (SystemUiPosition::BottomCenter);
-	_toast->setProperty ("page-number", page);
+	if (!exists) {
+		_toast = new SystemToast (this);
+		_toast->setBody (trUtf8 ("Bookmark added"));
+		_toast->button()->setLabel (trUtf8 ("Undo"));
+		_toast->setPosition (SystemUiPosition::BottomCenter);
+		_toast->setProperty ("page-number", page);
 
-	bool ok = connect (_toast, SIGNAL (finished (bb::system::SystemUiResult::Type)),
-			   this, SLOT (onToastFinished (bb::system::SystemUiResult::Type)));
-	Q_UNUSED (ok);
-	Q_ASSERT (ok);
+		bool ok = connect (_toast, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+				this, SLOT (onToastFinished (bb::system::SystemUiResult::Type)));
+		Q_UNUSED (ok);
+		Q_ASSERT (ok);
+
+		_toast->show ();
+	}
 
 	emit bookmarkChanged (page, false);
-
-	_toast->show ();
 }
 
 void
