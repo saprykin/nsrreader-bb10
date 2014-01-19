@@ -190,6 +190,7 @@ NSRReaderBB10::initFullUI ()
 	rootContainer->add (_slider);
 
 	_page = Page::create().content (rootContainer);
+	_page->setActionBarVisibility (ChromeVisibility::Visible);
 	_actionAggregator = new NSRActionAggregator (this);
 
 	_bpsHandler = new NSRBpsEventHandler (this);
@@ -894,11 +895,6 @@ NSRReaderBB10::updateVisualControls ()
 		if (totalPages == 1)
 			_slider->setVisible (false);
 
-		/* Maybe action bar is not autohidden after previous document failed to be opened? */
-		if (_startMode != ApplicationStartupMode::InvokeCard &&
-		    _isFullscreen && _page->actionBarVisibility () == ChromeVisibility::Visible)
-			_page->setActionBarVisibility (ChromeVisibility::Hidden);
-
 		NSRBookmarksPage *bookmarksPage = getBookmarksPage ();
 
 		if (bookmarksPage != NULL)
@@ -1382,13 +1378,14 @@ NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Ty
 	if (!_isFullscreen)
 		return 0;
 
-	if (_page->actionBarVisibility () == ChromeVisibility::Hidden)
+	if (_page->actionBarVisibility () == ChromeVisibility::Hidden ||
+	    _page->actionBarVisibility () == ChromeVisibility::Visible)
 		return 0;
 
 	if (_bpsHandler->isVkbVisible ())
 		return 0;
 
-	QSize	displaySize = DisplayInfo().pixelSize ();
+	QSize displaySize = DisplayInfo().pixelSize ();
 
 	if (displaySize.width () == displaySize.height ())
 		return NSR_GUI_ACTION_BAR_REDUCED_HEIGHT;
