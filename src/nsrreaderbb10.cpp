@@ -483,6 +483,7 @@ NSRReaderBB10::initFullUI ()
 		Tab *bookmarksTab = Tab::create().content(bookmarksPage).title(trUtf8 ("Bookmarks")).imageSource(QUrl ("asset:///bookmarks.png"));
 
 		TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
+		tabbedPane->setPeekEnabled (false);
 
 		ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened ()));
 		Q_ASSERT (ok);
