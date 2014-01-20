@@ -125,6 +125,7 @@ private:
     bb::system::ApplicationStartupMode::Type	_startMode;
     bool					_isFullscreen;
     bool					_isActiveFrame;
+    bool					_isWaitingForFirstPage;
     bool					_wasSliderVisible;
 };
 

@@ -75,6 +75,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_startMode (ApplicationStartupMode::LaunchApplication),
 	_isFullscreen (false),
 	_isActiveFrame (false),
+	_isWaitingForFirstPage (false),
 	_wasSliderVisible (false)
 {
 	_invokeManager = new InvokeManager (this);
@@ -895,6 +896,12 @@ NSRReaderBB10::updateVisualControls ()
 		if (totalPages == 1)
 			_slider->setVisible (false);
 
+		if (_isWaitingForFirstPage) {
+			_page->setActionBarVisibility (ChromeVisibility::Visible);
+			_pageStatus->setVisible (true);
+			_isWaitingForFirstPage = false;
+		}
+
 		NSRBookmarksPage *bookmarksPage = getBookmarksPage ();
 
 		if (bookmarksPage != NULL)
@@ -1105,6 +1112,8 @@ void
 NSRReaderBB10::onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError error)
 {
 	QString errorStr;
+
+	_isWaitingForFirstPage = false;
 
 	if (error == NSRAbstractDocument::NSR_DOCUMENT_ERROR_PASSWD)
 		errorStr = trUtf8 ("Seems that entered password is wrong or "
@@ -1504,6 +1513,8 @@ NSRReaderBB10::onBookmarkPageRequested (int page)
 void
 NSRReaderBB10::onDocumentOpened ()
 {
+	_isWaitingForFirstPage = true;
+
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
 
@@ -1513,6 +1524,8 @@ NSRReaderBB10::onDocumentOpened ()
 void
 NSRReaderBB10::onDocumentClosed ()
 {
+	_isWaitingForFirstPage = false;
+
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
 
