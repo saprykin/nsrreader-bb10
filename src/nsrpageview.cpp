@@ -204,7 +204,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_isActionsEnabled && _scrollView->actionSetCount () == 0)
 		_scrollView->addActionSet (_actionSet);
 
-	if (_delayedScrollPos.isNull ())
+	if (_delayedScrollPos.isNull () && _page.getNumber () != page.getNumber ())
 		_delayedScrollPos = page.getLastPosition ();
 
 	if (_delayedTextScrollPos.isNull ())
@@ -218,14 +218,13 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 		setScrollPosition (pos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	} else if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_NAVIGATION) {
 		/* Set scroll position for graphic mode */
-		if (_delayedScrollPos.isNull ())
+		if (_delayedScrollPos.isNull () && _page.getNumber () != page.getNumber ())
 			_delayedScrollPos = QPointF (_scrollView->viewableArea().left (), 0);
 
 		_textScrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 		_textArea->setText (page.getText ());
 		setScrollPosition (_delayedTextScrollPos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
-	} else if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH)
-		_delayedScrollPos = getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
+	}
 
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
@@ -335,7 +334,8 @@ NSRPageView::fitToWidth (NSRRenderRequest::NSRRenderReason reason)
 	_scrollView->setImplicitLayoutAnimationsEnabled (false);
 	_imageContainer->setImplicitLayoutAnimationsEnabled (false);
 
-	_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
+	if (reason != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH)
+		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 
 	_imageView->setImplicitLayoutAnimationsEnabled (true);
 	_scrollView->setImplicitLayoutAnimationsEnabled (true);
