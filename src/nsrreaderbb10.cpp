@@ -8,6 +8,8 @@
 #include "nsrglobalnotifier.h"
 #include "nsrreader.h"
 
+#include <float.h>
+
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/Container>
 #include <bb/cascades/DockLayout>
@@ -821,6 +823,7 @@ NSRReaderBB10::onPageRendered (int number)
 
 	if (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
 		if (_core->isFitToWidth () &&
+		    qAbs (_core->getMaxZoom () - page.getRenderedZoom ()) > DBL_EPSILON &&
 		    qAbs (page.getSize().width () - _pageView->getSize().width ()) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD)
 			_pageView->fitToWidth (page.isAutoCrop () ? NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH
 								  : NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH);

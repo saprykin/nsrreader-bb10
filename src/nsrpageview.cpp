@@ -231,7 +231,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	_hasImage = page.getImage().isValid ();
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
-	_currentZoom = page.getZoom ();
+	_currentZoom = page.getRenderedZoom ();
 
 	if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_NAVIGATION ||
 	    !_delayedScrollPos.isNull ())
