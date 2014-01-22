@@ -46,7 +46,6 @@ NSRPageView::NSRPageView (Container *parent) :
 	_isInvertedColors (false),
 	_isZooming (false),
 	_isZoomingEnabled (true),
-	_hasImage (false),
 	_isActionsEnabled (true),
 	_isGesturesEnabled (true)
 {
@@ -228,7 +227,6 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	} else if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH)
 		_delayedScrollPos = getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 
-	_hasImage = page.getImage().isValid ();
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
 	_currentZoom = page.getRenderedZoom ();
@@ -252,12 +250,10 @@ NSRPageView::resetPage ()
 {
 	_imageView->resetImage ();
 	_imageView->resetImageSource ();
-	_imageView->setRotationZ (0.0);
 	_page = NSRRenderedPage ();
 	_scrollView->removeActionSet (_actionSet);
 	_textArea->resetText ();
 	_currentZoom = 100;
-	_hasImage = false;
 }
 
 void
@@ -518,7 +514,7 @@ NSRPageView::onPinchStarted (bb::cascades::PinchEvent* event)
 	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT)
 		_initialFontSize = (int) _textArea->textStyle()->fontSize ();
 	else {
-		if (!_hasImage)
+		if (!_page.isImageValid ())
 			return;
 
 		_initialScaleSize = QSize (_imageView->preferredWidth (),

@@ -102,7 +102,6 @@ private:
 	bool					_isInvertedColors;
 	bool					_isZooming;
 	bool					_isZoomingEnabled;
-	bool					_hasImage;
 	bool					_isActionsEnabled;
 	bool					_isGesturesEnabled;
 };
