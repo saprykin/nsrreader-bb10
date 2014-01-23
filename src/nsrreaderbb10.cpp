@@ -822,9 +822,12 @@ NSRReaderBB10::onPageRendered (int number)
 	_slider->setValue (number);
 
 	if (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
-		if (_core->isFitToWidth () &&
-		    qAbs (_core->getMaxZoom () - page.getRenderedZoom ()) > DBL_EPSILON &&
-		    qAbs (page.getSize().width () - _pageView->getSize().width ()) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD)
+		bool needToFit = _core->isFitToWidth () ?
+				qAbs (_pageView->getSize().width () - page.getSize().width ()) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD :
+				(_pageView->getSize().width () - page.getSize().width ()) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD;
+
+		if (needToFit && page.getRenderReason () != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH &&
+		    qAbs (_core->getMaxZoom () - page.getRenderedZoom ()) > DBL_EPSILON)
 			_pageView->fitToWidth (page.isAutoCrop () ? NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH
 								  : NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
 	}
