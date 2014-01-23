@@ -25,6 +25,8 @@
 using namespace bb::cascades;
 using namespace bb::device;
 
+#define NSR_PAGEVIEW_WIDTH_THRESHOLD	4
+
 NSRPageView::NSRPageView (Container *parent) :
 	Container (parent),
 	_translator (NULL),
@@ -492,8 +494,10 @@ NSRPageView::onDoubleTappedGesture (bb::cascades::DoubleTapEvent* ev)
 		emit prevPageRequested ();
 	else if (ev->x () > _size.width () * 2 / 3)
 		emit nextPageRequested ();
-	else
-		emit fitToWidthRequested ();
+	else {
+		if (qAbs (_imageView->preferredWidth () - _size.width ()) > NSR_PAGEVIEW_WIDTH_THRESHOLD)
+			emit fitToWidthRequested ();
+	}
 
 	ev->accept ();
 }
