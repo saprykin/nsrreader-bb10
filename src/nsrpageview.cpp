@@ -579,6 +579,19 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 		double scale = _imageView->preferredWidth () / _initialScaleSize.width ();
 
 		if (qAbs (_currentZoom * scale - _currentZoom) > 0.05) {
+			if (_imageView->preferredWidth () < _size.width ()) {
+				scale = (double) _size.width () / _initialScaleSize.width ();
+
+				QPointF center = _initialScalePos * scale;
+
+				_imageView->setPreferredSize (_initialScaleSize.width () * scale,
+							      _initialScaleSize.height () * scale);
+				_scrollView->scrollToPoint (center.x () - _size.width () / 2,
+							    center.y () - _size.height () / 2,
+							    ScrollAnimation::None);
+			}
+
+
 			_currentZoom *= scale;
 			emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
 		}
