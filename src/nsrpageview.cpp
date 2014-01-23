@@ -550,6 +550,9 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 		else if (scale * _currentZoom > _maxZoom)
 			scale = (double) _maxZoom / _currentZoom;
 
+		if (scale < 1.0 && _initialScaleSize.width () * scale < _size.width ())
+			scale = (double) _imageView->preferredWidth () / _initialScaleSize.width ();
+
 		QPointF center = _initialScalePos * scale;
 
 		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >= 4) {
