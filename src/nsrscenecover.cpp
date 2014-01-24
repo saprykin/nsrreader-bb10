@@ -1,4 +1,5 @@
 #include "nsrscenecover.h"
+#include "nsrglobalnotifier.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/Label>
@@ -28,7 +29,8 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	_pageView (NULL),
 	_textView (NULL),
 	_textContainer (NULL),
-	_isTextOnly (false)
+	_isTextOnly (false),
+	_isEmptyText (false)
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -120,6 +122,11 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	rootContainer->add (imageContainer);
 
 	setContent (rootContainer);
+
+	bool ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+			   this, SLOT (retranslateUi ()));
+	Q_UNUSED (ok);
+	Q_ASSERT (ok);
 }
 
 NSRSceneCover::~NSRSceneCover ()
@@ -131,13 +138,14 @@ NSRSceneCover::setPageData (const NSRRenderedPage&	page,
                 	    const QString&		title,
                 	    int				pagesTotal)
 {
-	if (page.isEmpty () || title.isEmpty () || page.getNumber () < 1 || pagesTotal < page.getNumber ())
+	if (title.isEmpty () || !page.isValid() || pagesTotal < page.getNumber ())
 		return;
 
 	bb::system::LocaleHandler region (bb::system::LocaleType::Region);
 
+	_isEmptyText = page.getText().isEmpty ();
 	_pageView->setImage (page.getImage ());
-	_textView->setText (page.getText ());
+	_textView->setText (_isEmptyText ? trUtf8 ("No text data available for this page") : page.getText ());
 	_titleLabel->setText (title);
 	_pageStatus->setStatus (page.getNumber (), pagesTotal);
 
@@ -154,7 +162,7 @@ NSRSceneCover::setPageData (const NSRRenderedPage&	page,
 		background = "asset:///txt-header.png";
 
 	_titleContainer->setBackground (ImagePaint (Image (QUrl (background)), RepeatPattern::Fill));
-	_isTextOnly = !page.getImage().isValid () && !page.getText().isEmpty ();
+	_isTextOnly = page.isValid () && !page.getImage().isValid ();
 }
 
 void
@@ -167,6 +175,7 @@ NSRSceneCover::resetPageData ()
 	_pageStatus->resetStatus ();
 	_textView->resetText ();
 	_isTextOnly = false;
+	_isEmptyText = false;
 }
 
 void
@@ -178,4 +187,11 @@ NSRSceneCover::setStatic (bool isStatic)
 	_pageView->setVisible (!isStatic && !_isTextOnly);
 	_textContainer->setVisible (_isTextOnly);
 	_pageStatus->setVisible (!isStatic);
+}
+
+void
+NSRSceneCover::retranslateUi ()
+{
+	if (_isEmptyText && !_textView->text().isEmpty ())
+		_textView->setText (trUtf8 ("No text data available for this page"));
 }

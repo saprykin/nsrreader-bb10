@@ -1428,7 +1428,7 @@ NSRReaderBB10::onThumbnail ()
 	if (_core->isDocumentOpened ()) {
 		NSRRenderedPage page = _core->getCurrentPage ();
 
-		if (!page.isEmpty ()) {
+		if (page.isValid ()) {
 			cover->setPageData (page,
 					    QFileInfo(_core->getDocumentPath ()).fileName (),
 					    _core->getPagesCount ());

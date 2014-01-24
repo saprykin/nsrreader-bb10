@@ -26,6 +26,9 @@ public:
 
 	void setStatic (bool isStatic);
 
+private Q_SLOTS:
+	void retranslateUi ();
+
 private:
 	NSRPageStatus *			_pageStatus;
 	bb::cascades::Container *	_titleContainer;
@@ -36,6 +39,7 @@ private:
 	bb::cascades::TextArea *	_textView;
 	bb::cascades::Container *	_textContainer;
 	bool				_isTextOnly;
+	bool				_isEmptyText;
 };
 
 #endif /* NSRSCENECOVER_H_ */

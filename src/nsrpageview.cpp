@@ -216,7 +216,8 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 		/* Encoding may be changed, we must reload text data */
 		QPointF pos = getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 		_textScrollView->scrollToPoint (0, 0, ScrollAnimation::None);
-		_textArea->setText (page.getText ());
+		_textArea->setText (page.getText().isEmpty () ? trUtf8 ("No text data available for this page")
+							      : page.getText ());
 		setScrollPosition (pos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	} else if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_NAVIGATION) {
 		/* Set scroll position for graphic mode */
@@ -224,7 +225,8 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 			_delayedScrollPos = QPointF (_scrollView->viewableArea().left (), 0);
 
 		_textScrollView->scrollToPoint (0, 0, ScrollAnimation::None);
-		_textArea->setText (page.getText ());
+		_textArea->setText (page.getText().isEmpty () ? trUtf8 ("No text data available for this page")
+							      : page.getText ());
 		setScrollPosition (_delayedTextScrollPos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	}
 
@@ -615,6 +617,9 @@ void
 NSRPageView::retranslateUi ()
 {
 	retranslateTitle ();
+
+	if (_page.isValid () && _page.getText().isEmpty ())
+		_textArea->setText (trUtf8 ("No text data available for this page"));
 
 	_translator->translate ();
 }

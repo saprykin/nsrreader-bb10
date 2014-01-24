@@ -146,13 +146,6 @@
     </message>
 </context>
 <context>
-    <name>NSRAbstractDocument</name>
-    <message>
-        <source>No text data available for this page</source>
-        <translation>Данная страница не содержит текстовую информацию</translation>
-    </message>
-</context>
-<context>
     <name>NSRBookmarkItem</name>
     <message>
         <source>Page %1</source>
@@ -350,6 +343,10 @@
     <message>
         <source>Page %1</source>
         <translation>Страница %1</translation>
+    </message>
+    <message>
+        <source>No text data available for this page</source>
+        <translation>Данная страница не содержит текстовую информацию</translation>
     </message>
 </context>
 <context>
@@ -557,6 +554,13 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>Invert page colors</source>
         <translation>Инвертировать цвета страницы</translation>
+    </message>
+</context>
+<context>
+    <name>NSRSceneCover</name>
+    <message>
+        <source>No text data available for this page</source>
+        <translation>Данная страница не содержит текстовую информацию</translation>
     </message>
 </context>
 <context>
