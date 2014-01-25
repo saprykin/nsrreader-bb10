@@ -1030,15 +1030,23 @@ NSRReaderBB10::saveSession ()
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
 
-	if (!_core->isDocumentOpened () || _core->isPageRendering ())
+	if (!_core->isDocumentOpened ())
+		return;
+
+	if (!_core->isDestructing () && _core->isPageRendering ())
+		return;
+
+	NSRRenderedPage page = _core->getCurrentPage ();
+
+	if (!page.isValid ())
 		return;
 
 	/* Save session */
 	session.setFile (_core->getDocumentPath ());
-	session.setPage (_core->getCurrentPage().getNumber ());
-	session.setFitToWidth (_core->isFitToWidth ());
-	session.setZoomGraphic (_core->getZoom ());
-	session.setRotation (_core->getRotation ());
+	session.setPage (page.getNumber ());
+	session.setFitToWidth (page.isZoomToWidth ());
+	session.setZoomGraphic (page.getRenderedZoom ());
+	session.setRotation (page.getRotation ());
 	session.setZoomText (_pageView->getTextZoom ());
 	session.setPosition (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC));
 	session.setTextPosition (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT));
