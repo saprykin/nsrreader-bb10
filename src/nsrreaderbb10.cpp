@@ -1228,6 +1228,8 @@ NSRReaderBB10::onZoomChanged (double zoom, NSRRenderRequest::NSRRenderReason rea
 void
 NSRReaderBB10::onManualExit ()
 {
+	_core->prepareForDestruction ();
+
 	saveSession ();
 
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
