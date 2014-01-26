@@ -155,6 +155,12 @@ NSRLastDocsPage::onDocumentOpened (const QString& file)
 }
 
 void
+NSRLastDocsPage::onEncodingChanged ()
+{
+	_prepareForUpdate = true;
+}
+
+void
 NSRLastDocsPage::onDocumentPageRendered ()
 {
 	if (!_prepareForUpdate)
@@ -165,18 +171,15 @@ NSRLastDocsPage::onDocumentPageRendered ()
 	QVariantListDataModel *model = static_cast < QVariantListDataModel * > (_listView->dataModel ());
 
 	int count = model->size ();
-	bool findItem = false;
 
 	for (int i = 0; i < count; ++i) {
 		if (model->value(i).toMap()["path"] == _lastOpenedFile) {
-			findItem = true;
-			model->move (i, 0);
+			model->removeAt (i);
 			break;
 		}
 	}
 
-	if (!findItem)
-		model->insert (0, createModelItem (_lastOpenedFile));
+	model->insert (0, createModelItem (_lastOpenedFile));
 
 	onModelUpdated (model->size () == 0);
 

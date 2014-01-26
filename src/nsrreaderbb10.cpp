@@ -492,6 +492,9 @@ NSRReaderBB10::initFullUI ()
 		ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened (QString)));
 		Q_ASSERT (ok);
 
+		ok = connect (_core, SIGNAL (encodingChanged (QString)), recentPage, SLOT (onEncodingChanged ()));
+		Q_ASSERT (ok);
+
 		ok = connect (_core, SIGNAL (documentOpened (QString)), bookmarksPage, SLOT (onDocumentOpened (QString)));
 		Q_ASSERT (ok);
 

@@ -24,6 +24,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
 	void onDocumentOpened (const QString& file);
+	void onEncodingChanged ();
 	void onDocumentPageRendered ();
 
 private Q_SLOTS:
