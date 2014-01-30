@@ -303,7 +303,7 @@
     </message>
     <message>
         <source>Start reading to display files here</source>
-        <translation>Начните читать, чтобы они появились здесь</translation>
+        <translation>Начните читать, чтобы файлы отобразились</translation>
     </message>
     <message>
         <source>Image of document</source>
