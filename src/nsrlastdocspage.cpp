@@ -238,15 +238,15 @@ QVariant
 NSRLastDocsPage::createModelItem (const QString& file)
 {
 	QVariantMap	map;
-	bool 		isEncrypted = NSRThumbnailer::isThumbnailEncrypted (file);
+	bool 		isEncrypted = NSRThumbnailer::instance()->isThumbnailEncrypted (file);
 
 	map["title"] = QFileInfo(file).fileName ();
 	map["path"] = file;
 	map["encrypted"] = isEncrypted;
 
 	if (!isEncrypted) {
-		map["image"] = NSRThumbnailer::getThumnailPath (file);
-		map["text"] = NSRThumbnailer::getThumbnailText (file);
+		map["image"] = NSRThumbnailer::instance()->getThumnailPath (file);
+		map["text"] = NSRThumbnailer::instance()->getThumbnailText (file);
 	}
 
 	return map;
