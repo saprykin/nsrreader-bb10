@@ -492,7 +492,7 @@ NSRReaderBB10::initFullUI ()
 		ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened (QString)));
 		Q_ASSERT (ok);
 
-		ok = connect (_core, SIGNAL (encodingChanged (QString)), recentPage, SLOT (onEncodingChanged ()));
+		ok = connect (_core, SIGNAL (thumbnailRendered ()), recentPage, SLOT (onThumbnailRendered ()));
 		Q_ASSERT (ok);
 
 		ok = connect (_core, SIGNAL (documentOpened (QString)), bookmarksPage, SLOT (onDocumentOpened (QString)));
@@ -833,18 +833,6 @@ NSRReaderBB10::onPageRendered (int number)
 		    qAbs (_core->getMaxZoom () - page.getRenderedZoom ()) > DBL_EPSILON)
 			_pageView->fitToWidth (page.isAutoCrop () ? NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH
 								  : NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
-	}
-
-	if (_startMode != ApplicationStartupMode::InvokeCard) {
-		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
-
-		if (pane != NULL) {
-			NSRLastDocsPage *recentPage = dynamic_cast < NSRLastDocsPage * > (pane->at(NSR_GUI_RECENT_TAB_INDEX)->content ());
-			Q_ASSERT (recentPage != NULL);
-
-			if (recentPage != NULL)
-				recentPage->onDocumentPageRendered ();
-		}
 	}
 
 	updateVisualControls ();

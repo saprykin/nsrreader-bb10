@@ -24,8 +24,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
 	void onDocumentOpened (const QString& file);
-	void onEncodingChanged ();
-	void onDocumentPageRendered ();
+	void onThumbnailRendered ();
 
 private Q_SLOTS:
 	void onOrientationAboutToChange (bb::cascades::UIOrientation::Type type);
@@ -41,7 +40,6 @@ private:
 	NSRLastDocsListView		*_listView;
 	bb::cascades::GridListLayout	*_listLayout;
 	bb::cascades::Container		*_emptyContainer;
-	bool				_prepareForUpdate;
 };
 
 #endif /* NSRLASTDOCSPAGE_H_ */

@@ -21,8 +21,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	_translator (NULL),
 	_listView (NULL),
 	_listLayout (NULL),
-	_emptyContainer (NULL),
-	_prepareForUpdate (false)
+	_emptyContainer (NULL)
 {
 	_translator = new NSRTranslator (this);
 
@@ -150,22 +149,32 @@ NSRLastDocsPage::finishToast ()
 void
 NSRLastDocsPage::onDocumentOpened (const QString& file)
 {
-	_prepareForUpdate = true;
 	_lastOpenedFile = file;
+
+	finishToast ();
+
+	QVariantListDataModel *model = static_cast < QVariantListDataModel * > (_listView->dataModel ());
+
+	bool itemFound = false;
+	int count = model->size ();
+
+	for (int i = 0; i < count; ++i) {
+		if (model->value(i).toMap()["path"] == _lastOpenedFile) {
+			model->move (i, 0);
+			itemFound = true;
+			break;
+		}
+	}
+
+	if (!itemFound)
+		model->insert (0, createModelItem (_lastOpenedFile));
+
+	onModelUpdated (model->size () == 0);
 }
 
 void
-NSRLastDocsPage::onEncodingChanged ()
+NSRLastDocsPage::onThumbnailRendered ()
 {
-	_prepareForUpdate = true;
-}
-
-void
-NSRLastDocsPage::onDocumentPageRendered ()
-{
-	if (!_prepareForUpdate)
-		return;
-
 	finishToast ();
 
 	QVariantListDataModel *model = static_cast < QVariantListDataModel * > (_listView->dataModel ());
@@ -182,8 +191,6 @@ NSRLastDocsPage::onDocumentPageRendered ()
 	model->insert (0, createModelItem (_lastOpenedFile));
 
 	onModelUpdated (model->size () == 0);
-
-	_prepareForUpdate = false;
 }
 
 void
