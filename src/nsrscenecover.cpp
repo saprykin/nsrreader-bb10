@@ -30,6 +30,7 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	_textView (NULL),
 	_textContainer (NULL),
 	_isTextOnly (false),
+	_isInvertedColors (false),
 	_isEmptyText (false)
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -138,7 +139,7 @@ NSRSceneCover::setPageData (const NSRRenderedPage&	page,
                 	    const QString&		title,
                 	    int				pagesTotal)
 {
-	if (title.isEmpty () || !page.isValid() || pagesTotal < page.getNumber ())
+	if (title.isEmpty () || !page.isValid () || pagesTotal < page.getNumber ())
 		return;
 
 	bb::system::LocaleHandler region (bb::system::LocaleType::Region);
@@ -162,7 +163,6 @@ NSRSceneCover::setPageData (const NSRRenderedPage&	page,
 		background = "asset:///txt-header.png";
 
 	_titleContainer->setBackground (ImagePaint (Image (QUrl (background)), RepeatPattern::Fill));
-	_isTextOnly = page.isValid () && !page.getImage().isValid ();
 }
 
 void
@@ -179,7 +179,7 @@ NSRSceneCover::resetPageData ()
 }
 
 void
-NSRSceneCover::setStatic (bool isStatic)
+NSRSceneCover::updateState (bool isStatic)
 {
 	_titleContainer->setVisible (!isStatic);
 	_backView->setVisible (isStatic);
@@ -187,6 +187,8 @@ NSRSceneCover::setStatic (bool isStatic)
 	_pageView->setVisible (!isStatic && !_isTextOnly);
 	_textContainer->setVisible (_isTextOnly);
 	_pageStatus->setVisible (!isStatic);
+	_textContainer->setBackground (_isInvertedColors ? Color::Black : Color::White);
+	_textView->textStyle()->setColor (_isInvertedColors ? Color::White : Color::Black);
 }
 
 void

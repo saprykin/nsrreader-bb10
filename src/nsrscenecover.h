@@ -24,7 +24,13 @@ public:
 			  int				pagesTotal);
 	void resetPageData ();
 
-	void setStatic (bool isStatic);
+	void updateState (bool isStatic);
+	inline void setTextOnly (bool textOnly) {
+		_isTextOnly = textOnly;
+	}
+	inline void setInvertedColors (bool invertedColors) {
+		_isInvertedColors = invertedColors;
+	}
 
 private Q_SLOTS:
 	void retranslateUi ();
@@ -39,6 +45,7 @@ private:
 	bb::cascades::TextArea *	_textView;
 	bb::cascades::Container *	_textContainer;
 	bool				_isTextOnly;
+	bool				_isInvertedColors;
 	bool				_isEmptyText;
 };
 

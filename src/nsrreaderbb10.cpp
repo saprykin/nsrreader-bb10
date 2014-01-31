@@ -1433,11 +1433,13 @@ NSRReaderBB10::onThumbnail ()
 			cover->setPageData (page,
 					    QFileInfo(_core->getDocumentPath ()).fileName (),
 					    _core->getPagesCount ());
-			cover->setStatic (false);
+			cover->setTextOnly (_core->isTextReflow ());
+			cover->setInvertedColors (_core->isInvertedColors ());
+			cover->updateState (false);
 		} else
-			cover->setStatic (true);
+			cover->updateState (true);
 	} else
-		cover->setStatic (true);
+		cover->updateState (true);
 }
 
 void
@@ -1451,7 +1453,7 @@ NSRReaderBB10::onFullscreen ()
 	_isActiveFrame = false;
 
 	cover->resetPageData ();
-	cover->setStatic (true);
+	cover->updateState (true);
 }
 
 void
