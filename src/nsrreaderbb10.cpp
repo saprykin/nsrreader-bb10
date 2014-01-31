@@ -1294,14 +1294,14 @@ void
 NSRReaderBB10::onRotateLeftRequested ()
 {
 	if (_core->isDocumentOpened ())
-		_core->rotate (-90);
+		_core->rotate (NSRReaderCore::ROTATE_DIRECTION_LEFT);
 }
 
 void
 NSRReaderBB10::onRotateRightRequested ()
 {
 	if (_core->isDocumentOpened ())
-		_core->rotate (90);
+		_core->rotate (NSRReaderCore::ROTATE_DIRECTION_RIGHT);
 }
 
 void
