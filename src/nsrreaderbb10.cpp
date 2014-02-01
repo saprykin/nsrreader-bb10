@@ -37,9 +37,9 @@
 #include <bb/system/SystemToast>
 #include <bb/system/LocaleHandler>
 
-#include <bb/device/DisplayInfo>
+#include <bb/multimedia/MediaKey>
 
-#include <bb/multimedia/MediaKeyWatcher>
+#include <bb/device/DisplayInfo>
 
 using namespace bb::system;
 using namespace bb::cascades;
@@ -80,6 +80,8 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_isWaitingForFirstPage (false),
 	_wasSliderVisible (false)
 {
+	memset (_mediaKeys, 0, sizeof (_mediaKeys));
+
 	_invokeManager = new InvokeManager (this);
 
 	bool ok = connect (_invokeManager, SIGNAL (invoked (const bb::system::InvokeRequest&)),
@@ -543,16 +545,10 @@ NSRReaderBB10::initFullUI ()
 		Application::instance()->setScene (tabbedPane);
 	}
 
-	MediaKeyWatcher *volumeUpWatcher = new MediaKeyWatcher (MediaKey::VolumeUp, this);
-	MediaKeyWatcher *volumeDownWatcher = new MediaKeyWatcher (MediaKey::VolumeDown, this);
+	_mediaKeys[0] = new MediaKeyWatcher (MediaKey::VolumeUp, this);
+	_mediaKeys[1] = new MediaKeyWatcher (MediaKey::VolumeDown, this);
 
-	ok = connect (volumeUpWatcher, SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
-		      this, SLOT (onPrevPageRequested ()));
-	Q_ASSERT (ok);
-
-	ok = connect (volumeDownWatcher, SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
-		      this, SLOT (onNextPageRequested ()));
-	Q_ASSERT (ok);
+	setVolumeKeysEnabled (true);
 
 	bb::cascades::LocaleHandler *localeHandler = new bb::cascades::LocaleHandler (this);
 	ok = connect (localeHandler, SIGNAL (systemLanguageChanged ()),
@@ -1419,6 +1415,8 @@ NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Ty
 void
 NSRReaderBB10::onThumbnail ()
 {
+	setVolumeKeysEnabled (false);
+
 	NSRSceneCover *cover = dynamic_cast < NSRSceneCover * > (Application::instance()->cover ());
 
 	if (cover == NULL)
@@ -1445,6 +1443,8 @@ NSRReaderBB10::onThumbnail ()
 void
 NSRReaderBB10::onFullscreen ()
 {
+	setVolumeKeysEnabled (true);
+
 	NSRSceneCover *cover = dynamic_cast < NSRSceneCover * > (Application::instance()->cover ());
 
 	if (cover == NULL)
@@ -1623,4 +1623,24 @@ NSRReaderBB10::getBookmarksPage () const
 		return dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_GUI_BOOKMARKS_TAB_INDEX)->content ());
 	else
 		return NULL;
+}
+
+void
+NSRReaderBB10::setVolumeKeysEnabled (bool enabled)
+{
+	if (enabled) {
+		/* We do not check connect() result here because it can fail if such a connection
+		 * pair is already exist */
+		connect (_mediaKeys[0], SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
+			 this, SLOT (onPrevPageRequested ()),
+			 Qt::UniqueConnection);
+		connect (_mediaKeys[1], SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
+			 this, SLOT (onNextPageRequested ()),
+			 Qt::UniqueConnection);
+	} else {
+		disconnect (_mediaKeys[0], SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
+			    this, SLOT (onPrevPageRequested ()));
+		disconnect (_mediaKeys[1], SIGNAL (shortPress (bb::multimedia::MediaKey::Type)),
+			    this, SLOT (onNextPageRequested ()));
+	}
 }

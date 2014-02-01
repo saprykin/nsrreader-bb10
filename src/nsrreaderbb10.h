@@ -27,6 +27,8 @@
 #include <bb/system/InvokeRequest>
 #include <bb/system/CardDoneMessage>
 
+#include <bb/multimedia/MediaKeyWatcher>
+
 #include <QObject>
 
 class NSRReaderBB10 : public QObject
@@ -105,6 +107,7 @@ private:
     int getActionBarHeightForOrientation (bb::cascades::UIOrientation::Type orientation);
     void setViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
     NSRBookmarksPage * getBookmarksPage () const;
+    void setVolumeKeysEnabled (bool enabled);
 
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;
@@ -122,6 +125,7 @@ private:
     bb::system::SystemPrompt			*_prompt;
     bb::system::SystemToast			*_toast;
     bb::system::InvokeManager			*_invokeManager;
+    bb::multimedia::MediaKeyWatcher		*_mediaKeys[2];
     bb::system::ApplicationStartupMode::Type	_startMode;
     bool					_isFullscreen;
     bool					_isActiveFrame;
