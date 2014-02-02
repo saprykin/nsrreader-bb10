@@ -77,10 +77,6 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 				     NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				     QString ("NSRLastDocItemFactory"),
 				     QString ("Clear Recent"));
-	translator->addTranslatable ((UIObject *) actionSet,
-				     NSRTranslator::NSR_TRANSLATOR_TYPE_ACTIONSET_SUBTITLE,
-				     QString ("NSRLastDocItemFactory"),
-				     QString ("File"));
 
 	return item;
 }
