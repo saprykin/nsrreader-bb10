@@ -61,10 +61,6 @@ NSRBookmarkItemFactory::createItem (bb::cascades::ListView* list, const QString&
 				     NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				     QString ("NSRBookmarkItemFactory"),
 				     QString ("Edit Bookmark"));
-	translator->addTranslatable ((UIObject *) actionSet,
-				     NSRTranslator::NSR_TRANSLATOR_TYPE_ACTIONSET_SUBTITLE,
-				     QString ("NSRBookmarkItemFactory"),
-				     QString ("Bookmark"));
 
 	return item;
 }
