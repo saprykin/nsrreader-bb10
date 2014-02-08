@@ -703,6 +703,8 @@ NSRReaderBB10::onReflowActionTriggered ()
 		showToast (text, false);
 	}
 
+	_core->saveCurrentPagePositions (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC),
+					 _pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT));
 	_core->switchTextReflow ();
 
 	if (!_core->isPageRendering () && _core->isTextReflow ())

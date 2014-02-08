@@ -206,7 +206,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_isActionsEnabled && _scrollView->actionSetCount () == 0)
 		_scrollView->addActionSet (_actionSet);
 
-	if (_delayedScrollPos.isNull () && _page.getNumber () != page.getNumber ())
+	if (_delayedScrollPos.isNull ())
 		_delayedScrollPos = page.getLastPosition ();
 
 	if (_delayedTextScrollPos.isNull ())
