@@ -82,6 +82,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				     .horizontal(HorizontalAlignment::Fill)
 				     .vertical(VerticalAlignment::Center);
 	encodingInfo->textStyle()->setFontSize (FontSize::XSmall);
+	encodingInfo->textStyle()->setColor (Color::LightGray);
 	encodingInfo->setMultiline (true);
 
 	fifthContainer->setBottomPadding (20);
@@ -124,6 +125,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      .horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Center);
 	screenLockInfo->textStyle()->setFontSize (FontSize::XSmall);
+	screenLockInfo->textStyle()->setColor (Color::LightGray);
 	screenLockInfo->setMultiline (true);
 
 	Container *firstContainer = Container::create().horizontal(HorizontalAlignment::Fill)
