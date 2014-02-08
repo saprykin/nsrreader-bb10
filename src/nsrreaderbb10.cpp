@@ -122,7 +122,7 @@ NSRReaderBB10::initFullUI ()
 
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
-						      .background(Color::Black)
+						      .background(Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f))
 						      .layout(DockLayout::create());
 
 	_toast = new SystemToast (this);

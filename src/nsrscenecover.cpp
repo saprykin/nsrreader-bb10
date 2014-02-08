@@ -35,7 +35,7 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
-						      .background(Color::fromRGBA (0.95f, 0.95f, 0.95f, 1.0f))
+						      .background(Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f))
 						      .layout(StackLayout::create());
 
 	_titleContainer = Container::create().horizontal(HorizontalAlignment::Fill)

@@ -19,7 +19,7 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 	setHorizontalAlignment (HorizontalAlignment::Fill);
 	setVerticalAlignment (VerticalAlignment::Fill);
 	setLayout (DockLayout::create ());
-	setBackground (Color::Black);
+	setBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
 
 	Container *innerContainer = Container::create().horizontal(HorizontalAlignment::Center)
 						       .vertical(VerticalAlignment::Center)

@@ -150,7 +150,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_webHelp = WebView::create ();
 	_webHelp->settings()->setDevicePixelRatio (1.0);
 	_webHelp->settings()->setViewportArguments (viewportMap);
-	_webHelp->settings()->setBackground (Color::fromRGBA (0.059f, 0.059f, 0.059f));
+	_webHelp->settings()->setBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
 
 	_helpContainer->add (_webHelp);
 	_helpContainer->setVisible (false);
@@ -164,7 +164,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	WebView *webChanges = WebView::create ();
 	webChanges->settings()->setDevicePixelRatio (1.0);
 	webChanges->settings()->setViewportArguments (viewportMap);
-	webChanges->settings()->setBackground (Color::fromRGBA (0.059f, 0.059f, 0.059f));
+	webChanges->settings()->setBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
 	webChanges->setUrl (QUrl ("local:///assets/whats-new.html"));
 
 	_changesContainer->add (webChanges);
@@ -177,7 +177,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Container *contentContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							 .vertical(VerticalAlignment::Fill)
 							 .layout(StackLayout::create ())
-							 .background(Color::fromRGBA (0.059f, 0.059f, 0.059f));
+							 .background(Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
 
 	rootContainer->add (_aboutContainer);
 	rootContainer->add (_helpContainer);
@@ -426,7 +426,7 @@ NSRAboutPage::retranslateUi ()
 	QString tip8 = trUtf8 ("Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!");
 
 	QString htmlHelp = QString ("<html><head/><body style=\"font-family: arial, sans-serif; "
-				    "font-size: 28pt; background: #0F0F0F; color: #E6E6E6;\">"
+				    "font-size: 28pt; background: #171717; color: #E6E6E6;\">"
 			    	    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
 				    "border-bottom: 1px solid white; font-size: 30pt;\">%1</div></div>"
 				    "<div><p>%2</p></div>"
