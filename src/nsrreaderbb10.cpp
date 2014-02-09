@@ -1590,8 +1590,8 @@ NSRReaderBB10::retranslateBookmarkAction (bool hasBookmark)
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
-		bookmarkAction->accessibility()->setName (hasBookmark ? trUtf8 ("Add bookmark for current page")
-								      : trUtf8 ("Edit bookmark for current page"));
+		bookmarkAction->accessibility()->setName (hasBookmark ? trUtf8 ("Edit bookmark for current page")
+								      : trUtf8 ("Add bookmark for current page"));
 #  endif
 #endif
 	}
