@@ -188,8 +188,9 @@ NSRPageView::NSRPageView (Container *parent) :
 #  endif
 #endif
 
-	connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
-		 this, SLOT (retranslateUi ()));
+	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
+		      this, SLOT (retranslateUi ()));
+	Q_ASSERT (ok);
 }
 
 NSRPageView::~NSRPageView ()
