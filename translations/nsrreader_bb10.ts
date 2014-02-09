@@ -556,6 +556,10 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
         <source>Invert page colors</source>
         <translation>Invert page colors</translation>
     </message>
+    <message>
+        <source>Page with bookmarks</source>
+        <translation>Page with bookmarks</translation>
+    </message>
 </context>
 <context>
     <name>NSRSceneCover</name>

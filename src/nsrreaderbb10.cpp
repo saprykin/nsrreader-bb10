@@ -527,6 +527,7 @@ NSRReaderBB10::initFullUI ()
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 		mainTab->accessibility()->setName (trUtf8 ("Main file reading page"));
 		recentTab->accessibility()->setName (trUtf8 ("Page with recent files"));
+		bookmarksTab->accessibility()->setName (trUtf8 ("Page with bookmarks"));
 
 		_translator->addTranslatable ((UIObject *) mainTab->accessibility (),
 				NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
