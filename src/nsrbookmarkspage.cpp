@@ -122,6 +122,12 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 #  endif
 #endif
 
+#ifdef BBNDK_VERSION_AT_LEAST
+#  if BBNDK_VERSION_AT_LEAST(10,1,0)
+	_listView->setScrollRole (ScrollRole::Main);
+#  endif
+#endif
+
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		      this, SLOT (retranslateUi ()));
 	Q_ASSERT (ok);
