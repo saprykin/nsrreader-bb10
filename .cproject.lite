@@ -35,7 +35,7 @@
 								<inputType id="com.qnx.qcc.inputType.assembler.2125416717" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.764491692" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.libraries.894285729" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+								<option id="com.qnx.qcc.option.linker.libraries.894285729" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="bps"/>
 								</option>
 							</tool>
