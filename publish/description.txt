@@ -9,6 +9,7 @@ Plenty of features will make reading comfortable everywhere:
 - automatically detects and crops blank edges;
 - supports password protected PDFs (except latest Adobe® Reader® X encryption);
 - saves last reading position;
+- bookmarks support;
 - inverted colors mode helps to save power and read at dark;
 - text reflow mode makes reading huge text-enabled PDF and DjVu files easy;
 - nice preview of recently opened files;
