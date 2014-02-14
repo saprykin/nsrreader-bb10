@@ -339,12 +339,8 @@ NSRPageView::fitToWidth (NSRRenderRequest::NSRRenderReason reason)
 	_scrollView->setImplicitLayoutAnimationsEnabled (false);
 	_imageContainer->setImplicitLayoutAnimationsEnabled (false);
 
-	if (reason != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH && scale < 1.0) {
-		double yPos = _imageView->preferredHeight () * scale < _size.height () ?
-			      0 : _scrollView->viewableArea().topLeft().y () * scale;
-
-		_scrollView->scrollToPoint (0, yPos, ScrollAnimation::None);
-	}
+	if (reason != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH && scale < 1.0)
+		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 
 	_imageView->setImplicitLayoutAnimationsEnabled (true);
 	_scrollView->setImplicitLayoutAnimationsEnabled (true);
