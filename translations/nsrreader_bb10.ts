@@ -486,10 +486,6 @@ Please do not blame hard NSR Reader for that because it is only a piece of softw
         <translation>You are using text reflow the first time. Note that file formatting may be differ than in original one, no images displayed and page can be empty if there is no text in the file. Also text may not be displayed properly if appropriate language is not supported by phone.</translation>
     </message>
     <message>
-        <source>It seems that selected file doesn&apos;t exist anymore or NSR Reader doesn&apos;t have Shared Files permission. Please check permissions at Settings-&gt;Security and Privacy-&gt;Application Permissions.</source>
-        <translation>It seems that selected file doesn&apos;t exist anymore or NSR Reader doesn&apos;t have Shared Files permission. Please check permissions at Settings-&gt;Security and Privacy-&gt;Application Permissions.</translation>
-    </message>
-    <message>
         <source>Unknown error! Maybe file is broken.
 NSR Reader tried to open this file, but it can&apos;t :( Please check this file on desktop computer.</source>
         <translation>Unknown error! Maybe file is broken.
@@ -559,6 +555,23 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>Page with bookmarks</source>
         <translation>Page with bookmarks</translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation>Change</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translatorcomment>Cancel</translatorcomment>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Permission required</source>
+        <translation>Permission required</translation>
+    </message>
+    <message>
+        <source>It seems that NSR Reader doesn&apos;t have Shared Files permission required for proper working. Do you want to change the permission for shared files now? You  have to restart the app after changing permissions.</source>
+        <translation>It seems that NSR Reader doesn&apos;t have Shared Files permission required for proper working. Do you want to change the permission for shared files now? You have to restart the app after changing permissions.</translation>
     </message>
 </context>
 <context>

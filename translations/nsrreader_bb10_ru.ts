@@ -485,10 +485,6 @@ Please do not blame hard NSR Reader for that because it is only a piece of softw
         <translation>Вы используете режим переформатирования текста первый раз. Учтите, что форматирование может отличаться от оригинала, изображения не отображаются, и страница может быть пустой, если не содержит текста. Также текст может отображаться некорректно, если телефон не поддерживает соответствующий язык.</translation>
     </message>
     <message>
-        <source>It seems that selected file doesn&apos;t exist anymore or NSR Reader doesn&apos;t have Shared Files permission. Please check permissions at Settings-&gt;Security and Privacy-&gt;Application Permissions.</source>
-        <translation>Похоже, что выбранный файл больше не существует, или у NSR Reader нет разрешения на чтение общих файлов. Пожалуйста, проверьте разрешения в Настройки-&gt;Безопасность и конфиденциальность-&gt;Права доступа приложений.</translation>
-    </message>
-    <message>
         <source>Unknown error! Maybe file is broken.
 NSR Reader tried to open this file, but it can&apos;t :( Please check this file on desktop computer.</source>
         <translation>Неизвестная ошибка! Возможно, файл повреждён.
@@ -558,6 +554,22 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>Page with bookmarks</source>
         <translation>Страница с закладками</translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation>Изменить</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Permission required</source>
+        <translation>Требуется разрешение</translation>
+    </message>
+    <message>
+        <source>It seems that NSR Reader doesn&apos;t have Shared Files permission required for proper working. Do you want to change the permission for shared files now? You  have to restart the app after changing permissions.</source>
+        <translation>Похоже, что у NSR Reader нет разрешения на чтение общих файлов, которое требуется для нормальной работы. Хотите изменить разрешение на чтение общих файлов сейчас? После изменения разрешений необходимо перезапустить приложение.</translation>
     </message>
 </context>
 <context>

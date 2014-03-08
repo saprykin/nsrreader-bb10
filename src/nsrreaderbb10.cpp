@@ -35,6 +35,7 @@
 #endif
 
 #include <bb/system/SystemToast>
+#include <bb/system/SystemDialog>
 #include <bb/system/LocaleHandler>
 
 #include <bb/multimedia/MediaKey>
@@ -942,12 +943,22 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 	int		width = _pageView->getSize().width ();
 
 	if (!path.isEmpty () && !QFile::exists (path)) {
-		QString errorStr = trUtf8 ("It seems that selected file doesn't exist anymore "
-					   "or NSR Reader doesn't have Shared Files permission. Please "
-					   "check permissions at Settings->Security and Privacy->"
-					   "Application Permissions.");
+		SystemDialog *dialog = new SystemDialog (trUtf8 ("Change"), trUtf8 ("Cancel"), this);
+		dialog->setTitle (trUtf8 ("Permission required"));
+		dialog->setBody (trUtf8 ("It seems that NSR Reader doesn't have Shared Files "
+					 "permission required for proper working. Do you want "
+					 "to change the permission for shared files now? You "
+					 " have to restart the app after changing permissions."));
 
-		showToast (errorStr, true);
+		bool res = connect (dialog, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+				    this, SLOT (onPermissionDialogFinished (bb::system::SystemUiResult::Type)));
+
+		if (res)
+			dialog->show ();
+		else
+			dialog->deleteLater ();
+
+
 		return;
 	}
 
@@ -1111,6 +1122,20 @@ NSRReaderBB10::onAddBookmarkDialogFinished (bb::system::SystemUiResult::Type res
 
 	_prompt->deleteLater ();
 	_prompt = NULL;
+}
+
+void
+NSRReaderBB10::onPermissionDialogFinished (bb::system::SystemUiResult::Type res)
+{
+	SystemDialog *dialog = reinterpret_cast < SystemDialog * > (sender ());
+
+	if (dialog == NULL)
+		return;
+
+	if (res == SystemUiResult::ConfirmButtonSelection)
+		NSRFileSharer::getInstance()->invokeUri ("settings://permissions", "sys.settings.card", "bb.action.OPEN");
+
+	dialog->deleteLater ();
 }
 
 void

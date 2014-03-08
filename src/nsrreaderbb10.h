@@ -58,6 +58,7 @@ private Q_SLOTS:
     void onRecentDocumentsRequested ();
     void onPasswordDialogFinished (bb::system::SystemUiResult::Type res);
     void onAddBookmarkDialogFinished (bb::system::SystemUiResult::Type res);
+    void onPermissionDialogFinished (bb::system::SystemUiResult::Type res);
     void onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError error);
     void onSystemLanguageChanged ();
     void onPageTapped ();
