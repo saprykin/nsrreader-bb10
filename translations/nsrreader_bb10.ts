@@ -570,7 +570,7 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
         <translation>Permission required</translation>
     </message>
     <message>
-        <source>It seems that NSR Reader doesn&apos;t have Shared Files permission required for proper working. Do you want to change the permission for shared files now? You  have to restart the app after changing permissions.</source>
+        <source>It seems that NSR Reader doesn&apos;t have Shared Files permission required for proper working. Do you want to change the permission for shared files now? You have to restart the app after changing permissions.</source>
         <translation>It seems that NSR Reader doesn&apos;t have Shared Files permission required for proper working. Do you want to change the permission for shared files now? You have to restart the app after changing permissions.</translation>
     </message>
 </context>

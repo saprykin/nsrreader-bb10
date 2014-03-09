@@ -23,6 +23,7 @@
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
 #include <bb/system/SystemToast>
+#include <bb/system/SystemDialog>
 #include <bb/system/InvokeManager>
 #include <bb/system/InvokeRequest>
 #include <bb/system/CardDoneMessage>
@@ -125,6 +126,7 @@ private:
     bb::cascades::ActivityIndicator		*_indicator;
     bb::system::SystemPrompt			*_prompt;
     bb::system::SystemToast			*_toast;
+    bb::system::SystemDialog			*_dialog;
     bb::system::InvokeManager			*_invokeManager;
     bb::multimedia::MediaKeyWatcher		*_mediaKeys[2];
     bb::system::ApplicationStartupMode::Type	_startMode;

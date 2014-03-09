@@ -34,8 +34,6 @@
 #  endif
 #endif
 
-#include <bb/system/SystemToast>
-#include <bb/system/SystemDialog>
 #include <bb/system/LocaleHandler>
 
 #include <bb/multimedia/MediaKey>
@@ -74,6 +72,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_indicator (NULL),
 	_prompt (NULL),
 	_toast (NULL),
+	_dialog (NULL),
 	_invokeManager (NULL),
 	_startMode (ApplicationStartupMode::LaunchApplication),
 	_isFullscreen (false),
@@ -943,21 +942,25 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 	int		width = _pageView->getSize().width ();
 
 	if (!path.isEmpty () && !QFile::exists (path)) {
-		SystemDialog *dialog = new SystemDialog (trUtf8 ("Change"), trUtf8 ("Cancel"), this);
-		dialog->setTitle (trUtf8 ("Permission required"));
-		dialog->setBody (trUtf8 ("It seems that NSR Reader doesn't have Shared Files "
-					 "permission required for proper working. Do you want "
-					 "to change the permission for shared files now? You "
-					 " have to restart the app after changing permissions."));
+		if (_dialog != NULL)
+			return;
 
-		bool res = connect (dialog, SIGNAL (finished (bb::system::SystemUiResult::Type)),
+		_dialog = new SystemDialog (trUtf8 ("Change"), trUtf8 ("Cancel"), this);
+		_dialog->setTitle (trUtf8 ("Permission required"));
+		_dialog->setBody (trUtf8 ("It seems that NSR Reader doesn't have Shared Files "
+					  "permission required for proper working. Do you want "
+					  "to change the permission for shared files now? You "
+					  "have to restart the app after changing permissions."));
+
+		bool res = connect (_dialog, SIGNAL (finished (bb::system::SystemUiResult::Type)),
 				    this, SLOT (onPermissionDialogFinished (bb::system::SystemUiResult::Type)));
 
 		if (res)
-			dialog->show ();
-		else
-			dialog->deleteLater ();
-
+			_dialog->show ();
+		else {
+			_dialog->deleteLater ();
+			_dialog = NULL;
+		}
 
 		return;
 	}
@@ -1127,15 +1130,17 @@ NSRReaderBB10::onAddBookmarkDialogFinished (bb::system::SystemUiResult::Type res
 void
 NSRReaderBB10::onPermissionDialogFinished (bb::system::SystemUiResult::Type res)
 {
-	SystemDialog *dialog = reinterpret_cast < SystemDialog * > (sender ());
+	if (_dialog == NULL)
+		return;
 
-	if (dialog == NULL)
+	if (_dialog != reinterpret_cast < SystemDialog * > (sender ()))
 		return;
 
 	if (res == SystemUiResult::ConfirmButtonSelection)
 		NSRFileSharer::getInstance()->invokeUri ("settings://permissions", "sys.settings.card", "bb.action.OPEN");
 
-	dialog->deleteLater ();
+	_dialog->deleteLater ();
+	_dialog = NULL;
 }
 
 void
