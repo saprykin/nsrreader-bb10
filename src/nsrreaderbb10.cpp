@@ -1367,6 +1367,7 @@ NSRReaderBB10::onCardPooled (const bb::system::CardDoneMessage& message)
 
 	resetState ();
 	updateVisualControls ();
+	setVolumeKeysEnabled (false);
 }
 
 void
