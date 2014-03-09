@@ -17,6 +17,7 @@ public:
 	virtual ~NSRWelcomeView ();
 
 	void setCardMode (bool enabled);
+	void setReadOnly (bool readOnly);
 
 Q_SIGNALS:
 	void openDocumentRequested ();

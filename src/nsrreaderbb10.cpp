@@ -1064,6 +1064,7 @@ NSRReaderBB10::onIndicatorRequested (bool enabled)
 	if (_indicator->isRunning () == enabled)
 		return;
 
+	_welcomeView->setReadOnly (enabled);
 	_pageView->setZoomEnabled (!enabled);
 	_pageView->setActionsEnabled (!enabled);
 	_pageView->setGesturesEnabled (!enabled);

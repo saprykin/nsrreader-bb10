@@ -83,3 +83,10 @@ NSRWelcomeView::setCardMode (bool enabled)
 	_lastDocsButton->setVisible (!enabled);
 	_startLabel->setVisible (!enabled);
 }
+
+void
+NSRWelcomeView::setReadOnly (bool readOnly)
+{
+	_openButton->setEnabled (!readOnly);
+	_lastDocsButton->setEnabled (!readOnly);
+}
