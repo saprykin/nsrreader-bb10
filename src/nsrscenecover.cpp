@@ -12,13 +12,10 @@
 
 #include <bb/system/LocaleHandler>
 
-#include <bb/device/HardwareInfo>
-
 #include <bb/ImageData>
 
 using namespace bb;
 using namespace bb::cascades;
-using namespace bb::device;
 
 NSRSceneCover::NSRSceneCover (QObject *parent) :
 	SceneCover (parent),
@@ -44,16 +41,6 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 					     .background(Color::Black)
 					     .visible(false);
 
-	HardwareInfo hardwareInfo (this);
-
-	if (hardwareInfo.isPhysicalKeyboardDevice ()) {
-		_titleContainer->setMinHeight (56);
-		_titleContainer->setMaxHeight (56);
-	} else {
-		_titleContainer->setMinHeight (62);
-		_titleContainer->setMaxHeight (62);
-	}
-
 	_titleContainer->setLeftPadding (10);
 	_titleContainer->setRightPadding (10);
 	_titleContainer->setTopPadding (10);
@@ -66,7 +53,8 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 
 	Container *imageContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .vertical(VerticalAlignment::Fill)
-						       .layout(DockLayout::create());
+						       .layout(DockLayout::create())
+						       .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0));
 
 	_backView = ImageView::create().horizontal(HorizontalAlignment::Fill)
 				       .vertical(VerticalAlignment::Fill)

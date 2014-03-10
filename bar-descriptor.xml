@@ -69,25 +69,25 @@
     <!--  The category where the application appears. Either core.games or core.media. -->
     <splashScreens>
        <image/>
-       <image>splash-720x720.png</image>
-       <image>splash-768x1280.png</image>
-       <image>splash-1280x768.png</image>
-       <image>splash-720x1280.png</image>
-       <image>splash-1280x720.png</image>
+       <image>assets/splash-720x720.png</image>
+       <image>assets/splash-768x1280.png</image>
+       <image>assets/splash-1280x768.png</image>
+       <image>assets/splash-720x1280.png</image>
+       <image>assets/splash-1280x720.png</image>
        <image>
-          <text xml:lang="ru">splash-1280x720.png</text>
+          <text xml:lang="ru">assets/splash-1280x720.png</text>
        </image>
        <image>
-          <text xml:lang="ru">splash-1280x768.png</text>
+          <text xml:lang="ru">assets/splash-1280x768.png</text>
        </image>
        <image>
-          <text xml:lang="ru">splash-720x1280.png</text>
+          <text xml:lang="ru">assets/splash-720x1280.png</text>
        </image>
        <image>
-          <text xml:lang="ru">splash-720x720.png</text>
+          <text xml:lang="ru">assets/splash-720x720.png</text>
        </image>
        <image>
-          <text xml:lang="ru">splash-768x1280.png</text>
+          <text xml:lang="ru">assets/splash-768x1280.png</text>
        </image>
     </splashScreens>
     <name>
@@ -114,24 +114,26 @@
     
     <!--  The icon for the application, which should be 86x86. -->
     <icon>
-        <image>icon.png</image>
+        <image>icon-94x94.png</image>
         <image>
-           <text xml:lang="ru">icon.png</text>
+           <text xml:lang="ru">icon-94x94.png</text>
+        </image>
+        <image>icon-114x114.png</image>
+        <image>
+           <text xml:lang="ru">icon-114x114.png</text>
         </image>
     </icon>
 
-    <asset path="icon.png">icon.png</asset>
     <asset path="assets">assets</asset>
     
     <!-- Locale support -->
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
-    <asset path="assets/splash-720x720.png">splash-720x720.png</asset>
-    <asset path="assets/splash-768x1280.png">splash-768x1280.png</asset>
-    <asset path="assets/splash-1280x768.png">splash-1280x768.png</asset>
-    <asset path="assets/splash-720x1280.png">splash-720x1280.png</asset>
-    <asset path="assets/splash-1280x720.png">splash-1280x720.png</asset>
+    <asset path="icon-81x81.png">icon-81x81.png</asset>
+    <asset path="icon-94x94.png">icon-94x94.png</asset>
+    <asset path="icon-114x114.png">icon-114x114.png</asset>
+    <asset path="icon-358x358.png">icon-358x358.png</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
@@ -158,11 +160,9 @@
             <property var="uris" value="file://"/>
             <property var="exts" value="pdf,djvu,djv,tiff,tif,txt"/>
         </filter>
-        <!-- <invoke-target-pattern>
-        	<pattern-value type="regex">file\://[\w/]+.*\.(pdf|djv|djvu|tif|tiff|txt)</pattern-value>
-        </invoke-target-pattern> -->
         <icon>
-            <image>icon.png</image>
+            <image>icon-81x81.png</image>
+            <image>icon-358x358.png</image>
         </icon>
     </invoke-target>
     <invoke-target id="com.gmail.reader.nsr.viewer">
@@ -184,7 +184,8 @@
             <property var="exts" value="pdf,djvu,djv,tiff,tif,txt"/>
         </filter>
         <icon>
-            <image>icon.png</image>
+            <image>icon-81x81.png</image>
+            <image>icon-358x358.png</image>
         </icon>
     </invoke-target>
 </qnx>
