@@ -424,12 +424,13 @@ NSRAboutPage::retranslateUi ()
 	QString tip2 = trUtf8 ("Just tap the screen to see current page and overall page count at the top left corner.");
 	QString tip3 = trUtf8 ("Use <i>Recent</i> tab to get fast access to files you have been reading.");
 	QString tip4 = trUtf8 ("Use pinch gesture for zooming and to increase/decrease font size in text reflow mode.");
-	QString tip5 = trUtf8 ("NSR Reader supports password protected PDF files (except for latest "
+	QString tip5 = trUtf8 ("If plain text files are displayed incorrectly try to select different encoding in Settings.");
+	QString tip6 = trUtf8 ("NSR Reader supports password protected PDF files (except for latest "
 			       "Adobe&reg; Reader&reg; X encryption algorithm), so don't scary them!");
-	QString tip6 = trUtf8 ("NSR Reader caches already rendered pages to increase performance.");
-	QString tip7 = trUtf8 ("If you have any problems with the app, please contact me (see contacts on "
+	QString tip7 = trUtf8 ("NSR Reader caches already rendered pages to increase performance.");
+	QString tip8 = trUtf8 ("If you have any problems with the app, please contact me (see contacts on "
 			       "<i>About</i> page). Any suggestions are highly welcomed, too.");
-	QString tip8 = trUtf8 ("Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!");
+	QString tip9 = trUtf8 ("Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!");
 
 	QString htmlHelp = QString ("<html><head/><body style=\"font-family: arial, sans-serif; "
 				    "font-size: 28pt; background: #171717; color: #E6E6E6;\">"
@@ -455,11 +456,12 @@ NSRAboutPage::retranslateUi ()
 				    "<div><p>%16</p></div>"
 				    "<div><p>%17</p></div>"
 				    "<div><p>%18</p></div>"
+				    "<div><p>%19</p></div>"
 				    "</body></html>");
 	htmlHelp = htmlHelp.arg(welcomeTitle).arg(welcomeSection).arg(navTitle).arg(navigationSection);
 	htmlHelp = htmlHelp.arg(settingsTitle).arg(fullScrSet).arg(cropSet).arg(screenLockSet).arg(encodSet);
 	htmlHelp = htmlHelp.arg(tipsTitle).arg(tip1).arg(tip2).arg(tip3).arg(tip4).arg(tip5)
-			   .arg(tip6).arg(tip7).arg(tip8);
+			   .arg(tip6).arg(tip7).arg(tip8).arg(tip9);
 
 	_webHelp->setHtml (htmlHelp);
 

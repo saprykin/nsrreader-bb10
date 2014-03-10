@@ -144,6 +144,10 @@
         <source>Rendering engine %1</source>
         <translation>Подсистема рендеринга %1</translation>
     </message>
+    <message>
+        <source>If plain text files are displayed incorrectly try to select different encoding in Settings.</source>
+        <translation>Если чисто текстовые файлы отображаются некорректно, то попробуйте выбрать другую кодировку в Настройках.</translation>
+    </message>
 </context>
 <context>
     <name>NSRBookmarkItem</name>
