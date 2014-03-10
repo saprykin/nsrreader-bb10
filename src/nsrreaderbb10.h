@@ -95,6 +95,7 @@ private Q_SLOTS:
 #endif
     void retranslateUi ();
     void retranslateBookmarkAction (bool hasBookmark);
+    void setVolumeKeysEnabled (bool enabled);
 
 private:
     void initFullUI ();
@@ -109,7 +110,6 @@ private:
     int getActionBarHeightForOrientation (bb::cascades::UIOrientation::Type orientation);
     void setViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
     NSRBookmarksPage * getBookmarksPage () const;
-    void setVolumeKeysEnabled (bool enabled);
 
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;

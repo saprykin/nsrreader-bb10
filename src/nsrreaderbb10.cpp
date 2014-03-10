@@ -200,8 +200,12 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator = new NSRActionAggregator (this);
 
 	_bpsHandler = new NSRBpsEventHandler (this);
-	ok = connect (_bpsHandler, SIGNAL (vkbVisibilityChanged (bool)),
-		      this, SLOT (onVkbVisibilityChanged (bool)));
+
+	ok = connect (_bpsHandler, SIGNAL (vkbVisibilityChanged (bool)), this, SLOT (onVkbVisibilityChanged (bool)));
+	Q_ASSERT (ok);
+
+	ok = connect (_bpsHandler, SIGNAL (windowActiveChanged (bool)), this, SLOT (setVolumeKeysEnabled (bool)));
+	Q_ASSERT (ok);
 
 	ActionItem *openAction = ActionItem::create().enabled (true);
 	openAction->setTitle (trUtf8 ("Open", "Open file"));
@@ -549,8 +553,6 @@ NSRReaderBB10::initFullUI ()
 
 	_mediaKeys[0] = new MediaKeyWatcher (MediaKey::VolumeUp, this);
 	_mediaKeys[1] = new MediaKeyWatcher (MediaKey::VolumeDown, this);
-
-	setVolumeKeysEnabled (true);
 
 	bb::cascades::LocaleHandler *localeHandler = new bb::cascades::LocaleHandler (this);
 	ok = connect (localeHandler, SIGNAL (systemLanguageChanged ()),
@@ -1373,7 +1375,6 @@ NSRReaderBB10::onCardPooled (const bb::system::CardDoneMessage& message)
 
 	resetState ();
 	updateVisualControls ();
-	setVolumeKeysEnabled (false);
 }
 
 void
@@ -1451,8 +1452,6 @@ NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Ty
 void
 NSRReaderBB10::onThumbnail ()
 {
-	setVolumeKeysEnabled (false);
-
 	NSRSceneCover *cover = dynamic_cast < NSRSceneCover * > (Application::instance()->cover ());
 
 	if (cover == NULL)
@@ -1479,8 +1478,6 @@ NSRReaderBB10::onThumbnail ()
 void
 NSRReaderBB10::onFullscreen ()
 {
-	setVolumeKeysEnabled (true);
-
 	NSRSceneCover *cover = dynamic_cast < NSRSceneCover * > (Application::instance()->cover ());
 
 	if (cover == NULL)

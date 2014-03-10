@@ -21,6 +21,7 @@ public:
 
 Q_SIGNALS:
 	void vkbVisibilityChanged (bool visible);
+	void windowActiveChanged (bool active);
 
 private:
 	bool _vkbVisible;
