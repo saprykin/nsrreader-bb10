@@ -1,0 +1,30 @@
+Penampil berkas PDF, DjVu, TIFF dan TXT yang handal
+
+NSR Reader merupakan sebuah penampil berkas PDF, DjVu, TIFF dan TXT yang ringkas dan handal. Anda dapat membaca dokumen dari desktop langsung pada ponsel tanpa perlu mengonversi apa pun. NSR Reader adalah aplikasi yang sangat cocok untuk BlackBerry® dan dikembangkan berdasarkan kerangka Cascades™: memiliki tampilan dan rasa yang konsisten dan terintegrasi dengan baik pada ponsel Anda.
+
+Banyak fitur yang akan membuat membaca di mana pun terasa nyaman:
+- penampilan PDF dan DjVu berkualitas tinggi;
+- dukungan terhadap berkas TIFF multi-halaman;
+- membuka berkas teks biasa dengan pilihan encoding dan membaginya ke dalam halaman-halaman;
+- secara otomatis mendeteksi dan memotong tepian yang kosong;
+- mendukung PDF yang dilindungi oleh kata sandi (kecuali enkripsi Adobe® Reader® X yang terbaru);
+- menyimpan posisi baca terakhir;
+- dukungan pembatas buku;
+- modus warna terbalik untuk membantu menghemat daya dan membaca dalam gelap;
+- modus gulung ulang yang mempermudah membaca berkas PDF dan DjVu dengan teks yang berukuran besar;
+- pratinjau cantik berkas yang baru saja dibuka;
+- dukungan terhadap active frame (sampul aplikasi);
+- bagikan berkas Anda melalui BBM, Bluetooth, NFC dan aplikasi lainnya;
+- antarmuka pengguna yang cepat dan responsif.
+
+Dibuat untuk para pengguna dengan cinta :)
+
+Mohon jangan menggunakan ulasan untuk melaporkan masalah-masalah dan bertanya karena saya tidak akan dapat membalas atau menghubungi Anda. Hubungilah saya secara langsung melalui surel dengan pertanyaan, saran dan masalah apa pun yang Anda temukan dan saya akan mencoba membereskannya sesegera mungkin. Saran apa pun sangat dihargai dan penting untuk pengembangan di masa yang akan datang.
+
+Jika Anda menyukai aplikasi ini maka dukungan terbaik bagi saya ialah ulasan Anda yang positif. Hal itu merupakan hal terbaik yang akan memotivasi kami untuk menghadirkan fitur-fitur dan pengembangan baru :)
+
+* PENTING * JANGAN mematikan izin Membagikan Berkas untuk aplikasi karena tanpanya aplikasi tidak akan dapat membaca berkas.
+
+Lite: Versi yang gratis akan memungkinkan Anda membaca hanya 30 halaman pertama berkas.
+
+pdf reader, pdf viewer, djvu reader, djvu viewer, pdf, djvu, tiff, tif, documents, text
