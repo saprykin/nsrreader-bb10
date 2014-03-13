@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/nsrbookmarkspage.cpp" line="61"/>
         <source>Add bookmarks to display them</source>
-        <translation>Tambahkan pembatas buku untuk menampilkan</translation>
+        <translation>Tambah pembatas buku untuk menampilkan</translation>
     </message>
     <message>
         <location filename="../src/nsrbookmarkspage.cpp" line="68"/>
@@ -271,7 +271,7 @@
         <location filename="../src/nsrbookmarkspage.cpp" line="97"/>
         <source>Bookmarks</source>
         <comment>Title for window with bookmarks</comment>
-        <translation>Pembatas buku</translation>
+        <translation>Pembatas</translation>
     </message>
     <message>
         <location filename="../src/nsrbookmarkspage.cpp" line="260"/>
@@ -295,7 +295,7 @@
         <location filename="../src/nsrlastdocitemfactory.cpp" line="34"/>
         <source>Clear Recent</source>
         <comment>Clear recent files</comment>
-        <translation>Bersihkan Daftar Berkas Terakhir</translation>
+        <translation>Bersihkan Daftar Terakhir</translation>
     </message>
     <message>
         <location filename="../src/nsrlastdocitemfactory.cpp" line="42"/>
@@ -314,7 +314,7 @@
         <location filename="../src/nsrlastdocslistview.cpp" line="29"/>
         <source>Clear Recent</source>
         <comment>Clear recent files</comment>
-        <translation>Bersihkan Daftar Berkas Terakhir</translation>
+        <translation>Bersihkan Daftar Terakhir</translation>
     </message>
     <message>
         <location filename="../src/nsrlastdocslistview.cpp" line="32"/>
@@ -381,7 +381,7 @@
         <location filename="../src/nsrlastdocspage.cpp" line="88"/>
         <source>Recent</source>
         <comment>Title for window with recently opened files</comment>
-        <translation>Yang terakhir</translation>
+        <translation>Terakhir</translation>
     </message>
 </context>
 <context>
@@ -593,7 +593,7 @@
     <message>
         <location filename="../src/nsrreaderbb10.cpp" line="494"/>
         <source>Bookmarks</source>
-        <translation>Pembatas buku</translation>
+        <translation>Pembatas</translation>
     </message>
     <message>
         <location filename="../src/nsrreaderbb10.cpp" line="532"/>
@@ -694,7 +694,7 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
     <message>
         <location filename="../src/nsrreaderbb10.cpp" line="1617"/>
         <source>Add Bookmark</source>
-        <translation>Tambahkan Pembatas Buku</translation>
+        <translation>Tambah Pembatas Buku</translation>
     </message>
     <message>
         <location filename="../src/nsrreaderbb10.cpp" line="1622"/>
@@ -704,7 +704,7 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
     <message>
         <location filename="../src/nsrreaderbb10.cpp" line="1623"/>
         <source>Add bookmark for current page</source>
-        <translation>Tambahkan pembatas buku untuk halaman ini</translation>
+        <translation>Tambah pembatas buku untuk halaman ini</translation>
     </message>
 </context>
 <context>
@@ -1019,7 +1019,7 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
         <location filename="../src/nsrwelcomeview.cpp" line="31"/>
         <source>Recent</source>
         <comment>Recently opened files</comment>
-        <translation>Yang terakhir</translation>
+        <translation>Terakhir</translation>
     </message>
     <message>
         <location filename="../src/nsrwelcomeview.cpp" line="48"/>
