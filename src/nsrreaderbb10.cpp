@@ -46,7 +46,7 @@ using namespace bb::cascades::pickers;
 using namespace bb::device;
 using namespace bb::multimedia;
 
-#define NSR_GUI_VERSION				"1.4.0"
+#define NSR_GUI_VERSION				"1.4.1"
 
 #define NSR_GUI_ACTION_BAR_NORMAL_HEIGHT	140
 #define NSR_GUI_ACTION_BAR_REDUCED_HEIGHT	100
