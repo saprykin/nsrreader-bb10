@@ -48,7 +48,7 @@
     <message>
         <location filename="../src/nsraboutpage.cpp" line="376"/>
         <source>You are using the Lite version which can read only first %1 pages of the file. Please consider buying the full version if you want to read larger files.</source>
-        <translation>Anda menggunakan versi Ringan yang hanya dapat membaca %1 halaman pertama berkas. Mohon pertimbangkan untuk membeli versi penuhnya jika Anda ingin membaca berkas yang lebih besar.</translation>
+        <translation>Anda menggunakan versi Lite yang hanya dapat membaca %1 halaman pertama berkas. Mohon pertimbangkan untuk membeli versi penuhnya jika Anda ingin membaca berkas yang lebih besar.</translation>
     </message>
     <message>
         <location filename="../src/nsraboutpage.cpp" line="382"/>
@@ -684,7 +684,7 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
     <message>
         <location filename="../src/nsrreaderbb10.cpp" line="1581"/>
         <source>Lite version of NSR Reader allows to read only first %1 pages of the file. If you want to read larger files, please consider buying the full version.</source>
-        <translation>Versi ringan NSR Reader memungkinkan pembacaan hanya %1 halaman pertama berkas. Jika Anda ingin membaca berkas yang lebih besar, mohon pertimbangkan untuk membeli versi penuhnya.</translation>
+        <translation>Versi NSR Reader Lite memungkinkan pembacaan hanya %1 halaman pertama berkas. Jika Anda ingin membaca berkas yang lebih besar, mohon pertimbangkan untuk membeli versi penuhnya.</translation>
     </message>
     <message>
         <location filename="../src/nsrreaderbb10.cpp" line="1617"/>
