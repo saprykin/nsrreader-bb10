@@ -1110,7 +1110,9 @@ NSRReaderBB10::onPasswordDialogFinished (bb::system::SystemUiResult::Type res)
 			_core->loadSession (session);
 			delete session;
 		}
-	}
+	} else
+		/* In case we are loading encrypted file on startup */
+		_welcomeView->setCardMode (_startMode == ApplicationStartupMode::InvokeCard);
 
 	_prompt->deleteLater ();
 	_prompt = NULL;
