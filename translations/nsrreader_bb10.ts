@@ -661,45 +661,45 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1157"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1158"/>
         <source>Seems that entered password is wrong or encryption algorithm is not supported.
 Please do not blame hard NSR Reader for that because it is only a piece of software :)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1163"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1164"/>
         <source>Unknown error! Maybe file is broken.
 NSR Reader tried to open this file, but it can&apos;t :( Please check this file on desktop computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1581"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1582"/>
         <source>Lite version of NSR Reader allows to read only first %1 pages of the file. If you want to read larger files, please consider buying the full version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1598"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1599"/>
         <source>Select File</source>
         <comment>Open file window</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1617"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1618"/>
         <source>Edit Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1617"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1618"/>
         <source>Add Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1622"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1623"/>
         <source>Edit bookmark for current page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1623"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1624"/>
         <source>Add bookmark for current page</source>
         <translation type="unfinished"></translation>
     </message>
