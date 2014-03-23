@@ -622,7 +622,7 @@
         <translation>Anda sedang menggunakan gulung ulang teks untuk pertama kalinya. Perhatikan bahwa pengaturan berkas mungkin berbeda dari yang asli, tidak ada gambar yang ditampilkan dan halaman bisa saja kosong jika tidak ada teks dalam berkas. Juga teks mungkin tidak ditampilkan dengan benar jika bahasa yang sesuai tidak didukung oleh ponsel.</translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1599"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1600"/>
         <source>Select File</source>
         <comment>Open file window</comment>
         <translation>Pilih Berkas</translation>
@@ -668,41 +668,41 @@
         <translation>Masukkan kata sandi berkas</translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1158"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1159"/>
         <source>Seems that entered password is wrong or encryption algorithm is not supported.
 Please do not blame hard NSR Reader for that because it is only a piece of software :)</source>
         <translation>Tampaknya kata sandi yang dimasukkan salah atau algoritma enkripsinya tidak didukung.
 Mohon jangan salahkan NSR Reader karena itu hanya perangkat lunak :)</translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1164"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1165"/>
         <source>Unknown error! Maybe file is broken.
 NSR Reader tried to open this file, but it can&apos;t :( Please check this file on desktop computer.</source>
         <translation>Gangguan tidak diketahui! Mungkin berkasnya rusak.
 NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memeriksa berkas ini pada komputer desktop.</translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1582"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1583"/>
         <source>Lite version of NSR Reader allows to read only first %1 pages of the file. If you want to read larger files, please consider buying the full version.</source>
         <translation>Versi NSR Reader Lite memungkinkan pembacaan hanya %1 halaman pertama berkas. Jika Anda ingin membaca berkas yang lebih besar, mohon pertimbangkan untuk membeli versi penuhnya.</translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1618"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1619"/>
         <source>Edit Bookmark</source>
         <translation>Sunting Pembatas Buku</translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1618"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1619"/>
         <source>Add Bookmark</source>
         <translation>Tambah Pembatas Buku</translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1623"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1624"/>
         <source>Edit bookmark for current page</source>
         <translation>Sunting pembatas buku untuk halaman ini</translation>
     </message>
     <message>
-        <location filename="../src/nsrreaderbb10.cpp" line="1624"/>
+        <location filename="../src/nsrreaderbb10.cpp" line="1625"/>
         <source>Add bookmark for current page</source>
         <translation>Tambah pembatas buku untuk halaman ini</translation>
     </message>
