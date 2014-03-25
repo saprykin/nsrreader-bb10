@@ -23,7 +23,7 @@ Mohon jangan menggunakan ulasan untuk melaporkan masalah-masalah dan bertanya ka
 
 Jika Anda menyukai aplikasi ini maka dukungan terbaik bagi saya ialah ulasan Anda yang positif. Hal itu merupakan hal terbaik yang akan memotivasi kami untuk menghadirkan fitur-fitur dan pengembangan baru :)
 
-* PENTING * JANGAN mematikan izin Membagikan Berkas untuk aplikasi karena tanpanya aplikasi tidak akan dapat membaca berkas.
+* PENTING * JANGAN mematikan izin File Bersama untuk aplikasi karena tanpanya aplikasi tidak akan dapat membaca berkas.
 
 Lite: Versi yang gratis akan memungkinkan Anda membaca hanya 30 halaman pertama berkas.
 
