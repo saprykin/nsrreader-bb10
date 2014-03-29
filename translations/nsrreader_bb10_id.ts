@@ -655,7 +655,7 @@
     <message>
         <location filename="../src/nsrreaderbb10.cpp" line="952"/>
         <source>It seems that NSR Reader doesn&apos;t have Shared Files permission required for proper working. Do you want to change the permission for shared files now? You have to restart the app after changing permissions.</source>
-        <translation>Tampaknya NSR Reader tidak memiliki izin Berbagi Berkas yang diperlukan agar dapat berfungsi sebagaimana mestinya. Apakah Anda ingin mengubah izin untuk berkas yang dibagikan sekarang? Anda perlu menyalakan ulang aplikasi setelah mengubah izin.</translation>
+        <translation>Tampaknya NSR Reader tidak memiliki izin File Bersama yang diperlukan agar dapat berfungsi sebagaimana mestinya. Apakah Anda ingin mengubah izin untuk berkas yang dibagikan sekarang? Anda perlu menyalakan ulang aplikasi setelah mengubah izin.</translation>
     </message>
     <message>
         <location filename="../src/nsrreaderbb10.cpp" line="1012"/>
