@@ -87,7 +87,7 @@ private Q_SLOTS:
     void onVkbVisibilityChanged (bool visible);
     void onBookmarkChanged (int page, bool removed);
     void onBookmarkPageRequested (int page);
-    void onDocumentOpened ();
+    void onDocumentOpened (const QString &path);
     void onDocumentClosed ();
 #ifdef NSR_CORE_LITE_VERSION
     void onLiteVersionOverPage ();

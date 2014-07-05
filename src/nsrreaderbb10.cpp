@@ -441,7 +441,9 @@ NSRReaderBB10::initFullUI ()
 	_filePicker->setFilter (QStringList ("*.pdf") << "*.djvu" << "*.djv" <<
 					     "*.tiff" << "*.tif" << "*.txt");
 
-	_core = new NSRReaderCore (_startMode == ApplicationStartupMode::InvokeCard, this);
+	_core = new NSRReaderCore (_startMode == ApplicationStartupMode::InvokeCard,
+				   _startMode == ApplicationStartupMode::InvokeCard ? NULL : NSRSettings::instance (),
+				   this);
 
 	ok = connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
 		      this, SLOT (onFileSelected (const QStringList&)));
@@ -457,7 +459,7 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError)));
 	Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (documentOpened (QString)), this, SLOT (onDocumentOpened ()));
+	ok = connect (_core, SIGNAL (documentOpened (QString)), this, SLOT (onDocumentOpened (QString)));
 	Q_ASSERT (ok);
 
 	ok = connect (_core, SIGNAL (documentClosed (QString)), this, SLOT (onDocumentClosed ()));
@@ -1555,13 +1557,14 @@ NSRReaderBB10::onBookmarkPageRequested (int page)
 }
 
 void
-NSRReaderBB10::onDocumentOpened ()
+NSRReaderBB10::onDocumentOpened (const QString &path)
 {
 	_isWaitingForFirstPage = true;
 
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
 
+	NSRSettings::instance()->addLastDocument (path);
 	onPreventScreenLockSwitchRequested (NSRSettings::instance()->isPreventScreenLock ());
 }
 
