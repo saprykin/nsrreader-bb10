@@ -224,7 +224,7 @@ NSRReaderBB10::initFullUI ()
 	ActionItem *shareAction = ActionItem::create().enabled (false);
 	shareAction->setTitle (trUtf8 ("Share", "Share file between users"));
 	ActionItem *bookmarkAction = ActionItem::create().enabled (false);
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 	ActionItem *buyAction = ActionItem::create();
 	buyAction->setTitle (trUtf8 ("Buy", "Buy full version of the app in the store"));
 #endif
@@ -256,7 +256,7 @@ NSRReaderBB10::initFullUI ()
 	_translator->addTranslatable ((UIObject *) shareAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share"));
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction, NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRReaderBB10"),
 				      QString ("Buy"));
@@ -310,7 +310,7 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share file with others"));
-#    ifdef NSR_CORE_LITE_VERSION
+#    ifdef NSR_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
@@ -329,7 +329,7 @@ NSRReaderBB10::initFullUI ()
 	prefsAction->setImageSource (QUrl ("asset:///settings.png"));
 	helpAction->setImageSource (QUrl ("asset:///about.png"));
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 	buyAction->setImage (QUrl ("asset:///buy.png"));
 #endif
 
@@ -364,7 +364,7 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("share", shareAction);
 	_actionAggregator->addAction ("prefs", prefsAction);
 	_actionAggregator->addAction ("help", helpAction);
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 	_actionAggregator->addAction ("buy", buyAction);
 #endif
 
@@ -422,7 +422,7 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (invertAction, SIGNAL (triggered ()), this, SLOT (onInvertActionTriggered ()));
 	Q_ASSERT (ok);
 
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 	ok = connect (buyAction, SIGNAL (triggered ()), this, SLOT (onBuyActionTriggered ()));
 	Q_ASSERT (ok);
 #endif
@@ -430,7 +430,7 @@ NSRReaderBB10::initFullUI ()
 	Menu *menu = new Menu ();
 	menu->addAction (helpAction);
 	menu->addAction (prefsAction);
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 	menu->addAction (buyAction);
 #endif
 	Application::instance()->setMenu (menu);
@@ -465,8 +465,9 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (_core, SIGNAL (documentClosed (QString)), this, SLOT (onDocumentClosed ()));
 	Q_ASSERT (ok);
 
-#ifdef NSR_CORE_LITE_VERSION
-	ok = connect (_core, SIGNAL (liteVersionOverPage ()), this, SLOT (onLiteVersionOverPage ()));
+#ifdef NSR_LITE_VERSION
+	_core->setPagesLimit (NSRSettings::getMaxAllowedPages ());
+	ok = connect (_core, SIGNAL (pagesLimitPassed ()), this, SLOT (onLiteVersionPagesLimitPassed ()));
 	Q_ASSERT (ok);
 #endif
 
@@ -1178,7 +1179,7 @@ void
 NSRReaderBB10::onSystemLanguageChanged ()
 {
 	QString 	locale_string = QLocale().name ();
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 	QString		filename = QString("nsrreader_bb10_lite_%1").arg (locale_string);
 #else
 	QString		filename = QString("nsrreader_bb10_%1").arg (locale_string);
@@ -1309,14 +1310,14 @@ NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
 	if (!ok)
 		page = -1;
 
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 	if (target == "com.gmail.lite.reader.nsr") {
 #else
 	if (target == "com.gmail.reader.nsr") {
 #endif
 		saveSession ();
 		loadSession (file, page);
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 	} else if (target == "com.gmail.lite.reader.nsr.viewer")
 #else
 	} else if (target == "com.gmail.reader.nsr.viewer")
@@ -1579,9 +1580,9 @@ NSRReaderBB10::onDocumentClosed ()
 	onPreventScreenLockSwitchRequested (false);
 }
 
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 void
-NSRReaderBB10::onLiteVersionOverPage ()
+NSRReaderBB10::onLiteVersionPagesLimitPassed ()
 {
 	QString text = trUtf8("Lite version of NSR Reader allows to read only "
 			      "first %1 pages of the file. If you want to read "

@@ -5,7 +5,7 @@ QT += xml
 
 include ($$_PRO_FILE_PWD_/src/nsrreadercore/nsrreadercore_blackberry.pri)
 
-DEFINES += NSR_CORE_LITE_VERSION
+DEFINES += NSR_LITE_VERSION
 DEFINES += $$NSRREADERCORE_DEFINES
 
 INCLUDEPATH += $$_PRO_FILE_PWD_/src/nsrreadercore/3dparty/poppler

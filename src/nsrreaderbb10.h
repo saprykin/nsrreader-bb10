@@ -89,8 +89,8 @@ private Q_SLOTS:
     void onBookmarkPageRequested (int page);
     void onDocumentOpened (const QString &path);
     void onDocumentClosed ();
-#ifdef NSR_CORE_LITE_VERSION
-    void onLiteVersionOverPage ();
+#ifdef NSR_LITE_VERSION
+    void onLiteVersionPagesLimitPassed ();
     void onBuyActionTriggered ();
 #endif
     void retranslateUi ();

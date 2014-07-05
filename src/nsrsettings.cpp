@@ -6,11 +6,11 @@
 #include <QDir>
 #include <QDateTime>
 
-#ifdef NSR_CORE_LITE_VERSION
-#  define NSR_CORE_CONFIG_DIR 	".nsrreaderlite"
+#ifdef NSR_LITE_VERSION
+#  define NSR_SETTINGS_CONFIG_DIR 	".nsrreaderlite"
 #  define NSR_LITE_MAX_PAGES	30
 #else
-#  define NSR_CORE_CONFIG_DIR 	".nsrreader"
+#  define NSR_SETTINGS_CONFIG_DIR 	".nsrreader"
 #endif
 
 NSRSettings * NSRSettings::_instance = NULL;
@@ -344,10 +344,10 @@ NSRSettings::mapEncodingToIndex (const QString& encoding)
 QString
 NSRSettings::getSettingsDirectory ()
 {
-	return QDir::homePath () + "/"NSR_CORE_CONFIG_DIR;
+	return QDir::homePath () + "/"NSR_SETTINGS_CONFIG_DIR;
 }
 
-#ifdef NSR_CORE_LITE_VERSION
+#ifdef NSR_LITE_VERSION
 int
 NSRSettings::getMaxAllowedPages ()
 {
