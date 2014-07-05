@@ -7,6 +7,7 @@
 #include "nsrscenecover.h"
 #include "nsrglobalnotifier.h"
 #include "nsrreader.h"
+#include "nsrthumbnailer.h"
 
 #include <float.h>
 
@@ -442,6 +443,7 @@ NSRReaderBB10::initFullUI ()
 					     "*.tiff" << "*.tif" << "*.txt");
 
 	_core = new NSRReaderCore (_startMode == ApplicationStartupMode::InvokeCard ? NULL : NSRSettings::instance (),
+				   _startMode == ApplicationStartupMode::InvokeCard ? NULL : NSRThumbnailer::instance (),
 				   this);
 
 	ok = connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
