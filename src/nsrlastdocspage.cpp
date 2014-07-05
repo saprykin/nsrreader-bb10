@@ -251,7 +251,7 @@ NSRLastDocsPage::createModelItem (const QString& file)
 	map["encrypted"] = isEncrypted;
 
 	if (!isEncrypted) {
-		map["image"] = NSRThumbnailer::instance()->getThumnailPath (file);
+		map["image"] = NSRThumbnailer::instance()->getThumbnailPath (file);
 		map["text"] = NSRThumbnailer::instance()->getThumbnailText (file);
 	}
 
