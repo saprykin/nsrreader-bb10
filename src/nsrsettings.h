@@ -48,11 +48,8 @@ public:
 	void addLastDocument (const QString& path);
 	bool isFirstStart () const {return _isFirstStart;}
 	void saveFirstStart ();
-	inline void setStarting (bool starting) {
-		_isStarting = starting;
-	}
+	inline void setStarting (bool starting) {_isStarting = starting;}
 
-	static QString getVersion ();
 	static QStringList getSupportedEncodings ();
 	static QString mapIndexToEncoding (int index);
 	static int mapEncodingToIndex (const QString& encoding);

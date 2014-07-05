@@ -6,8 +6,6 @@
 #include <QDir>
 #include <QDateTime>
 
-#define NSR_CORE_VERSION "1.4.1"
-
 #ifdef NSR_CORE_LITE_VERSION
 #  define NSR_CORE_CONFIG_DIR 	".nsrreaderlite"
 #  define NSR_LITE_MAX_PAGES	30
@@ -256,12 +254,6 @@ NSRSettings::saveTextEncoding (const QString &textEnc)
 	endGroup ();
 
 	sync ();
-}
-
-QString
-NSRSettings::getVersion ()
-{
-	return QString (NSR_CORE_VERSION);
 }
 
 QStringList

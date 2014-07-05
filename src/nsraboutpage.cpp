@@ -379,7 +379,7 @@ NSRAboutPage::retranslateUi ()
 #endif
 	_versionPlatform->setText (trUtf8("for BlackBerry%1 10", "%1 will be replaced with reg in circle symbol")
 				   .arg (QString::fromUtf8 ("\u00AE")));
-	_versionEngine->setText (trUtf8("Rendering engine %1").arg (NSRSettings::getVersion ()));
+	_versionEngine->setText (trUtf8("Rendering engine %1").arg (NSRReaderCore::getVersion ()));
 
 	QString welcomeTitle = trUtf8 ("Welcome!");
 	QString navTitle = trUtf8 ("Navigation", "Navigation between document pages");
