@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+  
+   Copyright (c) 2011, 2012 Research In Motion Limited.
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+   http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+  
+-->
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+
+<!-- BlackBerry Tablet OS application descriptor file.
+
+    Specifies parameters for identifying, installing, and launching native applications on BlackBerry Tablet OS.
+
+-->
+
+    <!-- A universally unique application identifier. Must be unique across all BlackBerry Tablet OS applications.
+         Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
+    <id>com.gmail.lite.reader.nsr</id>
+
+    <!-- The name that is displayed in the BlackBerry Tablet OS application installer. 
+         May have multiple values for each language. See samples or xsd schema file. Optional. -->
+    
+    <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
+         Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
+         An updated version of application must have a versionNumber value higher than the previous version. Required. -->
+    <versionNumber>1.4.2</versionNumber>
+    <packageLocale>ru,id</packageLocale>
+
+    <!-- Fourth digit segment of the package version. First three segments are taken from the 
+         <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
+    <buildId>1</buildId>
+                 
+    <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
+    <!-- <versionLabel></versionLabel> -->
+
+    <!-- Description, displayed in the BlackBerry Tablet OS application installer.
+         May have multiple values for each language. See samples or xsd schema file. Optional. -->
+
+    <!-- Copyright information. Optional. -->
+    <!-- <copyright></copyright> -->
+
+    <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
+    <author>Alexander Saprykin</author>
+    <description>
+       Powerful PDF, DjVu, TIFF and TXT reader for BlackBerry 10. Has plenty of features like text reflow, pinch zooming, password protected documents support, sharing, inverted colors mode and more. Easy to use everywhere.
+       <text xml:lang="ru">&#x41c;&#x43e;&#x449;&#x43d;&#x430;&#x44f; &#x447;&#x438;&#x442;&#x430;&#x43b;&#x43a;&#x430; &#x444;&#x43e;&#x440;&#x43c;&#x430;&#x442;&#x43e;&#x432; PDF, DjVu, TIFF &#x438; TXT &#x434;&#x43b;&#x44f; BlackBerry 10. &#x41f;&#x440;&#x435;&#x434;&#x43e;&#x441;&#x442;&#x430;&#x432;&#x43b;&#x44f;&#x435;&#x442; &#x43c;&#x43d;&#x43e;&#x436;&#x435;&#x441;&#x442;&#x432;&#x43e; &#x442;&#x430;&#x43a;&#x438;&#x445; &#x432;&#x43e;&#x437;&#x43c;&#x43e;&#x436;&#x43d;&#x43e;&#x441;&#x442;&#x435;&#x439;, &#x43a;&#x430;&#x43a; &#x43f;&#x435;&#x440;&#x435;&#x444;&#x43e;&#x440;&#x43c;&#x430;&#x442;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x43d;&#x438;&#x435; &#x442;&#x435;&#x43a;&#x441;&#x442;&#x430;, &#x43c;&#x430;&#x441;&#x448;&#x442;&#x430;&#x431;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x43d;&#x438;&#x435; &#x436;&#x435;&#x441;&#x442;&#x430;&#x43c;&#x438;, &#x43f;&#x43e;&#x434;&#x434;&#x435;&#x440;&#x436;&#x43a;&#x430; &#x437;&#x430;&#x448;&#x438;&#x444;&#x440;&#x43e;&#x432;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x444;&#x430;&#x439;&#x43b;&#x43e;&#x432;, &#x43f;&#x435;&#x440;&#x435;&#x434;&#x430;&#x447;&#x430; &#x444;&#x430;&#x439;&#x43b;&#x43e;&#x432; &#x43d;&#x430; &#x434;&#x440;&#x443;&#x433;&#x438;&#x435; &#x442;&#x435;&#x43b;&#x435;&#x444;&#x43e;&#x43d;&#x44b;, &#x440;&#x435;&#x436;&#x438;&#x43c; &#x438;&#x43d;&#x432;&#x435;&#x440;&#x442;&#x438;&#x440;&#x43e;&#x432;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x446;&#x432;&#x435;&#x442;&#x43e;&#x432; &#x438; &#x43c;&#x43d;&#x43e;&#x433;&#x43e; &#x434;&#x440;&#x443;&#x433;&#x43e;&#x433;&#x43e;. &#x41b;&#x435;&#x433;&#x43a;&#x43e; &#x438;&#x441;&#x43f;&#x43e;&#x43b;&#x44c;&#x437;&#x43e;&#x432;&#x430;&#x442;&#x44c; &#x432;&#x435;&#x437;&#x434;&#x435;.</text>
+       <text xml:lang="id">Penampil PDF, DjVu, TIFF dan TXT handal untuk BlackBerry 10. Memiliki banyak fitur seperti penggulungan ulang teks, perbesaran cubit, dukungan terhadap dokumen dengan kata sandi, berbagi, modus warna terbalik dan banyak lagi. Mudah digunakan di mana saja.</text>
+    </description>
+    
+    <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
+    <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
+   
+    <initialWindow>
+        <autoOrients>true</autoOrients>
+        <systemChrome>none</systemChrome>
+        <transparent>false</transparent>
+    </initialWindow>
+    
+    <!--  The category where the application appears. Either core.games or core.media. -->
+    <splashScreens>
+       <image/>
+       <image>assets/splash-720x720.png</image>
+       <image>assets/splash-768x1280.png</image>
+       <image>assets/splash-1280x768.png</image>
+       <image>assets/splash-720x1280.png</image>
+       <image>assets/splash-1280x720.png</image>
+    </splashScreens>
+    <name>NSR Reader Lite</name>
+    <configuration name="Device-Debug">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7-g/nsrreader_bb10_lite" entry="true" type="Qnx/Elf">nsrreader_bb10_lite</asset>
+    </configuration>
+    <configuration name="Device-Release">
+       <entryPointType>Qnx/Cascades</entryPointType>
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7/nsrreader_bb10_lite.so" entry="true" type="Qnx/Elf">nsrreader_bb10_lite.so</asset>
+    </configuration>
+    <configuration name="Device-Profile">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm-p/o.le-v7-g/nsrreader_bb10_lite" entry="true" type="Qnx/Elf">nsrreader_bb10_lite</asset>
+    </configuration>
+    <configuration name="Simulator-Debug">
+       <platformArchitecture>x86</platformArchitecture>
+       <asset path="x86/o-g/nsrreader_bb10_lite" entry="true" type="Qnx/Elf">nsrreader_bb10_lite</asset>
+    </configuration>
+    
+    <!--  The icon for the application. -->
+    <icon>
+        <image>icon-lite-94x94.png</image>
+        <image>icon-lite-114x114.png</image>
+    </icon>
+
+    <asset path="assets">assets</asset>
+    
+    <!-- Locale support -->
+    <asset path="translations" dest="qm">
+        <include name="*.qm"/>
+    </asset>
+    <asset path="icon-lite-81x81.png">icon-lite-81x81.png</asset>
+    <asset path="icon-lite-94x94.png">icon-lite-94x94.png</asset>
+    <asset path="icon-lite-114x114.png">icon-lite-114x114.png</asset>
+    <asset path="icon-lite-358x358.png">icon-lite-358x358.png</asset>
+    
+    <!-- Request permission to execute native code.  Required for native applications. -->
+    <permission system="true">run_native</permission>
+    <permission>access_shared</permission>
+    <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
+    
+    <env var="CASCADES_THEME" value="dark"/>
+    
+    <invoke-target id="com.gmail.lite.reader.nsr">
+        <invoke-target-type>application</invoke-target-type>
+        <invoke-target-name>NSR Reader Lite</invoke-target-name>
+        <filter>
+            <action>bb.action.OPEN</action>
+            <mime-type>application/pdf</mime-type>
+            <mime-type>image/vnd.djvu</mime-type>
+            <mime-type>image/x-djvu</mime-type>
+            <mime-type>image/tiff</mime-type>
+            <mime-type>text/plain</mime-type>
+            <property var="uris" value="file://"/>
+        </filter>
+        <filter>
+            <action>bb.action.OPEN</action>
+            <mime-type>*</mime-type>
+            <property var="uris" value="file://"/>
+            <property var="exts" value="pdf,djvu,djv,tiff,tif,txt"/>
+        </filter>
+        <icon>
+            <image>icon-lite-81x81.png</image>
+            <image>icon-lite-358x358.png</image>
+        </icon>
+    </invoke-target>
+    <invoke-target id="com.gmail.lite.reader.nsr.viewer">
+        <invoke-target-type>card.previewer</invoke-target-type>
+        <invoke-target-name>NSR Reader Lite</invoke-target-name>
+        <filter>
+            <action>bb.action.VIEW</action>
+            <mime-type>application/pdf</mime-type>
+            <mime-type>image/vnd.djvu</mime-type>
+            <mime-type>image/x-djvu</mime-type>
+            <mime-type>image/tiff</mime-type>
+            <mime-type>text/plain</mime-type>
+            <property var="uris" value="file://"/>
+        </filter>
+        <filter>
+            <action>bb.action.VIEW</action>
+            <mime-type>*</mime-type>
+            <property var="uris" value="file://"/>
+            <property var="exts" value="pdf,djvu,djv,tiff,tif,txt"/>
+        </filter>
+        <icon>
+            <image>icon-lite-81x81.png</image>
+            <image>icon-lite-358x358.png</image>
+        </icon>
+    </invoke-target>
+</qnx>

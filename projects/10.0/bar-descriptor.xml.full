@@ -75,42 +75,8 @@
        <image>assets/splash-1280x768.png</image>
        <image>assets/splash-720x1280.png</image>
        <image>assets/splash-1280x720.png</image>
-       <image>
-          <text xml:lang="ru">assets/splash-1280x720.png</text>
-       </image>
-       <image>
-          <text xml:lang="ru">assets/splash-1280x768.png</text>
-       </image>
-       <image>
-          <text xml:lang="ru">assets/splash-720x1280.png</text>
-       </image>
-       <image>
-          <text xml:lang="ru">assets/splash-720x720.png</text>
-       </image>
-       <image>
-          <text xml:lang="ru">assets/splash-768x1280.png</text>
-       </image>
-       <image>
-          <text xml:lang="id">assets/splash-1280x720.png</text>
-       </image>
-       <image>
-          <text xml:lang="id">assets/splash-1280x768.png</text>
-       </image>
-       <image>
-          <text xml:lang="id">assets/splash-720x1280.png</text>
-       </image>
-       <image>
-          <text xml:lang="id">assets/splash-720x720.png</text>
-       </image>
-       <image>
-          <text xml:lang="id">assets/splash-768x1280.png</text>
-       </image>
     </splashScreens>
-    <name>
-       NSR Reader
-       <text xml:lang="ru">NSR Reader</text>
-       <text xml:lang="id">NSR Reader</text>
-    </name>
+    <name>NSR Reader</name>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/nsrreader_bb10" entry="true" type="Qnx/Elf">nsrreader_bb10</asset>
@@ -133,18 +99,6 @@
     <icon>
         <image>icon-94x94.png</image>
         <image>icon-114x114.png</image>
-        <image>
-           <text xml:lang="ru">icon-94x94.png</text>
-        </image>
-        <image>
-           <text xml:lang="ru">icon-114x114.png</text>
-        </image>
-        <image>
-           <text xml:lang="id">icon-94x94.png</text>
-        </image>
-        <image>
-           <text xml:lang="id">icon-114x114.png</text>
-        </image>
     </icon>
 
     <asset path="assets">assets</asset>
