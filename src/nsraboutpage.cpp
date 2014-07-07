@@ -202,7 +202,6 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 						    .title(trUtf8 ("Buy"));
 #endif
 
-
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	reviewAction->accessibility()->setName (trUtf8 ("Review the app in the store"));
@@ -228,7 +227,13 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Q_ASSERT (ok);
 #endif
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	addAction (reviewAction, ActionBarPlacement::Signature);
+#else
 	addAction (reviewAction, ActionBarPlacement::OnBar);
+#endif
+
+
 #ifdef NSR_LITE_VERSION
 	addAction (buyAction, ActionBarPlacement::OnBar);
 #endif
