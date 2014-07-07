@@ -7,3 +7,4 @@ config.pri
 *.qm
 *.index
 .settings
+bar-descriptor.xml
