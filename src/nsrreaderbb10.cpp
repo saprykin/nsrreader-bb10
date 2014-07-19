@@ -49,8 +49,13 @@ using namespace bb::multimedia;
 
 #define NSR_GUI_VERSION				"1.4.2"
 
-#define NSR_GUI_ACTION_BAR_NORMAL_HEIGHT	140
-#define NSR_GUI_ACTION_BAR_REDUCED_HEIGHT	100
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#  define NSR_GUI_ACTION_BAR_NORMAL_HEIGHT	(Application::instance()->scene()->ui()->sdu (12))
+#  define NSR_GUI_ACTION_BAR_REDUCED_HEIGHT	(Application::instance()->scene()->ui()->sdu (12))
+#else
+#  define NSR_GUI_ACTION_BAR_NORMAL_HEIGHT	140
+#  define NSR_GUI_ACTION_BAR_REDUCED_HEIGHT	100
+#endif
 #define NSR_GUI_MAIN_TAB_INDEX			0
 #define NSR_GUI_RECENT_TAB_INDEX		1
 #define NSR_GUI_BOOKMARKS_TAB_INDEX		2
