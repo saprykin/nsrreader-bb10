@@ -97,8 +97,15 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Container *contactsContainer = Container::create().horizontal(HorizontalAlignment::Center)
 							  .vertical(VerticalAlignment::Fill)
 							  .layout(StackLayout::create ());
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	contactsContainer->setTopPadding (ui()->sdu (2));
+	contactsContainer->setBottomPadding (ui()->sdu (2));
+#else
 	contactsContainer->setTopPadding (20);
 	contactsContainer->setBottomPadding (20);
+#endif
+
 	contactsContainer->add (authorInfo);
 	contactsContainer->add (contactsInfo);
 
@@ -123,8 +130,13 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_liteLabel->textStyle()->setTextAlign(TextAlign::Center);
 #endif
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_aboutContainer->setTopPadding (ui()->sdu (4));
+	_aboutContainer->setBottomPadding (ui()->sdu (4));
+#else
 	_aboutContainer->setTopPadding (40);
 	_aboutContainer->setBottomPadding (40);
+#endif
 
 	_aboutContainer->add (logoView);
 	_aboutContainer->add (versionInfo);

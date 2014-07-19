@@ -1,4 +1,5 @@
 #include "nsrpagestatus.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/Color>
 #include <bb/system/LocaleHandler>
@@ -27,10 +28,17 @@ NSRPageStatus::NSRPageStatus (bb::cascades::Container *parent) :
 						       .background(Color::Transparent)
 						       .layout(DockLayout::create());
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	labelContainer->setLeftPadding (ui()->sdu (0.5f));
+	labelContainer->setRightPadding (ui()->sdu (0.5f));
+	labelContainer->setTopPadding (ui()->sdu (0.5f));
+	labelContainer->setBottomPadding (ui()->sdu (0.5f));
+#else
 	labelContainer->setLeftPadding (5);
 	labelContainer->setRightPadding (5);
 	labelContainer->setTopPadding (5);
 	labelContainer->setBottomPadding (5);
+#endif
 
 	_statusLabel = Label::create().horizontal(HorizontalAlignment::Fill)
 				       .vertical(VerticalAlignment::Fill);

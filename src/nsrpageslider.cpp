@@ -21,14 +21,22 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 	setHorizontalAlignment (HorizontalAlignment::Fill);
 	setBackground (Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f));
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	setLeftPadding (ui()->sdu (2));
+	setRightPadding (ui()->sdu (2));
+#else
 	setLeftPadding (20);
 	setRightPadding (20);
+#endif
+
 #ifdef BBNDK_VERSION_AT_LEAST
-#  if !BBNDK_VERSION_AT_LEAST(10,2,0)
+#  if BBNDK_VERSION_AT_LEAST(10,3,0)
+	setTopPadding (ui()->sdu (2));
+#  elif BBNDK_VERSION_AT_LEAST(10,2,0)
+	setTopPadding (10);
+#  else
 	setBottomPadding (10);
 	setTopPadding (30);
-#  else
-	setTopPadding (10);
 #  endif
 #else
 	setBottomPadding (10);

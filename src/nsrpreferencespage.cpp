@@ -56,9 +56,15 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 							.layout(StackLayout::create()
 									    .orientation(LayoutOrientation::LeftToRight));
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	secondContainer->setTopPadding (ui()->sdu (3));
+	secondContainer->setLeftPadding (ui()->sdu (2));
+	secondContainer->setRightPadding (ui()->sdu (2));
+#else
 	secondContainer->setTopPadding (30);
 	secondContainer->setLeftPadding (20);
 	secondContainer->setRightPadding (20);
+#endif
 
 	Label *fullscreenLabel = Label::create(trUtf8 ("Fullscreen Mode", "Option in preferences"))
 					.horizontal(HorizontalAlignment::Left)
@@ -85,9 +91,15 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	encodingInfo->textStyle()->setColor (Color::LightGray);
 	encodingInfo->setMultiline (true);
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	fifthContainer->setBottomPadding (ui()->sdu (2));
+	fifthContainer->setLeftPadding (ui()->sdu (2));
+	fifthContainer->setRightPadding (ui()->sdu (2));
+#else
 	fifthContainer->setBottomPadding (20);
 	fifthContainer->setLeftPadding (20);
 	fifthContainer->setRightPadding (20);
+#endif
 
 	fifthContainer->add (textEncodingLabel);
 	fifthContainer->add (_encodingsList);
@@ -107,8 +119,13 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	sixthContainer->add (cropLabel);
 	sixthContainer->add (_isAutoCrop);
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	sixthContainer->setLeftPadding (ui()->sdu (2));
+	sixthContainer->setRightPadding (ui()->sdu (2));
+#else
 	sixthContainer->setLeftPadding (20);
 	sixthContainer->setRightPadding (20);
+#endif
 
 	/* 'Prevent Screen Locking' option */
 	Container *firstInnerContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -137,9 +154,15 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	firstContainer->add (firstInnerContainer);
 	firstContainer->add (screenLockInfo);
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	firstContainer->setLeftPadding (ui()->sdu (2));
+	firstContainer->setRightPadding (ui()->sdu (2));
+	firstContainer->setBottomPadding (ui()->sdu (2));
+#else
 	firstContainer->setLeftPadding (20);
 	firstContainer->setRightPadding (20);
 	firstContainer->setBottomPadding (20);
+#endif
 
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
@@ -151,11 +174,29 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	/* Add all options to root layout */
 	rootContainer->add (secondContainer);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	rootContainer->add (Divider::create().bottomMargin(ui()->sdu (3)).topMargin(ui()->sdu (3)));
+#else
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
+#endif
+
 	rootContainer->add (sixthContainer);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	rootContainer->add (Divider::create().bottomMargin(ui()->sdu (3)).topMargin(ui()->sdu (3)));
+#else
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
+#endif
+
 	rootContainer->add (firstContainer);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	rootContainer->add (Divider::create().bottomMargin(ui()->sdu (3)).topMargin(ui()->sdu (3)));
+#else
 	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
+#endif
+
 	rootContainer->add (fifthContainer);
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)

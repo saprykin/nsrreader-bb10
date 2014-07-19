@@ -82,8 +82,15 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	_emptyContainer = Container::create().horizontal(HorizontalAlignment::Center)
 					     .vertical(VerticalAlignment::Center)
 					     .layout(StackLayout::create ());
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_emptyContainer->setLeftPadding (ui()->sdu (2));
+	_emptyContainer->setRightPadding (ui()->sdu (2));
+#else
 	_emptyContainer->setLeftPadding (20);
 	_emptyContainer->setRightPadding (20);
+#endif
+
 	_emptyContainer->add (emptyImage);
 	_emptyContainer->add (emptyLabel);
 	_emptyContainer->add (_noBookmarksLabel);

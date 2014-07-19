@@ -14,7 +14,12 @@
 #include <bb/cascades/Label>
 #include <bb/cascades/ImageView>
 
+#include <bb/device/DisplayInfo>
+
 using namespace bb::cascades;
+using namespace bb::device;
+
+#define NSR_LAST_DOC_WIDTH	360
 
 NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	Page (parent),
@@ -36,13 +41,21 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 
 	_listLayout = GridListLayout::create ();
 
-	if (OrientationSupport::instance()->orientation () == UIOrientation::Portrait)
-		_listLayout->setColumnCount (2);
-	else
-		_listLayout->setColumnCount (3);
+	QSize displaySize = DisplayInfo().pixelSize ();
 
+	if (OrientationSupport::instance()->orientation () == UIOrientation::Portrait)
+		_listLayout->setColumnCount (displaySize.width () / NSR_LAST_DOC_WIDTH);
+	else
+		_listLayout->setColumnCount (displaySize.height () / NSR_LAST_DOC_WIDTH);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_listLayout->setHorizontalCellSpacing (ui()->sdu (1));
+	_listLayout->setVerticalCellSpacing (ui()->sdu (1));
+#else
 	_listLayout->setHorizontalCellSpacing (10);
 	_listLayout->setVerticalCellSpacing (10);
+#endif
+
 	_listLayout->setCellAspectRatio (0.8);
 	_listView->setLayout (_listLayout);
 
@@ -74,8 +87,15 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .layout(StackLayout::create ())
 					     .visible(false);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_emptyContainer->setLeftPadding (ui()->sdu (2));
+	_emptyContainer->setRightPadding (ui()->sdu (2));
+#else
 	_emptyContainer->setLeftPadding (20);
 	_emptyContainer->setRightPadding (20);
+#endif
+
 	_emptyContainer->add (emptyImage);
 	_emptyContainer->add (emptyLabel);
 	_emptyContainer->add (emptyMoreLabel);
@@ -202,10 +222,12 @@ NSRLastDocsPage::onThumbnailRendered ()
 void
 NSRLastDocsPage::onOrientationAboutToChange (bb::cascades::UIOrientation::Type type)
 {
+	QSize displaySize = DisplayInfo().pixelSize ();
+
 	if (type == UIOrientation::Portrait)
-		_listLayout->setColumnCount (2);
+		_listLayout->setColumnCount (displaySize.width () / NSR_LAST_DOC_WIDTH);
 	else
-		_listLayout->setColumnCount (3);
+		_listLayout->setColumnCount (displaySize.height () / NSR_LAST_DOC_WIDTH);
 }
 
 void

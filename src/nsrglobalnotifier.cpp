@@ -25,6 +25,3 @@ NSRGlobalNotifier::languageChangedSignal ()
 {
 	emit languageChanged ();
 }
-
-
-

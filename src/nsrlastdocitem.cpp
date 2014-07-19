@@ -66,10 +66,18 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 						       .layout(DockLayout::create ())
 						       .background(Color::Black);
 	labelContainer->setOpacity (0.8);
-	labelContainer->setMinHeight (70);
 	labelContainer->setTopMargin (0);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	labelContainer->setMinHeight (ui()->sdu (7));
+	labelContainer->setLeftPadding (ui()->sdu (1.5f));
+	labelContainer->setRightPadding (ui()->sdu (1.5f));
+#else
+	labelContainer->setMinHeight (70);
 	labelContainer->setLeftPadding (15);
 	labelContainer->setRightPadding (15);
+#endif
+
 	labelContainer->add (_label);
 
 	_lockContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -120,10 +128,17 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_solidSelect[0]->setPreferredHeight (ui()->sdu (0.4f));
+	_solidSelect[1]->setPreferredWidth (ui()->sdu (0.4f));
+	_solidSelect[2]->setPreferredHeight (ui()->sdu (0.4f));
+	_solidSelect[3]->setPreferredWidth (ui()->sdu (0.4f));
+#else
 	_solidSelect[0]->setPreferredHeight (4);
 	_solidSelect[1]->setPreferredWidth (4);
 	_solidSelect[2]->setPreferredHeight (4);
 	_solidSelect[3]->setPreferredWidth (4);
+#endif
 
 	_solidContainer->add (_solidSelect[0]);
 	_solidContainer->add (_solidSelect[1]);
@@ -136,10 +151,18 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					     .vertical(VerticalAlignment::Fill)
 					     .layout(DockLayout::create())
 					     .background(Color::Transparent);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_innerContainer->setTopPadding (ui()->sdu (0.4f));
+	_innerContainer->setRightPadding (ui()->sdu (0.4f));
+	_innerContainer->setBottomPadding (ui()->sdu (0.4f));
+	_innerContainer->setLeftPadding (ui()->sdu (0.4f));
+#else
 	_innerContainer->setTopPadding (4);
 	_innerContainer->setRightPadding (4);
 	_innerContainer->setBottomPadding (4);
 	_innerContainer->setLeftPadding (4);
+#endif
 
 	_innerSelect[0] = Container::create().horizontal(HorizontalAlignment::Fill)
 					     .vertical(VerticalAlignment::Top)
@@ -154,10 +177,17 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_innerSelect[0]->setPreferredHeight (ui()->sdu (0.8f));
+	_innerSelect[1]->setPreferredWidth (ui()->sdu (0.8f));
+	_innerSelect[2]->setPreferredHeight (ui()->sdu (0.8f));
+	_innerSelect[3]->setPreferredWidth (ui()->sdu (0.8f));
+#else
 	_innerSelect[0]->setPreferredHeight (8);
 	_innerSelect[1]->setPreferredWidth (8);
 	_innerSelect[2]->setPreferredHeight (8);
 	_innerSelect[3]->setPreferredWidth (8);
+#endif
 
 	_innerContainer->setOpacity (0.0);
 
@@ -225,10 +255,18 @@ NSRLastDocItem::updateItem (const QString&	title,
 		_imageView->setVisible (false);
 		_textView->setVisible (true);
 		_textView->setText (text);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+		_viewContainer->setLeftPadding (ui()->sdu (1.2f));
+		_viewContainer->setTopPadding (ui()->sdu (1.2f));
+		_viewContainer->setRightPadding (ui()->sdu (1.2f));
+		_viewContainer->setBottomPadding (ui()->sdu (1.2f));
+#else
 		_viewContainer->setLeftPadding (12);
 		_viewContainer->setTopPadding (12);
 		_viewContainer->setRightPadding (12);
 		_viewContainer->setBottomPadding (12);
+#endif
 	}
 
 	if (actionSetCount () > 0)
@@ -316,10 +354,17 @@ NSRLastDocItem::onImageStateChanged (bb::cascades::ResourceState::Type state)
 void
 NSRLastDocItem::onLayoutFrameChanged (const QRectF& rect)
 {
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_solidSelect[1]->setPreferredHeight (rect.height () - ui()->sdu (0.8f));
+	_solidSelect[3]->setPreferredHeight (rect.height () - ui()->sdu (0.8f));
+	_innerSelect[1]->setPreferredHeight (rect.height () - ui()->sdu (2.4f));
+	_innerSelect[3]->setPreferredHeight (rect.height () - ui()->sdu (2.4f));
+#else
 	_solidSelect[1]->setPreferredHeight (rect.height () - 8);
 	_solidSelect[3]->setPreferredHeight (rect.height () - 8);
 	_innerSelect[1]->setPreferredHeight (rect.height () - 24);
 	_innerSelect[3]->setPreferredHeight (rect.height () - 24);
+#endif
 }
 
 void

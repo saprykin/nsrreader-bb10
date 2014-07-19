@@ -25,7 +25,11 @@
 using namespace bb::cascades;
 using namespace bb::device;
 
-#define NSR_PAGEVIEW_WIDTH_THRESHOLD	4
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#  define NSR_PAGEVIEW_WIDTH_THRESHOLD	(ui()->sdu (1) / 2)
+#else
+#  define NSR_PAGEVIEW_WIDTH_THRESHOLD	4
+#endif
 
 NSRPageView::NSRPageView (Container *parent) :
 	Container (parent),
@@ -558,7 +562,7 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 
 		QPointF center = _initialScalePos * scale;
 
-		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >= 4) {
+		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >= NSR_PAGEVIEW_WIDTH_THRESHOLD) {
 			_imageView->setPreferredSize (_initialScaleSize.width () * scale,
 						      _initialScaleSize.height () * scale);
 			_scrollView->scrollToPoint (center.x () - _size.width () / 2,

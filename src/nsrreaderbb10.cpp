@@ -52,14 +52,15 @@ using namespace bb::multimedia;
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 #  define NSR_GUI_ACTION_BAR_NORMAL_HEIGHT	(Application::instance()->scene()->ui()->sdu (12))
 #  define NSR_GUI_ACTION_BAR_REDUCED_HEIGHT	(Application::instance()->scene()->ui()->sdu (12))
+#  define NSR_GUI_CROP_TO_WIDTH_THRESHOLD	(Application::instance()->scene()->ui()->sdu (0.4f))
 #else
 #  define NSR_GUI_ACTION_BAR_NORMAL_HEIGHT	140
 #  define NSR_GUI_ACTION_BAR_REDUCED_HEIGHT	100
+#  define NSR_GUI_CROP_TO_WIDTH_THRESHOLD	4
 #endif
 #define NSR_GUI_MAIN_TAB_INDEX			0
 #define NSR_GUI_RECENT_TAB_INDEX		1
 #define NSR_GUI_BOOKMARKS_TAB_INDEX		2
-#define NSR_GUI_CROP_TO_WIDTH_THRESHOLD		4
 
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
@@ -738,7 +739,6 @@ NSRReaderBB10::onInvertActionTriggered ()
 		NSRSettings::instance()->saveInvertedColorsWithoutSync (_core->isInvertedColors ());
 	else
 		NSRSettings::instance()->saveInvertedColors (_core->isInvertedColors ());
-
 }
 
 void
@@ -780,7 +780,6 @@ NSRReaderBB10::onHelpActionTriggered ()
 		pane->setActiveTab (pane->at(NSR_GUI_MAIN_TAB_INDEX));
 		pane->resetSidebarState ();
 	}
-
 }
 
 void

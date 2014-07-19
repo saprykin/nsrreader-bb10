@@ -1,5 +1,6 @@
 #include "nsrscenecover.h"
 #include "nsrglobalnotifier.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/Label>
@@ -41,10 +42,17 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 					     .background(Color::Black)
 					     .visible(false);
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_titleContainer->setLeftPadding (ui()->sdu (1));
+	_titleContainer->setRightPadding (ui()->sdu (1));
+	_titleContainer->setTopPadding (ui()->sdu (1));
+	_titleContainer->setBottomPadding (ui()->sdu (1));
+#else
 	_titleContainer->setLeftPadding (10);
 	_titleContainer->setRightPadding (10);
 	_titleContainer->setTopPadding (10);
 	_titleContainer->setBottomPadding (10);
+#endif
 
 	_titleLabel = Label::create().horizontal(HorizontalAlignment::Center)
 				     .vertical(VerticalAlignment::Center);

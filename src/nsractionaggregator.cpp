@@ -70,8 +70,3 @@ NSRActionAggregator::actionByName (const QString& name)
 {
 	return _hash.value (name);
 }
-
-
-
-
-

@@ -1,5 +1,6 @@
 #include "nsrwelcomeview.h"
 #include "nsrglobalnotifier.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
@@ -50,7 +51,12 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 				     .vertical(VerticalAlignment::Center);
 	_startLabel->textStyle()->setFontSize (FontSize::XLarge);
 	_startLabel->textStyle()->setColor (Color::White);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_startLabel->setBottomMargin (ui()->sdu (6));
+#else
 	_startLabel->setBottomMargin (60);
+#endif
 
 	rootContainer->add (_startLabel);
 	rootContainer->add (innerContainer);
