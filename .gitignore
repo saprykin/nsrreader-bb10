@@ -8,3 +8,4 @@ config.pri
 *.index
 .settings
 bar-descriptor.xml
+libnsrreadercore.so
