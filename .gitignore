@@ -9,3 +9,5 @@ config.pri
 .settings
 bar-descriptor.xml
 libnsrreadercore.so
+translations/*.ts
+Makefile
