@@ -370,7 +370,7 @@ NSRPageView::getTextZoom () const
 void
 NSRPageView::setTextZoom (int fontSize)
 {
-	fontSize = qBound ((int) FontSize::XXSmall, fontSize, (int) FontSize::XXLarge);
+	fontSize = qBound ((int) FontSize::XSmall, fontSize, (int) FontSize::XXLarge);
 	fontSize = (fontSize / 10) * 10;
 	_textArea->textStyle()->setFontSize ((FontSize::Type) fontSize);
 }
