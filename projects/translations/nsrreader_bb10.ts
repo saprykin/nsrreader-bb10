@@ -92,10 +92,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + B&lt;/b&gt; to add or edit bookmark&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + T&lt;/b&gt; to switch text reflow mode&lt;/li&gt;&lt;li&gt;&lt;b&gt;Ctrl + I&lt;/b&gt; to invert colors&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Fullscreen Mode&lt;/b&gt; &amp;ndash; Action Bar at the bottom of the screen will be hidden (tap the screen somewhere to show or hide it again).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -145,6 +141,10 @@
     </message>
     <message>
         <source>Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;I&lt;/b&gt; key to zoom in page&lt;/li&gt;&lt;li&gt;&lt;b&gt;O&lt;/b&gt; key to zoom out page&lt;/li&gt;&lt;li&gt;&lt;b&gt;G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;K&lt;/b&gt; to add or edit bookmark&lt;/li&gt;&lt;li&gt;&lt;b&gt;R&lt;/b&gt; to switch text reflow mode&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + I&lt;/b&gt; to invert colors&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
