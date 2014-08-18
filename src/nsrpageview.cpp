@@ -31,6 +31,10 @@ using namespace bb::device;
 #  define NSR_PAGEVIEW_WIDTH_THRESHOLD	4
 #endif
 
+#define NSR_PAGEVIEW_ZOOM_IN_RATIO	1.1
+#define NSR_PAGEVIEW_ZOOM_OUT_RATIO	0.9
+#define NSR_PAGEVIEW_SCALE_THRESHOLD	0.05
+
 NSRPageView::NSRPageView (Container *parent) :
 	Container (parent),
 	_translator (NULL),
@@ -366,7 +370,7 @@ NSRPageView::getTextZoom () const
 void
 NSRPageView::setTextZoom (int fontSize)
 {
-	fontSize = qBound ((int) FontSize::XXSmall,  fontSize, (int) FontSize::XXLarge);
+	fontSize = qBound ((int) FontSize::XXSmall, fontSize, (int) FontSize::XXLarge);
 	fontSize = (fontSize / 10) * 10;
 	_textArea->textStyle()->setFontSize ((FontSize::Type) fontSize);
 }
@@ -458,7 +462,81 @@ NSRPageView::setScrollPositionOnLoad (const QPointF& pos, NSRAbstractDocument::N
 	}
 }
 
-void NSRPageView::timerEvent (QTimerEvent* ev)
+void
+NSRPageView::zoomIn ()
+{
+	if (!_isZoomingEnabled)
+		return;
+
+	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
+		if (!_page.isImageValid ())
+			return;
+
+		double scale = NSR_PAGEVIEW_ZOOM_IN_RATIO;
+
+		if (scale * _currentZoom > _maxZoom)
+			scale = (double) _maxZoom / _currentZoom;
+
+		if (qAbs (_currentZoom * scale - _currentZoom) > NSR_PAGEVIEW_SCALE_THRESHOLD) {
+			QPointF center =  _scrollView->viewableArea().center () * scale;
+
+			if (qAbs (_imageView->preferredWidth () * scale - _imageView->preferredWidth ()) >=
+				  NSR_PAGEVIEW_WIDTH_THRESHOLD) {
+				_imageView->setPreferredSize (_imageView->preferredWidth () * scale,
+							      _imageView->preferredHeight () * scale);
+				_scrollView->scrollToPoint (center.x () - _size.width () / 2,
+						 	    center.y () - _size.height () / 2,
+						 	    ScrollAnimation::None);
+			}
+
+			_currentZoom *= scale;
+			emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
+		}
+	} else
+		setTextZoom ((int) _textArea->textStyle()->fontSize () +
+			     (int) (FontSize::Medium - FontSize::Small));
+}
+
+void
+NSRPageView::zoomOut ()
+{
+	if (!_isZoomingEnabled)
+		return;
+
+	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
+		if (!_page.isImageValid ())
+			return;
+
+		double scale = NSR_PAGEVIEW_ZOOM_OUT_RATIO;
+
+		if (scale * _currentZoom < _minZoom)
+			scale = ((double) _minZoom) / _currentZoom;
+
+		if (qAbs (_currentZoom * scale - _currentZoom) > NSR_PAGEVIEW_SCALE_THRESHOLD) {
+			if (_imageView->preferredWidth () * scale < _size.width ())
+				scale = (double) _imageView->preferredWidth () / _size.width ();
+
+			QPointF center =  _scrollView->viewableArea().center () * scale;
+
+			if (qAbs (_imageView->preferredWidth () * scale - _imageView->preferredWidth ()) >=
+				  NSR_PAGEVIEW_WIDTH_THRESHOLD) {
+				_imageView->setPreferredSize (_imageView->preferredWidth () * scale,
+							      _imageView->preferredHeight () * scale);
+				_scrollView->scrollToPoint (center.x () - _size.width () / 2,
+							    center.y () - _size.height () / 2,
+							    ScrollAnimation::None);
+			}
+
+			_currentZoom *= scale;
+			emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
+		}
+	} else
+		setTextZoom ((int) _textArea->textStyle()->fontSize () -
+			     (int) (FontSize::Medium - FontSize::Small));
+}
+
+void
+NSRPageView::timerEvent (QTimerEvent* ev)
 {
 	killTimer (ev->timerId ());
 
@@ -562,7 +640,8 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 
 		QPointF center = _initialScalePos * scale;
 
-		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >= NSR_PAGEVIEW_WIDTH_THRESHOLD) {
+		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >=
+			  NSR_PAGEVIEW_WIDTH_THRESHOLD) {
 			_imageView->setPreferredSize (_initialScaleSize.width () * scale,
 						      _initialScaleSize.height () * scale);
 			_scrollView->scrollToPoint (center.x () - _size.width () / 2,
@@ -585,7 +664,7 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
 		double scale = _imageView->preferredWidth () / _initialScaleSize.width ();
 
-		if (qAbs (_currentZoom * scale - _currentZoom) > 0.05) {
+		if (qAbs (_currentZoom * scale - _currentZoom) > NSR_PAGEVIEW_SCALE_THRESHOLD) {
 			if (_imageView->preferredWidth () < _size.width ()) {
 				scale = (double) _size.width () / _initialScaleSize.width ();
 

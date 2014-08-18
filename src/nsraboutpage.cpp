@@ -182,7 +182,6 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_changesContainer->add (webChanges);
 	_changesContainer->setVisible (false);
 
-
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(StackLayout::create ());
@@ -244,7 +243,6 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 #else
 	addAction (reviewAction, ActionBarPlacement::OnBar);
 #endif
-
 
 #ifdef NSR_LITE_VERSION
 	addAction (buyAction, ActionBarPlacement::OnBar);
@@ -418,11 +416,13 @@ NSRAboutPage::retranslateUi ()
 					    "<ul>"
 					    "<li><b>P</b> key to navigate to previous page</li>"
 			    	    	    "<li><b>N</b> key to navigate to next page</li>"
-					    "<li><b>Ctrl + G</b> to go to arbitrary page</li>"
-					    "<li><b>Ctrl + O</b> to open another file</li>"
-					    "<li><b>Ctrl + B</b> to add or edit bookmark</li>"
-					    "<li><b>Ctrl + T</b> to switch text reflow mode</li>"
-					    "<li><b>Ctrl + I</b> to invert colors</li>"
+					    "<li><b>I</b> key to zoom in page</li>"
+					    "<li><b>O</b> key to zoom out page</li>"
+					    "<li><b>G</b> to go to arbitrary page</li>"
+					    "<li><b>Shift + O</b> to open another file</li>"
+					    "<li><b>K</b> to add or edit bookmark</li>"
+					    "<li><b>R</b> to switch text reflow mode</li>"
+					    "<li><b>Shift + I</b> to invert colors</li>"
 					    "<li><b>Space</b> to scroll down one screen</li>"
 					    "<li><b>Shift + Space</b> to scroll up one screen</li>"
 					    "<li><b>B</b> to scroll to bottom</li>"

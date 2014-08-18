@@ -379,9 +379,11 @@ NSRReaderBB10::initFullUI ()
 #  if BBNDK_VERSION_AT_LEAST(10,1,0)
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
-	Shortcut *gotoShortcut = Shortcut::create().key ("Ctrl + G");
-	Shortcut *reflowShortcut = Shortcut::create().key ("Ctrl + T");
-	Shortcut *invertShortcut = Shortcut::create().key ("Ctrl + I");
+	SystemShortcut *zoomInShortcut = SystemShortcut::create (SystemShortcuts::ZoomIn);
+	SystemShortcut *zoomOutShortcut = SystemShortcut::create (SystemShortcuts::ZoomOut);
+	Shortcut *gotoShortcut = Shortcut::create().key ("G");
+	Shortcut *reflowShortcut = Shortcut::create().key ("R");
+	Shortcut *invertShortcut = Shortcut::create().key ("Shift + I");
 
 	prevPageAction->addShortcut (prevShortcut);
 	nextPageAction->addShortcut (nextShortcut);
@@ -389,9 +391,19 @@ NSRReaderBB10::initFullUI ()
 	reflowAction->addShortcut (reflowShortcut);
 	invertAction->addShortcut (invertShortcut);
 
+	_pageView->addShortcut (zoomInShortcut);
+	_pageView->addShortcut (zoomOutShortcut);
+	_pageView->inputRoute()->setPrimaryKeyTarget (true);
+
+	ok = connect (zoomInShortcut, SIGNAL (triggered ()), _pageView, SLOT (zoomIn ()));
+	Q_ASSERT (ok);
+
+	ok = connect (zoomOutShortcut, SIGNAL (triggered ()), _pageView, SLOT (zoomOut ()));
+	Q_ASSERT (ok);
+
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
-		Shortcut *openShortcut = Shortcut::create().key ("Ctrl + O");
-		Shortcut *bookmarkShortcut = Shortcut::create().key ("Ctrl + B");
+		Shortcut *openShortcut = Shortcut::create().key ("Shift + O");
+		Shortcut *bookmarkShortcut = Shortcut::create().key ("K");
 
 		openAction->addShortcut (openShortcut);
 		bookmarkAction->addShortcut (bookmarkShortcut);

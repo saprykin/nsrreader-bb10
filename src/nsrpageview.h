@@ -52,6 +52,10 @@ public:
 		return _isGesturesEnabled;
 	}
 
+public Q_SLOTS:
+	void zoomIn ();
+	void zoomOut ();
+
 Q_SIGNALS:
 	void viewTapped ();
 	void zoomChanged (double zoom, NSRRenderRequest::NSRRenderReason reason);
