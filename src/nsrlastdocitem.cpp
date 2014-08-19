@@ -2,6 +2,7 @@
 #include "nsrglobalnotifier.h"
 #include "nsrreader.h"
 
+#include <bb/cascades/Application>
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/StackLayoutProperties>
@@ -9,6 +10,9 @@
 #include <bb/cascades/ImagePaint>
 #include <bb/cascades/LayoutUpdateHandler>
 #include <bb/cascades/ActionSet>
+#include <bb/cascades/ThemeSupport>
+#include <bb/cascades/Theme>
+#include <bb/cascades/ColorTheme>
 
 #include <QFile>
 
@@ -105,6 +109,14 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
+	ColorTheme *colorTheme = Application::instance()->themeSupport()->theme()->colorTheme ();
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	Color frameColor = colorTheme->primary ();
+#else
+	Color frameColor = Color::fromRGBA (0, 0.66, 0.87, 1.0);
+#endif
+
 	Container *mainContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create())
@@ -117,16 +129,16 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 
 	_solidSelect[0] = Container::create().horizontal(HorizontalAlignment::Fill)
 					     .vertical(VerticalAlignment::Top)
-					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+					     .background(frameColor);
 	_solidSelect[1] = Container::create().horizontal(HorizontalAlignment::Right)
 					     .vertical(VerticalAlignment::Center)
-					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+					     .background(frameColor);
 	_solidSelect[2] = Container::create().horizontal(HorizontalAlignment::Fill)
 					     .vertical(VerticalAlignment::Bottom)
-					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+					     .background(frameColor);
 	_solidSelect[3] = Container::create().horizontal(HorizontalAlignment::Left)
 					     .vertical(VerticalAlignment::Center)
-					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+					     .background(frameColor);
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 	_solidSelect[0]->setPreferredHeight (ui()->sdu (0.4f));
@@ -166,16 +178,16 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 
 	_innerSelect[0] = Container::create().horizontal(HorizontalAlignment::Fill)
 					     .vertical(VerticalAlignment::Top)
-					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+					     .background(frameColor);
 	_innerSelect[1] = Container::create().horizontal(HorizontalAlignment::Right)
 					     .vertical(VerticalAlignment::Center)
-					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+					     .background(frameColor);
 	_innerSelect[2] = Container::create().horizontal(HorizontalAlignment::Fill)
 					     .vertical(VerticalAlignment::Bottom)
-					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+					     .background(frameColor);
 	_innerSelect[3] = Container::create().horizontal(HorizontalAlignment::Left)
 					     .vertical(VerticalAlignment::Center)
-					     .background(Color::fromRGBA (0, 0.66, 0.87, 1.0));
+					     .background(frameColor);
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 	_innerSelect[0]->setPreferredHeight (ui()->sdu (0.8f));
