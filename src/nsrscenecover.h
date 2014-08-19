@@ -39,7 +39,6 @@ private:
 	NSRPageStatus *			_pageStatus;
 	bb::cascades::Container *	_titleContainer;
 	bb::cascades::Label *		_titleLabel;
-	bb::cascades::ImageView *	_backView;
 	bb::cascades::ImageView	*	_logoView;
 	bb::cascades::ImageView *	_pageView;
 	bb::cascades::TextArea *	_textView;

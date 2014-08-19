@@ -22,7 +22,6 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	SceneCover (parent),
 	_pageStatus (NULL),
 	_titleLabel (NULL),
-	_backView (NULL),
 	_logoView (NULL),
 	_pageView (NULL),
 	_textView (NULL),
@@ -64,11 +63,6 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 						       .layout(DockLayout::create())
 						       .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0));
 
-	_backView = ImageView::create().horizontal(HorizontalAlignment::Fill)
-				       .vertical(VerticalAlignment::Fill)
-				       .scalingMethod(ScalingMethod::AspectFill);
-	_backView->setImageSource (QUrl ("asset:///active-frame-background.png"));
-
 	_logoView = ImageView::create().horizontal(HorizontalAlignment::Center)
 				       .vertical(VerticalAlignment::Center);
 	_logoView->setImageSource (QUrl ("asset:///active-frame-logo.png"));
@@ -109,7 +103,6 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	_textView->textStyle()->setFontSize (FontSize::XSmall);
 	_textContainer->add (_textView);
 
-	imageContainer->add (_backView);
 	imageContainer->add (_logoView);
 	imageContainer->add (_pageView);
 	imageContainer->add (_textContainer);
@@ -178,7 +171,6 @@ void
 NSRSceneCover::updateState (bool isStatic)
 {
 	_titleContainer->setVisible (!isStatic);
-	_backView->setVisible (isStatic);
 	_logoView->setVisible (isStatic);
 	_pageView->setVisible (!isStatic && !_isTextOnly);
 	_textContainer->setVisible (_isTextOnly);
