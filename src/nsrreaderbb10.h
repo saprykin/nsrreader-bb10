@@ -11,6 +11,7 @@
 #include "nsrbpseventhandler.h"
 #include "nsrtranslator.h"
 #include "nsrbookmarkspage.h"
+#include "nsrscenecover.h"
 
 #include <bb/cascades/pickers/FilePicker>
 #include <bb/cascades/Application>
@@ -117,6 +118,7 @@ private:
     NSRWelcomeView				*_welcomeView;
     NSRActionAggregator				*_actionAggregator;
     NSRPageSlider				*_slider;
+    NSRSceneCover				*_sceneCover;
     NSRBpsEventHandler				*_bpsHandler;
     NSRTranslator				*_translator;
     QTranslator					*_qtranslator;

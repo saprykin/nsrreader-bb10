@@ -4,7 +4,6 @@
 #include "nsrpreferencespage.h"
 #include "nsrlastdocspage.h"
 #include "nsrfilesharer.h"
-#include "nsrscenecover.h"
 #include "nsrglobalnotifier.h"
 #include "nsrreader.h"
 #include "nsrthumbnailer.h"
@@ -28,11 +27,14 @@
 #include <bb/cascades/Window>
 #include <bb/cascades/ScreenIdleMode>
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,1,0)
-#    include <bb/cascades/SystemShortcut>
-#    include <bb/cascades/Shortcut>
-#  endif
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
+#  include <bb/cascades/SystemShortcut>
+#  include <bb/cascades/Shortcut>
+#endif
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#  include <bb/cascades/MultiCover>
+#  include <bb/cascades/CoverDetailLevel>
 #endif
 
 #include <bb/system/LocaleHandler>
@@ -70,6 +72,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	_welcomeView (NULL),
 	_actionAggregator (NULL),
 	_slider (NULL),
+	_sceneCover (NULL),
 	_bpsHandler (NULL),
 	_translator (NULL),
 	_qtranslator (NULL),
@@ -603,7 +606,16 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onZoomChanged (double, NSRRenderRequest::NSRRenderReason)));
 	Q_ASSERT (ok);
 
-	Application::instance()->setCover (new NSRSceneCover ());
+	_sceneCover = new NSRSceneCover ();
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	MultiCover *multiCover = new MultiCover ();
+	multiCover->add (_sceneCover, CoverDetailLevel::High);
+	Application::instance()->setCover (multiCover);
+#else
+	Application::instance()->setCover (_sceneCover);
+#endif
+
 	Application::instance()->setAutoExit (false);
 
 	ok = connect (Application::instance (), SIGNAL (thumbnail ()), this, SLOT (onThumbnail ()));
@@ -1474,41 +1486,31 @@ NSRReaderBB10::getActionBarHeightForOrientation (bb::cascades::UIOrientation::Ty
 void
 NSRReaderBB10::onThumbnail ()
 {
-	NSRSceneCover *cover = dynamic_cast < NSRSceneCover * > (Application::instance()->cover ());
-
-	if (cover == NULL)
-		return;
-
 	_isActiveFrame = true;
 
 	if (_core->isDocumentOpened ()) {
 		NSRRenderedPage page = _core->getCurrentPage ();
 
 		if (page.isValid ()) {
-			cover->setPageData (page,
-					    QFileInfo(_core->getDocumentPath ()).fileName (),
-					    _core->getPagesCount ());
-			cover->setTextOnly (_core->isTextReflow ());
-			cover->setInvertedColors (_core->isInvertedColors ());
-			cover->updateState (false);
+			_sceneCover->setPageData (page,
+					    	  QFileInfo(_core->getDocumentPath ()).fileName (),
+					    	  _core->getPagesCount ());
+			_sceneCover->setTextOnly (_core->isTextReflow ());
+			_sceneCover->setInvertedColors (_core->isInvertedColors ());
+			_sceneCover->updateState (false);
 		} else
-			cover->updateState (true);
+			_sceneCover->updateState (true);
 	} else
-		cover->updateState (true);
+		_sceneCover->updateState (true);
 }
 
 void
 NSRReaderBB10::onFullscreen ()
 {
-	NSRSceneCover *cover = dynamic_cast < NSRSceneCover * > (Application::instance()->cover ());
-
-	if (cover == NULL)
-		return;
-
 	_isActiveFrame = false;
 
-	cover->resetPageData ();
-	cover->updateState (true);
+	_sceneCover->resetPageData ();
+	_sceneCover->updateState (true);
 }
 
 void
