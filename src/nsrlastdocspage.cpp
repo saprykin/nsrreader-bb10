@@ -77,10 +77,8 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 						   .vertical(VerticalAlignment::Center)
 						   .imageSource(QUrl ("asset:///file.png"));
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	emptyImage->accessibility()->setName (trUtf8 ("Image of document"));
-#  endif
 #endif
 
 	_emptyContainer = Container::create().horizontal(HorizontalAlignment::Center)
@@ -142,19 +140,15 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 				      QString ("NSRLastDocsPage"),
 				      QString ("Recent"));
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	_translator->addTranslatable ((UIObject *) emptyImage->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRLastDocsPage"),
 				      QString ("Image of document"));
-#  endif
 #endif
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,1,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
 	_listView->setScrollRole (ScrollRole::Main);
-#  endif
 #endif
 
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),

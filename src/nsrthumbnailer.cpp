@@ -1,16 +1,16 @@
 #include "nsrthumbnailer.h"
 #include "nsrsettings.h"
 
+#ifdef Q_OS_BLACKBERRY
+#  include <bb/utility/ImageConverter>
+using namespace bb::utility;
+#endif
+
 #include <QCryptographicHash>
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
 #include <QDateTime>
-
-#ifdef Q_OS_BLACKBERRY
-#  include <bb/utility/ImageConverter>
-using namespace bb::utility;
-#endif
 
 #define NSR_THUMBNAIL_MAX_TEXT_PRE	600
 #define NSR_THUMBNAIL_MAX_TEXT_OUT	500

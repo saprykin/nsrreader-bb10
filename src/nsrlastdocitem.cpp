@@ -221,11 +221,9 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	mainContainer->add (rootContainer);
 	setRoot (mainContainer);
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	_imageView->accessibility()->addLabel (_label);
 	_textView->accessibility()->addLabel (_label);
-#  endif
 #endif
 
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),

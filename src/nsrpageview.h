@@ -1,11 +1,6 @@
 #ifndef NSRPAGEVIEW_H_
 #define NSRPAGEVIEW_H_
 
-#include <QObject>
-#include <QSizeF>
-#include <QTime>
-#include <QTimerEvent>
-
 #include "nsrrenderedpage.h"
 #include "nsrtranslator.h"
 #include "nsrabstractdocument.h"
@@ -19,6 +14,11 @@
 #include <bb/cascades/DoubleTapEvent>
 #include <bb/cascades/PinchEvent>
 #include <bb/cascades/ActionSet>
+
+#include <QObject>
+#include <QSizeF>
+#include <QTime>
+#include <QTimerEvent>
 
 class NSRPageView: public bb::cascades::Container
 {

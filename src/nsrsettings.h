@@ -1,11 +1,12 @@
 #ifndef NSRSETTINGS_H
 #define NSRSETTINGS_H
 
-#include <QSettings>
-#include <QStringList>
-
 #include "insrsettings.h"
 #include "nsrsession.h"
+
+#include <QSettings>
+#include <QStringList>
+#include <QObject>
 
 class NSRSettings : public QSettings, public INSRSettings
 {

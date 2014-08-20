@@ -134,13 +134,11 @@ NSRTranslator::translate ()
 		break;
 		case NSR_TRANSLATOR_TYPE_A11Y:
 		{
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 			AbstractA11yObject *a11y = dynamic_cast<AbstractA11yObject *> (list.at (i));
 
 			if (a11y != NULL)
 				a11y->setName (translated);
-#  endif
 #endif
 		}
 		break;

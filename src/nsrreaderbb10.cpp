@@ -272,8 +272,7 @@ NSRReaderBB10::initFullUI ()
 				      QString ("Buy"));
 #endif
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	openAction->accessibility()->setName (trUtf8 ("Open file"));
 	prevPageAction->accessibility()->setName (trUtf8 ("Go to previous page"));
 	nextPageAction->accessibility()->setName (trUtf8 ("Go to next page"));
@@ -320,13 +319,11 @@ NSRReaderBB10::initFullUI ()
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Share file with others"));
-#    ifdef NSR_LITE_VERSION
+#  ifdef NSR_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRReaderBB10"),
 				      QString ("Buy full version of the app in the store"));
-#    endif
-
 #  endif
 #endif
 
@@ -378,8 +375,7 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("buy", buyAction);
 #endif
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,1,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
 	SystemShortcut *zoomInShortcut = SystemShortcut::create (SystemShortcuts::ZoomIn);
@@ -411,7 +407,6 @@ NSRReaderBB10::initFullUI ()
 		openAction->addShortcut (openShortcut);
 		bookmarkAction->addShortcut (bookmarkShortcut);
 	}
-#  endif
 #endif
 
 	ok = connect (openAction, SIGNAL (triggered ()), this, SLOT (onOpenActionTriggered ()));
@@ -552,8 +547,7 @@ NSRReaderBB10::initFullUI ()
 				QString ("NSRReaderBB10"),
 				QString ("Bookmarks"));
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 		mainTab->accessibility()->setName (trUtf8 ("Main file reading page"));
 		recentTab->accessibility()->setName (trUtf8 ("Page with recent files"));
 		bookmarksTab->accessibility()->setName (trUtf8 ("Page with bookmarks"));
@@ -570,7 +564,6 @@ NSRReaderBB10::initFullUI ()
 				NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				QString ("NSRReaderBB10"),
 				QString ("Page with bookmarks"));
-#  endif
 #endif
 
 		Application::instance()->setScene (tabbedPane);
@@ -1642,11 +1635,9 @@ NSRReaderBB10::retranslateBookmarkAction (bool hasBookmark)
 		bookmarkAction->setTitle (hasBookmark ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
 		bookmarkAction->setImageSource (hasBookmark ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 		bookmarkAction->accessibility()->setName (hasBookmark ? trUtf8 ("Edit bookmark for current page")
 								      : trUtf8 ("Add bookmark for current page"));
-#  endif
 #endif
 	}
 }

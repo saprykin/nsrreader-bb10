@@ -1,11 +1,11 @@
 #ifndef NSRACTIONAGGREGATOR_H_
 #define NSRACTIONAGGREGATOR_H_
 
+#include <bb/cascades/AbstractActionItem>
+
 #include <QObject>
 #include <QString>
 #include <QHash>
-
-#include <bb/cascades/AbstractActionItem>
 
 class NSRActionAggregator : public QObject
 {

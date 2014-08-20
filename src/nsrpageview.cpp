@@ -16,10 +16,8 @@
 
 #include <bb/device/DisplayInfo>
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 #    include <bb/cascades/ScrollRailsPolicy>
-#  endif
 #endif
 
 using namespace bb::cascades;
@@ -97,10 +95,8 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textScrollView->setContent (_textContainer);
 	_textScrollView->setVisible (false);
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	_scrollView->scrollViewProperties()->setScrollRailsPolicy (ScrollRailsPolicy::LockNearAxes);
-#  endif
 #endif
 
 	_initialFontSize = (int) _textArea->textStyle()->fontSize ();
@@ -150,11 +146,9 @@ NSRPageView::NSRPageView (Container *parent) :
 
 	_scrollView->addActionSet (_actionSet);
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	_textArea->accessibility()->setName (trUtf8 ("Page text"));
 	_imageView->accessibility()->setName (trUtf8 ("Page image"));
-#  endif
 #endif
 
 	setLayout (DockLayout::create ());
@@ -183,8 +177,7 @@ NSRPageView::NSRPageView (Container *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRPageView"),
 				      QString ("Fit to Width"));
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	_translator->addTranslatable ((UIObject *) _textArea->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRPageView"),
@@ -193,7 +186,6 @@ NSRPageView::NSRPageView (Container *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRPageView"),
 				      QString ("Page image"));
-#  endif
 #endif
 
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),

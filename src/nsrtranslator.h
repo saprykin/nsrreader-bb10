@@ -1,11 +1,11 @@
 #ifndef NSRTRANSLATOR_H_
 #define NSRTRANSLATOR_H_
 
+#include <bb/cascades/UIObject>
+
 #include <QObject>
 #include <QHash>
 #include <QString>
-
-#include <bb/cascades/UIObject>
 
 class NSRTranslator : public QObject
 {

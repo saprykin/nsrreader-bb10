@@ -2,6 +2,7 @@
 #define NSRBOOKMARKSSTORAGE_H_
 
 #include <QSettings>
+#include <QObject>
 
 class NSRBookmarksStorage : public QSettings
 {

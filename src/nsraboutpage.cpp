@@ -56,10 +56,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	logoView->setImageSource (QUrl ("asset:///nsrlogo-lite.png"));
 #endif
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	logoView->accessibility()->setName (trUtf8 ("Logo of the app"));
-#  endif
 #endif
 
 	Label *versionInfo = Label::create().horizontal(HorizontalAlignment::Center)
@@ -109,10 +107,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	contactsContainer->add (authorInfo);
 	contactsContainer->add (contactsInfo);
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	contactsInfo->accessibility()->setName (trUtf8 ("nsr.reader@gmail.com - tap to write a email"));
-#  endif
 #endif
 
 	Label *reviewLabel = Label::create().horizontal(HorizontalAlignment::Center)
@@ -213,14 +209,12 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 						    .title(trUtf8 ("Buy"));
 #endif
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	reviewAction->accessibility()->setName (trUtf8 ("Review the app in the store"));
 	twitterAction->accessibility()->setName (trUtf8 ("Visit Twitter page"));
 	facebookAction->accessibility()->setName (trUtf8 ("Visit Facebook page"));
-#    ifdef NSR_LITE_VERSION
+#  ifdef NSR_LITE_VERSION
 	buyAction->accessibility()->setName (trUtf8 ("Buy full version of the app"));
-#    endif
 #  endif
 #endif
 
@@ -281,8 +275,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 			      	      QString ("Buy"));
 #endif
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	_translator->addTranslatable ((UIObject *) logoView->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRAboutPage"),
@@ -303,19 +296,16 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRAboutPage"),
 				      QString ("Visit Facebook page"));
-#    ifdef NSR_LITE_VERSION
+#  ifdef NSR_LITE_VERSION
 	_translator->addTranslatable ((UIObject *) buyAction->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRAboutPage"),
 				      QString ("Buy full version of the app"));
-#    endif
 #  endif
 #endif
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,1,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
 	_scrollView->setScrollRole (ScrollRole::Main);
-#  endif
 #endif
 
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),

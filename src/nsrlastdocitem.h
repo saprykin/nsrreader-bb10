@@ -13,6 +13,7 @@
 #include <bb/cascades/FadeTransition>
 
 #include <QRectF>
+#include <QObject>
 
 class NSRLastDocItem : public bb::cascades::CustomControl,
 		       public bb::cascades::ListItemListener

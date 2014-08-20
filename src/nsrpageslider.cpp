@@ -55,15 +55,13 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 	_spaceContainer->setMinHeight (0);
 	_spaceContainer->setMaxHeight (0);
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
 	_slider->accessibility()->setName (trUtf8 ("Page number slider"));
 
 	_translator->addTranslatable ((UIObject *) _slider->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRPageSlider"),
 				      QString ("Page number slider"));
-#  endif
 #endif
 
 	bool ok = connect (_slider, SIGNAL (touch (bb::cascades::TouchEvent *)),

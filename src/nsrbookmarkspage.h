@@ -1,6 +1,9 @@
 #ifndef NSRBOOKMARKSPAGE_H_
 #define NSRBOOKMARKSPAGE_H_
 
+#include "nsrbookmarkslistview.h"
+#include "nsrtranslator.h"
+
 #include <bb/cascades/Page>
 #include <bb/cascades/ListView>
 #include <bb/cascades/Container>
@@ -8,8 +11,7 @@
 #include <bb/cascades/GroupDataModel>
 #include <bb/system/SystemToast>
 
-#include "nsrbookmarkslistview.h"
-#include "nsrtranslator.h"
+#include <QObject>
 
 class NSRBookmarksPage : public bb::cascades::Page
 {

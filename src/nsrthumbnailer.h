@@ -6,6 +6,7 @@
 
 #include <QString>
 #include <QSettings>
+#include <QObject>
 
 class NSRThumbnailer : public QSettings, public INSRThumbnailer
 {

@@ -7,6 +7,8 @@
 #include <bb/cascades/ToggleButton>
 #include <bb/cascades/DropDown>
 
+#include <QObject>
+
 class NSRPreferencesPage: public bb::cascades::Page
 {
 	Q_OBJECT

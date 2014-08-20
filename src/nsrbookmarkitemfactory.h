@@ -5,6 +5,8 @@
 #include <bb/cascades/VisualNode>
 #include <bb/cascades/ListView>
 
+#include <QObject>
+
 class NSRBookmarkItemFactory : public bb::cascades::ListItemProvider
 {
 	Q_OBJECT

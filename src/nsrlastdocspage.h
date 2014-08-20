@@ -1,13 +1,15 @@
 #ifndef NSRLASTDOCSPAGE_H_
 #define NSRLASTDOCSPAGE_H_
 
+#include "nsrlastdocslistview.h"
+#include "nsrtranslator.h"
+
 #include <bb/cascades/Page>
 #include <bb/cascades/GridListLayout>
 #include <bb/cascades/OrientationSupport>
 #include <bb/cascades/Container>
 
-#include "nsrlastdocslistview.h"
-#include "nsrtranslator.h"
+#include <QObject>
 
 class NSRLastDocsPage : public bb::cascades::Page
 {
