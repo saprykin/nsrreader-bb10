@@ -7,6 +7,9 @@
 #include "nsrglobalnotifier.h"
 #include "nsrreader.h"
 #include "nsrthumbnailer.h"
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#  include "nsrscenemulticover.h"
+#endif
 
 #include <float.h>
 
@@ -30,11 +33,6 @@
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
 #  include <bb/cascades/SystemShortcut>
 #  include <bb/cascades/Shortcut>
-#endif
-
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-#  include <bb/cascades/MultiCover>
-#  include <bb/cascades/CoverDetailLevel>
 #endif
 
 #include <bb/system/LocaleHandler>
@@ -599,16 +597,13 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onZoomChanged (double, NSRRenderRequest::NSRRenderReason)));
 	Q_ASSERT (ok);
 
-	_sceneCover = new NSRSceneCover ();
-
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	MultiCover *multiCover = new MultiCover ();
-	multiCover->add (_sceneCover, CoverDetailLevel::High);
-	Application::instance()->setCover (multiCover);
+	_sceneCover = new NSRSceneMultiCover ();
 #else
-	Application::instance()->setCover (_sceneCover);
+	_sceneCover = new NSRSceneCover (NSRSceneCover::NSR_COVER_MODE_FULL);
 #endif
 
+	Application::instance()->setCover (dynamic_cast<AbstractCover *> (_sceneCover));
 	Application::instance()->setAutoExit (false);
 
 	ok = connect (Application::instance (), SIGNAL (thumbnail ()), this, SLOT (onThumbnail ()));

@@ -1,6 +1,7 @@
 #ifndef NSRSCENECOVER_H_
 #define NSRSCENECOVER_H_
 
+#include "insrscenecover.h"
 #include "nsrrenderedpage.h"
 #include "nsrpagestatus.h"
 
@@ -12,25 +13,33 @@
 
 #include <QObject>
 
-class NSRSceneCover : public bb::cascades::SceneCover
+class NSRSceneCover : public bb::cascades::SceneCover,
+		      public INSRSceneCover
+
 {
 	Q_OBJECT
 public:
-	NSRSceneCover (QObject *parent = 0);
+	enum NSRCoverMode {
+		NSR_COVER_MODE_FULL	= 1,
+		NSR_COVER_MODE_COMPACT	= 2
+	};
+
+	NSRSceneCover (NSRCoverMode mode, QObject *parent = 0);
 	virtual ~NSRSceneCover ();
 
+	inline NSRCoverMode getCoverMode () const {
+		return _mode;
+	}
+
+	/* INSRSceneCover interface */
 	void setPageData (const NSRRenderedPage&	page,
 			  const QString&		title,
 			  int				pagesTotal);
 	void resetPageData ();
 
 	void updateState (bool isStatic);
-	inline void setTextOnly (bool textOnly) {
-		_isTextOnly = textOnly;
-	}
-	inline void setInvertedColors (bool invertedColors) {
-		_isInvertedColors = invertedColors;
-	}
+	void setTextOnly (bool textOnly);
+	void setInvertedColors (bool invertedColors);
 
 private Q_SLOTS:
 	void retranslateUi ();
@@ -43,6 +52,7 @@ private:
 	bb::cascades::ImageView *	_pageView;
 	bb::cascades::TextArea *	_textView;
 	bb::cascades::Container *	_textContainer;
+	NSRCoverMode			_mode;
 	bool				_isTextOnly;
 	bool				_isInvertedColors;
 	bool				_isEmptyText;

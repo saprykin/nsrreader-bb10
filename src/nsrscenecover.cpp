@@ -18,7 +18,7 @@
 using namespace bb;
 using namespace bb::cascades;
 
-NSRSceneCover::NSRSceneCover (QObject *parent) :
+NSRSceneCover::NSRSceneCover (NSRCoverMode mode, QObject *parent) :
 	SceneCover (parent),
 	_pageStatus (NULL),
 	_titleLabel (NULL),
@@ -26,6 +26,7 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	_pageView (NULL),
 	_textView (NULL),
 	_textContainer (NULL),
+	_mode (mode),
 	_isTextOnly (false),
 	_isInvertedColors (false),
 	_isEmptyText (false)
@@ -34,29 +35,30 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 						      .vertical(VerticalAlignment::Fill)
 						      .background(Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f))
 						      .layout(StackLayout::create());
-
-	_titleContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-					     .vertical(VerticalAlignment::Top)
-					     .layout(DockLayout::create())
-					     .background(Color::Black)
-					     .visible(false);
+	if (_mode == NSR_COVER_MODE_FULL) {
+		_titleContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						     .vertical(VerticalAlignment::Top)
+						     .layout(DockLayout::create())
+						     .background(Color::Black)
+						     .visible(false);
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	_titleContainer->setLeftPadding (ui()->sdu (1));
-	_titleContainer->setRightPadding (ui()->sdu (1));
-	_titleContainer->setTopPadding (ui()->sdu (1));
-	_titleContainer->setBottomPadding (ui()->sdu (1));
+		_titleContainer->setLeftPadding (ui()->sdu (1));
+		_titleContainer->setRightPadding (ui()->sdu (1));
+		_titleContainer->setTopPadding (ui()->sdu (1));
+		_titleContainer->setBottomPadding (ui()->sdu (1));
 #else
-	_titleContainer->setLeftPadding (10);
-	_titleContainer->setRightPadding (10);
-	_titleContainer->setTopPadding (10);
-	_titleContainer->setBottomPadding (10);
+		_titleContainer->setLeftPadding (10);
+		_titleContainer->setRightPadding (10);
+		_titleContainer->setTopPadding (10);
+		_titleContainer->setBottomPadding (10);
 #endif
 
-	_titleLabel = Label::create().horizontal(HorizontalAlignment::Center)
-				     .vertical(VerticalAlignment::Center);
-	_titleLabel->textStyle()->setFontSize (FontSize::XSmall);
-	_titleContainer->add (_titleLabel);
+		_titleLabel = Label::create().horizontal(HorizontalAlignment::Center)
+					     .vertical(VerticalAlignment::Center);
+		_titleLabel->textStyle()->setFontSize (FontSize::XSmall);
+		_titleContainer->add (_titleLabel);
+	}
 
 	Container *imageContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .vertical(VerticalAlignment::Fill)
@@ -108,7 +110,9 @@ NSRSceneCover::NSRSceneCover (QObject *parent) :
 	imageContainer->add (_textContainer);
 	imageContainer->add (_pageStatus);
 
-	rootContainer->add (_titleContainer);
+	if (_mode == NSR_COVER_MODE_FULL)
+		rootContainer->add (_titleContainer);
+
 	rootContainer->add (imageContainer);
 
 	setContent (rootContainer);
@@ -136,29 +140,34 @@ NSRSceneCover::setPageData (const NSRRenderedPage&	page,
 	_isEmptyText = page.getText().isEmpty ();
 	_pageView->setImage (page.getImage ());
 	_textView->setText (_isEmptyText ? trUtf8 ("No text data available for this page") : page.getText ());
-	_titleLabel->setText (title);
 	_pageStatus->setStatus (page.getNumber (), pagesTotal);
 
-	QString	extension = QFileInfo(title).suffix().toLower ();
-	QString background;
+	if (_mode == NSR_COVER_MODE_FULL) {
+		_titleLabel->setText (title);
 
-	if (extension == "pdf")
-		background = "asset:///pdf-header.png";
-	else if (extension == "djvu" || extension == "djv")
-		background = "asset:///djvu-header.png";
-	else if (extension == "tiff" || extension == "tif")
-		background = "asset:///tiff-header.png";
-	else
-		background = "asset:///txt-header.png";
+		QString	extension = QFileInfo(title).suffix().toLower ();
+		QString background;
 
-	_titleContainer->setBackground (ImagePaint (Image (QUrl (background)), RepeatPattern::Fill));
+		if (extension == "pdf")
+			background = "asset:///pdf-header.png";
+		else if (extension == "djvu" || extension == "djv")
+			background = "asset:///djvu-header.png";
+		else if (extension == "tiff" || extension == "tif")
+			background = "asset:///tiff-header.png";
+		else
+			background = "asset:///txt-header.png";
+
+		_titleContainer->setBackground (ImagePaint (Image (QUrl (background)), RepeatPattern::Fill));
+	}
 }
 
 void
 NSRSceneCover::resetPageData ()
 {
-	_titleContainer->setBackground (Color::White);
-	_titleLabel->resetText ();
+	if (_mode == NSR_COVER_MODE_FULL) {
+		_titleContainer->setBackground (Color::White);
+		_titleLabel->resetText ();
+	}
 	_pageView->resetImage ();
 	_pageView->resetImageSource ();
 	_pageStatus->resetStatus ();
@@ -170,13 +179,26 @@ NSRSceneCover::resetPageData ()
 void
 NSRSceneCover::updateState (bool isStatic)
 {
-	_titleContainer->setVisible (!isStatic);
+	if (_mode == NSR_COVER_MODE_FULL)
+		_titleContainer->setVisible (!isStatic);
 	_logoView->setVisible (isStatic);
 	_pageView->setVisible (!isStatic && !_isTextOnly);
 	_textContainer->setVisible (_isTextOnly);
 	_pageStatus->setVisible (!isStatic);
 	_textContainer->setBackground (_isInvertedColors ? Color::Black : Color::White);
 	_textView->textStyle()->setColor (_isInvertedColors ? Color::White : Color::Black);
+}
+
+void
+NSRSceneCover::setInvertedColors (bool invertedColors)
+{
+	_isInvertedColors = invertedColors;
+}
+
+void
+NSRSceneCover::setTextOnly (bool textOnly)
+{
+	_isTextOnly = textOnly;
 }
 
 void
