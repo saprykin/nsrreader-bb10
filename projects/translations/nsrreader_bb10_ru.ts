@@ -145,8 +145,65 @@
         <translation>Если чисто текстовые файлы отображаются некорректно, то попробуйте выбрать другую кодировку в Настройках.</translation>
     </message>
     <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; key to navigate to previous page&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; key to navigate to next page&lt;/li&gt;&lt;li&gt;&lt;b&gt;I&lt;/b&gt; key to zoom in page&lt;/li&gt;&lt;li&gt;&lt;b&gt;O&lt;/b&gt; key to zoom out page&lt;/li&gt;&lt;li&gt;&lt;b&gt;G&lt;/b&gt; to go to arbitrary page&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + O&lt;/b&gt; to open another file&lt;/li&gt;&lt;li&gt;&lt;b&gt;K&lt;/b&gt; to add or edit bookmark&lt;/li&gt;&lt;li&gt;&lt;b&gt;R&lt;/b&gt; to switch text reflow mode&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + I&lt;/b&gt; to invert colors&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; to scroll down one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; to scroll to bottom&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; to scroll to top&lt;/li&gt;&lt;/ul&gt;Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</source>
-        <translation>Используйте стрелки на нижней панели инструментов для навигации. Двойное касание левой части экрана загружает предыдущую страницу, правой части - следующую страницу, а двойное касание по середине масштабирует страницу по ширине экрана. Также можно перемещаться между страницами, используя аппаратные кнопки регулировки громкости: &lt;i&gt;Увеличить громкость&lt;/i&gt; для перехода на предыдущую страницу и &lt;i&gt;Уменьшить громкость&lt;/i&gt; для перехода на следующую страницу.&lt;p&gt;&lt;/p&gt;Если у телефона есть физическая клавиатура, то можно использовать следующие клавиши (могут меняться в зависимости от используемого языка): &lt;ul&gt;&lt;li&gt;&lt;b&gt;P&lt;/b&gt; для прехода на предыдущую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;N&lt;/b&gt; для перехода на следующую страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;I&lt;/b&gt; для увеличения страницы&lt;/li&gt;&lt;li&gt;&lt;b&gt;O&lt;/b&gt; для уменьшения страницы&lt;/li&gt;&lt;li&gt;&lt;b&gt;G&lt;/b&gt; для перехода на произвольную страницу&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + O&lt;/b&gt; для открытия другого файла&lt;/li&gt;&lt;li&gt;&lt;b&gt;K&lt;/b&gt; для добавления или редактирования закладки&lt;/li&gt;&lt;li&gt;&lt;b&gt;R&lt;/b&gt; для переключения режима переформатирования текста&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + I&lt;/b&gt; для инвертирования цветов&lt;/li&gt;&lt;li&gt;&lt;b&gt;Space&lt;/b&gt; для пролистывания одного экрана вниз&lt;/li&gt;&lt;li&gt;&lt;b&gt;Shift + Space&lt;/b&gt; для пролистывания одного экрана вверх&lt;/li&gt;&lt;li&gt;&lt;b&gt;B&lt;/b&gt; для пролистывания до конца&lt;/li&gt;&lt;li&gt;&lt;b&gt;T&lt;/b&gt; для пролистывания наверх&lt;/li&gt;&lt;/ul&gt;Используйте бегунок &lt;b&gt;Перейти к&lt;/b&gt; для перехода к произвольной странице.</translation>
+        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</source>
+        <translation>Используйте стрелки на нижней панели инструментов для навигации. Двойное касание левой части экрана загружает предыдущую страницу, правой части - следующую страницу, а двойное касание по середине масштабирует страницу по ширине экрана. Также можно перемещаться между страницами, используя аппаратные кнопки регулировки громкости: &lt;i&gt;Увеличить громкость&lt;/i&gt; для перехода на предыдущую страницу и &lt;i&gt;Уменьшить громкость&lt;/i&gt; для перехода на следующую страницу.&lt;p&gt;&lt;/p&gt;Если у телефона есть физическая клавиатура, то можно использовать следующие клавиши (могут меняться в зависимости от используемого языка):
+&lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;P&lt;/b&gt; key to navigate to previous page</source>
+        <translation>&lt;b&gt;P&lt;/b&gt; для прехода на предыдущую страницу</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;N&lt;/b&gt; key to navigate to next page</source>
+        <translation>&lt;b&gt;N&lt;/b&gt; для перехода на следующую страницу</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;I&lt;/b&gt; key to zoom in page</source>
+        <translation>&lt;b&gt;I&lt;/b&gt; для увеличения страницы</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;O&lt;/b&gt; key to zoom out page</source>
+        <translation>&lt;b&gt;O&lt;/b&gt; для уменьшения страницы</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Shift + O&lt;/b&gt; to open another file</source>
+        <translation>&lt;b&gt;Shift + O&lt;/b&gt; для открытия другого файла</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Shift + I&lt;/b&gt; to invert colors</source>
+        <translation>&lt;b&gt;Shift + I&lt;/b&gt; для инвертирования цветов</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen</source>
+        <translation>&lt;b&gt;Shift + Space&lt;/b&gt; для пролистывания одного экрана вверх</translation>
+    </message>
+    <message>
+        <source>Use &lt;b&gt;Go to&lt;/b&gt; page slider to move to arbitrary page.</source>
+        <translation>Используйте бегунок &lt;b&gt;Перейти к&lt;/b&gt; для перехода к произвольной странице.</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;G&lt;/b&gt; key to go to arbitrary page</source>
+        <translation>&lt;b&gt;G&lt;/b&gt; для перехода на произвольную страницу</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;K&lt;/b&gt; key to add or edit bookmark</source>
+        <translation>&lt;b&gt;K&lt;/b&gt; для добавления или редактирования закладки</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;R&lt;/b&gt; key to switch text reflow mode</source>
+        <translation>&lt;b&gt;R&lt;/b&gt; для переключения режима переформатирования текста</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Space&lt;/b&gt; key to scroll down one screen</source>
+        <translation>&lt;b&gt;Space&lt;/b&gt; для пролистывания одного экрана вниз</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;B&lt;/b&gt; key to scroll to bottom</source>
+        <translation>&lt;b&gt;B&lt;/b&gt; для пролистывания до конца</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;T&lt;/b&gt; key to scroll to top</source>
+        <translation>&lt;b&gt;T&lt;/b&gt; для пролистывания наверх</translation>
     </message>
 </context>
 <context>
