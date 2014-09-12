@@ -395,6 +395,23 @@ NSRAboutPage::retranslateUi ()
 					 "DjVu, TIFF and TXT files. Hope you will be "
 					 "enjoying using it! Please take a look at the following "
 					 "instructions and tips to make reading more comfortable.");
+
+	/* Keyboard hotkeys */
+	QString kht1 = trUtf8 ("<b>P</b> key to navigate to previous page");
+	QString kht2 = trUtf8 ("<b>N</b> key to navigate to next page");
+	QString kht3 = trUtf8 ("<b>I</b> key to zoom in page");
+	QString kht4 = trUtf8 ("<b>O</b> key to zoom out page");
+	QString kht5 = trUtf8 ("<b>G</b> key to go to arbitrary page");
+	QString kht6 = trUtf8 ("<b>Shift + O</b> to open another file");
+	QString kht7 = trUtf8 ("<b>K</b> key to add or edit bookmark");
+	QString kht8 = trUtf8 ("<b>R</b> key to switch text reflow mode");
+	QString kht9 = trUtf8 ("<b>Shift + I</b> to invert colors");
+	QString kht10 = trUtf8 ("<b>Space</b> key to scroll down one screen");
+	QString kht11 = trUtf8 ("<b>Shift + Space</b> to scroll up one screen");
+	QString kht12 = trUtf8 ("<b>B</b> key to scroll to bottom");
+	QString kht13 = trUtf8 ("<b>T</b> key to scroll to top");
+	QString kht14 = trUtf8 ("Use <b>Go to</b> page slider to move to arbitrary page.");
+
 	QString navigationSection = trUtf8 ("Use navigation arrows on Action Bar (at the bottom of the screen). "
 			    	    	    "Double tap on the left area of the screen to go to previous page, on the right "
 			    	    	    "area to go to next page and on the center to fit page to screen width. "
@@ -404,21 +421,25 @@ NSRAboutPage::retranslateUi ()
 					    "<p></p>"
 			    	    	    "If you have physical keyboard use the following keys (may vary with language): "
 					    "<ul>"
-					    "<li><b>P</b> key to navigate to previous page</li>"
-			    	    	    "<li><b>N</b> key to navigate to next page</li>"
-					    "<li><b>I</b> key to zoom in page</li>"
-					    "<li><b>O</b> key to zoom out page</li>"
-					    "<li><b>G</b> to go to arbitrary page</li>"
-					    "<li><b>Shift + O</b> to open another file</li>"
-					    "<li><b>K</b> to add or edit bookmark</li>"
-					    "<li><b>R</b> to switch text reflow mode</li>"
-					    "<li><b>Shift + I</b> to invert colors</li>"
-					    "<li><b>Space</b> to scroll down one screen</li>"
-					    "<li><b>Shift + Space</b> to scroll up one screen</li>"
-					    "<li><b>B</b> to scroll to bottom</li>"
-					    "<li><b>T</b> to scroll to top</li>"
+					    "<li>%1</li>"
+			    	    	    "<li>%2</li>"
+					    "<li>%3</li>"
+					    "<li>%4</li>"
+					    "<li>%5</li>"
+					    "<li>%6</li>"
+					    "<li>%7</li>"
+					    "<li>%8</li>"
+					    "<li>%9</li>"
+					    "<li>%10</li>"
+					    "<li>%11</li>"
+					    "<li>%12</li>"
+					    "<li>%13</li>"
 					    "</ul>"
-			    	    	    "Use <b>Go to</b> page slider to move to arbitrary page.");
+			    	    	    "%14");
+	navigationSection = navigationSection.arg(kht1).arg(kht2).arg(kht3).arg(kht4).arg(kht5)
+					     .arg(kht6).arg(kht7).arg(kht8).arg(kht9).arg(kht10)
+					     .arg(kht11).arg(kht12).arg(kht13).arg(kht14);
+
 	QString fullScrSet = trUtf8 ("<b>Fullscreen Mode</b> &ndash; Action Bar at the bottom of the screen will "
 			    	     "be hidden (tap the screen somewhere to show or hide it again).");
 	QString cropSet = trUtf8 ("<b>Crop Blank Edges</b> &ndash; automatically tries to detect and crop page's blank edges "
