@@ -24,12 +24,14 @@ Q_SIGNALS:
 
 private Q_SLOTS:
 	void retranslateUi ();
+	void onEncodingAutodetectionCheckedChanged (bool checked);
 
 private:
 	NSRTranslator			*_translator;
 	bb::cascades::ToggleButton	*_isFullscreen;
 	bb::cascades::ToggleButton	*_isAutoCrop;
 	bb::cascades::ToggleButton	*_isPreventScreenLock;
+	bb::cascades::ToggleButton	*_isEncodingAutodetection;
 	bb::cascades::DropDown		*_encodingsList;
 };
 

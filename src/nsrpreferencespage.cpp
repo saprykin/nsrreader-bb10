@@ -21,6 +21,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isFullscreen (NULL),
 	_isAutoCrop (NULL),
 	_isPreventScreenLock (NULL),
+	_isEncodingAutodetection (NULL),
 	_encodingsList (NULL)
 {
 	QString defEncoding ("UTF-8");
@@ -34,12 +35,20 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isFullscreen = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isAutoCrop = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isPreventScreenLock = ToggleButton::create().horizontal(HorizontalAlignment::Right);
+	_isEncodingAutodetection = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
 	_isFullscreen->setChecked (NSRSettings::instance()->isFullscreenMode ());
 	_isAutoCrop->setChecked (NSRSettings::instance()->isAutoCrop ());
 	_isPreventScreenLock->setChecked (NSRSettings::instance()->isPreventScreenLock ());
+	_isEncodingAutodetection->setChecked (NSRSettings::instance()->isEncodingAutodetection ());
+	_encodingsList->setEnabled (!_isEncodingAutodetection->isChecked ());
 	_encodingsList->setFocusPolicy (FocusPolicy::Touch);
+
+	bool ok = connect (_isEncodingAutodetection, SIGNAL (checkedChanged (bool)),
+			   this, SLOT (onEncodingAutodetectionCheckedChanged (bool)));
+	Q_UNUSED (ok);
+	Q_ASSERT (ok);
 
 	QString textEncoding = NSRSettings::instance()->getTextEncoding ();
 	QStringList encodings = NSRSettings::getSupportedEncodings ();
@@ -75,30 +84,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	fullscreenContainer->add (fullscreenLabel);
 	fullscreenContainer->add (_isFullscreen);
-
-	/* 'Text Encoding' drop down list */
-	Container *encodingContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						          .layout(StackLayout::create());
-	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for plain text files, "
-					       	    "none other format supports encoding selection."))
-				     .horizontal(HorizontalAlignment::Fill)
-				     .vertical(VerticalAlignment::Center);
-	encodingInfo->textStyle()->setFontSize (FontSize::XSmall);
-	encodingInfo->textStyle()->setColor (Color::LightGray);
-	encodingInfo->setMultiline (true);
-
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	encodingContainer->setTopPadding (ui()->sdu (1));
-	encodingContainer->setLeftPadding (ui()->sdu (2));
-	encodingContainer->setRightPadding (ui()->sdu (2));
-#else
-	encodingContainer->setTopPadding (10);
-	encodingContainer->setLeftPadding (20);
-	encodingContainer->setRightPadding (20);
-#endif
-
-	encodingContainer->add (_encodingsList);
-	encodingContainer->add (encodingInfo);
 
 	/* 'Crop Blank Edges' option */
 	Container *cropContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -157,11 +142,50 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	screenLockContainer->setRightPadding (20);
 #endif
 
+	/* 'Text Encoding' section */
+	Container *encodingInContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						            .layout(StackLayout::create()
+										.orientation(LayoutOrientation::LeftToRight));
+
+	Label *encodingAutodetectLabel = Label::create(trUtf8 ("Autodetect Encoding", "Option in preferences"))
+					       .horizontal(HorizontalAlignment::Left)
+					       .vertical(VerticalAlignment::Center)
+					       .multiline(true)
+					       .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
+
+	encodingInContainer->add (encodingAutodetectLabel);
+	encodingInContainer->add (_isEncodingAutodetection);
+
+	Container *encodingContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						          .layout(StackLayout::create());
+	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for plain text files, "
+					       	    "none other format supports encoding selection."))
+				     .horizontal(HorizontalAlignment::Fill)
+				     .vertical(VerticalAlignment::Center);
+	encodingInfo->textStyle()->setFontSize (FontSize::XSmall);
+	encodingInfo->textStyle()->setColor (Color::LightGray);
+	encodingInfo->setMultiline (true);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	encodingContainer->setTopPadding (ui()->sdu (1));
+	encodingContainer->setLeftPadding (ui()->sdu (2));
+	encodingContainer->setRightPadding (ui()->sdu (2));
+#else
+	encodingContainer->setTopPadding (10);
+	encodingContainer->setLeftPadding (20);
+	encodingContainer->setRightPadding (20);
+#endif
+
+	encodingContainer->add (encodingInContainer);
+	encodingContainer->add (_encodingsList);
+	encodingContainer->add (encodingInfo);
+
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_isFullscreen->accessibility()->addLabel (fullscreenLabel);
 	_isAutoCrop->accessibility()->addLabel (cropLabel);
 	_isPreventScreenLock->accessibility()->addLabel (preventScreenLockLabel);
+	_isEncodingAutodetection->accessibility()->addLabel (encodingAutodetectLabel);
 #  endif
 #endif
 
@@ -187,9 +211,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	setContent (scrollView);
 	setTitleBar (TitleBar::create().title (trUtf8 ("Settings")));
 
-	bool ok = connect (_isFullscreen, SIGNAL (checkedChanged (bool)),
-			   this, SIGNAL (switchFullscreen (bool)));
-	Q_UNUSED (ok);
+	ok = connect (_isFullscreen, SIGNAL (checkedChanged (bool)),
+		      this, SIGNAL (switchFullscreen (bool)));
 	Q_ASSERT (ok);
 
 	ok = connect (_isPreventScreenLock, SIGNAL (checkedChanged (bool)),
@@ -208,11 +231,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Fullscreen Mode"));
-	_translator->addTranslatable ((UIObject *) encodingInfo,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRPreferencesPage"),
-				      QString ("Text encoding is used only for plain text files, "
-					       "none other format supports encoding selection."));
 	_translator->addTranslatable ((UIObject *) cropLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -225,6 +243,15 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Do not automatically lock screen while reading."));
+	_translator->addTranslatable ((UIObject *) encodingAutodetectLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Autodetect Encoding"));
+	_translator->addTranslatable ((UIObject *) encodingInfo,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Text encoding is used only for plain text files, "
+					       "none other format supports encoding selection."));
 	_translator->addTranslatable ((UIObject *) titleBar (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_TITLEBAR,
 				      QString ("NSRPreferencesPage"),
@@ -249,6 +276,7 @@ NSRPreferencesPage::saveSettings ()
 	NSRSettings::instance()->saveFullscreenMode (_isFullscreen->isChecked ());
 	NSRSettings::instance()->saveAutoCrop (_isAutoCrop->isChecked ());
 	NSRSettings::instance()->savePreventScreenLock (_isPreventScreenLock->isChecked ());
+	NSRSettings::instance()->saveEncodingAutodetection (_isEncodingAutodetection->isChecked ());
 
 	if (_encodingsList->isSelectedOptionSet ())
 		NSRSettings::instance()->saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));
@@ -269,4 +297,10 @@ NSRPreferencesPage::retranslateUi ()
 	}
 
 	_translator->translate ();
+}
+
+void
+NSRPreferencesPage::onEncodingAutodetectionCheckedChanged (bool checked)
+{
+	_encodingsList->setEnabled (!checked);
 }
