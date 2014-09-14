@@ -448,6 +448,11 @@
         <comment>Text encoding settings</comment>
         <translation>Encoding Teks</translation>
     </message>
+    <message>
+        <source>Autodetect Encoding</source>
+        <comment>Option in preferences</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRReaderBB10</name>

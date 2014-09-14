@@ -449,6 +449,11 @@
         <comment>Text encoding settings</comment>
         <translation>Кодировка текста</translation>
     </message>
+    <message>
+        <source>Autodetect Encoding</source>
+        <comment>Option in preferences</comment>
+        <translation>Автоопределение кодировки</translation>
+    </message>
 </context>
 <context>
     <name>NSRReaderBB10</name>
