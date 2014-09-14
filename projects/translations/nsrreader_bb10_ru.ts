@@ -413,11 +413,6 @@
 <context>
     <name>NSRPreferencesPage</name>
     <message>
-        <source>Text Encoding</source>
-        <comment>Option in preferences, selects text encoding</comment>
-        <translation>Кодировка текста</translation>
-    </message>
-    <message>
         <source>Fullscreen Mode</source>
         <comment>Option in preferences</comment>
         <translation>Полноэкранный режим</translation>
@@ -443,6 +438,16 @@
     <message>
         <source>Do not automatically lock screen while reading.</source>
         <translation>Не блокировать экран автоматически во время чтения.</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <comment>General settings</comment>
+        <translation>Общие</translation>
+    </message>
+    <message>
+        <source>Text Encoding</source>
+        <comment>Text encoding settings</comment>
+        <translation>Кодировка текста</translation>
     </message>
 </context>
 <context>

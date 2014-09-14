@@ -421,11 +421,6 @@
         <translation>Modus Layar Penuh</translation>
     </message>
     <message>
-        <source>Text Encoding</source>
-        <comment>Option in preferences, selects text encoding</comment>
-        <translation>Encoding Teks</translation>
-    </message>
-    <message>
         <source>Crop Blank Edges</source>
         <comment>Option in preferences</comment>
         <translation>Potong Tepian Kosong</translation>
@@ -442,6 +437,16 @@
     <message>
         <source>Settings</source>
         <translation>Setelan</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <comment>General settings</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text Encoding</source>
+        <comment>Text encoding settings</comment>
+        <translation>Encoding Teks</translation>
     </message>
 </context>
 <context>

@@ -416,11 +416,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Text Encoding</source>
-        <comment>Option in preferences, selects text encoding</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Text encoding is used only for plain text files, none other format supports encoding selection.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -440,6 +435,16 @@
     </message>
     <message>
         <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <comment>General settings</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text Encoding</source>
+        <comment>Text encoding settings</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
