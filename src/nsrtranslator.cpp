@@ -9,6 +9,7 @@
 #include <bb/cascades/MultiSelectHandler>
 #include <bb/cascades/TitleBar>
 #include <bb/cascades/Tab>
+#include <bb/cascades/Header>
 
 using namespace bb::cascades;
 
@@ -164,6 +165,14 @@ NSRTranslator::translate ()
 
 			if (tab != NULL)
 				tab->setTitle (translated);
+		}
+		break;
+		case NSR_TRANSLATOR_TYPE_HEADER:
+		{
+			Header *header = dynamic_cast<Header *> (list.at (i));
+
+			if (header != NULL)
+				header->setTitle (translated);
 		}
 		break;
 		default:
