@@ -9,6 +9,8 @@
 #include "nsrthumbnailer.h"
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 #  include "nsrscenemulticover.h"
+#else
+#  include "nsrscenecover.h"
 #endif
 
 #include <float.h>
