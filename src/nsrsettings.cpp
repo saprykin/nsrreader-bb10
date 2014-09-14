@@ -37,6 +37,7 @@ NSRSettings::NSRSettings () :
 	_isInvertedColors = value("inverted-colors", false).toBool ();
 	_isAutoCrop = value("auto-crop", false).toBool ();
 	_isPreventScreenLock = value("prevent-screen-lock", true).toBool ();
+	_isEncodingAutodetection = value("encoding-autodetection", true).toBool ();
 	_lastVersionNewsShown = (value("news-shown-version", "0.0.0").toString ());
 	_lastOpenDir = value("last-open-dir", "C:").toString ();
 	_fontFamily = value("font-family", "Sans Serif").toString ();
@@ -218,6 +219,17 @@ NSRSettings::savePreventScreenLock (bool preventScreenLock)
 	_isPreventScreenLock = preventScreenLock;
 	beginGroup ("Global");
 	setValue ("prevent-screen-lock", _isPreventScreenLock);
+	endGroup ();
+
+	sync ();
+}
+
+void
+NSRSettings::saveEncodingAutodetection (bool autodetection)
+{
+	_isEncodingAutodetection = autodetection;
+	beginGroup ("Global");
+	setValue ("encoding-autodetection", _isEncodingAutodetection);
 	endGroup ();
 
 	sync ();

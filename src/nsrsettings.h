@@ -19,6 +19,7 @@ public:
 	bool isWordWrap () const {return _isWordWrap;}
 	bool isInvertedColors () const {return _isInvertedColors;}
 	bool isAutoCrop () const {return _isAutoCrop;}
+	bool isEncodingAutodetection () const {return _isEncodingAutodetection;}
 	QString getTextEncoding () const {return _textEncoding;}
 	bool isStarting () const {return _isStarting;}
 
@@ -37,6 +38,7 @@ public:
 	void saveInvertedColors (bool inverted);
 	void saveInvertedColorsWithoutSync (bool inverted);
 	void saveAutoCrop (bool crop);
+	void saveEncodingAutodetection (bool autodetection);
 	void savePreventScreenLock (bool preventScreenLock);
 	bool isPreventScreenLock () const {return _isPreventScreenLock;}
 	bool isNewsShown (const QString& version) const {return _lastVersionNewsShown == version;}
@@ -75,6 +77,7 @@ private:
 	bool			_isInvertedColors;
 	bool			_isAutoCrop;
 	bool			_isPreventScreenLock;
+	bool			_isEncodingAutodetection;
 	bool			_isFirstStart;
 	bool			_isStarting;
 	QString			_lastVersionNewsShown;
