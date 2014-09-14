@@ -109,9 +109,8 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
-	ColorTheme *colorTheme = Application::instance()->themeSupport()->theme()->colorTheme ();
-
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	ColorTheme *colorTheme = Application::instance()->themeSupport()->theme()->colorTheme ();
 	Color frameColor = colorTheme->primary ();
 #else
 	Color frameColor = Color::fromRGBA (0, 0.66, 0.87, 1.0);
