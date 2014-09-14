@@ -67,11 +67,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 									        .orientation(LayoutOrientation::LeftToRight));
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	fullscreenContainer->setTopPadding (ui()->sdu (1));
+	fullscreenContainer->setTopPadding (ui()->sdu (2));
 	fullscreenContainer->setLeftPadding (ui()->sdu (2));
 	fullscreenContainer->setRightPadding (ui()->sdu (2));
 #else
-	fullscreenContainer->setTopPadding (10);
+	fullscreenContainer->setTopPadding (20);
 	fullscreenContainer->setLeftPadding (20);
 	fullscreenContainer->setRightPadding (20);
 #endif
@@ -167,11 +167,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	encodingInfo->setMultiline (true);
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	encodingContainer->setTopPadding (ui()->sdu (1));
+	encodingContainer->setTopPadding (ui()->sdu (2));
 	encodingContainer->setLeftPadding (ui()->sdu (2));
 	encodingContainer->setRightPadding (ui()->sdu (2));
 #else
-	encodingContainer->setTopPadding (10);
+	encodingContainer->setTopPadding (20);
 	encodingContainer->setLeftPadding (20);
 	encodingContainer->setRightPadding (20);
 #endif
