@@ -11,6 +11,7 @@
 #include <bb/cascades/TitleBar>
 #include <bb/cascades/ScrollView>
 #include <bb/cascades/Divider>
+#include <bb/cascades/Header>
 
 using namespace bb::cascades;
 
@@ -57,11 +58,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 									    .orientation(LayoutOrientation::LeftToRight));
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	secondContainer->setTopPadding (ui()->sdu (3));
+	secondContainer->setTopPadding (ui()->sdu (1));
 	secondContainer->setLeftPadding (ui()->sdu (2));
 	secondContainer->setRightPadding (ui()->sdu (2));
 #else
-	secondContainer->setTopPadding (30);
+	secondContainer->setTopPadding (10);
 	secondContainer->setLeftPadding (20);
 	secondContainer->setRightPadding (20);
 #endif
@@ -78,11 +79,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	/* 'Text Encoding' drop down list */
 	Container *fifthContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						       .layout(StackLayout::create());
-	Label *textEncodingLabel = Label::create(trUtf8 ("Text Encoding", "Option in preferences, "
-						     	    	   	  "selects text encoding"))
-				     	 .horizontal(HorizontalAlignment::Fill)
-				     	 .vertical(VerticalAlignment::Center)
-				     	 .multiline(true);
 	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for plain text files, "
 					       	    "none other format supports encoding selection."))
 				     .horizontal(HorizontalAlignment::Fill)
@@ -92,16 +88,15 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	encodingInfo->setMultiline (true);
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	fifthContainer->setBottomPadding (ui()->sdu (2));
+	fifthContainer->setTopPadding (ui()->sdu (1));
 	fifthContainer->setLeftPadding (ui()->sdu (2));
 	fifthContainer->setRightPadding (ui()->sdu (2));
 #else
-	fifthContainer->setBottomPadding (20);
+	fifthContainer->setTopPadding (10);
 	fifthContainer->setLeftPadding (20);
 	fifthContainer->setRightPadding (20);
 #endif
 
-	fifthContainer->add (textEncodingLabel);
 	fifthContainer->add (_encodingsList);
 	fifthContainer->add (encodingInfo);
 
@@ -157,11 +152,9 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 	firstContainer->setLeftPadding (ui()->sdu (2));
 	firstContainer->setRightPadding (ui()->sdu (2));
-	firstContainer->setBottomPadding (ui()->sdu (2));
 #else
 	firstContainer->setLeftPadding (20);
 	firstContainer->setRightPadding (20);
-	firstContainer->setBottomPadding (20);
 #endif
 
 #ifdef BBNDK_VERSION_AT_LEAST
@@ -172,32 +165,20 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 #  endif
 #endif
 
+	Header *generalHeader = Header::create().title (trUtf8 ("General", "General settings"));
+	Header *encodingHeader = Header::create().title (trUtf8 ("Text Encoding", "Text encoding settings"));
+
 	/* Add all options to root layout */
+	rootContainer->add (generalHeader);
 	rootContainer->add (secondContainer);
-
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	rootContainer->add (Divider::create().bottomMargin(ui()->sdu (3)).topMargin(ui()->sdu (3)));
-#else
-	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
-#endif
-
+	rootContainer->add (Divider::create ());
 	rootContainer->add (sixthContainer);
-
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	rootContainer->add (Divider::create().bottomMargin(ui()->sdu (3)).topMargin(ui()->sdu (3)));
-#else
-	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
-#endif
-
+	rootContainer->add (Divider::create ());
 	rootContainer->add (firstContainer);
-
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	rootContainer->add (Divider::create().bottomMargin(ui()->sdu (3)).topMargin(ui()->sdu (3)));
-#else
-	rootContainer->add (Divider::create().bottomMargin(30).topMargin(30));
-#endif
-
+	rootContainer->add (Divider::create().bottomMargin (0));
+	rootContainer->add (encodingHeader);
 	rootContainer->add (fifthContainer);
+	rootContainer->add (Divider::create ());
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 						     .vertical(VerticalAlignment::Fill)
@@ -215,14 +196,18 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 		      this, SIGNAL (switchPreventScreenLock (bool)));
 	Q_ASSERT (ok);
 
+	_translator->addTranslatable ((UIObject *) generalHeader,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_HEADER,
+				      QString ("NSRPreferencesPage"),
+				      QString ("General"));
+	_translator->addTranslatable ((UIObject *) encodingHeader,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_HEADER,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Text Encoding"));
 	_translator->addTranslatable ((UIObject *) fullscreenLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Fullscreen Mode"));
-	_translator->addTranslatable ((UIObject *) textEncodingLabel,
-				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
-				      QString ("NSRPreferencesPage"),
-				      QString ("Text Encoding"));
 	_translator->addTranslatable ((UIObject *) encodingInfo,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
