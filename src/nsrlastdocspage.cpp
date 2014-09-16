@@ -3,6 +3,7 @@
 #include "nsrsettings.h"
 #include "nsrthumbnailer.h"
 #include "nsrglobalnotifier.h"
+#include "nsrthemesupport.h"
 #include "nsrreader.h"
 
 #include <bb/cascades/ListView>
@@ -100,7 +101,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 
 	rootContainer->add (_listView);
 	rootContainer->add (_emptyContainer);
-	rootContainer->setBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
+	rootContainer->setBackground (NSRThemeSupport::instance()->getBackground ());
 
 	setContent (rootContainer);
 	setTitleBar (TitleBar::create().title(trUtf8 ("Recent",

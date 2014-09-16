@@ -1,6 +1,7 @@
 #include "nsrpreferencespage.h"
 #include "nsrsettings.h"
 #include "nsrglobalnotifier.h"
+#include "nsrthemesupport.h"
 #include "nsrreader.h"
 
 #include <bb/cascades/Container>
@@ -122,7 +123,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      .horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Center);
 	screenLockInfo->textStyle()->setFontSize (FontSize::XSmall);
-	screenLockInfo->textStyle()->setColor (Color::LightGray);
+	screenLockInfo->textStyle()->setColor (NSRThemeSupport::instance()->getTipText ());
 	screenLockInfo->setMultiline (true);
 
 	screenLockInContainer->add (preventScreenLockLabel);
@@ -163,7 +164,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				     .horizontal(HorizontalAlignment::Fill)
 				     .vertical(VerticalAlignment::Center);
 	encodingInfo->textStyle()->setFontSize (FontSize::XSmall);
-	encodingInfo->textStyle()->setColor (Color::LightGray);
+	encodingInfo->textStyle()->setColor (NSRThemeSupport::instance()->getTipText ());
 	encodingInfo->setMultiline (true);
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)

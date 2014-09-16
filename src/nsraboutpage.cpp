@@ -2,8 +2,9 @@
 #include "nsrsettings.h"
 #include "nsrglobalnotifier.h"
 #include "nsrfilesharer.h"
-#include "nsrreader.h"
 #include "nsrreaderbb10.h"
+#include "nsrthemesupport.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
@@ -158,7 +159,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_webHelp = WebView::create ();
 	_webHelp->settings()->setDevicePixelRatio (1.0);
 	_webHelp->settings()->setViewportArguments (viewportMap);
-	_webHelp->settings()->setBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
+	_webHelp->settings()->setBackground (NSRThemeSupport::instance()->getBackground ());
 
 	_helpContainer->add (_webHelp);
 	_helpContainer->setVisible (false);
@@ -172,8 +173,12 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	WebView *webChanges = WebView::create ();
 	webChanges->settings()->setDevicePixelRatio (1.0);
 	webChanges->settings()->setViewportArguments (viewportMap);
-	webChanges->settings()->setBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
-	webChanges->setUrl (QUrl ("local:///assets/whats-new.html"));
+	webChanges->settings()->setBackground (NSRThemeSupport::instance()->getBackground ());
+
+	if (NSRThemeSupport::instance()->getVisualStyle () == VisualStyle::Dark)
+		webChanges->setUrl (QUrl ("local:///assets/VisualStyle.Dark/whats-new.html"));
+	else
+		webChanges->setUrl (QUrl ("local:///assets/VisualStyle.Bright/whats-new.html"));
 
 	_changesContainer->add (webChanges);
 	_changesContainer->setVisible (false);
@@ -184,7 +189,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Container *contentContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 							 .vertical(VerticalAlignment::Fill)
 							 .layout(StackLayout::create ())
-							 .background(Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
+							 .background(NSRThemeSupport::instance()->getBackground ());
 
 	rootContainer->add (_aboutContainer);
 	rootContainer->add (_helpContainer);
@@ -377,6 +382,12 @@ NSRAboutPage::onBuyActionTriggered ()
 void
 NSRAboutPage::retranslateUi ()
 {
+	Color backColor = NSRThemeSupport::instance()->getBackground ();
+	Color fontColor = NSRThemeSupport::instance()->getText ();
+
+	QColor qBackColor (backColor.red () * 255.0, backColor.green () * 255.0, backColor.blue () * 255.0);
+	QColor qFontColor (fontColor.red () * 255.0, fontColor.green () * 255.0, fontColor.blue () * 255.0);
+
 #ifdef NSR_LITE_VERSION
 	_liteLabel->setText (trUtf8 ("You are using the Lite version which can read only first "
 				     "%1 pages of the file. Please consider buying the full version "
@@ -461,23 +472,21 @@ NSRAboutPage::retranslateUi ()
 	QString tip9 = trUtf8 ("Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!");
 
 	QString htmlHelp = QString ("<html><head/><body style=\"font-family: arial, sans-serif; "
-				    "font-size: 28pt; background: #171717; color: #E6E6E6;\">"
+				    "font-size: 28pt; background: %1; color: %2;\">"
 			    	    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
-				    "border-bottom: 1px solid white; font-size: 30pt;\">%1</div></div>"
-				    "<div><p>%2</p></div>"
-			    	    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
-				    "border-bottom: 1px solid white; font-size: 30pt;\">%3</div></div>"
+				    "border-bottom: 1px solid white; font-size: 30pt; color: %2;\">%3</div></div>"
 				    "<div><p>%4</p></div>"
-				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
-				    "border-bottom: 1px solid white; font-size: 30pt;\">%5</div></div>"
+			    	    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
+				    "border-bottom: 1px solid white; font-size: 30pt; color: %2;\">%5</div></div>"
 				    "<div><p>%6</p></div>"
-				    "<div><p>%7</p></div>"
+				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
+				    "border-bottom: 1px solid white; font-size: 30pt; color: %2;\">%7</div></div>"
 				    "<div><p>%8</p></div>"
 				    "<div><p>%9</p></div>"
-				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
-				    "border-bottom: 1px solid white; font-size: 30pt;\">%10</div></div>"
+				    "<div><p>%10</p></div>"
 				    "<div><p>%11</p></div>"
-				    "<div><p>%12</p></div>"
+				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
+				    "border-bottom: 1px solid white; font-size: 30pt; color: %2;\">%12</div></div>"
 				    "<div><p>%13</p></div>"
 				    "<div><p>%14</p></div>"
 				    "<div><p>%15</p></div>"
@@ -485,7 +494,10 @@ NSRAboutPage::retranslateUi ()
 				    "<div><p>%17</p></div>"
 				    "<div><p>%18</p></div>"
 				    "<div><p>%19</p></div>"
+				    "<div><p>%20</p></div>"
+				    "<div><p>%21</p></div>"
 				    "</body></html>");
+	htmlHelp = htmlHelp.arg(qBackColor.name ()).arg(qFontColor.name ());
 	htmlHelp = htmlHelp.arg(welcomeTitle).arg(welcomeSection).arg(navTitle).arg(navigationSection);
 	htmlHelp = htmlHelp.arg(settingsTitle).arg(fullScrSet).arg(cropSet).arg(screenLockSet).arg(encodSet);
 	htmlHelp = htmlHelp.arg(tipsTitle).arg(tip1).arg(tip2).arg(tip3).arg(tip4).arg(tip5)

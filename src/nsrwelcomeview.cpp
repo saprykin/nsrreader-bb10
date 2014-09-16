@@ -1,5 +1,6 @@
 #include "nsrwelcomeview.h"
 #include "nsrglobalnotifier.h"
+#include "nsrthemesupport.h"
 #include "nsrreader.h"
 
 #include <bb/cascades/StackLayout>
@@ -20,7 +21,7 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 	setHorizontalAlignment (HorizontalAlignment::Fill);
 	setVerticalAlignment (VerticalAlignment::Fill);
 	setLayout (DockLayout::create ());
-	setBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
+	setBackground (NSRThemeSupport::instance()->getBackground ());
 
 	Container *innerContainer = Container::create().horizontal(HorizontalAlignment::Center)
 						       .vertical(VerticalAlignment::Center)
@@ -50,7 +51,6 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 				     .horizontal(HorizontalAlignment::Center)
 				     .vertical(VerticalAlignment::Center);
 	_startLabel->textStyle()->setFontSize (FontSize::XLarge);
-	_startLabel->textStyle()->setColor (Color::White);
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 	_startLabel->setBottomMargin (ui()->sdu (6));

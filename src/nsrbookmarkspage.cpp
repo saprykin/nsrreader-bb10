@@ -1,8 +1,9 @@
 #include "nsrbookmarkspage.h"
 #include "nsrglobalnotifier.h"
-#include "nsrreader.h"
 #include "nsrbookmarkitemfactory.h"
 #include "nsrbookmarksstorage.h"
+#include "nsrthemesupport.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/StackLayout>
@@ -96,7 +97,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 
 	rootContainer->add (_listView);
 	rootContainer->add (_emptyContainer);
-	rootContainer->setBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
+	rootContainer->setBackground (NSRThemeSupport::instance()->getBackground ());
 
 	setContent (rootContainer);
 	setTitleBar (TitleBar::create().title(trUtf8 ("Bookmarks", "Title for window with bookmarks")));

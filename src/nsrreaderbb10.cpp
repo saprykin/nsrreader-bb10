@@ -5,8 +5,9 @@
 #include "nsrlastdocspage.h"
 #include "nsrfilesharer.h"
 #include "nsrglobalnotifier.h"
-#include "nsrreader.h"
 #include "nsrthumbnailer.h"
+#include "nsrthemesupport.h"
+#include "nsrreader.h"
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 #  include "nsrscenemulticover.h"
 #else
@@ -132,7 +133,7 @@ NSRReaderBB10::initFullUI ()
 
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
-						      .background(Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f))
+						      .background(NSRThemeSupport::instance()->getImageBackground ())
 						      .layout(DockLayout::create());
 
 	_toast = new SystemToast (this);

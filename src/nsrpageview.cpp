@@ -1,5 +1,6 @@
 #include "nsrpageview.h"
 #include "nsrglobalnotifier.h"
+#include "nsrthemesupport.h"
 #include "nsrreader.h"
 
 #include <bb/cascades/DockLayout>
@@ -71,7 +72,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_imageContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					     .vertical(VerticalAlignment::Fill)
 					     .layout(DockLayout::create ())
-					     .background(Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f));
+					     .background(NSRThemeSupport::instance()->getBackground ());
 	_imageContainer->add (_imageView);
 	_scrollView->setContent (_imageContainer);
 

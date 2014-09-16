@@ -1,5 +1,6 @@
 #include "nsrpageslider.h"
 #include "nsrglobalnotifier.h"
+#include "nsrthemesupport.h"
 #include "nsrreader.h"
 
 #include <bb/cascades/StackLayout>
@@ -19,7 +20,7 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 	setLayout (StackLayout::create ());
 	setVerticalAlignment (VerticalAlignment::Bottom);
 	setHorizontalAlignment (HorizontalAlignment::Fill);
-	setBackground (Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f));
+	setBackground (NSRThemeSupport::instance()->getOverlay ());
 
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 	setLeftPadding (ui()->sdu (2));
