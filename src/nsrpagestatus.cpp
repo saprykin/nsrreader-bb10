@@ -42,6 +42,7 @@ NSRPageStatus::NSRPageStatus (bb::cascades::Container *parent) :
 
 	_statusLabel = Label::create().horizontal(HorizontalAlignment::Fill)
 				       .vertical(VerticalAlignment::Fill);
+	_statusLabel->textStyle()->setColor (Color::White);
 
 	labelContainer->add (_statusLabel);
 
