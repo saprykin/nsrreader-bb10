@@ -56,6 +56,7 @@ NSRSceneCover::NSRSceneCover (NSRCoverMode mode, QObject *parent) :
 
 		_titleLabel = Label::create().horizontal(HorizontalAlignment::Center)
 					     .vertical(VerticalAlignment::Center);
+		_titleLabel->textStyle()->setColor (Color::White);
 		_titleLabel->textStyle()->setFontSize (FontSize::XSmall);
 		_titleContainer->add (_titleLabel);
 	}
