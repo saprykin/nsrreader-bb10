@@ -1,4 +1,5 @@
 #include "nsrthemesupport.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/ThemeSupport>
@@ -74,7 +75,11 @@ NSRThemeSupport::NSRThemeSupport ()
 		_colorImageBackground = Color (Color::Gray);
 		_colorText = Color (Color::Black);
 		_colorTipText = Color (Color::DarkGray);
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 		_colorOverlay = Color::fromRGBA (0.9f, 0.9f, 0.9f, 0.95f);
+#else
+		_colorOverlay = Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f);
+#endif
 
 	}
 	break;
