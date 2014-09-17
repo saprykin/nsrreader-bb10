@@ -238,6 +238,15 @@ NSRLastDocsPage::onModelUpdated (bool isEmpty)
 {
 	_listView->setVisible (!isEmpty);
 	_emptyContainer->setVisible (isEmpty);
+
+	Container *rootContainer = dynamic_cast<Container *> (content ());
+
+	if (rootContainer != NULL) {
+		if (isEmpty)
+			rootContainer->setBackground (NSRThemeSupport::instance()->getBackground ());
+		else
+			rootContainer->setBackground (NSRThemeSupport::instance()->getImageBackground ());
+	}
 }
 
 void

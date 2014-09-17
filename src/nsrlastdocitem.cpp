@@ -1,5 +1,6 @@
 #include "nsrlastdocitem.h"
 #include "nsrglobalnotifier.h"
+#include "nsrthemesupport.h"
 #include "nsrreader.h"
 
 #include <bb/cascades/Application>
@@ -40,7 +41,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create ())
-						      .background(Color::fromRGBA (0.2, 0.2, 0.2, 1.0));
+						      .background(NSRThemeSupport::instance()->getRecentItemBackground ());
 
 	_viewContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
@@ -54,7 +55,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 				   .vertical(VerticalAlignment::Fill)
 				   .visible(false);
 	_textView->textStyle()->setFontSize (FontSize::XXSmall);
-	_textView->textStyle()->setColor (Color::Gray);
+	_textView->textStyle()->setColor (NSRThemeSupport::instance()->getRecentItemText ());
 	_textView->setMultiline (true);
 
 	_viewContainer->add (_imageView);

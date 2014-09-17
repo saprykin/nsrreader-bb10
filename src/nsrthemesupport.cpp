@@ -35,6 +35,12 @@ NSRThemeSupport::getBackground () const
 }
 
 bb::cascades::Color
+NSRThemeSupport::getRecentItemBackground () const
+{
+	return _colorRecentItemBackground;
+}
+
+bb::cascades::Color
 NSRThemeSupport::getImageBackground () const
 {
 	return _colorImageBackground;
@@ -44,6 +50,12 @@ bb::cascades::Color
 NSRThemeSupport::getText () const
 {
 	return _colorText;
+}
+
+bb::cascades::Color
+NSRThemeSupport::getRecentItemText () const
+{
+	return _colorRecentItemText;
 }
 
 bb::cascades::Color
@@ -72,8 +84,10 @@ NSRThemeSupport::NSRThemeSupport ()
 	case VisualStyle::Bright:
 	{
 		_colorBackground = Color (Color::White);
-		_colorImageBackground = Color (Color::Gray);
+		_colorImageBackground = Color::fromRGBA (0.85f, 0.85f, 0.85f);
+		_colorRecentItemBackground = Color::fromRGBA (0.8f, 0.8f, 0.8f);
 		_colorText = Color (Color::Black);
+		_colorRecentItemText = Color (Color::Black);
 		_colorTipText = Color (Color::DarkGray);
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
 		_colorOverlay = Color::fromRGBA (0.9f, 0.9f, 0.9f, 0.95f);
@@ -86,9 +100,11 @@ NSRThemeSupport::NSRThemeSupport ()
 	case VisualStyle::Dark:
 	default:
 	{
-		_colorBackground = Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f);
-		_colorImageBackground = Color::fromRGBA (0.09f, 0.09f, 0.09f, 1.0f);
+		_colorBackground = Color::fromRGBA (0.09f, 0.09f, 0.09f);
+		_colorImageBackground = Color::fromRGBA (0.09f, 0.09f, 0.09f);
+		_colorRecentItemBackground = Color::fromRGBA (0.2f, 0.2f, 0.2f);
 		_colorText = Color (Color::White);
+		_colorRecentItemText = Color (Color::Gray);
 		_colorTipText = Color (Color::Gray);
 		_colorOverlay = Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f);
 	}

@@ -12,7 +12,9 @@ public:
 
 	bb::cascades::Color getBackground () const;
 	bb::cascades::Color getImageBackground () const;
+	bb::cascades::Color getRecentItemBackground () const;
 	bb::cascades::Color getText () const;
+	bb::cascades::Color getRecentItemText () const;
 	bb::cascades::Color getTipText () const;
 	bb::cascades::Color getOverlay () const;
 	bb::cascades::VisualStyle::Type getVisualStyle () const;
@@ -25,7 +27,9 @@ private:
 	bb::cascades::VisualStyle::Type	_visualStyle;
 	bb::cascades::Color		_colorBackground;
 	bb::cascades::Color		_colorImageBackground;
+	bb::cascades::Color		_colorRecentItemBackground;
 	bb::cascades::Color		_colorText;
+	bb::cascades::Color		_colorRecentItemText;
 	bb::cascades::Color		_colorTipText;
 	bb::cascades::Color		_colorOverlay;
 };
