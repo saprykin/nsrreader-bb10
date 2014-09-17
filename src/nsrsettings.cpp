@@ -13,6 +13,39 @@
 #  define NSR_SETTINGS_CONFIG_DIR 	".nsrreader"
 #endif
 
+#define NSR_SETTINGS_GLOBAL_SECTION		"Global"
+
+#define NSR_SETTINGS_FULLSCREEN			"fullscreen-mode"
+#define NSR_SETTINGS_WORD_WRAP			"word-wrap"
+#define NSR_SETTINGS_TEXT_MODE_NOTED		"text-mode-noted"
+#define NSR_SETTINGS_INVERTED_COLORS		"inverted-colors"
+#define NSR_SETTINGS_AUTO_CROP			"auto-crop"
+#define NSR_SETTINGS_PREVENT_SCREEN_LOCK	"prevent-screen-lock"
+#define NSR_SETTINGS_ENCODING_AUTODETECTION	"encoding-autodetection"
+#define NSR_SETTINGS_NEWS_SHOWN_VERSION		"news-shown-version"
+#define NSR_SETTINGS_LAST_OPEN_DIR		"last-open-dir"
+#define NSR_SETTINGS_FONT_FAMILY		"font-family"
+#define NSR_SETTINGF_TEXT_ENCODING		"text-encoding"
+#define NSR_SETTINGS_LAST_DOCUMENTS		"last-documents"
+#define NSR_SETTINGS_FIRST_START		"first-start"
+
+#define NSR_SETTINGS_LOAD_LAST_DOC		"load-last-doc"
+#define NSR_SETTINGS_LAST_CONFIG_CLEAN		"last-config-clean"
+
+#define NSR_SETTINGS_LAST_SESSION		"last-session"
+#define NSR_SETTINGS_S_FILE			"file"
+#define NSR_SETTINGS_S_PAGE			"page"
+#define NSR_SETTINGS_S_ZOOM_TEXT		"zoom-text"
+#define NSR_SETTINGS_S_ZOOM_GRAPHIC		"zoom-graphic"
+#define NSR_SETTINGS_S_FIT_TO_WIDTH		"fit-to-width"
+#define NSR_SETTINGS_S_POSITION			"position"
+#define NSR_SETTINGS_S_TEXT_POSITION		"text-position"
+#define NSR_SETTINGS_S_ANGLE			"angle"
+
+#define NSR_SETTINGS_DEFAULT_FONT		"Sans Serif"
+#define NSR_SETTINGS_DEFAULT_ENCODING		"UTF-8"
+#define NSR_SETTINGS_DEFAULT_PATH		QDir::currentPath () + "/shared"
+
 NSRSettings * NSRSettings::_instance = NULL;
 
 NSRSettings::NSRSettings () :
@@ -20,39 +53,35 @@ NSRSettings::NSRSettings () :
 		   QSettings::IniFormat),
 	_isStarting (false)
 {
-	QString	defPath, defFont;
 	QDir	dir;
-
-	defPath = QDir::homePath ();
-	defFont = QString ("Sans Serif");
 
 	if (!dir.exists (NSRSettings::getSettingsDirectory ()))
 		dir.mkpath (NSRSettings::getSettingsDirectory ());
 
-	beginGroup ("Global");
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
 
-	_isFullscreenMode = value("fullscreen-mode", false).toBool ();
-	_isWordWrap = value("word-wrap", false).toBool ();
-	_isTextModeNoted = value("text-mode-noted", false).toBool ();
-	_isInvertedColors = value("inverted-colors", false).toBool ();
-	_isAutoCrop = value("auto-crop", false).toBool ();
-	_isPreventScreenLock = value("prevent-screen-lock", true).toBool ();
-	_isEncodingAutodetection = value("encoding-autodetection", true).toBool ();
-	_lastVersionNewsShown = (value("news-shown-version", "0.0.0").toString ());
-	_lastOpenDir = value("last-open-dir", "C:").toString ();
-	_fontFamily = value("font-family", "Sans Serif").toString ();
-	_textEncoding = value("text-encoding", "UTF-8").toString ();
-	_lastDocuments = value("last-documents", QStringList ()).toStringList ();
-	_isFirstStart = value("first-start", true).toBool ();
+	_isFullscreenMode = value(NSR_SETTINGS_FULLSCREEN, false).toBool ();
+	_isWordWrap = value(NSR_SETTINGS_WORD_WRAP, false).toBool ();
+	_isTextModeNoted = value(NSR_SETTINGS_TEXT_MODE_NOTED, false).toBool ();
+	_isInvertedColors = value(NSR_SETTINGS_INVERTED_COLORS, false).toBool ();
+	_isAutoCrop = value(NSR_SETTINGS_AUTO_CROP, false).toBool ();
+	_isPreventScreenLock = value(NSR_SETTINGS_PREVENT_SCREEN_LOCK, true).toBool ();
+	_isEncodingAutodetection = value(NSR_SETTINGS_ENCODING_AUTODETECTION, true).toBool ();
+	_lastVersionNewsShown = (value(NSR_SETTINGS_NEWS_SHOWN_VERSION, "0.0.0").toString ());
+	_lastOpenDir = value(NSR_SETTINGS_LAST_OPEN_DIR, NSR_SETTINGS_DEFAULT_PATH).toString ();
+	_fontFamily = value(NSR_SETTINGS_FONT_FAMILY, NSR_SETTINGS_DEFAULT_FONT).toString ();
+	_textEncoding = value(NSR_SETTINGF_TEXT_ENCODING, NSR_SETTINGS_DEFAULT_ENCODING).toString ();
+	_lastDocuments = value(NSR_SETTINGS_LAST_DOCUMENTS, QStringList ()).toStringList ();
+	_isFirstStart = value(NSR_SETTINGS_FIRST_START, true).toBool ();
 
 	if (!QDir(_lastOpenDir).exists ())
-		_lastOpenDir = defPath;
+		_lastOpenDir = NSR_SETTINGS_DEFAULT_PATH;
 
 	/* TODO: find a way to check if a font from configuration file exists */
-	_fontFamily = defFont;
+	_fontFamily = NSR_SETTINGS_DEFAULT_FONT;
 
 	if (!getSupportedEncodingsShort().contains (_textEncoding))
-		_textEncoding = QString ("UTF-8");
+		_textEncoding = NSR_SETTINGS_DEFAULT_ENCODING;
 
 	endGroup ();
 	cleanOldFiles ();
@@ -80,7 +109,10 @@ NSRSession
 NSRSettings::getLastSession ()
 {
 	NSRSession	session;
-	QString		lastSession = value("Global/last-session", "").toString ();
+	QString		lastSession = value(QString (NSR_SETTINGS_GLOBAL_SECTION) +
+					    QString ("/") +
+					    QString (NSR_SETTINGS_LAST_SESSION),
+					    "").toString ();
 
 	if (!childGroups().contains (lastSession))
 		return session;
@@ -120,17 +152,20 @@ NSRSettings::saveSession (NSRSession *session)
 	formatName = formatFileName (session->getFile ());
 
 	beginGroup (formatName);
-	setValue ("file", session->getFile ());
-	setValue ("page", session->getPage ());
-	setValue ("zoom-text", session->getZoomText ());
-	setValue ("zoom-graphic", session->getZoomGraphic ());
-	setValue ("fit-to-width", session->isFitToWidth ());
-	setValue ("position", session->getPosition ());
-	setValue ("text-position", session->getTextPosition ());
-	setValue ("angle", session->getRotation ());
+	setValue (NSR_SETTINGS_S_FILE, session->getFile ());
+	setValue (NSR_SETTINGS_S_PAGE, session->getPage ());
+	setValue (NSR_SETTINGS_S_ZOOM_TEXT, session->getZoomText ());
+	setValue (NSR_SETTINGS_S_ZOOM_GRAPHIC, session->getZoomGraphic ());
+	setValue (NSR_SETTINGS_S_FIT_TO_WIDTH, session->isFitToWidth ());
+	setValue (NSR_SETTINGS_S_POSITION, session->getPosition ());
+	setValue (NSR_SETTINGS_S_TEXT_POSITION, session->getTextPosition ());
+	setValue (NSR_SETTINGS_S_ANGLE, session->getRotation ());
 	endGroup ();
 
-	setValue ("Global/last-session", formatName);
+	setValue (QString (NSR_SETTINGS_GLOBAL_SECTION) +
+		  QString ("/") +
+		  QString (NSR_SETTINGS_LAST_SESSION),
+		  formatName);
 
 	sync ();
 }
@@ -139,8 +174,8 @@ void
 NSRSettings::saveLastOpenDir (const QString& dir)
 {
 	_lastOpenDir = dir;
-	beginGroup ("Global");
-	setValue ("last-open-dir", _lastOpenDir);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_LAST_OPEN_DIR, _lastOpenDir);
 	endGroup ();
 
 	sync ();
@@ -150,8 +185,8 @@ void
 NSRSettings::saveFullscreenMode (bool fullscreen)
 {
 	_isFullscreenMode = fullscreen;
-	beginGroup ("Global");
-	setValue ("fullscreen-mode", _isFullscreenMode);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_FULLSCREEN, _isFullscreenMode);
 	endGroup ();
 
 	sync ();
@@ -161,8 +196,8 @@ void
 NSRSettings::saveWordWrap (bool wrap)
 {
 	_isWordWrap = wrap;
-	beginGroup ("Global");
-	setValue ("word-wrap", _isWordWrap);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_WORD_WRAP, _isWordWrap);
 	endGroup ();
 
 	sync ();
@@ -178,8 +213,8 @@ void
 NSRSettings::saveTextModeNoted ()
 {
 	_isTextModeNoted = true;
-	beginGroup ("Global");
-	setValue ("text-mode-noted", true);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_TEXT_MODE_NOTED, true);
 	endGroup ();
 
 	sync ();
@@ -189,8 +224,8 @@ void
 NSRSettings::saveInvertedColors (bool inverted)
 {
 	_isInvertedColors = inverted;
-	beginGroup ("Global");
-	setValue ("inverted-colors", _isInvertedColors);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_INVERTED_COLORS, _isInvertedColors);
 	endGroup ();
 
 	sync ();
@@ -206,8 +241,8 @@ void
 NSRSettings::saveAutoCrop (bool crop)
 {
 	_isAutoCrop = crop;
-	beginGroup ("Global");
-	setValue ("auto-crop", _isAutoCrop);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_AUTO_CROP, _isAutoCrop);
 	endGroup ();
 
 	sync ();
@@ -217,8 +252,8 @@ void
 NSRSettings::savePreventScreenLock (bool preventScreenLock)
 {
 	_isPreventScreenLock = preventScreenLock;
-	beginGroup ("Global");
-	setValue ("prevent-screen-lock", _isPreventScreenLock);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_PREVENT_SCREEN_LOCK, _isPreventScreenLock);
 	endGroup ();
 
 	sync ();
@@ -228,8 +263,8 @@ void
 NSRSettings::saveEncodingAutodetection (bool autodetection)
 {
 	_isEncodingAutodetection = autodetection;
-	beginGroup ("Global");
-	setValue ("encoding-autodetection", _isEncodingAutodetection);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_ENCODING_AUTODETECTION, _isEncodingAutodetection);
 	endGroup ();
 
 	sync ();
@@ -239,8 +274,8 @@ void
 NSRSettings::saveNewsShown (const QString& version)
 {
 	_lastVersionNewsShown = version;
-	beginGroup ("Global");
-	setValue ("news-shown-version", version);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_NEWS_SHOWN_VERSION, version);
 	endGroup ();
 
 	sync ();
@@ -250,8 +285,8 @@ void
 NSRSettings::saveFontFamily (const QString &ff)
 {
 	_fontFamily = ff;
-	beginGroup ("Global");
-	setValue ("font-family", ff);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_FONT_FAMILY, ff);
 	endGroup ();
 
 	sync ();
@@ -261,8 +296,8 @@ void
 NSRSettings::saveTextEncoding (const QString &textEnc)
 {
 	_textEncoding = textEnc;
-	beginGroup ("Global");
-	setValue ("text-encoding", textEnc);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGF_TEXT_ENCODING, textEnc);
 	endGroup ();
 
 	sync ();
@@ -338,7 +373,7 @@ NSRSettings::mapIndexToEncoding (int index)
 	QStringList list = getSupportedEncodingsShort ();
 
 	if (index < 0 || index > list.count ())
-		return QString ("UTF-8");
+		return QString (NSR_SETTINGS_DEFAULT_ENCODING);
 	else
 		return list.at (index);
 }
@@ -377,14 +412,14 @@ void
 NSRSettings::readSession (const QString &name, NSRSession &session)
 {
 	beginGroup (name);
-	session.setFile (value("file", "").toString ());
-	session.setPage (value("page", 1).toInt ());
-	session.setZoomText (value("zoom-text", 90).toInt ());
-	session.setZoomGraphic (value("zoom-graphic", 100.0).toDouble ());
-	session.setFitToWidth (value("fit-to-width", true).toBool ());
-	session.setPosition (value("position", QPointF (0, 0)).toPointF ());
-	session.setTextPosition (value("text-position", QPointF (0, 0)).toPointF ());
-	session.setRotation ((NSRAbstractDocument::NSRDocumentRotation) ((int) (value("angle", 0).toDouble () + 0.5)));
+	session.setFile (value(NSR_SETTINGS_S_FILE, "").toString ());
+	session.setPage (value(NSR_SETTINGS_S_PAGE, 1).toInt ());
+	session.setZoomText (value(NSR_SETTINGS_S_ZOOM_TEXT, 90).toInt ());
+	session.setZoomGraphic (value(NSR_SETTINGS_S_ZOOM_GRAPHIC, 100.0).toDouble ());
+	session.setFitToWidth (value(NSR_SETTINGS_S_FIT_TO_WIDTH, true).toBool ());
+	session.setPosition (value(NSR_SETTINGS_S_POSITION, QPointF (0, 0)).toPointF ());
+	session.setTextPosition (value(NSR_SETTINGS_S_TEXT_POSITION, QPointF (0, 0)).toPointF ());
+	session.setRotation ((NSRAbstractDocument::NSRDocumentRotation) ((int) (value(NSR_SETTINGS_S_ANGLE, 0).toDouble () + 0.5)));
 	endGroup ();
 }
 
@@ -399,8 +434,8 @@ NSRSettings::removeLastDocument (const QString& path)
 {
 	_lastDocuments.removeAll (path);
 
-	beginGroup ("Global");
-	setValue ("last-documents", QVariant (_lastDocuments));
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_LAST_DOCUMENTS, QVariant (_lastDocuments));
 	endGroup ();
 
 	sync ();
@@ -412,8 +447,8 @@ NSRSettings::addLastDocument (const QString& path)
 	_lastDocuments.removeAll (path);
 	_lastDocuments.prepend (path);
 
-	beginGroup ("Global");
-	setValue ("last-documents", QVariant (_lastDocuments));
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_LAST_DOCUMENTS, QVariant (_lastDocuments));
 	endGroup ();
 
 	sync ();
@@ -424,8 +459,8 @@ NSRSettings::saveFirstStart ()
 {
 	_isFirstStart = false;
 
-	beginGroup ("Global");
-	setValue ("first-start", _isFirstStart);
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_FIRST_START, _isFirstStart);
 	endGroup ();
 
 	sync ();
@@ -434,7 +469,10 @@ NSRSettings::saveFirstStart ()
 void
 NSRSettings::cleanOldFiles ()
 {
-	QDateTime lastClean = value("Global/last-config-clean", QDateTime::currentDateTime()).toDateTime ();
+	QDateTime lastClean = value(QString (NSR_SETTINGS_GLOBAL_SECTION) +
+				    QString ("") +
+				    QString (NSR_SETTINGS_LAST_CONFIG_CLEAN),
+				    QDateTime::currentDateTime()).toDateTime ();
 
 	if (lastClean.daysTo (QDateTime::currentDateTime ()) < 30)
 		return;
@@ -443,21 +481,30 @@ NSRSettings::cleanOldFiles ()
 	int count = childs.count ();
 
 	for (int i = 0; i < count; ++i)
-		if (childs.at(i) != QString ("Global") &&
-		    !QFile::exists (value(childs.at (i) + "/file", "").toString ()))
+		if (childs.at(i) != QString (NSR_SETTINGS_GLOBAL_SECTION) &&
+		    !QFile::exists (value(childs.at (i) + "/" + NSR_SETTINGS_S_FILE, "").toString ()))
 			remove (childs.at(i));
 
-	QStringList docs = value("Global/last-documents", QStringList ()).toStringList ();
+	QStringList docs = value(QString (NSR_SETTINGS_GLOBAL_SECTION) +
+			    	 QString ("") +
+			    	 QString (NSR_SETTINGS_LAST_DOCUMENTS),
+			    	 QStringList ()).toStringList ();
 	count = docs.count ();
 
 	for (int i = count - 1; i >= 0; --i)
 		if (!QFile::exists (docs.at (i)))
 			docs.removeAt (i);
 
-	remove ("Global/load-last-doc");
+	remove (QString (NSR_SETTINGS_GLOBAL_SECTION) + QString ("") + QString (NSR_SETTINGS_LOAD_LAST_DOC));
 
-	setValue ("Global/last-config-clean", lastClean);
-	setValue ("Global/last-documents", QVariant (docs));
+	setValue (QString (NSR_SETTINGS_GLOBAL_SECTION) +
+		  QString ("") +
+		  QString (NSR_SETTINGS_LAST_CONFIG_CLEAN),
+		  lastClean);
+	setValue (QString (NSR_SETTINGS_GLOBAL_SECTION) +
+		  QString ("") +
+		  QString (NSR_SETTINGS_LAST_DOCUMENTS),
+		  QVariant (docs));
 	sync ();
 
 	NSRThumbnailer::instance()->cleanOldFiles ();
