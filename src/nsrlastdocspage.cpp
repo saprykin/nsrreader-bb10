@@ -35,6 +35,14 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create ());
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	rootContainer->setLeftPadding (ui()->sdu (1));
+	rootContainer->setRightPadding (ui()->sdu (1));
+#else
+	rootContainer->setLeftPadding (10);
+	rootContainer->setRightPadding (10);
+#endif
+
 	_listView = new NSRLastDocsListView ();
 	_listView->setVerticalAlignment (VerticalAlignment::Fill);
 	_listView->setHorizontalAlignment (HorizontalAlignment::Fill);
