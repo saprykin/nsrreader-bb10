@@ -23,6 +23,9 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isAutoCrop (NULL),
 	_isPreventScreenLock (NULL),
 	_isEncodingAutodetection (NULL),
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_isBrandColors (NULL),
+#endif
 	_encodingsList (NULL),
 	_themeList (NULL)
 {
@@ -38,6 +41,9 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isAutoCrop = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isPreventScreenLock = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isEncodingAutodetection = ToggleButton::create().horizontal(HorizontalAlignment::Right);
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_isBrandColors = ToggleButton::create().horizontal(HorizontalAlignment::Right);
+#endif
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 	_themeList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
@@ -45,6 +51,9 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isAutoCrop->setChecked (NSRSettings::instance()->isAutoCrop ());
 	_isPreventScreenLock->setChecked (NSRSettings::instance()->isPreventScreenLock ());
 	_isEncodingAutodetection->setChecked (NSRSettings::instance()->isEncodingAutodetection ());
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_isBrandColors->setChecked (NSRSettings::instance()->isBrandColors ());
+#endif
 	_encodingsList->setEnabled (!_isEncodingAutodetection->isChecked ());
 	_encodingsList->setFocusPolicy (FocusPolicy::Touch);
 
@@ -72,7 +81,48 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	int themeIndex = (int) NSRSettings::instance()->getVisualStyle () - 1;
 	_themeList->setSelectedIndex (themeIndex);
 
-	/* First container is out - was to save last positions */
+	/* 'Visual Theme' section */
+	Container *themeContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						       .layout(StackLayout::create ());
+
+	Label *themeInfoLabel = Label::create(trUtf8 ("Close and reopen the app to apply changes."))
+				      .horizontal(HorizontalAlignment::Fill)
+				      .vertical(VerticalAlignment::Center)
+				      .multiline(true);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	Container *themeInContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						         .layout(StackLayout::create()
+								 	     .orientation(LayoutOrientation::LeftToRight));
+
+	Label *brandColorsLabel = Label::create(trUtf8 ("Brand Colors", "Option in preferences"))
+				        .horizontal(HorizontalAlignment::Left)
+				        .vertical(VerticalAlignment::Center)
+				        .multiline(true)
+				        .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
+
+	themeInContainer->add (brandColorsLabel);
+	themeInContainer->add (_isBrandColors);
+#endif
+
+	themeInfoLabel->textStyle()->setFontSize (FontSize::XSmall);
+	themeInfoLabel->textStyle()->setColor (NSRThemeSupport::instance()->getTipText ());
+
+	themeContainer->add (_themeList);
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	themeContainer->add (themeInContainer);
+#endif
+	themeContainer->add (themeInfoLabel);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	themeContainer->setTopPadding (ui()->sdu (2));
+	themeContainer->setLeftPadding (ui()->sdu (2));
+	themeContainer->setRightPadding (ui()->sdu (2));
+#else
+	themeContainer->setTopPadding (20);
+	themeContainer->setLeftPadding (20);
+	themeContainer->setRightPadding (20);
+#endif
 
 	/* 'Fullscreen Mode' option */
 	Container *fullscreenContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -193,38 +243,15 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	encodingContainer->add (_encodingsList);
 	encodingContainer->add (encodingInfo);
 
-	/* 'Prevent Screen Locking' option */
-	Container *themeContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						       .layout(StackLayout::create ());
-
-	Label *themeInfoLabel = Label::create(trUtf8 ("Close and reopen the app to apply changes."))
-				      .horizontal(HorizontalAlignment::Fill)
-				      .vertical(VerticalAlignment::Center)
-				      .multiline(true);
-
-	themeInfoLabel->textStyle()->setFontSize (FontSize::XSmall);
-	themeInfoLabel->textStyle()->setColor (NSRThemeSupport::instance()->getTipText ());
-
-	themeContainer->add (_themeList);
-	themeContainer->add (themeInfoLabel);
-
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	themeContainer->setTopPadding (ui()->sdu (2));
-	themeContainer->setLeftPadding (ui()->sdu (2));
-	themeContainer->setRightPadding (ui()->sdu (2));
-#else
-	themeContainer->setTopPadding (20);
-	themeContainer->setLeftPadding (20);
-	themeContainer->setRightPadding (20);
-#endif
-
 #ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,2,0)
+#  if BBNDK_VERSION_AT_LEAST(10,3,0)
+	_isBrandColors->accessibility()->addLabel (brandColorsLabel);
+#  elif BBNDK_VERSION_AT_LEAST(10,2,0)
 	_isFullscreen->accessibility()->addLabel (fullscreenLabel);
 	_isAutoCrop->accessibility()->addLabel (cropLabel);
 	_isPreventScreenLock->accessibility()->addLabel (preventScreenLockLabel);
 	_isEncodingAutodetection->accessibility()->addLabel (encodingAutodetectLabel);
-#  endif
+#endif
 #endif
 
 	Header *generalHeader = Header::create().title (trUtf8 ("General", "General settings"));
@@ -297,6 +324,12 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      QString ("NSRPreferencesPage"),
 				      QString ("Text encoding is used only for plain text files, "
 					       "none other format supports encoding selection."));
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	_translator->addTranslatable ((UIObject *) brandColorsLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Brand Colors"));
+#endif
 	_translator->addTranslatable ((UIObject *) themeInfoLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -338,6 +371,9 @@ NSRPreferencesPage::saveSettings ()
 	NSRSettings::instance()->saveAutoCrop (_isAutoCrop->isChecked ());
 	NSRSettings::instance()->savePreventScreenLock (_isPreventScreenLock->isChecked ());
 	NSRSettings::instance()->saveEncodingAutodetection (_isEncodingAutodetection->isChecked ());
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	NSRSettings::instance()->saveBrandColors (_isBrandColors->isChecked ());
+#endif
 
 	if (_encodingsList->isSelectedOptionSet ())
 		NSRSettings::instance()->saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));

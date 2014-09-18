@@ -33,6 +33,10 @@
 #include <bb/cascades/Window>
 #include <bb/cascades/ScreenIdleMode>
 
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#  include <bb/cascades/ThemeSupport>
+#endif
+
 #if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
 #  include <bb/cascades/SystemShortcut>
 #  include <bb/cascades/Shortcut>
@@ -109,6 +113,18 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	Q_ASSERT (ok);
 
 	_startMode = _invokeManager->startupMode ();
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	if (_startMode == ApplicationStartupMode::LaunchApplication) {
+		VisualStyle::Type visualStyle = NSRSettings::instance()->getVisualStyle ();
+
+		Application::instance()->themeSupport()->setVisualStyleAndPrimaryColor (visualStyle);
+		NSRThemeSupport::instance()->setVisualStyle (visualStyle);
+
+		if (NSRSettings::instance()->isBrandColors ())
+			Application::instance()->themeSupport()->setPrimaryColor (NSRThemeSupport::instance()->getPrimaryBrand ());
+	}
+#endif
 
 	initFullUI ();
 }
