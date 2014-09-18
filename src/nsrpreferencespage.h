@@ -33,6 +33,7 @@ private:
 	bb::cascades::ToggleButton	*_isPreventScreenLock;
 	bb::cascades::ToggleButton	*_isEncodingAutodetection;
 	bb::cascades::DropDown		*_encodingsList;
+	bb::cascades::DropDown		*_themeList;
 };
 
 #endif /* NSRPREFERENCESPAGE_H_ */

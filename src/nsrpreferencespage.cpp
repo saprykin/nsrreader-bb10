@@ -23,7 +23,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isAutoCrop (NULL),
 	_isPreventScreenLock (NULL),
 	_isEncodingAutodetection (NULL),
-	_encodingsList (NULL)
+	_encodingsList (NULL),
+	_themeList (NULL)
 {
 	QString defEncoding ("UTF-8");
 
@@ -38,6 +39,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isPreventScreenLock = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_isEncodingAutodetection = ToggleButton::create().horizontal(HorizontalAlignment::Right);
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
+	_themeList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
 	_isFullscreen->setChecked (NSRSettings::instance()->isFullscreenMode ());
 	_isAutoCrop->setChecked (NSRSettings::instance()->isAutoCrop ());
@@ -59,6 +61,16 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	for (int i = 0; i < count; ++i)
 		_encodingsList->add (Option::create().text(encodings.at (i)));
 	_encodingsList->setSelectedIndex (encodingIndex);
+
+	Option *optionThemeBright = Option::create().text(trUtf8 ("Bright", "Bright UI theme"));
+	Option *optionThemeDark = Option::create().text(trUtf8 ("Dark", "Dark UI theme"));
+
+	_themeList->setTitle (trUtf8 ("Visual Theme", "Visual theme settings"));
+	_themeList->add (optionThemeBright);
+	_themeList->add (optionThemeDark);
+
+	int themeIndex = (int) NSRSettings::instance()->getVisualStyle () - 1;
+	_themeList->setSelectedIndex (themeIndex);
 
 	/* First container is out - was to save last positions */
 
@@ -181,6 +193,31 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	encodingContainer->add (_encodingsList);
 	encodingContainer->add (encodingInfo);
 
+	/* 'Prevent Screen Locking' option */
+	Container *themeContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						       .layout(StackLayout::create ());
+
+	Label *themeInfoLabel = Label::create(trUtf8 ("Close and reopen the app to apply changes."))
+				      .horizontal(HorizontalAlignment::Fill)
+				      .vertical(VerticalAlignment::Center)
+				      .multiline(true);
+
+	themeInfoLabel->textStyle()->setFontSize (FontSize::XSmall);
+	themeInfoLabel->textStyle()->setColor (NSRThemeSupport::instance()->getTipText ());
+
+	themeContainer->add (_themeList);
+	themeContainer->add (themeInfoLabel);
+
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+	themeContainer->setTopPadding (ui()->sdu (2));
+	themeContainer->setLeftPadding (ui()->sdu (2));
+	themeContainer->setRightPadding (ui()->sdu (2));
+#else
+	themeContainer->setTopPadding (20);
+	themeContainer->setLeftPadding (20);
+	themeContainer->setRightPadding (20);
+#endif
+
 #ifdef BBNDK_VERSION_AT_LEAST
 #  if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_isFullscreen->accessibility()->addLabel (fullscreenLabel);
@@ -192,8 +229,12 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	Header *generalHeader = Header::create().title (trUtf8 ("General", "General settings"));
 	Header *encodingHeader = Header::create().title (trUtf8 ("Text Encoding", "Text encoding settings"));
+	Header *themeHeader = Header::create().title (trUtf8 ("Visual Theme", "Visual theme settings"));
 
 	/* Add all options to root layout */
+	rootContainer->add (themeHeader);
+	rootContainer->add (themeContainer);
+	rootContainer->add (Divider::create().bottomMargin (0));
 	rootContainer->add (generalHeader);
 	rootContainer->add (fullscreenContainer);
 	rootContainer->add (Divider::create ());
@@ -203,7 +244,6 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	rootContainer->add (Divider::create().bottomMargin (0));
 	rootContainer->add (encodingHeader);
 	rootContainer->add (encodingContainer);
-	rootContainer->add (Divider::create ());
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 						     .vertical(VerticalAlignment::Fill)
@@ -228,6 +268,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_HEADER,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Text Encoding"));
+	_translator->addTranslatable ((UIObject *) themeHeader,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_HEADER,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Visual Theme"));
 	_translator->addTranslatable ((UIObject *) fullscreenLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -253,6 +297,22 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      QString ("NSRPreferencesPage"),
 				      QString ("Text encoding is used only for plain text files, "
 					       "none other format supports encoding selection."));
+	_translator->addTranslatable ((UIObject *) themeInfoLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Close and reopen the app to apply changes."));
+	_translator->addTranslatable ((UIObject *) _themeList,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_DROPDOWN_TITLE,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Visual Theme"));
+	_translator->addTranslatable ((UIObject *) optionThemeBright,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Bright"));
+	_translator->addTranslatable ((UIObject *) optionThemeDark,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Dark"));
 	_translator->addTranslatable ((UIObject *) titleBar (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_TITLEBAR,
 				      QString ("NSRPreferencesPage"),
@@ -281,6 +341,9 @@ NSRPreferencesPage::saveSettings ()
 
 	if (_encodingsList->isSelectedOptionSet ())
 		NSRSettings::instance()->saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));
+
+	if (_themeList->isSelectedOptionSet ())
+		NSRSettings::instance()->saveVisualStyle ((VisualStyle::Type) (_themeList->selectedIndex () + 1));
 }
 
 void
