@@ -452,6 +452,30 @@
         <comment>Option in preferences</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Bright</source>
+        <comment>Bright UI theme</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <comment>Dark UI theme</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close and reopen the app to apply changes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual Theme</source>
+        <comment>Visual theme settings</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Brand Colors</source>
+        <comment>Option in preferences</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRReaderBB10</name>

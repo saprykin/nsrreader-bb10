@@ -454,6 +454,30 @@
         <comment>Option in preferences</comment>
         <translation>Автоопределение кодировки</translation>
     </message>
+    <message>
+        <source>Bright</source>
+        <comment>Bright UI theme</comment>
+        <translation>Светлая</translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <comment>Dark UI theme</comment>
+        <translation>Тёмная</translation>
+    </message>
+    <message>
+        <source>Close and reopen the app to apply changes.</source>
+        <translation>Закройте и откройте приложение, чтобы изменения вступили в силу.</translation>
+    </message>
+    <message>
+        <source>Visual Theme</source>
+        <comment>Visual theme settings</comment>
+        <translation>Тема оформления</translation>
+    </message>
+    <message>
+        <source>Brand Colors</source>
+        <comment>Option in preferences</comment>
+        <translation>Фирменные цвета</translation>
+    </message>
 </context>
 <context>
     <name>NSRReaderBB10</name>
