@@ -121,7 +121,7 @@
     <permission>access_shared</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/assets/lib:/usr/lib/qt4/lib"/>
     
-    <env var="CASCADES_THEME" value="dark?primaryColor=0xFF8000"/>
+    <env var="CASCADES_THEME" value="dark"/>
     
     <invoke-target id="com.gmail.lite.reader.nsr">
         <invoke-target-type>application</invoke-target-type>
