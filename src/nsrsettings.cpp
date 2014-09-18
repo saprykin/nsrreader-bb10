@@ -29,6 +29,7 @@
 #define NSR_SETTINGS_LAST_DOCUMENTS		"last-documents"
 #define NSR_SETTINGS_FIRST_START		"first-start"
 #define NSR_SETTINGS_VISUAL_STYLE		"visual-style"
+#define NSR_SETTINGS_BRAND_COLORS		"brand-colors"
 
 #define NSR_SETTINGS_LOAD_LAST_DOC		"load-last-doc"
 #define NSR_SETTINGS_LAST_CONFIG_CLEAN		"last-config-clean"
@@ -77,6 +78,7 @@ NSRSettings::NSRSettings () :
 	_lastDocuments = value(NSR_SETTINGS_LAST_DOCUMENTS, QStringList ()).toStringList ();
 	_isFirstStart = value(NSR_SETTINGS_FIRST_START, true).toBool ();
 	_visualStyle = (VisualStyle::Type) (value(NSR_SETTINGS_VISUAL_STYLE, (int) VisualStyle::Dark).toInt ());
+	_isBrandColors = value(NSR_SETTINGS_BRAND_COLORS, false).toBool ();
 
 	if (!QDir(_lastOpenDir).exists ())
 		_lastOpenDir = NSR_SETTINGS_DEFAULT_PATH;
@@ -480,6 +482,18 @@ NSRSettings::saveVisualStyle (bb::cascades::VisualStyle::Type visualStyle)
 
 	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
 	setValue (NSR_SETTINGS_VISUAL_STYLE, (int) _visualStyle);
+	endGroup ();
+
+	sync ();
+}
+
+void
+NSRSettings::saveBrandColors (bool isBrandColors)
+{
+	_isBrandColors = isBrandColors;
+
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_BRAND_COLORS, _isBrandColors);
 	endGroup ();
 
 	sync ();

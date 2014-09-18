@@ -58,6 +58,10 @@ public:
 		return _visualStyle;
 	}
 	void saveVisualStyle (bb::cascades::VisualStyle::Type visualStyle);
+	inline bool isBrandColors () const {
+		return _isBrandColors;
+	}
+	void saveBrandColors (bool isBrandColors);
 
 	static QStringList getSupportedEncodings ();
 	static QString mapIndexToEncoding (int index);
@@ -87,6 +91,7 @@ private:
 	bool				_isEncodingAutodetection;
 	bool				_isFirstStart;
 	bool				_isStarting;
+	bool				_isBrandColors;
 	QString				_lastVersionNewsShown;
 	QString				_lastOpenDir;
 	QString				_fontFamily;
