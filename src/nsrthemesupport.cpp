@@ -70,15 +70,22 @@ NSRThemeSupport::getOverlay () const
 	return _colorOverlay;
 }
 
+bb::cascades::Color
+NSRThemeSupport::getPrimaryBrand () const
+{
+	return _colorPrimaryBrand;
+}
+
 bb::cascades::VisualStyle::Type
 NSRThemeSupport::getVisualStyle () const
 {
 	return _visualStyle;
 }
 
-NSRThemeSupport::NSRThemeSupport ()
+void
+NSRThemeSupport::setVisualStyle (bb::cascades::VisualStyle::Type visualStyle)
 {
-	_visualStyle = Application::instance()->themeSupport()->theme()->colorTheme()->style ();
+	_visualStyle = visualStyle;
 
 	switch (_visualStyle) {
 	case VisualStyle::Bright:
@@ -109,6 +116,13 @@ NSRThemeSupport::NSRThemeSupport ()
 		_colorOverlay = Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f);
 	}
 	}
+}
+
+NSRThemeSupport::NSRThemeSupport ()
+{
+	_colorPrimaryBrand = Color::fromRGBA (1.0f, 0.5f, 0.0f);
+
+	setVisualStyle (Application::instance()->themeSupport()->theme()->colorTheme()->style ());
 }
 
 NSRThemeSupport::~NSRThemeSupport ()

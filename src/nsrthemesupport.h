@@ -17,7 +17,9 @@ public:
 	bb::cascades::Color getRecentItemText () const;
 	bb::cascades::Color getTipText () const;
 	bb::cascades::Color getOverlay () const;
+	bb::cascades::Color getPrimaryBrand () const;
 	bb::cascades::VisualStyle::Type getVisualStyle () const;
+	void setVisualStyle (bb::cascades::VisualStyle::Type visualStyle);
 
 private:
 	NSRThemeSupport ();
@@ -32,6 +34,7 @@ private:
 	bb::cascades::Color		_colorRecentItemText;
 	bb::cascades::Color		_colorTipText;
 	bb::cascades::Color		_colorOverlay;
+	bb::cascades::Color		_colorPrimaryBrand;
 };
 
 #endif /* NSRTHEMESUPPORT_H_ */
