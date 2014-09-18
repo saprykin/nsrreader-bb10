@@ -28,6 +28,7 @@
 #define NSR_SETTINGF_TEXT_ENCODING		"text-encoding"
 #define NSR_SETTINGS_LAST_DOCUMENTS		"last-documents"
 #define NSR_SETTINGS_FIRST_START		"first-start"
+#define NSR_SETTINGS_VISUAL_STYLE		"visual-style"
 
 #define NSR_SETTINGS_LOAD_LAST_DOC		"load-last-doc"
 #define NSR_SETTINGS_LAST_CONFIG_CLEAN		"last-config-clean"
@@ -45,6 +46,8 @@
 #define NSR_SETTINGS_DEFAULT_FONT		"Sans Serif"
 #define NSR_SETTINGS_DEFAULT_ENCODING		"UTF-8"
 #define NSR_SETTINGS_DEFAULT_PATH		QDir::currentPath () + "/shared"
+
+using namespace bb::cascades;
 
 NSRSettings * NSRSettings::_instance = NULL;
 
@@ -73,6 +76,7 @@ NSRSettings::NSRSettings () :
 	_textEncoding = value(NSR_SETTINGF_TEXT_ENCODING, NSR_SETTINGS_DEFAULT_ENCODING).toString ();
 	_lastDocuments = value(NSR_SETTINGS_LAST_DOCUMENTS, QStringList ()).toStringList ();
 	_isFirstStart = value(NSR_SETTINGS_FIRST_START, true).toBool ();
+	_visualStyle = (VisualStyle::Type) (value(NSR_SETTINGS_VISUAL_STYLE, (int) VisualStyle::Dark).toInt ());
 
 	if (!QDir(_lastOpenDir).exists ())
 		_lastOpenDir = NSR_SETTINGS_DEFAULT_PATH;
@@ -82,6 +86,9 @@ NSRSettings::NSRSettings () :
 
 	if (!getSupportedEncodingsShort().contains (_textEncoding))
 		_textEncoding = NSR_SETTINGS_DEFAULT_ENCODING;
+
+	if (_visualStyle < VisualStyle::Bright || _visualStyle > VisualStyle::Dark)
+		_visualStyle = VisualStyle::Bright;
 
 	endGroup ();
 	cleanOldFiles ();
@@ -461,6 +468,18 @@ NSRSettings::saveFirstStart ()
 
 	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
 	setValue (NSR_SETTINGS_FIRST_START, _isFirstStart);
+	endGroup ();
+
+	sync ();
+}
+
+void
+NSRSettings::saveVisualStyle (bb::cascades::VisualStyle::Type visualStyle)
+{
+	_visualStyle = visualStyle;
+
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_VISUAL_STYLE, (int) _visualStyle);
 	endGroup ();
 
 	sync ();

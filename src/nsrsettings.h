@@ -4,6 +4,8 @@
 #include "insrsettings.h"
 #include "nsrsession.h"
 
+#include <bb/cascades/VisualStyle>
+
 #include <QSettings>
 #include <QStringList>
 #include <QObject>
@@ -52,6 +54,10 @@ public:
 	bool isFirstStart () const {return _isFirstStart;}
 	void saveFirstStart ();
 	inline void setStarting (bool starting) {_isStarting = starting;}
+	inline bb::cascades::VisualStyle::Type getVisualStyle () const {
+		return _visualStyle;
+	}
+	void saveVisualStyle (bb::cascades::VisualStyle::Type visualStyle);
 
 	static QStringList getSupportedEncodings ();
 	static QString mapIndexToEncoding (int index);
@@ -70,21 +76,22 @@ private:
 	void			readSession (const QString& name, NSRSession& session);
 	void			cleanOldFiles ();
 
-	static NSRSettings *	_instance;
-	bool			_isFullscreenMode;
-	bool			_isWordWrap;
-	bool			_isTextModeNoted;
-	bool			_isInvertedColors;
-	bool			_isAutoCrop;
-	bool			_isPreventScreenLock;
-	bool			_isEncodingAutodetection;
-	bool			_isFirstStart;
-	bool			_isStarting;
-	QString			_lastVersionNewsShown;
-	QString			_lastOpenDir;
-	QString			_fontFamily;
-	QString			_textEncoding;
-	QStringList		_lastDocuments;
+	static NSRSettings *		_instance;
+	bb::cascades::VisualStyle::Type	_visualStyle;
+	bool				_isFullscreenMode;
+	bool				_isWordWrap;
+	bool				_isTextModeNoted;
+	bool				_isInvertedColors;
+	bool				_isAutoCrop;
+	bool				_isPreventScreenLock;
+	bool				_isEncodingAutodetection;
+	bool				_isFirstStart;
+	bool				_isStarting;
+	QString				_lastVersionNewsShown;
+	QString				_lastOpenDir;
+	QString				_fontFamily;
+	QString				_textEncoding;
+	QStringList			_lastDocuments;
 };
 
 #endif // NSRSETTINGS_H
