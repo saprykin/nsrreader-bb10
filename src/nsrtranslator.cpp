@@ -10,6 +10,7 @@
 #include <bb/cascades/TitleBar>
 #include <bb/cascades/Tab>
 #include <bb/cascades/Header>
+#include <bb/cascades/DropDown>
 
 using namespace bb::cascades;
 
@@ -173,6 +174,14 @@ NSRTranslator::translate ()
 
 			if (header != NULL)
 				header->setTitle (translated);
+		}
+		break;
+		case NSR_TRANSLATOR_TYPE_DROPDOWN_TITLE:
+		{
+			DropDown *dropDown = dynamic_cast<DropDown *> (list.at (i));
+
+			if (dropDown != NULL)
+				dropDown->setTitle (translated);
 		}
 		break;
 		default:
