@@ -271,6 +271,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	rootContainer->add (Divider::create().bottomMargin (0));
 	rootContainer->add (encodingHeader);
 	rootContainer->add (encodingContainer);
+	rootContainer->add (Divider::create ());
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
 						     .vertical(VerticalAlignment::Fill)
