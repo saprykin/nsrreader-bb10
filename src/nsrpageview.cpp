@@ -72,7 +72,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_imageContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					     .vertical(VerticalAlignment::Fill)
 					     .layout(DockLayout::create ())
-					     .background(NSRThemeSupport::instance()->getBackground ());
+					     .background(NSRThemeSupport::instance()->getImageBackground ());
 	_imageContainer->add (_imageView);
 	_scrollView->setContent (_imageContainer);
 
