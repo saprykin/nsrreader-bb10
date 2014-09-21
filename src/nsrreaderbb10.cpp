@@ -495,10 +495,10 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onErrorWhileOpening (NSRAbstractDocument::NSRDocumentError)));
 	Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (documentOpened (QString)), this, SLOT (onDocumentOpened (QString)));
+	ok = connect (_core, SIGNAL (sessionFileOpened (QString)), this, SLOT (onDocumentOpened (QString)));
 	Q_ASSERT (ok);
 
-	ok = connect (_core, SIGNAL (documentClosed (QString)), this, SLOT (onDocumentClosed ()));
+	ok = connect (_core, SIGNAL (sessionFileClosed (QString)), this, SLOT (onDocumentClosed ()));
 	Q_ASSERT (ok);
 
 #ifdef NSR_LITE_VERSION
@@ -535,16 +535,16 @@ NSRReaderBB10::initFullUI ()
 		TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
 		tabbedPane->setPeekEnabled (false);
 
-		ok = connect (_core, SIGNAL (documentOpened (QString)), recentPage, SLOT (onDocumentOpened (QString)));
+		ok = connect (_core, SIGNAL (sessionFileOpened (QString)), recentPage, SLOT (onDocumentOpened (QString)));
 		Q_ASSERT (ok);
 
 		ok = connect (_core, SIGNAL (thumbnailRendered ()), recentPage, SLOT (onThumbnailRendered ()));
 		Q_ASSERT (ok);
 
-		ok = connect (_core, SIGNAL (documentOpened (QString)), bookmarksPage, SLOT (onDocumentOpened (QString)));
+		ok = connect (_core, SIGNAL (sessionFileOpened (QString)), bookmarksPage, SLOT (onDocumentOpened (QString)));
 		Q_ASSERT (ok);
 
-		ok = connect (_core, SIGNAL (documentClosed (QString)), bookmarksPage, SLOT (onDocumentClosed ()));
+		ok = connect (_core, SIGNAL (sessionFileClosed (QString)), bookmarksPage, SLOT (onDocumentClosed ()));
 		Q_ASSERT (ok);
 
 		ok = connect (bookmarksPage, SIGNAL (bookmarkChanged (int, bool)), this, SLOT (onBookmarkChanged (int, bool)));
@@ -679,7 +679,7 @@ NSRReaderBB10::initFullUI ()
 void
 NSRReaderBB10::onFileSelected (const QStringList &files)
 {
-	if (_core->getDocumentPath () == files.first ()) {
+	if (_core->getSessionFile () == files.first ()) {
 		_toast->setBody (trUtf8 ("Selected file is already opened"));
 		_toast->resetButton ();
 		_toast->show ();
@@ -766,7 +766,7 @@ void
 NSRReaderBB10::onInvertActionTriggered ()
 {
 	_pageView->setInvertedColors (!_pageView->isInvertedColors ());
-	_core->invertColors ();
+	_core->switchInvertedColors ();
 
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		NSRSettings::instance()->saveInvertedColorsWithoutSync (_core->isInvertedColors ());
@@ -786,7 +786,7 @@ NSRReaderBB10::onPrefsActionTriggered ()
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
-	if (_core->isDocumentOpened ()) {
+	if (_core->isSessionLoaded ()) {
 		ok = connect (prefsPage, SIGNAL (switchPreventScreenLock (bool)),
 				this, SLOT (onPreventScreenLockSwitchRequested (bool)));
 		Q_ASSERT (ok);
@@ -818,10 +818,10 @@ NSRReaderBB10::onHelpActionTriggered ()
 void
 NSRReaderBB10::onShareActionTriggered ()
 {
-	if (!_core->isDocumentOpened ())
+	if (!_core->isSessionLoaded ())
 		return;
 
-	NSRFileSharer::getInstance()->shareFiles (QStringList (_core->getDocumentPath ()));
+	NSRFileSharer::getInstance()->shareFiles (QStringList (_core->getSessionFile ()));
 }
 
 void
@@ -905,7 +905,7 @@ NSRReaderBB10::updateVisualControls ()
 		}
 	}
 
-	bool isDocumentOpened = _core->isDocumentOpened ();
+	bool isDocumentOpened = _core->isSessionLoaded ();
 	bool hasBookmark = false;
 
 	ActionItem *bookmarkAction = static_cast < ActionItem *> (_actionAggregator->actionByName ("bookmark"));
@@ -913,7 +913,7 @@ NSRReaderBB10::updateVisualControls ()
 	_actionAggregator->setActionEnabled ("open", true);
 	_actionAggregator->setActionEnabled ("prefs", true);
 	_actionAggregator->setActionEnabled ("share",
-				       	     isDocumentOpened && NSRFileSharer::isSharable (_core->getDocumentPath ()));
+				       	     isDocumentOpened && NSRFileSharer::isSharable (_core->getSessionFile ()));
 	_actionAggregator->setActionEnabled ("reflow", _core->isTextReflowSwitchSupported ());
 	_actionAggregator->setActionEnabled ("invert", isDocumentOpened);
 	_pageView->setVisible (isDocumentOpened);
@@ -1076,7 +1076,7 @@ NSRReaderBB10::saveSession ()
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
 
-	if (!_core->isDocumentOpened ())
+	if (!_core->isSessionLoaded ())
 		return;
 
 	if (!_core->isDestructing () && _core->isPageRendering ())
@@ -1088,7 +1088,7 @@ NSRReaderBB10::saveSession ()
 		return;
 
 	/* Save session */
-	session.setFile (_core->getDocumentPath ());
+	session.setFile (_core->getSessionFile ());
 	session.setPage (page.getNumber ());
 	session.setFitToWidth (page.isZoomToWidth ());
 	session.setZoomGraphic (page.getRenderedZoom ());
@@ -1233,7 +1233,7 @@ NSRReaderBB10::onSystemLanguageChanged ()
 void
 NSRReaderBB10::onPageTapped ()
 {
-	if (!_core->isDocumentOpened ())
+	if (!_core->isSessionLoaded ())
 		return;
 
 	if (!_isFullscreen) {
@@ -1279,10 +1279,10 @@ NSRReaderBB10::onLastDocumentRequested (const QString& path)
 void
 NSRReaderBB10::onDocumentToBeDeleted (const QString& path)
 {
-	if (!_core->isDocumentOpened () || _core->getDocumentPath () != path)
+	if (!_core->isSessionLoaded () || _core->getSessionFile () != path)
 		return;
 
-	_core->closeDocument ();
+	_core->resetSession ();
 
 	resetState ();
 	updateVisualControls ();
@@ -1356,21 +1356,21 @@ NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
 #endif
 		loadSession (file, page);
 
-	if (!_core->isDocumentOpened ())
+	if (!_core->isSessionLoaded ())
 		_welcomeView->setCardMode (_startMode == ApplicationStartupMode::InvokeCard);
 }
 
 void
 NSRReaderBB10::onRotateLeftRequested ()
 {
-	if (_core->isDocumentOpened ())
+	if (_core->isSessionLoaded ())
 		_core->rotate (NSRReaderCore::ROTATE_DIRECTION_LEFT);
 }
 
 void
 NSRReaderBB10::onRotateRightRequested ()
 {
-	if (_core->isDocumentOpened ())
+	if (_core->isSessionLoaded ())
 		_core->rotate (NSRReaderCore::ROTATE_DIRECTION_RIGHT);
 }
 
@@ -1382,7 +1382,7 @@ NSRReaderBB10::onFullscreenSwitchRequested (bool isFullscreen)
 
 	_isFullscreen = isFullscreen;
 
-	if (!_core->isDocumentOpened ())
+	if (!_core->isSessionLoaded ())
 		return;
 
 	if (_isFullscreen) {
@@ -1408,7 +1408,7 @@ NSRReaderBB10::onCardPooled (const bb::system::CardDoneMessage& message)
 {
 	Q_UNUSED (message);
 
-	_core->closeDocument ();
+	_core->resetSession ();
 
 	resetState ();
 	updateVisualControls ();
@@ -1491,12 +1491,12 @@ NSRReaderBB10::onThumbnail ()
 {
 	_isActiveFrame = true;
 
-	if (_core->isDocumentOpened ()) {
+	if (_core->isSessionLoaded ()) {
 		NSRRenderedPage page = _core->getCurrentPage ();
 
 		if (page.isValid ()) {
 			_sceneCover->setPageData (page,
-					    	  QFileInfo(_core->getDocumentPath ()).fileName (),
+					    	  QFileInfo(_core->getSessionFile ()).fileName (),
 					    	  _core->getPagesCount ());
 			_sceneCover->setTextOnly (_core->isTextReflow ());
 			_sceneCover->setInvertedColors (_core->isInvertedColors ());
@@ -1564,7 +1564,7 @@ void
 NSRReaderBB10::onBookmarkChanged (int page, bool removed)
 {
 	/* It's a crap, that shouldn't be happened */
-	if (!_core->isDocumentOpened ())
+	if (!_core->isSessionLoaded ())
 		return;
 
 	if (page != _core->getCurrentPage().getNumber ())
