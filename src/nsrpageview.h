@@ -59,6 +59,7 @@ public Q_SLOTS:
 Q_SIGNALS:
 	void viewTapped ();
 	void zoomChanged (double zoom, NSRRenderRequest::NSRRenderReason reason);
+	void sizeChanged (const QSize& size);
 	void nextPageRequested ();
 	void prevPageRequested ();
 	void fitToWidthRequested ();

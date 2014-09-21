@@ -479,6 +479,8 @@ NSRReaderBB10::initFullUI ()
 				   _startMode == ApplicationStartupMode::InvokeCard ? NULL : NSRThumbnailer::instance (),
 				   this);
 
+	_core->setScreenWidth (_pageView->getSize().width ());
+
 	ok = connect (_filePicker, SIGNAL (fileSelected (const QStringList&)),
 		      this, SLOT (onFileSelected (const QStringList&)));
 	Q_ASSERT (ok);
@@ -1030,8 +1032,6 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 			width = displaySize.height ();
 	}
 
-	session.setZoomScreenWidth (width);
-
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		session.setFitToWidth (true);
 	else {
@@ -1291,10 +1291,6 @@ NSRReaderBB10::onDocumentToBeDeleted (const QString& path)
 void
 NSRReaderBB10::onZoomChanged (double zoom, NSRRenderRequest::NSRRenderReason reason)
 {
-	if (reason == NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH ||
-	    reason == NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH)
-		_core->setScreenWidth (_pageView->getSize().width ());
-
 	_core->setZoom (zoom, reason);
 }
 
@@ -1525,6 +1521,12 @@ NSRReaderBB10::onOrientationAboutToChange (bb::cascades::UIOrientation::Type ori
 {
 	if (_page->actionBarVisibility () != ChromeVisibility::Hidden)
 		_slider->setBottomSpace (getActionBarHeightForOrientation (orientation));
+}
+
+void
+NSRReaderBB10::onPageViewSizeChanged (const QSize& size)
+{
+	_core->setScreenWidth (size.width ());
 }
 
 void

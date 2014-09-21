@@ -82,6 +82,7 @@ private Q_SLOTS:
     void onThumbnail ();
     void onFullscreen ();
     void onOrientationAboutToChange (bb::cascades::UIOrientation::Type orientation);
+    void onPageViewSizeChanged (const QSize& size);
     void onPageSliderInteractionStarted ();
     void onPageSliderInteractionEnded ();
     void onPageSliderValueChanged (int value);

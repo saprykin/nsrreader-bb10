@@ -585,6 +585,8 @@ NSRPageView::onLayoutFrameChanged (const QRectF& rect)
 {
 	_size = QSize ((int) rect.width (),
 		       (int) rect.height ());
+
+	emit sizeChanged (_size);
 }
 
 void
