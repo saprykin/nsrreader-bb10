@@ -547,6 +547,13 @@ NSRPageView::onTapGesture (bb::cascades::TapEvent *ev)
 		_lastTapTimer = -1;
 	}
 
+	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT) {
+		if (checkGestureForNavigation (ev)) {
+			ev->accept ();
+			return;
+		}
+	}
+
 	if (_lastTapTime.msecsTo (QTime::currentTime ()) > 650) {
 		_lastTapTime = QTime::currentTime ();
 		_lastTapTimer = startTimer (650);
@@ -568,11 +575,12 @@ NSRPageView::onDoubleTappedGesture (bb::cascades::DoubleTapEvent* ev)
 		_lastTapTimer = -1;
 	}
 
-	if (ev->x () < _size.width () / 3.0)
-		emit prevPageRequested ();
-	else if (ev->x () > _size.width () * 2 / 3)
-		emit nextPageRequested ();
-	else {
+	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT) {
+		ev->accept ();
+		return;
+	}
+
+	if (!checkGestureForNavigation (ev)) {
 		if (qAbs (_imageView->preferredWidth () - _size.width ()) > NSR_PAGEVIEW_WIDTH_THRESHOLD)
 			emit fitToWidthRequested ();
 	}
@@ -708,4 +716,17 @@ NSRPageView::retranslateTitle ()
 {
 	if (_scrollView->actionSetCount () > 0)
 		_scrollView->actionSetAt(0)->setTitle (trUtf8("Page %1").arg (_page.getNumber ()));
+}
+
+bool
+NSRPageView::checkGestureForNavigation (const bb::cascades::AbstractGestureEvent *event)
+{
+	if (event->x () < _size.width () / 3.0)
+		emit prevPageRequested ();
+	else if (event->x () > _size.width () * 2 / 3)
+		emit nextPageRequested ();
+	else
+		return false;
+
+	return true;
 }

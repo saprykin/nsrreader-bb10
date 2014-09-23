@@ -422,16 +422,17 @@ NSRAboutPage::retranslateUi ()
 	QString kht14 = trUtf8 ("Use <b>Go to</b> page slider to move to arbitrary page.");
 
 	QString navigationSection = trUtf8 ("Use navigation arrows on Action Bar (at the bottom of the screen). "
-			    	    	    "Double tap on the left area of the screen to go to previous page, on the right "
-			    	    	    "area to go to next page and on the center to fit page to screen width. "
-			    	    	    "Another way of navigation is to use <i>Volume Up/Down</i> hardware keys: "
-			    	    	    "<i>Volume Up</i> key for the previous page and <i>Volume Down</i> key for "
-			    	    	    "the next page. "
+					    "Double tap on the left area of the screen to go to previous page, on the right "
+					    "area to go to next page and on the center to fit page to screen width. "
+					    "Single tap on any side of the screen is enough in text reflow mode. "
+					    "Another way of navigation is to use <i>Volume Up/Down</i> hardware keys: "
+					    "<i>Volume Up</i> key for the previous page and <i>Volume Down</i> key for "
+					    "the next page. "
 					    "<p></p>"
-			    	    	    "If you have physical keyboard use the following keys (may vary with language): "
+					    "If you have physical keyboard use the following keys (may vary with language): "
 					    "<ul>"
 					    "<li>%1</li>"
-			    	    	    "<li>%2</li>"
+					    "<li>%2</li>"
 					    "<li>%3</li>"
 					    "<li>%4</li>"
 					    "<li>%5</li>"
@@ -444,7 +445,7 @@ NSRAboutPage::retranslateUi ()
 					    "<li>%12</li>"
 					    "<li>%13</li>"
 					    "</ul>"
-			    	    	    "%14");
+					    "%14");
 	navigationSection = navigationSection.arg(kht1).arg(kht2).arg(kht3).arg(kht4).arg(kht5)
 					     .arg(kht6).arg(kht7).arg(kht8).arg(kht9).arg(kht10)
 					     .arg(kht11).arg(kht12).arg(kht13).arg(kht14);

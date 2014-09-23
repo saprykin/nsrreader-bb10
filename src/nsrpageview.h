@@ -81,6 +81,7 @@ private Q_SLOTS:
 
 private:
 	void retranslateTitle ();
+	bool checkGestureForNavigation (const bb::cascades::AbstractGestureEvent *event);
 
 	NSRRenderedPage				_page;
 	NSRTranslator				*_translator;
