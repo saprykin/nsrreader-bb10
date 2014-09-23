@@ -118,6 +118,15 @@ NSRThemeSupport::setVisualStyle (bb::cascades::VisualStyle::Type visualStyle)
 	}
 }
 
+QString
+NSRThemeSupport::getAssetsThemeDirectory () const
+{
+	if (_visualStyle == VisualStyle::Bright)
+		return QString ("bright");
+	else
+		return QString ("dark");
+}
+
 NSRThemeSupport::NSRThemeSupport ()
 {
 	_colorPrimaryBrand = Color::fromRGBA (1.0f, 0.5f, 0.0f);

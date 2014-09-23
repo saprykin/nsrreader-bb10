@@ -20,6 +20,7 @@ public:
 	bb::cascades::Color getPrimaryBrand () const;
 	bb::cascades::VisualStyle::Type getVisualStyle () const;
 	void setVisualStyle (bb::cascades::VisualStyle::Type visualStyle);
+	QString getAssetsThemeDirectory () const;
 
 private:
 	NSRThemeSupport ();

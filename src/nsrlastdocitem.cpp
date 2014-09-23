@@ -91,7 +91,9 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					    .layout(StackLayout::create ())
 					    .visible(false);
 
-	ImageView *lockImage = ImageView::create().imageSource(QUrl ("asset:///lock.png"))
+	QString themeDir = NSRThemeSupport::instance()->getAssetsThemeDirectory ();
+
+	ImageView *lockImage = ImageView::create().imageSource(QUrl (QString("asset:///%1/lock.png").arg (themeDir)))
 						  .horizontal(HorizontalAlignment::Center)
 						  .vertical(VerticalAlignment::Center);
 	Label *lockLabel = Label::create ();

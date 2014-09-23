@@ -175,10 +175,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	webChanges->settings()->setViewportArguments (viewportMap);
 	webChanges->settings()->setBackground (NSRThemeSupport::instance()->getBackground ());
 
-	if (NSRThemeSupport::instance()->getVisualStyle () == VisualStyle::Dark)
-		webChanges->setUrl (QUrl ("local:///assets/VisualStyle.Dark/whats-new.html"));
-	else
-		webChanges->setUrl (QUrl ("local:///assets/VisualStyle.Bright/whats-new.html"));
+	webChanges->setUrl (QUrl (QString("local:///assets/%1/whats-new.html")
+					  .arg (NSRThemeSupport::instance()->getAssetsThemeDirectory ())));
 
 	_changesContainer->add (webChanges);
 	_changesContainer->setVisible (false);
