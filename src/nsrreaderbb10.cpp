@@ -1593,6 +1593,9 @@ NSRReaderBB10::onDocumentOpened (const QString &path)
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
 
+	if (!_isActiveFrame)
+		setVolumeKeysEnabled (true);
+
 	NSRSettings::instance()->addLastDocument (path);
 	onPreventScreenLockSwitchRequested (NSRSettings::instance()->isPreventScreenLock ());
 }
@@ -1605,6 +1608,7 @@ NSRReaderBB10::onDocumentClosed ()
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
 
+	setVolumeKeysEnabled (false);
 	onPreventScreenLockSwitchRequested (false);
 }
 
