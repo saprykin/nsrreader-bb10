@@ -110,7 +110,6 @@ private:
     void showToast (const QString& text, bool reset);
     int getActionBarHeight ();
     int getActionBarHeightForOrientation (bb::cascades::UIOrientation::Type orientation);
-    void setViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
     NSRBookmarksPage * getBookmarksPage () const;
 
     NSRReaderCore				*_core;

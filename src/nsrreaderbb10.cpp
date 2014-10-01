@@ -875,10 +875,8 @@ NSRReaderBB10::onPageRendered (int number)
 				qAbs (_pageView->getSize().width () - page.getSize().width ()) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD :
 				(_pageView->getSize().width () - page.getSize().width ()) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD;
 
-		if (needToFit && page.getRenderReason () != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH &&
-		    qAbs (_core->getMaxZoom () - page.getRenderedZoom ()) > DBL_EPSILON)
-			_pageView->fitToWidth (page.isAutoCrop () ? NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH
-								  : NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
+		if (needToFit && qAbs (_core->getMaxZoom () - page.getRenderedZoom ()) > DBL_EPSILON)
+			_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
 	}
 
 	updateVisualControls ();
@@ -886,8 +884,8 @@ NSRReaderBB10::onPageRendered (int number)
 	if (_isActiveFrame)
 		onThumbnail ();
 
-	setViewMode (_core->isTextReflow () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
-					    : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
+	_pageView->setViewMode (_core->isTextReflow () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
+						       : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 }
 
 void
@@ -899,7 +897,6 @@ NSRReaderBB10::updateVisualControls ()
 		NSRRenderRequest::NSRRenderReason reason = _core->getCurrentPage().getRenderReason ();
 
 		if (pane != NULL &&
-		    reason != NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH &&
 		    reason != NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH &&
 		    reason != NSRRenderRequest::NSR_RENDER_REASON_ZOOM) {
 			pane->at(NSR_GUI_RECENT_TAB_INDEX)->setEnabled (true);
@@ -1663,23 +1660,6 @@ NSRReaderBB10::retranslateBookmarkAction (bool hasBookmark)
 								      : trUtf8 ("Add bookmark for current page"));
 #endif
 	}
-}
-
-void
-NSRReaderBB10::setViewMode (NSRAbstractDocument::NSRDocumentStyle mode)
-{
-	bool needRefit = false;
-
-	needRefit = (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT) &&
-		    (mode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) &&
-		    !_core->getCurrentPage().isCached () &&
-		    _core->getCurrentPage().isAutoCrop () &&
-		    _core->isFitToWidth ();
-
-	_pageView->setViewMode (mode);
-
-	if (needRefit)
-		_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_CROP_TO_WIDTH);
 }
 
 NSRBookmarksPage *
