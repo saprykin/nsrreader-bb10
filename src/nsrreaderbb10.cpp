@@ -182,6 +182,9 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (_pageView, SIGNAL (rotateRightRequested ()), this, SLOT (onRotateRightRequested ()));
 	Q_ASSERT (ok);
 
+	ok = connect (_pageView, SIGNAL (sizeChanged (const QSize&)), this, SLOT (onPageViewSizeChanged (const QSize&)));
+	Q_ASSERT (ok);
+
 	_pageStatus = new NSRPageStatus ();
 	_pageStatus->setAutoHide (false);
 	_pageStatus->setHorizontalAlignment (HorizontalAlignment::Left);
