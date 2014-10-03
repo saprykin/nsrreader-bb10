@@ -863,7 +863,12 @@ NSRReaderBB10::onPageRendered (int number)
 	int pagesCount = _core->getPagesCount ();
 	NSRRenderedPage page = _core->getCurrentPage ();
 
-	_pageView->setZoomRange (_core->getMinZoom (), _core->getMaxZoom ());
+	if (!page.isTextOnly ())
+		_pageView->setMaxZoom (_core->getMaxZoom ());
+
+	if (_pageView->isOverzoom ())
+		page.setZoom (_pageView->getZoom ());
+
 	_pageView->setPage (page);
 
 	_pageStatus->setStatus (number, pagesCount);
@@ -1091,7 +1096,7 @@ NSRReaderBB10::saveSession ()
 	session.setFile (_core->getSessionFile ());
 	session.setPage (page.getNumber ());
 	session.setFitToWidth (page.isZoomToWidth ());
-	session.setZoomGraphic (page.getRenderedZoom ());
+	session.setZoomGraphic (_pageView->getZoom ());
 	session.setRotation (page.getRotation ());
 	session.setZoomText (_pageView->getTextZoom ());
 	session.setPosition (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC));
@@ -1607,6 +1612,8 @@ NSRReaderBB10::onDocumentClosed ()
 
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
+
+	_pageView->resetOverzoom ();
 
 	setVolumeKeysEnabled (false);
 	onPreventScreenLockSwitchRequested (false);

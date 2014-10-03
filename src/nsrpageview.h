@@ -27,30 +27,62 @@ public:
 	NSRPageView (bb::cascades::Container *parent = 0);
 	virtual ~NSRPageView ();
 
-	void setPage (const NSRRenderedPage& page);
-	void resetPage ();
-	void setViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
-	NSRAbstractDocument::NSRDocumentStyle getViewMode () const;
-	void setScrollPosition (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode);
+	inline NSRAbstractDocument::NSRDocumentStyle getViewMode () const {
+		return _viewMode;
+	}
+
+	inline QSize getSize () const {
+		return _size;
+	}
+
 	QPointF getScrollPosition (NSRAbstractDocument::NSRDocumentStyle mode) const;
-	void setScrollPositionOnLoad (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode);
-	bool isInvertedColors () const;
-	void setInvertedColors (bool inv);
-	QSize getSize () const;
-	void setZoomRange (double minZoom, double maxZoom);
-	void fitToWidth (NSRRenderRequest::NSRRenderReason reason);
+
+	inline double getZoom () const {
+		return _currentZoom;
+	}
+
 	int getTextZoom () const;
-	void setTextZoom (int fontSize);
-	void setZoomEnabled (bool enabled);
-	bool isZoomEnabled () const;
-	void setActionsEnabled (bool enabled);
-	void setGesturesEnabled (bool enabled);
+
+	inline bool isZoomEnabled () const {
+		return _isZoomingEnabled;
+	}
+
 	inline bool isActionsEnabled () const {
 		return _isActionsEnabled;
 	}
+
 	inline bool isGesturesEnabled () const {
 		return _isGesturesEnabled;
 	}
+
+	inline bool isInvertedColors () const {
+		return _isInvertedColors;
+	}
+
+	bool isOverzoom () const;
+
+	void setPage (const NSRRenderedPage& page);
+	void setViewMode (NSRAbstractDocument::NSRDocumentStyle mode);
+	void setScrollPosition (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode);
+	void setScrollPositionOnLoad (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode);
+
+	inline void setMaxZoom (double maxZoom) {
+		_maxZoom = maxZoom;
+	}
+
+	void setTextZoom (int fontSize);
+
+	inline void setZoomEnabled (bool enabled) {
+		_isZoomingEnabled = enabled;
+	}
+
+	void setActionsEnabled (bool enabled);
+	void setGesturesEnabled (bool enabled);
+	void setInvertedColors (bool inv);
+
+	void fitToWidth (NSRRenderRequest::NSRRenderReason reason);
+	void resetPage ();
+	void resetOverzoom ();
 
 public Q_SLOTS:
 	void zoomIn ();
@@ -101,7 +133,6 @@ private:
 	QPointF					_initialScalePos;
 	QTime					_lastTapTime;
 	double					_currentZoom;
-	double					_minZoom;
 	double					_maxZoom;
 	int					_lastTapTimer;
 	int					_initialFontSize;

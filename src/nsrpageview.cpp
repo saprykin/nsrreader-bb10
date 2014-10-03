@@ -3,6 +3,8 @@
 #include "nsrthemesupport.h"
 #include "nsrreader.h"
 
+#include <float.h>
+
 #include <bb/cascades/DockLayout>
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/Color>
@@ -48,7 +50,6 @@ NSRPageView::NSRPageView (Container *parent) :
 	_viewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC),
 	_lastTapTime (QTime::currentTime ()),
 	_currentZoom (0.0),
-	_minZoom (0.0),
 	_maxZoom (0.0),
 	_lastTapTimer (-1),
 	_initialFontSize (100),
@@ -198,6 +199,34 @@ NSRPageView::~NSRPageView ()
 {
 }
 
+QPointF
+NSRPageView::getScrollPosition (NSRAbstractDocument::NSRDocumentStyle mode) const
+{
+	switch (mode) {
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
+		return _scrollView->viewableArea().topLeft ();
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
+		return _textScrollView->viewableArea().topLeft ();
+	default:
+		return QPointF (0, 0);
+	}
+}
+
+int
+NSRPageView::getTextZoom () const
+{
+	return (int) _textArea->textStyle()->fontSize ();
+}
+
+bool
+NSRPageView::isOverzoom () const
+{
+	if (_page.isEmpty ())
+		return false;
+
+	return _currentZoom > _maxZoom;
+}
+
 void
 NSRPageView::setPage (const NSRRenderedPage& page)
 {
@@ -232,9 +261,19 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 		setScrollPosition (_delayedTextScrollPos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	}
 
+	double outscale = qAbs (page.getRenderedZoom ()) > DBL_EPSILON ?
+			  page.getZoom () / page.getRenderedZoom () :
+			  1.0;
+
+	if (outscale < 1.0)
+		outscale = 1.0;
+
 	_imageView->setImage (page.getImage ());
-	_imageView->setPreferredSize (page.getSize().width (), page.getSize().height ());
-	_currentZoom = page.getRenderedZoom ();
+	_imageView->setPreferredSize (page.getSize().width () * outscale,
+				      page.getSize().height () * outscale);
+
+	if (!page.isTextOnly ())
+		_currentZoom = page.getRenderedZoom () * outscale;
 
 	if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_NAVIGATION ||
 	    !_delayedScrollPos.isNull ())
@@ -248,17 +287,6 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	_page = page;
 
 	retranslateTitle ();
-}
-
-void
-NSRPageView::resetPage ()
-{
-	_imageView->resetImage ();
-	_imageView->resetImageSource ();
-	_page = NSRRenderedPage ();
-	_scrollView->removeActionSet (_actionSet);
-	_textArea->resetText ();
-	_currentZoom = 100;
 }
 
 void
@@ -283,10 +311,68 @@ NSRPageView::setViewMode (NSRAbstractDocument::NSRDocumentStyle mode)
 	}
 }
 
-bool
-NSRPageView::isInvertedColors () const
+void
+NSRPageView::setScrollPosition (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode)
 {
-	return _isInvertedColors;
+	switch (mode) {
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
+		_scrollView->scrollToPoint (pos.x (), pos.y ());
+		break;
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
+		_textScrollView->scrollToPoint (pos.x (), pos.y ());
+		break;
+	default:
+		break;
+	}
+}
+
+void
+NSRPageView::setScrollPositionOnLoad (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode)
+{
+	switch (mode) {
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
+		_delayedScrollPos = pos;
+		break;
+	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
+		_delayedTextScrollPos = pos;
+		break;
+	default:
+		break;
+	}
+}
+
+void
+NSRPageView::setTextZoom (int fontSize)
+{
+	fontSize = qBound ((int) FontSize::XSmall, fontSize, (int) FontSize::XXLarge);
+	fontSize = (fontSize / 10) * 10;
+	_textArea->textStyle()->setFontSize ((FontSize::Type) fontSize);
+}
+
+void
+NSRPageView::setActionsEnabled (bool enabled)
+{
+	if (_isActionsEnabled == enabled)
+		return;
+
+	if (enabled) {
+		if (_page.isValid () && _scrollView->actionSetCount () == 0)
+			_scrollView->addActionSet (_actionSet);
+	} else
+		_scrollView->removeActionSet (_actionSet);
+
+	_textArea->setTouchPropagationMode (enabled ? TouchPropagationMode::Full : TouchPropagationMode::None);
+
+	_isActionsEnabled = enabled;
+}
+
+void
+NSRPageView::setGesturesEnabled (bool enabled)
+{
+	if (_isGesturesEnabled == enabled)
+		return;
+
+	_isGesturesEnabled = enabled;
 }
 
 void
@@ -304,25 +390,6 @@ NSRPageView::setInvertedColors (bool inv)
 		_textArea->textStyle()->setColor (Color::Black);
 		_textContainer->setBackground (Color::White);
 	}
-}
-
-QSize
-NSRPageView::getSize () const
-{
-	return _size;
-}
-
-void
-NSRPageView::setZoomRange (double minZoom, double maxZoom)
-{
-	if (minZoom < 0)
-		minZoom = 0;
-
-	if (maxZoom < minZoom)
-		maxZoom = minZoom;
-
-	_minZoom = minZoom;
-	_maxZoom = maxZoom;
 }
 
 void
@@ -354,105 +421,23 @@ NSRPageView::fitToWidth (NSRRenderRequest::NSRRenderReason reason)
 	emit zoomChanged (_currentZoom, reason);
 }
 
-int
-NSRPageView::getTextZoom () const
+void
+NSRPageView::resetPage ()
 {
-	return (int) _textArea->textStyle()->fontSize ();
+	_imageView->resetImage ();
+	_imageView->resetImageSource ();
+	_page = NSRRenderedPage ();
+	_scrollView->removeActionSet (_actionSet);
+	_textArea->resetText ();
+	_currentZoom = 100.0;
+	_maxZoom = 0.0;
 }
 
 void
-NSRPageView::setTextZoom (int fontSize)
+NSRPageView::resetOverzoom ()
 {
-	fontSize = qBound ((int) FontSize::XSmall, fontSize, (int) FontSize::XXLarge);
-	fontSize = (fontSize / 10) * 10;
-	_textArea->textStyle()->setFontSize ((FontSize::Type) fontSize);
-}
-
-void
-NSRPageView::setZoomEnabled (bool enabled)
-{
-	_isZoomingEnabled = enabled;
-}
-
-bool
-NSRPageView::isZoomEnabled () const
-{
-	return _isZoomingEnabled;
-}
-
-void
-NSRPageView::setActionsEnabled (bool enabled)
-{
-	if (_isActionsEnabled == enabled)
-		return;
-
-	if (enabled) {
-		if (_page.isValid () && _scrollView->actionSetCount () == 0)
-			_scrollView->addActionSet (_actionSet);
-	} else
-		_scrollView->removeActionSet (_actionSet);
-
-	_textArea->setTouchPropagationMode (enabled ? TouchPropagationMode::Full : TouchPropagationMode::None);
-
-	_isActionsEnabled = enabled;
-}
-
-void
-NSRPageView::setGesturesEnabled (bool enabled)
-{
-	if (_isGesturesEnabled == enabled)
-		return;
-
-	_isGesturesEnabled = enabled;
-}
-
-NSRAbstractDocument::NSRDocumentStyle
-NSRPageView::getViewMode () const
-{
-	return _viewMode;
-}
-
-void
-NSRPageView::setScrollPosition (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode)
-{
-	switch (mode) {
-	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
-		_scrollView->scrollToPoint (pos.x (), pos.y ());
-		break;
-	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
-		_textScrollView->scrollToPoint (pos.x (), pos.y ());
-		break;
-	default:
-		break;
-	}
-}
-
-QPointF
-NSRPageView::getScrollPosition (NSRAbstractDocument::NSRDocumentStyle mode) const
-{
-	switch (mode) {
-	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
-		return _scrollView->viewableArea().topLeft ();
-	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
-		return _textScrollView->viewableArea().topLeft ();
-	default:
-		return QPointF (0, 0);
-	}
-}
-
-void
-NSRPageView::setScrollPositionOnLoad (const QPointF& pos, NSRAbstractDocument::NSRDocumentStyle mode)
-{
-	switch (mode) {
-	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC:
-		_delayedScrollPos = pos;
-		break;
-	case NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT:
-		_delayedTextScrollPos = pos;
-		break;
-	default:
-		break;
-	}
+	if (_currentZoom > _maxZoom)
+		_currentZoom = _maxZoom - 1.0;
 }
 
 void
@@ -467,9 +452,6 @@ NSRPageView::zoomIn ()
 
 		double scale = NSR_PAGEVIEW_ZOOM_IN_RATIO;
 
-		if (scale * _currentZoom > _maxZoom)
-			scale = (double) _maxZoom / _currentZoom;
-
 		if (qAbs (_currentZoom * scale - _currentZoom) > NSR_PAGEVIEW_SCALE_THRESHOLD) {
 			QPointF center =  _scrollView->viewableArea().center () * scale;
 
@@ -483,7 +465,9 @@ NSRPageView::zoomIn ()
 			}
 
 			_currentZoom *= scale;
-			emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
+
+			if (_currentZoom / scale < _maxZoom)
+				emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
 		}
 	} else
 		setTextZoom ((int) _textArea->textStyle()->fontSize () +
@@ -502,9 +486,6 @@ NSRPageView::zoomOut ()
 
 		double scale = NSR_PAGEVIEW_ZOOM_OUT_RATIO;
 
-		if (scale * _currentZoom < _minZoom)
-			scale = ((double) _minZoom) / _currentZoom;
-
 		if (qAbs (_currentZoom * scale - _currentZoom) > NSR_PAGEVIEW_SCALE_THRESHOLD) {
 			if (_imageView->preferredWidth () * scale < _size.width ())
 				scale = (double) _imageView->preferredWidth () / _size.width ();
@@ -521,7 +502,9 @@ NSRPageView::zoomOut ()
 			}
 
 			_currentZoom *= scale;
-			emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
+
+			if (_currentZoom < _maxZoom)
+				emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
 		}
 	} else
 		setTextZoom ((int) _textArea->textStyle()->fontSize () -
@@ -633,11 +616,6 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 		int newSize = (int) (_initialFontSize + scale * 10);
 		setTextZoom (newSize);
 	} else {
-		if (scale * _currentZoom < _minZoom)
-			scale = ((double) _minZoom) / _currentZoom;
-		else if (scale * _currentZoom > _maxZoom)
-			scale = (double) _maxZoom / _currentZoom;
-
 		if (scale < 1.0 && _initialScaleSize.width () * scale < _size.width ())
 			scale = (double) _imageView->preferredWidth () / _initialScaleSize.width ();
 
@@ -680,9 +658,10 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 							    ScrollAnimation::None);
 			}
 
-
 			_currentZoom *= scale;
-			emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
+
+			if (_currentZoom / scale < _maxZoom || _currentZoom < _maxZoom)
+				emit zoomChanged (_currentZoom, NSRRenderRequest::NSR_RENDER_REASON_ZOOM);
 		}
 	}
 
