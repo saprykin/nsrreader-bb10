@@ -35,6 +35,7 @@ using namespace bb::device;
 #define NSR_PAGEVIEW_ZOOM_IN_RATIO	1.1
 #define NSR_PAGEVIEW_ZOOM_OUT_RATIO	0.9
 #define NSR_PAGEVIEW_SCALE_THRESHOLD	0.05
+#define NSR_PAGEVIEW_MAX_OVERZOOM	5.0
 
 NSRPageView::NSRPageView (Container *parent) :
 	Container (parent),
@@ -267,6 +268,8 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 
 	if (outscale < 1.0)
 		outscale = 1.0;
+	else if (outscale > NSR_PAGEVIEW_MAX_OVERZOOM)
+		outscale = NSR_PAGEVIEW_MAX_OVERZOOM;
 
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width () * outscale,
@@ -464,6 +467,9 @@ NSRPageView::zoomIn ()
 						 	    ScrollAnimation::None);
 			}
 
+			if (_currentZoom * scale / _maxZoom > NSR_PAGEVIEW_MAX_OVERZOOM)
+				scale = NSR_PAGEVIEW_MAX_OVERZOOM * _maxZoom / _currentZoom;
+
 			_currentZoom *= scale;
 
 			if (_currentZoom / scale < _maxZoom)
@@ -618,6 +624,9 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 	} else {
 		if (scale < 1.0 && _initialScaleSize.width () * scale < _size.width ())
 			scale = (double) _imageView->preferredWidth () / _initialScaleSize.width ();
+
+		if (_currentZoom * scale / _maxZoom > NSR_PAGEVIEW_MAX_OVERZOOM)
+			scale = NSR_PAGEVIEW_MAX_OVERZOOM * _maxZoom / _currentZoom;
 
 		QPointF center = _initialScalePos * scale;
 
