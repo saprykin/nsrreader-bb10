@@ -145,10 +145,6 @@
         <translation>Mohon berikan ulasan untuk NSR Reader jika Anda menyukainya untuk membantu orang lain menemukannya di toko. Terima kasih!</translation>
     </message>
     <message>
-        <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</source>
-        <translation type="obsolete">Gunakan panah navigasi pada Bilah Aksi (pada bagian bawah layar). Ketuk dua kali pada sebelah kiri layar untuk ke halaman sebelumnya, pada sebelah kanan untuk ke halaman selanjutnya dan di tengah untuk menampilkan halaman sesuai dengan lebar layar. Cara navigasi yang lainnya ialah menggunakan tombol perangkat untuk &lt;i&gt;Volume Naik/Turun&lt;/i&gt;: Tombol &lt;i&gt;Volume Naik&lt;/i&gt; untuk halaman sebelumnya dan tombol &lt;i&gt;Volume Turun&lt;/i&gt; untuk halaman selanjutnya. &lt;p&gt;&lt;/p&gt;Jika Anda menggunakan papan ketik fisik gunakan tombol berikut (tergantung bahasa): &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;P&lt;/b&gt; key to navigate to previous page</source>
         <translation>Tombol &lt;b&gt;P&lt;/b&gt; untuk ke halaman sebelumnya</translation>
     </message>
@@ -158,11 +154,11 @@
     </message>
     <message>
         <source>&lt;b&gt;I&lt;/b&gt; key to zoom in page</source>
-        <translation type="unfinished"></translation>
+        <translation>Tombol &lt;b&gt;I&lt;/b&gt; untuk memperbesar tampilan halaman</translation>
     </message>
     <message>
         <source>&lt;b&gt;O&lt;/b&gt; key to zoom out page</source>
-        <translation type="unfinished"></translation>
+        <translation>Tombol &lt;b&gt;O&lt;/b&gt; untuk memperkecil tampilan halaman</translation>
     </message>
     <message>
         <source>&lt;b&gt;Shift + O&lt;/b&gt; to open another file</source>
@@ -206,7 +202,7 @@
     </message>
     <message>
         <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Single tap on any side of the screen is enough in text reflow mode. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan panah navigasi pada Bilah Aksi (di bagian bawah layar). Ketuk ganda di sisi kiri layar untuk ke halaman sebelumnya, pada sisi kanan untuk ke halaman selanjutnya dan di tengah untuk menampilkan halaman sesuai lebar layar. Satu ketukan di bagian mana pun pada layar sudah cukup untuk modus reflow teks. Cara navigasi lain ialah menggunakan &lt;i&gt;Volume Naik/Turun&lt;/i&gt; tombol perangkat keras: tombol &lt;i&gt;Volume Naik&lt;/i&gt; untuk halaman sebelumnya dan tombol &lt;i&gt;Volume Turun&lt;/i&gt; untuk halaman selanjutnya. &lt;p&gt;&lt;/p&gt;Jika Anda memiliki papan ketik fisik gunakan tombol-tombol berikut (dapat bervariasi sesuai bahasa): &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</translation>
     </message>
 </context>
 <context>
@@ -445,7 +441,7 @@
     <message>
         <source>General</source>
         <comment>General settings</comment>
-        <translation type="unfinished"></translation>
+        <translation>Umum</translation>
     </message>
     <message>
         <source>Text Encoding</source>
@@ -455,31 +451,31 @@
     <message>
         <source>Autodetect Encoding</source>
         <comment>Option in preferences</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deteksi Encoding Otomatis</translation>
     </message>
     <message>
         <source>Bright</source>
         <comment>Bright UI theme</comment>
-        <translation type="unfinished"></translation>
+        <translation>Terang</translation>
     </message>
     <message>
         <source>Dark</source>
         <comment>Dark UI theme</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gelap</translation>
     </message>
     <message>
         <source>Close and reopen the app to apply changes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutup dan buka ulang aplikasi untuk menerapkan perubahan.</translation>
     </message>
     <message>
         <source>Visual Theme</source>
         <comment>Visual theme settings</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tema visual</translation>
     </message>
     <message>
         <source>Brand Colors</source>
         <comment>Option in preferences</comment>
-        <translation type="unfinished"></translation>
+        <translation>Warna Aksen</translation>
     </message>
 </context>
 <context>
