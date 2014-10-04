@@ -286,15 +286,10 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	double outscale = getOutscale (page);
 
 	/* Check for zero size images */
-	QSize imageSize = page.getSize ();
-
-	if (imageSize.width () == 0)
-		imageSize.setWidth (_size.width ());
-
-	if (imageSize.height () == 0)
-		imageSize.setHeight (_size.height ());
+	QSizeF imageSize = page.getSize ();
 
 	/* Set image and its size */
+	_imageView->setVisible (imageSize.width () != 0 && imageSize.height () != 0);
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (imageSize.width () * outscale,
 				      imageSize.height () * outscale);
