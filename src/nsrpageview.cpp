@@ -55,6 +55,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_maxZoom (0.0),
 	_lastTapTimer (-1),
 	_initialFontSize (100),
+	_delayedFontSize (0),
 	_isInvertedColors (false),
 	_isZooming (false),
 	_isZoomingEnabled (true),
@@ -274,6 +275,10 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 		_textScrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 		_textArea->setText (page.getText().isEmpty () ? trUtf8 ("No text data available for this page")
 							      : page.getText ());
+
+		if (_delayedFontSize != 0)
+			setTextZoom (_delayedFontSize);
+
 		setScrollPosition (_delayedTextScrollPos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	}
 
@@ -312,6 +317,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	/* Clear scroll positions */
 	_delayedScrollPos = QPointF (0, 0);
 	_delayedTextScrollPos = QPointF (0, 0);
+	_delayedFontSize = 0;
 
 	/* Save page data */
 	_page = page;
@@ -377,6 +383,12 @@ NSRPageView::setTextZoom (int fontSize)
 	fontSize = qBound ((int) FontSize::XSmall, fontSize, (int) FontSize::XXLarge);
 	fontSize = (fontSize / 10) * 10;
 	_textArea->textStyle()->setFontSize ((FontSize::Type) fontSize);
+}
+
+void
+NSRPageView::setTextZoomOnLoad (int fontSize)
+{
+	_delayedFontSize = qBound ((int) FontSize::XSmall, fontSize, (int) FontSize::XXLarge);
 }
 
 void
@@ -462,6 +474,9 @@ NSRPageView::resetPage ()
 	_textArea->resetText ();
 	_currentZoom = 0.0;
 	_maxZoom = 0.0;
+	_delayedScrollPos = QPointF ();
+	_delayedTextScrollPos = QPointF ();
+	_delayedFontSize = 0;
 }
 
 void

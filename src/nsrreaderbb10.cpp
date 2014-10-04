@@ -1040,7 +1040,7 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		session.setFitToWidth (true);
 	else {
-		_pageView->setTextZoom (session.getZoomText ());
+		_pageView->setTextZoomOnLoad (session.getZoomText ());
 		_pageView->setScrollPositionOnLoad (session.getPosition (),
 						    NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		_pageView->setScrollPositionOnLoad (session.getTextPosition (),

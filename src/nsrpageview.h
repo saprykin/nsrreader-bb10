@@ -68,6 +68,7 @@ public:
 	}
 
 	void setTextZoom (int fontSize);
+	void setTextZoomOnLoad (int fontSize);
 
 	inline void setZoomEnabled (bool enabled) {
 		_isZoomingEnabled = enabled;
@@ -135,6 +136,7 @@ private:
 	double					_maxZoom;
 	int					_lastTapTimer;
 	int					_initialFontSize;
+	int					_delayedFontSize;
 	bool					_isInvertedColors;
 	bool					_isZooming;
 	bool					_isZoomingEnabled;
