@@ -37,10 +37,7 @@ public:
 
 	QPointF getScrollPosition (NSRAbstractDocument::NSRDocumentStyle mode) const;
 
-	inline double getZoom () const {
-		return _currentZoom;
-	}
-
+	double getZoom () const;
 	int getTextZoom () const;
 
 	inline bool isZoomEnabled () const {

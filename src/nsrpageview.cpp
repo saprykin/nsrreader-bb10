@@ -214,6 +214,18 @@ NSRPageView::getScrollPosition (NSRAbstractDocument::NSRDocumentStyle mode) cons
 	}
 }
 
+double
+NSRPageView::getZoom () const
+{
+	if (_page.isEmpty ())
+		return 0.0;
+
+	if (_page.isTextOnly ())
+		return 100.0;
+
+	return _currentZoom;
+}
+
 int
 NSRPageView::getTextZoom () const
 {
@@ -279,8 +291,8 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 
 	/* Set image and its size */
 	_imageView->setImage (page.getImage ());
-	_imageView->setPreferredSize (page.getSize().width () * outscale,
-				      page.getSize().height () * outscale);
+	_imageView->setPreferredSize (imageSize.width () * outscale,
+				      imageSize.height () * outscale);
 
 	/* Do not update current zoom value for text only pages */
 	if (!page.isTextOnly ())
