@@ -36,6 +36,7 @@ using namespace bb::device;
 #define NSR_PAGEVIEW_ZOOM_OUT_RATIO	0.9
 #define NSR_PAGEVIEW_SCALE_THRESHOLD	0.05
 #define NSR_PAGEVIEW_MAX_OVERZOOM	5.0
+#define NSR_PAGEVIEW_TAP_THRESHOLD	650
 
 NSRPageView::NSRPageView (Container *parent) :
 	Container (parent),
@@ -235,9 +236,11 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (_isZooming)
 		return;
 
+	/* Restore action items */
 	if (_isActionsEnabled && _scrollView->actionSetCount () == 0)
 		_scrollView->addActionSet (_actionSet);
 
+	/* Prepare scroll positions if not yet */
 	if (_delayedScrollPos.isNull ())
 		_delayedScrollPos = page.getLastPosition ();
 
@@ -262,21 +265,30 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 		setScrollPosition (_delayedTextScrollPos, NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	}
 
-	double outscale = qAbs (page.getRenderedZoom ()) > DBL_EPSILON ?
-			  page.getZoom () / page.getRenderedZoom () :
-			  1.0;
+	/* Check for overzoom */
+	double outscale = getOutscale (page);
 
-	if (outscale < 1.0)
-		outscale = 1.0;
-	else if (outscale > NSR_PAGEVIEW_MAX_OVERZOOM)
-		outscale = NSR_PAGEVIEW_MAX_OVERZOOM;
+	/* Check for zero size images */
+	QSize imageSize = page.getSize ();
 
+	if (imageSize.width () == 0)
+		imageSize.setWidth (_size.width ());
+
+	if (imageSize.height () == 0)
+		imageSize.setHeight (_size.height ());
+
+	/* Set image and its size */
 	_imageView->setImage (page.getImage ());
 	_imageView->setPreferredSize (page.getSize().width () * outscale,
 				      page.getSize().height () * outscale);
 
+	/* Do not update current zoom value for text only pages */
 	if (!page.isTextOnly ())
 		_currentZoom = page.getRenderedZoom () * outscale;
+
+	/* Protection for broken pages */
+	if (qAbs (_currentZoom <= DBL_EPSILON))
+		_currentZoom = 100.0;
 
 	if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_NAVIGATION ||
 	    !_delayedScrollPos.isNull ())
@@ -285,8 +297,11 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_ROTATION)
 		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 
+	/* Clear scroll positions */
 	_delayedScrollPos = QPointF (0, 0);
 	_delayedTextScrollPos = QPointF (0, 0);
+
+	/* Save page data */
 	_page = page;
 
 	retranslateTitle ();
@@ -410,6 +425,7 @@ NSRPageView::fitToWidth (NSRRenderRequest::NSRRenderReason reason)
 	_scrollView->setImplicitLayoutAnimationsEnabled (false);
 	_imageContainer->setImplicitLayoutAnimationsEnabled (false);
 
+	/* Prevent scroll lags */
 	if (scale < 1.0)
 		_scrollView->scrollToPoint (0, 0, ScrollAnimation::None);
 
@@ -432,7 +448,7 @@ NSRPageView::resetPage ()
 	_page = NSRRenderedPage ();
 	_scrollView->removeActionSet (_actionSet);
 	_textArea->resetText ();
-	_currentZoom = 100.0;
+	_currentZoom = 0.0;
 	_maxZoom = 0.0;
 }
 
@@ -440,7 +456,7 @@ void
 NSRPageView::resetOverzoom ()
 {
 	if (_currentZoom > _maxZoom)
-		_currentZoom = _maxZoom - 1.0;
+		_currentZoom = _maxZoom;
 }
 
 void
@@ -456,16 +472,11 @@ NSRPageView::zoomIn ()
 		double scale = NSR_PAGEVIEW_ZOOM_IN_RATIO;
 
 		if (qAbs (_currentZoom * scale - _currentZoom) > NSR_PAGEVIEW_SCALE_THRESHOLD) {
-			QPointF center =  _scrollView->viewableArea().center () * scale;
-
-			if (qAbs (_imageView->preferredWidth () * scale - _imageView->preferredWidth ()) >=
-				  NSR_PAGEVIEW_WIDTH_THRESHOLD) {
-				_imageView->setPreferredSize (_imageView->preferredWidth () * scale,
-							      _imageView->preferredHeight () * scale);
-				_scrollView->scrollToPoint (center.x () - _size.width () / 2,
-						 	    center.y () - _size.height () / 2,
-						 	    ScrollAnimation::None);
-			}
+			if (qAbs (_imageView->preferredWidth () * scale -
+				  _imageView->preferredWidth ()) >= NSR_PAGEVIEW_WIDTH_THRESHOLD)
+				rescaleImage (QSizeF (_imageView->preferredWidth (),
+						      _imageView->preferredHeight ()) * scale,
+					      _scrollView->viewableArea().center () * scale);
 
 			if (_currentZoom * scale / _maxZoom > NSR_PAGEVIEW_MAX_OVERZOOM)
 				scale = NSR_PAGEVIEW_MAX_OVERZOOM * _maxZoom / _currentZoom;
@@ -496,16 +507,11 @@ NSRPageView::zoomOut ()
 			if (_imageView->preferredWidth () * scale < _size.width ())
 				scale = (double) _imageView->preferredWidth () / _size.width ();
 
-			QPointF center =  _scrollView->viewableArea().center () * scale;
-
 			if (qAbs (_imageView->preferredWidth () * scale - _imageView->preferredWidth ()) >=
-				  NSR_PAGEVIEW_WIDTH_THRESHOLD) {
-				_imageView->setPreferredSize (_imageView->preferredWidth () * scale,
-							      _imageView->preferredHeight () * scale);
-				_scrollView->scrollToPoint (center.x () - _size.width () / 2,
-							    center.y () - _size.height () / 2,
-							    ScrollAnimation::None);
-			}
+				  NSR_PAGEVIEW_WIDTH_THRESHOLD)
+				rescaleImage (QSizeF (_imageView->preferredWidth (),
+						      _imageView->preferredHeight ()) * scale,
+					      _scrollView->viewableArea().center () * scale);
 
 			_currentZoom *= scale;
 
@@ -522,7 +528,8 @@ NSRPageView::timerEvent (QTimerEvent* ev)
 {
 	killTimer (ev->timerId ());
 
-	if (_lastTapTimer != -1 && _lastTapTime.msecsTo (QTime::currentTime ()) > 640)
+	if (_lastTapTimer != -1 && _lastTapTime.msecsTo (QTime::currentTime ()) >
+	    (NSR_PAGEVIEW_TAP_THRESHOLD - 10))
 		emit viewTapped ();
 
 	_lastTapTimer = -1;
@@ -543,9 +550,9 @@ NSRPageView::onTapGesture (bb::cascades::TapEvent *ev)
 		}
 	}
 
-	if (_lastTapTime.msecsTo (QTime::currentTime ()) > 650) {
+	if (_lastTapTime.msecsTo (QTime::currentTime ()) > NSR_PAGEVIEW_TAP_THRESHOLD) {
 		_lastTapTime = QTime::currentTime ();
-		_lastTapTimer = startTimer (650);
+		_lastTapTimer = startTimer (NSR_PAGEVIEW_TAP_THRESHOLD);
 	}
 
 	ev->accept ();
@@ -628,16 +635,9 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 		if (_currentZoom * scale / _maxZoom > NSR_PAGEVIEW_MAX_OVERZOOM)
 			scale = NSR_PAGEVIEW_MAX_OVERZOOM * _maxZoom / _currentZoom;
 
-		QPointF center = _initialScalePos * scale;
-
 		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >=
-			  NSR_PAGEVIEW_WIDTH_THRESHOLD) {
-			_imageView->setPreferredSize (_initialScaleSize.width () * scale,
-						      _initialScaleSize.height () * scale);
-			_scrollView->scrollToPoint (center.x () - _size.width () / 2,
-						    center.y () - _size.height () / 2,
-						    ScrollAnimation::None);
-		}
+			  NSR_PAGEVIEW_WIDTH_THRESHOLD)
+			rescaleImage (_initialScaleSize * scale, _initialScalePos * scale);
 	}
 
 	event->accept ();
@@ -657,14 +657,7 @@ NSRPageView::onPinchEnded (bb::cascades::PinchEvent* event)
 		if (qAbs (_currentZoom * scale - _currentZoom) > NSR_PAGEVIEW_SCALE_THRESHOLD) {
 			if (_imageView->preferredWidth () < _size.width ()) {
 				scale = (double) _size.width () / _initialScaleSize.width ();
-
-				QPointF center = _initialScalePos * scale;
-
-				_imageView->setPreferredSize (_initialScaleSize.width () * scale,
-							      _initialScaleSize.height () * scale);
-				_scrollView->scrollToPoint (center.x () - _size.width () / 2,
-							    center.y () - _size.height () / 2,
-							    ScrollAnimation::None);
+				rescaleImage (_initialScaleSize * scale, _initialScalePos * scale);
 			}
 
 			_currentZoom *= scale;
@@ -717,4 +710,39 @@ NSRPageView::checkGestureForNavigation (const bb::cascades::AbstractGestureEvent
 		return false;
 
 	return true;
+}
+
+double
+NSRPageView::getOutscale (const NSRRenderedPage& page) const
+{
+	/* Do not outscale empty images */
+	if (!page.isImageValid ())
+		return 1.0;
+
+	/* Do not outscale fitted to width pages */
+	if (page.isZoomToWidth ())
+		return 1.0;
+
+	/* Protection for broken pages */
+	if (qAbs (page.getRenderedZoom ()) <= DBL_EPSILON)
+		return 1.0;
+
+	double outscale = page.getZoom () / page.getRenderedZoom ();
+
+	/* Check outscale limits */
+	if (outscale < 1.0)
+		outscale = 1.0;
+	else if (outscale > NSR_PAGEVIEW_MAX_OVERZOOM)
+		outscale = NSR_PAGEVIEW_MAX_OVERZOOM;
+
+	return outscale;
+}
+
+void
+NSRPageView::rescaleImage (const QSizeF& size, const QPointF& center)
+{
+	_imageView->setPreferredSize (size.width (), size.height ());
+	_scrollView->scrollToPoint (center.x () - _size.width () / 2,
+			 	    center.y () - _size.height () / 2,
+			 	    ScrollAnimation::None);
 }

@@ -114,6 +114,8 @@ private Q_SLOTS:
 private:
 	void retranslateTitle ();
 	bool checkGestureForNavigation (const bb::cascades::AbstractGestureEvent *event);
+	double getOutscale (const NSRRenderedPage& page) const;
+	void rescaleImage (const QSizeF& size, const QPointF& center);
 
 	NSRRenderedPage				_page;
 	NSRTranslator				*_translator;
