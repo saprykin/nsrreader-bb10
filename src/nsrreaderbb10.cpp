@@ -1598,7 +1598,7 @@ NSRReaderBB10::onDocumentOpened (const QString &path)
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
 
-	if (!_isActiveFrame)
+	if (!_isActiveFrame && _core->getPagesCount () > 1)
 		setVolumeKeysEnabled (true);
 
 	NSRSettings::instance()->addLastDocument (path);
@@ -1687,6 +1687,11 @@ NSRReaderBB10::getBookmarksPage () const
 void
 NSRReaderBB10::setVolumeKeysEnabled (bool enabled)
 {
+	if (sender () == _bpsHandler) {
+		if (enabled && (!_core->isSessionLoaded () || _core->getPagesCount () == 1))
+			return;
+	}
+
 	if (enabled) {
 		/* We do not check connect() result here because it can fail if such a connection
 		 * pair is already exist */
