@@ -5,7 +5,8 @@ NSR Reader merupakan sebuah penampil berkas PDF, DjVu, TIFF dan TXT yang ringkas
 Banyak fitur yang akan membuat membaca di mana pun terasa nyaman:
 - penampilan PDF dan DjVu berkualitas tinggi;
 - dukungan terhadap berkas TIFF multi-halaman;
-- membuka berkas teks biasa dengan pilihan encoding dan membaginya ke dalam halaman-halaman;
+- membukan berkas teks polos dan membaginya ke dalam halaman-halaman;
+- deteksi otomatis encoding teks;
 - secara otomatis mendeteksi dan memotong tepian yang kosong;
 - mendukung PDF yang dilindungi oleh kata sandi (kecuali enkripsi Adobe® Reader® X yang terbaru);
 - menyimpan posisi baca terakhir;

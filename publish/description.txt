@@ -5,7 +5,8 @@ NSR Reader is a handy and powerful reader for PDF, DjVu, TIFF and TXT files. You
 Plenty of features will make reading comfortable everywhere:
 - high-quality PDF and DjVu rendering;
 - multipage TIFF files support;
-- opens plain text files with encoding selection option and breaks them into pages;
+- opens plain text files and breaks them into pages;
+- text encoding autodetection;
 - automatically detects and crops blank edges;
 - supports password protected PDFs (except latest Adobe® Reader® X encryption);
 - saves last reading position;
