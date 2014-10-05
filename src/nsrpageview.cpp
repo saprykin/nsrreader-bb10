@@ -288,6 +288,14 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	/* Check for zero size images */
 	QSizeF imageSize = page.getSize ();
 
+	/* Adjust width to prevent pixel-width blanks on the edges */
+	if (page.isZoomToWidth () && page.isImageValid ()) {
+		double diff = qAbs (imageSize.width () - _size.width ());
+
+		if (diff <= NSR_PAGEVIEW_WIDTH_THRESHOLD)
+			imageSize.setWidth (_size.width ());
+	}
+
 	/* Set image and its size */
 	_imageView->setVisible (imageSize.width () != 0 && imageSize.height () != 0);
 	_imageView->setImage (page.getImage ());
@@ -495,7 +503,7 @@ NSRPageView::zoomIn ()
 
 		if (qAbs (_currentZoom * scale - _currentZoom) > NSR_PAGEVIEW_SCALE_THRESHOLD) {
 			if (qAbs (_imageView->preferredWidth () * scale -
-				  _imageView->preferredWidth ()) >= NSR_PAGEVIEW_WIDTH_THRESHOLD)
+				  _imageView->preferredWidth ()) > NSR_PAGEVIEW_WIDTH_THRESHOLD)
 				rescaleImage (QSizeF (_imageView->preferredWidth (),
 						      _imageView->preferredHeight ()) * scale,
 					      _scrollView->viewableArea().center () * scale);
@@ -529,7 +537,7 @@ NSRPageView::zoomOut ()
 			if (_imageView->preferredWidth () * scale < _size.width ())
 				scale = (double) _imageView->preferredWidth () / _size.width ();
 
-			if (qAbs (_imageView->preferredWidth () * scale - _imageView->preferredWidth ()) >=
+			if (qAbs (_imageView->preferredWidth () * scale - _imageView->preferredWidth ()) >
 				  NSR_PAGEVIEW_WIDTH_THRESHOLD)
 				rescaleImage (QSizeF (_imageView->preferredWidth (),
 						      _imageView->preferredHeight ()) * scale,
@@ -657,7 +665,7 @@ NSRPageView::onPinchUpdated (bb::cascades::PinchEvent* event)
 		if (_currentZoom * scale / _maxZoom > NSR_PAGEVIEW_MAX_OVERZOOM)
 			scale = NSR_PAGEVIEW_MAX_OVERZOOM * _maxZoom / _currentZoom;
 
-		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >=
+		if (qAbs (_initialScaleSize.width () * scale - _imageView->preferredWidth ()) >
 			  NSR_PAGEVIEW_WIDTH_THRESHOLD)
 			rescaleImage (_initialScaleSize * scale, _initialScalePos * scale);
 	}
