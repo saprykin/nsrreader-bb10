@@ -450,12 +450,15 @@ NSRAboutPage::retranslateUi ()
 					     .arg(kht6).arg(kht7).arg(kht8).arg(kht9).arg(kht10)
 					     .arg(kht11).arg(kht12).arg(kht13).arg(kht14);
 
+	QString visualThemeSet = trUtf8 ("<b>Visual Theme</b> &ndash; specifies look and feel of UI controls.");
+	QString brandColorsSet = trUtf8 ("<b>Brand Colors</b> &ndash; provides orange accents on UI controls.");
 	QString fullScrSet = trUtf8 ("<b>Fullscreen Mode</b> &ndash; Action Bar at the bottom of the screen will "
 			    	     "be hidden (tap the screen somewhere to show or hide it again).");
 	QString cropSet = trUtf8 ("<b>Crop Blank Edges</b> &ndash; automatically tries to detect and crop page's blank edges "
 				  "to reduce side-to-side scrolling, especially when page is fitted to screen width.");
 	QString screenLockSet = trUtf8 ("<b>Prevent Screen Locking</b> &ndash; disables screen autolocking feature "
 					"while you are reading the file.");
+	QString encodAutodetectSet = trUtf8 ("<b>Autodetect Encoding</b> &ndash; automatically tries to detect text encoding.");
 	QString encodSet = trUtf8 ("<b>Text Encoding</b> &ndash; this is only applied for plain text files. "
 			    	   "Use it for files with specific national encoding.");
 	QString tip1 = trUtf8 ("NSR Reader always saves position for every file.");
@@ -481,13 +484,16 @@ NSRAboutPage::retranslateUi ()
 				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
 				    "border-bottom: 1px solid white; font-size: 30pt; color: %2;\">%7</div></div>"
 				    "<div><p>%8</p></div>"
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+				    "<div><p>%24</p></div>"
+#endif
 				    "<div><p>%9</p></div>"
 				    "<div><p>%10</p></div>"
 				    "<div><p>%11</p></div>"
-				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
-				    "border-bottom: 1px solid white; font-size: 30pt; color: %2;\">%12</div></div>"
+				    "<div><p>%12</p></div>"
 				    "<div><p>%13</p></div>"
-				    "<div><p>%14</p></div>"
+				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
+				    "border-bottom: 1px solid white; font-size: 30pt; color: %2;\">%14</div></div>"
 				    "<div><p>%15</p></div>"
 				    "<div><p>%16</p></div>"
 				    "<div><p>%17</p></div>"
@@ -495,12 +501,18 @@ NSRAboutPage::retranslateUi ()
 				    "<div><p>%19</p></div>"
 				    "<div><p>%20</p></div>"
 				    "<div><p>%21</p></div>"
+				    "<div><p>%22</p></div>"
+				    "<div><p>%23</p></div>"
 				    "</body></html>");
 	htmlHelp = htmlHelp.arg(qBackColor.name ()).arg(qFontColor.name ());
 	htmlHelp = htmlHelp.arg(welcomeTitle).arg(welcomeSection).arg(navTitle).arg(navigationSection);
-	htmlHelp = htmlHelp.arg(settingsTitle).arg(fullScrSet).arg(cropSet).arg(screenLockSet).arg(encodSet);
+	htmlHelp = htmlHelp.arg(settingsTitle).arg(visualThemeSet).arg(fullScrSet).arg(cropSet)
+			   .arg(screenLockSet).arg(encodAutodetectSet).arg(encodSet);
 	htmlHelp = htmlHelp.arg(tipsTitle).arg(tip1).arg(tip2).arg(tip3).arg(tip4).arg(tip5)
 			   .arg(tip6).arg(tip7).arg(tip8).arg(tip9);
+#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+	htmlHelp = htmlHelp.arg (brandColorsSet);
+#endif
 
 	_webHelp->setHtml (htmlHelp);
 

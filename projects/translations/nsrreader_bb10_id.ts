@@ -204,6 +204,18 @@
         <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Single tap on any side of the screen is enough in text reflow mode. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</source>
         <translation>Gunakan panah navigasi pada Bilah Aksi (di bagian bawah layar). Ketuk ganda di sisi kiri layar untuk ke halaman sebelumnya, pada sisi kanan untuk ke halaman selanjutnya dan di tengah untuk menampilkan halaman sesuai lebar layar. Satu ketukan di bagian mana pun pada layar sudah cukup untuk modus reflow teks. Cara navigasi lain ialah menggunakan &lt;i&gt;Volume Naik/Turun&lt;/i&gt; tombol perangkat keras: tombol &lt;i&gt;Volume Naik&lt;/i&gt; untuk halaman sebelumnya dan tombol &lt;i&gt;Volume Turun&lt;/i&gt; untuk halaman selanjutnya. &lt;p&gt;&lt;/p&gt;Jika Anda memiliki papan ketik fisik gunakan tombol-tombol berikut (dapat bervariasi sesuai bahasa): &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</translation>
     </message>
+    <message>
+        <source>&lt;b&gt;Autodetect Encoding&lt;/b&gt; &amp;ndash; automatically tries to detect text encoding.</source>
+        <translation>&lt;b&gt;Deteksi Encoding Otomatis&lt;/b&gt; &amp;ndash; secara otomatis mencoba mendeteksi encoding teks.</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Visual Theme&lt;/b&gt; &amp;ndash; specifies look and feel of UI controls.</source>
+        <translation>&lt;b&gt;Tema Visual&lt;/b&gt; &amp;ndash; mengatur tampilan dan rasa kontrol Antarmuka Pengguna.</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Brand Colors&lt;/b&gt; &amp;ndash; provides orange accents on UI controls.</source>
+        <translation>&lt;b&gt;Warna Aksen&lt;/b&gt; &amp;ndash; mengatur aksen oranye pada kontrol Antarmuka Pengguna.</translation>
+    </message>
 </context>
 <context>
     <name>NSRBookmarkItem</name>
@@ -470,7 +482,7 @@
     <message>
         <source>Visual Theme</source>
         <comment>Visual theme settings</comment>
-        <translation>Tema visual</translation>
+        <translation>Tema Visual</translation>
     </message>
     <message>
         <source>Brand Colors</source>

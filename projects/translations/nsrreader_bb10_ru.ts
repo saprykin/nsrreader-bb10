@@ -205,6 +205,18 @@
         <translation>Используйте стрелки на нижней панели инструментов для навигации. Двойное касание левой части экрана загружает предыдущую страницу, правой части - следующую страницу, а двойное касание по середине масштабирует страницу по ширине экрана. В режиме переформатирования текста достаточно одинарного касания по любой стороне экрана. Также можно перемещаться между страницами, используя аппаратные кнопки регулировки громкости: &lt;i&gt;Увеличить громкость&lt;/i&gt; для перехода на предыдущую страницу и &lt;i&gt;Уменьшить громкость&lt;/i&gt; для перехода на следующую страницу.&lt;p&gt;&lt;/p&gt;Если у телефона есть физическая клавиатура, то можно использовать следующие клавиши (могут меняться в зависимости от используемого языка):
 &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</translation>
     </message>
+    <message>
+        <source>&lt;b&gt;Autodetect Encoding&lt;/b&gt; &amp;ndash; automatically tries to detect text encoding.</source>
+        <translation>&lt;b&gt;Автоопределение кодировки&lt;/b&gt; &amp;ndash; автоматически пытается определить кодировку текста.</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Visual Theme&lt;/b&gt; &amp;ndash; specifies look and feel of UI controls.</source>
+        <translation>&lt;b&gt;Тема оформления&lt;/b&gt; &amp;ndash; определяет внешний вид элементов пользовательского интерфейса.</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Brand Colors&lt;/b&gt; &amp;ndash; provides orange accents on UI controls.</source>
+        <translation>&lt;b&gt;Фирменные цвета&lt;/b&gt; &amp;ndash; добавляет оранжевые оттенки на элементы пользовательского интерфейса.</translation>
+    </message>
 </context>
 <context>
     <name>NSRBookmarkItem</name>
