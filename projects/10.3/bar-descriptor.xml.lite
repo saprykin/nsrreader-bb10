@@ -34,7 +34,7 @@
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
          An updated version of application must have a versionNumber value higher than the previous version. Required. -->
-    <versionNumber>1.4.2</versionNumber>
+    <versionNumber>1.5.0</versionNumber>
     <packageLocale>ru,id</packageLocale>
 
     <!-- Fourth digit segment of the package version. First three segments are taken from the 
@@ -112,7 +112,7 @@
     <asset path="icon-lite-81x81.png">icon-lite-81x81.png</asset>
     <asset path="icon-lite-90x90.png">icon-lite-90x90.png</asset>
     <asset path="icon-lite-96x96.png">icon-lite-96x96.png</asset>
-    <asset path="icon-lite-110x110.png">icon-lite-114x114.png</asset>
+    <asset path="icon-lite-110x110.png">icon-lite-110x110.png</asset>
     <asset path="icon-lite-144x144.png">icon-lite-144x144.png</asset>
     <asset path="icon-lite-358x358.png">icon-lite-358x358.png</asset>
     
