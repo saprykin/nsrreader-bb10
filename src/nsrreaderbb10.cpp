@@ -8,7 +8,7 @@
 #include "nsrthumbnailer.h"
 #include "nsrthemesupport.h"
 #include "nsrreader.h"
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 #  include "nsrscenemulticover.h"
 #else
 #  include "nsrscenecover.h"
@@ -33,11 +33,11 @@
 #include <bb/cascades/Window>
 #include <bb/cascades/ScreenIdleMode>
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 #  include <bb/cascades/ThemeSupport>
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
 #  include <bb/cascades/SystemShortcut>
 #  include <bb/cascades/Shortcut>
 #endif
@@ -56,7 +56,7 @@ using namespace bb::multimedia;
 
 #define NSR_GUI_VERSION				"1.5.0"
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 #  define NSR_GUI_ACTION_BAR_NORMAL_HEIGHT	(Application::instance()->scene()->ui()->sdu (12))
 #  define NSR_GUI_ACTION_BAR_REDUCED_HEIGHT	(Application::instance()->scene()->ui()->sdu (12))
 #  define NSR_GUI_CROP_TO_WIDTH_THRESHOLD	(Application::instance()->scene()->ui()->sdu (0.4f))
@@ -114,7 +114,7 @@ NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 
 	_startMode = _invokeManager->startupMode ();
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	if (_startMode == ApplicationStartupMode::LaunchApplication) {
 		VisualStyle::Type visualStyle = NSRSettings::instance()->getVisualStyle ();
 
@@ -292,7 +292,7 @@ NSRReaderBB10::initFullUI ()
 				      QString ("Buy"));
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	openAction->accessibility()->setName (trUtf8 ("Open file"));
 	prevPageAction->accessibility()->setName (trUtf8 ("Go to previous page"));
 	nextPageAction->accessibility()->setName (trUtf8 ("Go to next page"));
@@ -395,7 +395,7 @@ NSRReaderBB10::initFullUI ()
 	_actionAggregator->addAction ("buy", buyAction);
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
 	SystemShortcut *prevShortcut = SystemShortcut::create (SystemShortcuts::PreviousSection);
 	SystemShortcut *nextShortcut = SystemShortcut::create (SystemShortcuts::NextSection);
 	SystemShortcut *zoomInShortcut = SystemShortcut::create (SystemShortcuts::ZoomIn);
@@ -569,7 +569,7 @@ NSRReaderBB10::initFullUI ()
 				QString ("NSRReaderBB10"),
 				QString ("Bookmarks"));
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 		mainTab->accessibility()->setName (trUtf8 ("Main file reading page"));
 		recentTab->accessibility()->setName (trUtf8 ("Page with recent files"));
 		bookmarksTab->accessibility()->setName (trUtf8 ("Page with bookmarks"));
@@ -621,7 +621,7 @@ NSRReaderBB10::initFullUI ()
 		      this, SLOT (onZoomChanged (double, NSRRenderRequest::NSRRenderReason)));
 	Q_ASSERT (ok);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_sceneCover = new NSRSceneMultiCover ();
 #else
 	_sceneCover = new NSRSceneCover (NSRSceneCover::NSR_COVER_MODE_FULL);
@@ -1662,7 +1662,7 @@ NSRReaderBB10::retranslateBookmarkAction (bool hasBookmark)
 		bookmarkAction->setTitle (hasBookmark ? trUtf8 ("Edit Bookmark") : trUtf8 ("Add Bookmark"));
 		bookmarkAction->setImageSource (hasBookmark ? QUrl ("asset:///bookmark-edit.png") : QUrl ("asset:///bookmark-add.png"));
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 		bookmarkAction->accessibility()->setName (hasBookmark ? trUtf8 ("Edit bookmark for current page")
 								      : trUtf8 ("Add bookmark for current page"));
 #endif

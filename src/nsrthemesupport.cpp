@@ -96,7 +96,7 @@ NSRThemeSupport::setVisualStyle (bb::cascades::VisualStyle::Type visualStyle)
 		_colorText = Color (Color::Black);
 		_colorRecentItemText = Color (Color::Black);
 		_colorTipText = Color (Color::DarkGray);
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 		_colorOverlay = Color::fromRGBA (0.9f, 0.9f, 0.9f, 0.95f);
 #else
 		_colorOverlay = Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f);
@@ -129,7 +129,11 @@ NSRThemeSupport::getAssetsThemeDirectory () const
 
 NSRThemeSupport::NSRThemeSupport ()
 {
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_colorPrimaryBrand = Color::fromRGBA (1.0f, 0.5f, 0.0f);
+#else
+	_colorPrimaryBrand = Color::fromRGBA (0.0f, 0.66f, 0.87f);
+#endif
 
 	setVisualStyle (Application::instance()->themeSupport()->theme()->colorTheme()->style ());
 }

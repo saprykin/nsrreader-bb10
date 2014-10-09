@@ -42,7 +42,7 @@ NSRSceneCover::NSRSceneCover (NSRCoverMode mode, QObject *parent) :
 						     .background(Color::Black)
 						     .visible(false);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 		_titleContainer->setLeftPadding (ui()->sdu (1));
 		_titleContainer->setRightPadding (ui()->sdu (1));
 		_titleContainer->setTopPadding (ui()->sdu (1));

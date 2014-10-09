@@ -74,7 +74,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 						   .vertical(VerticalAlignment::Center)
 						   .imageSource(QUrl ("asset:///bookmarks-area.png"));
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	emptyImage->accessibility()->setName (trUtf8 ("Image of bookmark"));
 #endif
 
@@ -82,7 +82,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .layout(StackLayout::create ());
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_emptyContainer->setLeftPadding (ui()->sdu (2));
 	_emptyContainer->setRightPadding (ui()->sdu (2));
 #else
@@ -119,14 +119,14 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 				      QString ("NSRBookmarksPage"),
 				      QString ("Bookmarks"));
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_translator->addTranslatable ((UIObject *) emptyImage->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRBookmarksPage"),
 				      QString ("Image of bookmark"));
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
 	_listView->setScrollRole (ScrollRole::Main);
 #endif
 

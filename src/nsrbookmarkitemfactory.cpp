@@ -34,7 +34,7 @@ NSRBookmarkItemFactory::createItem (bb::cascades::ListView* list, const QString&
 
 	editAction->setImageSource (QUrl ("asset:///bookmark-edit.png"));
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	editAction->accessibility()->setName (trUtf8 ("Edit bookmark title"));
 
 	translator->addTranslatable ((UIObject *) editAction->accessibility (),

@@ -73,7 +73,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	labelContainer->setOpacity (0.8);
 	labelContainer->setTopMargin (0);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	labelContainer->setMinHeight (ui()->sdu (7));
 	labelContainer->setLeftPadding (ui()->sdu (1.5f));
 	labelContainer->setRightPadding (ui()->sdu (1.5f));
@@ -112,12 +112,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
-	ColorTheme *colorTheme = Application::instance()->themeSupport()->theme()->colorTheme ();
-	Color frameColor = colorTheme->primary ();
-#else
-	Color frameColor = Color::fromRGBA (0, 0.66, 0.87, 1.0);
-#endif
+	Color frameColor = NSRThemeSupport::instance()->getPrimaryBrand ();
 
 	Container *mainContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -142,7 +137,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .background(frameColor);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_solidSelect[0]->setPreferredHeight (ui()->sdu (0.4f));
 	_solidSelect[1]->setPreferredWidth (ui()->sdu (0.4f));
 	_solidSelect[2]->setPreferredHeight (ui()->sdu (0.4f));
@@ -166,7 +161,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					     .layout(DockLayout::create())
 					     .background(Color::Transparent);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_innerContainer->setTopPadding (ui()->sdu (0.4f));
 	_innerContainer->setRightPadding (ui()->sdu (0.4f));
 	_innerContainer->setBottomPadding (ui()->sdu (0.4f));
@@ -191,7 +186,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .background(frameColor);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_innerSelect[0]->setPreferredHeight (ui()->sdu (0.8f));
 	_innerSelect[1]->setPreferredWidth (ui()->sdu (0.8f));
 	_innerSelect[2]->setPreferredHeight (ui()->sdu (0.8f));
@@ -223,7 +218,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	mainContainer->add (rootContainer);
 	setRoot (mainContainer);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_imageView->accessibility()->addLabel (_label);
 	_textView->accessibility()->addLabel (_label);
 #endif
@@ -268,7 +263,7 @@ NSRLastDocItem::updateItem (const QString&	title,
 		_textView->setVisible (true);
 		_textView->setText (text);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 		_viewContainer->setLeftPadding (ui()->sdu (1.2f));
 		_viewContainer->setTopPadding (ui()->sdu (1.2f));
 		_viewContainer->setRightPadding (ui()->sdu (1.2f));
@@ -366,7 +361,7 @@ NSRLastDocItem::onImageStateChanged (bb::cascades::ResourceState::Type state)
 void
 NSRLastDocItem::onLayoutFrameChanged (const QRectF& rect)
 {
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_solidSelect[1]->setPreferredHeight (rect.height () - ui()->sdu (0.8f));
 	_solidSelect[3]->setPreferredHeight (rect.height () - ui()->sdu (0.8f));
 	_innerSelect[1]->setPreferredHeight (rect.height () - ui()->sdu (2.4f));

@@ -37,7 +37,7 @@ NSRLastDocItemFactory::createItem (bb::cascades::ListView*	list,
 	shareAction->setImageSource (QUrl ("asset:///share.png"));
 	hideAction->setImageSource (QUrl ("asset:///list-remove.png"));
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	shareAction->accessibility()->setName (trUtf8 ("Share file with others"));
 	hideAction->accessibility()->setName (trUtf8 ("Remove file from the recent list only"));
 

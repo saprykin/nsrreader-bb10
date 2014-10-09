@@ -19,14 +19,14 @@
 
 #include <bb/device/DisplayInfo>
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 #    include <bb/cascades/ScrollRailsPolicy>
 #endif
 
 using namespace bb::cascades;
 using namespace bb::device;
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 #  define NSR_PAGEVIEW_WIDTH_THRESHOLD	(ui()->sdu (1) / 2)
 #else
 #  define NSR_PAGEVIEW_WIDTH_THRESHOLD	4
@@ -100,7 +100,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textScrollView->setContent (_textContainer);
 	_textScrollView->setVisible (false);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_scrollView->scrollViewProperties()->setScrollRailsPolicy (ScrollRailsPolicy::LockNearAxes);
 #endif
 
@@ -151,7 +151,7 @@ NSRPageView::NSRPageView (Container *parent) :
 
 	_scrollView->addActionSet (_actionSet);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_textArea->accessibility()->setName (trUtf8 ("Page text"));
 	_imageView->accessibility()->setName (trUtf8 ("Page image"));
 #endif
@@ -182,7 +182,7 @@ NSRPageView::NSRPageView (Container *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRPageView"),
 				      QString ("Fit to Width"));
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_translator->addTranslatable ((UIObject *) _textArea->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRPageView"),

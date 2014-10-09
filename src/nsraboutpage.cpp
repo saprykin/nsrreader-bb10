@@ -57,7 +57,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	logoView->setImageSource (QUrl ("asset:///nsrlogo-lite.png"));
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	logoView->accessibility()->setName (trUtf8 ("Logo of the app"));
 #endif
 
@@ -97,7 +97,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 							  .vertical(VerticalAlignment::Fill)
 							  .layout(StackLayout::create ());
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	contactsContainer->setTopPadding (ui()->sdu (2));
 	contactsContainer->setBottomPadding (ui()->sdu (2));
 #else
@@ -108,7 +108,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	contactsContainer->add (authorInfo);
 	contactsContainer->add (contactsInfo);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	contactsInfo->accessibility()->setName (trUtf8 ("nsr.reader@gmail.com - tap to write a email"));
 #endif
 
@@ -127,7 +127,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_liteLabel->textStyle()->setTextAlign(TextAlign::Center);
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_aboutContainer->setTopPadding (ui()->sdu (4));
 	_aboutContainer->setBottomPadding (ui()->sdu (4));
 #else
@@ -212,7 +212,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 						    .title(trUtf8 ("Buy"));
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	reviewAction->accessibility()->setName (trUtf8 ("Review the app in the store"));
 	twitterAction->accessibility()->setName (trUtf8 ("Visit Twitter page"));
 	facebookAction->accessibility()->setName (trUtf8 ("Visit Facebook page"));
@@ -235,7 +235,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Q_ASSERT (ok);
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	addAction (reviewAction, ActionBarPlacement::Signature);
 #else
 	addAction (reviewAction, ActionBarPlacement::OnBar);
@@ -278,7 +278,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 			      	      QString ("Buy"));
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_translator->addTranslatable ((UIObject *) logoView->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRAboutPage"),
@@ -307,7 +307,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 #  endif
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
 	_scrollView->setScrollRole (ScrollRole::Main);
 #endif
 
@@ -484,7 +484,7 @@ NSRAboutPage::retranslateUi ()
 				    "<div style=\"text-align: center;\"><div style=\"display: inline-block; "
 				    "border-bottom: 1px solid white; font-size: 30pt; color: %2;\">%7</div></div>"
 				    "<div><p>%8</p></div>"
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 				    "<div><p>%24</p></div>"
 #endif
 				    "<div><p>%9</p></div>"
@@ -510,7 +510,8 @@ NSRAboutPage::retranslateUi ()
 			   .arg(screenLockSet).arg(encodAutodetectSet).arg(encodSet);
 	htmlHelp = htmlHelp.arg(tipsTitle).arg(tip1).arg(tip2).arg(tip3).arg(tip4).arg(tip5)
 			   .arg(tip6).arg(tip7).arg(tip8).arg(tip9);
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	htmlHelp = htmlHelp.arg (brandColorsSet);
 #endif
 

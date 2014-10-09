@@ -3,7 +3,7 @@
 using namespace bb::cascades;
 
 NSRSceneMultiCover::NSRSceneMultiCover (QObject *parent) :
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	MultiCover (parent),
 #else
 	QObject (parent),
@@ -11,7 +11,7 @@ NSRSceneMultiCover::NSRSceneMultiCover (QObject *parent) :
 	_fullCover (NULL),
 	_compactCover (NULL)
 {
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_fullCover = new NSRSceneCover (NSRSceneCover::NSR_COVER_MODE_FULL, this);
 	_compactCover = new NSRSceneCover (NSRSceneCover::NSR_COVER_MODE_COMPACT, this);
 
@@ -29,7 +29,7 @@ NSRSceneMultiCover::setPageData (const NSRRenderedPage&	page,
                 		 const QString& 	title,
                 		 int 			pagesTotal)
 {
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_fullCover->setPageData (page, title, pagesTotal);
 	_compactCover->setPageData (page, title, pagesTotal);
 #else
@@ -42,7 +42,7 @@ NSRSceneMultiCover::setPageData (const NSRRenderedPage&	page,
 void
 NSRSceneMultiCover::resetPageData ()
 {
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_fullCover->resetPageData ();
 	_compactCover->resetPageData ();
 #endif
@@ -51,7 +51,7 @@ NSRSceneMultiCover::resetPageData ()
 void
 NSRSceneMultiCover::updateState (bool isStatic)
 {
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_fullCover->updateState (isStatic);
 	_compactCover->updateState (isStatic);
 #else
@@ -62,7 +62,7 @@ NSRSceneMultiCover::updateState (bool isStatic)
 void
 NSRSceneMultiCover::setTextOnly (bool textOnly)
 {
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_fullCover->setTextOnly (textOnly);
 	_compactCover->setTextOnly (textOnly);
 #else
@@ -73,7 +73,7 @@ NSRSceneMultiCover::setTextOnly (bool textOnly)
 void
 NSRSceneMultiCover::setInvertedColors (bool invertedColors)
 {
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_fullCover->setInvertedColors (invertedColors);
 	_compactCover->setInvertedColors (invertedColors);
 #else

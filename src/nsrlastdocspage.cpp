@@ -35,7 +35,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 						      .vertical(VerticalAlignment::Fill)
 						      .layout(DockLayout::create ());
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	rootContainer->setLeftPadding (ui()->sdu (1));
 	rootContainer->setRightPadding (ui()->sdu (1));
 #else
@@ -57,7 +57,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	else
 		_listLayout->setColumnCount (displaySize.height () / NSR_LAST_DOC_WIDTH);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_listLayout->setHorizontalCellSpacing (ui()->sdu (1));
 	_listLayout->setVerticalCellSpacing (ui()->sdu (1));
 #else
@@ -86,7 +86,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 						   .vertical(VerticalAlignment::Center)
 						   .imageSource(QUrl ("asset:///file.png"));
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	emptyImage->accessibility()->setName (trUtf8 ("Image of document"));
 #endif
 
@@ -95,7 +95,7 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 					     .layout(StackLayout::create ())
 					     .visible(false);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_emptyContainer->setLeftPadding (ui()->sdu (2));
 	_emptyContainer->setRightPadding (ui()->sdu (2));
 #else
@@ -149,14 +149,14 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 				      QString ("NSRLastDocsPage"),
 				      QString ("Recent"));
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_translator->addTranslatable ((UIObject *) emptyImage->accessibility (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
 				      QString ("NSRLastDocsPage"),
 				      QString ("Image of document"));
 #endif
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,1,0)
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
 	_listView->setScrollRole (ScrollRole::Main);
 #endif
 

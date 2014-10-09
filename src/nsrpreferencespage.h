@@ -33,7 +33,7 @@ private:
 	bb::cascades::ToggleButton	*_isAutoCrop;
 	bb::cascades::ToggleButton	*_isPreventScreenLock;
 	bb::cascades::ToggleButton	*_isEncodingAutodetection;
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	bb::cascades::ToggleButton	*_isBrandColors;
 #endif
 	bb::cascades::DropDown		*_encodingsList;

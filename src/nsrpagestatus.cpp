@@ -28,7 +28,7 @@ NSRPageStatus::NSRPageStatus (bb::cascades::Container *parent) :
 						       .background(Color::Transparent)
 						       .layout(DockLayout::create());
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	labelContainer->setLeftPadding (ui()->sdu (0.5f));
 	labelContainer->setRightPadding (ui()->sdu (0.5f));
 	labelContainer->setTopPadding (ui()->sdu (0.5f));

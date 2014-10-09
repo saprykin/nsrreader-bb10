@@ -52,7 +52,7 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 				     .vertical(VerticalAlignment::Center);
 	_startLabel->textStyle()->setFontSize (FontSize::XLarge);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_startLabel->setBottomMargin (ui()->sdu (6));
 #else
 	_startLabel->setBottomMargin (60);

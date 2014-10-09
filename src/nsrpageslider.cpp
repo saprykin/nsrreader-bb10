@@ -22,7 +22,7 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 	setHorizontalAlignment (HorizontalAlignment::Fill);
 	setBackground (NSRThemeSupport::instance()->getOverlay ());
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	setLeftPadding (ui()->sdu (2));
 	setRightPadding (ui()->sdu (2));
 #else
@@ -30,15 +30,10 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 	setRightPadding (20);
 #endif
 
-#ifdef BBNDK_VERSION_AT_LEAST
-#  if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	setTopPadding (ui()->sdu (2));
-#  elif BBNDK_VERSION_AT_LEAST(10,2,0)
+#elif BBNDK_VERSION_AT_LEAST(10,2,0)
 	setTopPadding (10);
-#  else
-	setBottomPadding (10);
-	setTopPadding (30);
-#  endif
 #else
 	setBottomPadding (10);
 	setTopPadding (30);
@@ -56,7 +51,7 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 	_spaceContainer->setMinHeight (0);
 	_spaceContainer->setMaxHeight (0);
 
-#if defined (BBNDK_VERSION_AT_LEAST) && BBNDK_VERSION_AT_LEAST(10,2,0)
+#if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_slider->accessibility()->setName (trUtf8 ("Page number slider"));
 
 	_translator->addTranslatable ((UIObject *) _slider->accessibility (),
