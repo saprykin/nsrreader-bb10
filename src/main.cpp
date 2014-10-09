@@ -5,6 +5,7 @@
 
 #if !BBNDK_VERSION_AT_LEAST(10,3,0)
 #  include "nsrsettings.h"
+#  include "nsrthemesupport.h"
 #endif
 
 using namespace bb::cascades;
@@ -16,8 +17,9 @@ Q_DECL_EXPORT int main (int argc, char **argv)
 		qputenv ("CASCADES_THEME", "dark");
 	else
 		qputenv ("CASCADES_THEME", "bright");
-#endif
 
+	NSRThemeSupport::instance()->setVisualStyle (NSRSettings::instance()->getVisualStyle ());
+#endif
 	Application app (argc, argv);
 
 	new NSRReaderBB10 (&app);
