@@ -158,6 +158,7 @@ NSRReaderBB10::initFullUI ()
 	_pageView->setHorizontalAlignment (HorizontalAlignment::Fill);
 	_pageView->setVerticalAlignment (VerticalAlignment::Fill);
 	_pageView->setVisible (false);
+
 	_indicator = ActivityIndicator::create().horizontal(HorizontalAlignment::Fill)
 						.vertical(VerticalAlignment::Fill)
 						.visible(false);
@@ -207,6 +208,7 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	_slider = new NSRPageSlider ();
+	_slider->setFocusPolicy (FocusPolicy::None);
 	_slider->setBottomSpace (getActionBarHeight ());
 	_slider->setVisible (false);
 
@@ -227,8 +229,13 @@ NSRReaderBB10::initFullUI ()
 
 	_page = Page::create().content (rootContainer);
 	_page->setActionBarVisibility (ChromeVisibility::Visible);
-	_actionAggregator = new NSRActionAggregator (this);
 
+	ok = connect (_page, SIGNAL (actionMenuVisualStateChanged (bb::cascades::ActionMenuVisualState::Type)),
+		      this, SLOT (onActionMenuVisualStateChanged (bb::cascades::ActionMenuVisualState::Type)));
+	Q_ASSERT (ok);
+
+
+	_actionAggregator = new NSRActionAggregator (this);
 	_bpsHandler = new NSRBpsEventHandler (this);
 
 	ok = connect (_bpsHandler, SIGNAL (vkbVisibilityChanged (bool)), this, SLOT (onVkbVisibilityChanged (bool)));
@@ -538,6 +545,10 @@ NSRReaderBB10::initFullUI ()
 		TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
 		tabbedPane->setPeekEnabled (false);
 
+		ok = connect (tabbedPane, SIGNAL (activePaneChanged (bb::cascades::AbstractPane *)),
+			      this, SLOT (onActivePaneChanged (bb::cascades::AbstractPane *)));
+		Q_ASSERT (ok);
+
 		ok = connect (_core, SIGNAL (sessionFileOpened (QString)), recentPage, SLOT (onDocumentOpened (QString)));
 		Q_ASSERT (ok);
 
@@ -639,6 +650,10 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (Application::instance (), SIGNAL (manualExit ()), this, SLOT (onManualExit ()));
 	Q_ASSERT (ok);
 
+	ok = connect (Application::instance()->mainWindow (), SIGNAL (posted ()),
+		      _pageView, SLOT (requestFocusForScroll ()));
+	Q_ASSERT (ok);
+
 	onSystemLanguageChanged ();
 
 	/* Initial loading logic:
@@ -729,6 +744,8 @@ NSRReaderBB10::onGotoActionTriggered ()
 
 	if (_slider->isVisible ())
 		_pageStatus->setVisible (true);
+
+	_pageView->requestFocusForScroll ();
 }
 
 void
@@ -1268,6 +1285,9 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 
 	if (page != NULL)
 		delete page;
+
+	if (_naviPane->count () == 1)
+		_pageView->requestFocusForScroll ();
 }
 
 void
@@ -1617,6 +1637,20 @@ NSRReaderBB10::onDocumentClosed ()
 
 	setVolumeKeysEnabled (false);
 	onPreventScreenLockSwitchRequested (false);
+}
+
+void
+NSRReaderBB10::onActivePaneChanged (bb::cascades::AbstractPane *pane)
+{
+	if (pane == _naviPane)
+		_pageView->requestFocusForScroll ();
+}
+
+void
+NSRReaderBB10::onActionMenuVisualStateChanged (bb::cascades::ActionMenuVisualState::Type state)
+{
+	if (state == ActionMenuVisualState::Hidden)
+		_pageView->requestFocusForScroll ();
 }
 
 #ifdef NSR_LITE_VERSION

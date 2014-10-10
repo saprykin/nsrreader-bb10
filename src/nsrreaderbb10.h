@@ -20,6 +20,7 @@
 #include <bb/cascades/Page>
 #include <bb/cascades/NavigationPane>
 #include <bb/cascades/UIOrientation>
+#include <bb/cascades/ActionMenuVisualState>
 
 #include <bb/system/SystemUiResult>
 #include <bb/system/SystemPrompt>
@@ -91,6 +92,8 @@ private Q_SLOTS:
     void onBookmarkPageRequested (int page);
     void onDocumentOpened (const QString &path);
     void onDocumentClosed ();
+    void onActivePaneChanged (bb::cascades::AbstractPane *pane);
+    void onActionMenuVisualStateChanged (bb::cascades::ActionMenuVisualState::Type state);
 #ifdef NSR_LITE_VERSION
     void onLiteVersionPagesLimitPassed ();
     void onBuyActionTriggered ();

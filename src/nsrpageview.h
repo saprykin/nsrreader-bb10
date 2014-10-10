@@ -85,6 +85,7 @@ public:
 public Q_SLOTS:
 	void zoomIn ();
 	void zoomOut ();
+	void requestFocusForScroll ();
 
 Q_SIGNALS:
 	void viewTapped ();

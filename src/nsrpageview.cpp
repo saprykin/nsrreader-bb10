@@ -160,6 +160,9 @@ NSRPageView::NSRPageView (Container *parent) :
 	add (_scrollView);
 	add (_textScrollView);
 
+	_scrollView->setFocusRetentionPolicyFlags (FocusRetentionPolicy::LoseToFocusable);
+	_textScrollView->setFocusRetentionPolicyFlags (FocusRetentionPolicy::LoseToFocusable);
+
 	/* Fill control size with default value (the whole screen) */
 	QSize displaySize = DisplayInfo().pixelSize ();
 
@@ -192,6 +195,13 @@ NSRPageView::NSRPageView (Container *parent) :
 				      QString ("NSRPageView"),
 				      QString ("Page image"));
 #endif
+
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
+	_textScrollView->setScrollRole (ScrollRole::None);
+	_scrollView->setScrollRole (ScrollRole::Main);
+#endif
+
+	_scrollView->requestFocus ();
 
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		      this, SLOT (retranslateUi ()));
@@ -326,6 +336,7 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	_page = page;
 
 	retranslateTitle ();
+	requestFocusForScroll ();
 }
 
 void
@@ -348,6 +359,8 @@ NSRPageView::setViewMode (NSRAbstractDocument::NSRDocumentStyle mode)
 	default:
 		return;
 	}
+
+	requestFocusForScroll ();
 }
 
 void
@@ -551,6 +564,27 @@ NSRPageView::zoomOut ()
 	} else
 		setTextZoom ((int) _textArea->textStyle()->fontSize () -
 			     (int) (FontSize::Medium - FontSize::Small));
+}
+
+void
+NSRPageView::requestFocusForScroll ()
+{
+	if (_page.isEmpty ())
+		return;
+
+	if (_viewMode == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
+		_textScrollView->setScrollRole (ScrollRole::None);
+		_scrollView->setScrollRole (ScrollRole::Main);
+#endif
+		_scrollView->requestFocus ();
+	} else {
+#if BBNDK_VERSION_AT_LEAST(10,1,0)
+		_scrollView->setScrollRole (ScrollRole::None);
+		_textScrollView->setScrollRole (ScrollRole::Main);
+#endif
+		_textScrollView->requestFocus ();
+	}
 }
 
 void
