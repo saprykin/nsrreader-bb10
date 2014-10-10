@@ -112,7 +112,11 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
 
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+	Color frameColor = Application::instance()->themeSupport()->theme()->colorTheme()->primary ();
+#else
 	Color frameColor = NSRThemeSupport::instance()->getPrimaryBrand ();
+#endif
 
 	Container *mainContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
