@@ -893,11 +893,16 @@ NSRReaderBB10::onPageRendered (int number)
 	_slider->setValue (number);
 
 	if (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
-		bool needToFit = _core->isFitToWidth () ?
-				qAbs (_pageView->getSize().width () - page.getSize().width ()) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD :
-				(_pageView->getSize().width () - page.getSize().width ()) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD;
+		int pageDiff = _pageView->getSize().width () - page.getSize().width ();
 
-		if (needToFit && qAbs (_core->getMaxZoom () - page.getRenderedZoom ()) > DBL_EPSILON)
+		bool canFit = (pageDiff > 0 && (_core->getMaxZoom () - page.getRenderedZoom ()) > DBL_EPSILON) ||
+			      (pageDiff < 0 && (page.getRenderedZoom () - _core->getMinZoom ()) > DBL_EPSILON);
+
+		bool needToFit = _core->isFitToWidth () ?
+				qAbs (pageDiff) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD :
+				pageDiff > NSR_GUI_CROP_TO_WIDTH_THRESHOLD;
+
+		if (needToFit && canFit)
 			_pageView->fitToWidth (NSRRenderRequest::NSR_RENDER_REASON_ZOOM_TO_WIDTH);
 	}
 
