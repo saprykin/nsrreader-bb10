@@ -90,12 +90,12 @@ NSRThemeSupport::setVisualStyle (bb::cascades::VisualStyle::Type visualStyle)
 	switch (_visualStyle) {
 	case VisualStyle::Bright:
 	{
-		_colorBackground = Color (Color::White);
+		_colorBackground = Color::White;
 		_colorImageBackground = Color::fromRGBA (0.85f, 0.85f, 0.85f);
 		_colorRecentItemBackground = Color::fromRGBA (0.8f, 0.8f, 0.8f);
-		_colorText = Color (Color::Black);
-		_colorRecentItemText = Color (Color::Black);
-		_colorTipText = Color (Color::DarkGray);
+		_colorText = Color::Black;
+		_colorRecentItemText = Color::Black;
+		_colorTipText = Color::DarkGray;
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
 		_colorOverlay = Color::fromRGBA (0.9f, 0.9f, 0.9f, 0.95f);
 #else
@@ -110,9 +110,9 @@ NSRThemeSupport::setVisualStyle (bb::cascades::VisualStyle::Type visualStyle)
 		_colorBackground = Color::fromRGBA (0.09f, 0.09f, 0.09f);
 		_colorImageBackground = Color::fromRGBA (0.09f, 0.09f, 0.09f);
 		_colorRecentItemBackground = Color::fromRGBA (0.2f, 0.2f, 0.2f);
-		_colorText = Color (Color::White);
-		_colorRecentItemText = Color (Color::Gray);
-		_colorTipText = Color (Color::Gray);
+		_colorText = Color::White;
+		_colorRecentItemText = Color::Gray;
+		_colorTipText = Color::Gray;
 		_colorOverlay = Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f);
 	}
 	}
@@ -127,7 +127,16 @@ NSRThemeSupport::getAssetsThemeDirectory () const
 		return QString ("dark");
 }
 
-NSRThemeSupport::NSRThemeSupport ()
+NSRThemeSupport::NSRThemeSupport () :
+	_visualStyle (VisualStyle::Dark),
+	_colorBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f)),
+	_colorImageBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f)),
+	_colorRecentItemBackground (Color::fromRGBA (0.2f, 0.2f, 0.2f)),
+	_colorText (Color::White),
+	_colorRecentItemText (Color::Gray),
+	_colorTipText (Color::Gray),
+	_colorOverlay (Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f)),
+	_colorPrimaryBrand (Color::fromRGBA (0.0f, 0.66f, 0.87f))
 {
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_colorPrimaryBrand = Color::fromRGBA (1.0f, 0.5f, 0.0f);
