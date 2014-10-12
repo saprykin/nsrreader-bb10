@@ -17,10 +17,14 @@ Q_DECL_EXPORT int main (int argc, char **argv)
 		qputenv ("CASCADES_THEME", "dark");
 	else
 		qputenv ("CASCADES_THEME", "bright");
+#endif
 
+	Application app (argc, argv);
+
+	/* Important: Application object should be created  */
+#if !BBNDK_VERSION_AT_LEAST(10,3,0)
 	NSRThemeSupport::instance()->setVisualStyle (NSRSettings::instance()->getVisualStyle ());
 #endif
-	Application app (argc, argv);
 
 	new NSRReaderBB10 (&app);
 
