@@ -304,6 +304,10 @@ NSRLastDocItem::select (bool select)
 
 	_solidContainer->setVisible (select);
 	_innerContainer->setVisible (select);
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_solidContainer->setOpacity (select ? 1.0f : 0.0f);
+	_innerContainer->setOpacity (select ? 1.0f : 0.0f);
+#endif
 }
 
 void
