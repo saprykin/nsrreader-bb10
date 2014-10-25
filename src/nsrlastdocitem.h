@@ -42,6 +42,7 @@ private Q_SLOTS:
 	void onLayoutFrameChanged (const QRectF& rect);
 	void onAnimationStopped ();
 	void retranslateUi ();
+	void onWantsHighlightChanged (bool wantsHighlight);
 
 private:
 	void retranslateSubtitle ();

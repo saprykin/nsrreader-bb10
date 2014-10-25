@@ -227,6 +227,14 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_textView->accessibility()->addLabel (_label);
 #endif
 
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	navigation()->setDefaultHighlightEnabled (false);
+
+	ok = connect (navigation (), SIGNAL (wantsHighlightChanged (bool)),
+		      this, SLOT (onWantsHighlightChanged (bool)));
+	Q_ASSERT (ok);
+#endif
+
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		      this, SLOT (retranslateUi ()));
 	Q_ASSERT (ok);
@@ -387,6 +395,19 @@ NSRLastDocItem::retranslateUi ()
 	retranslateSubtitle ();
 
 	_translator->translate ();
+}
+
+void
+NSRLastDocItem::onWantsHighlightChanged (bool wantsHighlight)
+{
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	if (_selected)
+		return;
+
+	_solidContainer->setVisible (wantsHighlight);
+#else
+	Q_UNUSED (wantswantsHighlight);
+#endif
 }
 
 void
