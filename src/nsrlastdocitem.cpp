@@ -365,17 +365,13 @@ NSRLastDocItem::onImageStateChanged (bb::cascades::ResourceState::Type state)
 void
 NSRLastDocItem::onLayoutFrameChanged (const QRectF& rect)
 {
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	_solidSelect[1]->setPreferredHeight (rect.height () - ui()->sdu (0.8f));
-	_solidSelect[3]->setPreferredHeight (rect.height () - ui()->sdu (0.8f));
-	_innerSelect[1]->setPreferredHeight (rect.height () - ui()->sdu (2.4f));
-	_innerSelect[3]->setPreferredHeight (rect.height () - ui()->sdu (2.4f));
-#else
-	_solidSelect[1]->setPreferredHeight (rect.height () - 8);
-	_solidSelect[3]->setPreferredHeight (rect.height () - 8);
-	_innerSelect[1]->setPreferredHeight (rect.height () - 24);
-	_innerSelect[3]->setPreferredHeight (rect.height () - 24);
-#endif
+	float solidHeight = _solidSelect[0]->preferredHeight () + _solidSelect[2]->preferredHeight ();
+	float innerHeight = _innerSelect[0]->preferredHeight () + _innerSelect[2]->preferredHeight ();
+
+	_solidSelect[1]->setPreferredHeight (rect.height () - solidHeight);
+	_solidSelect[3]->setPreferredHeight (rect.height () - solidHeight);
+	_innerSelect[1]->setPreferredHeight (rect.height () - innerHeight - solidHeight);
+	_innerSelect[3]->setPreferredHeight (rect.height () - innerHeight - solidHeight);
 }
 
 void
