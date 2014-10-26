@@ -410,7 +410,7 @@ NSRLastDocItem::onWantsHighlightChanged (bool wantsHighlight)
 
 	_solidContainer->setVisible (wantsHighlight);
 #else
-	Q_UNUSED (wantswantsHighlight);
+	Q_UNUSED (wantsHighlight);
 #endif
 }
 
