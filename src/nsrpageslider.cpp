@@ -38,6 +38,7 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
 	setTopPadding (ui()->sdu (2));
+	setBottomPadding (ui()->sdu (1));
 #elif BBNDK_VERSION_AT_LEAST(10,2,0)
 	setTopPadding (10);
 #else
