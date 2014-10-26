@@ -1,11 +1,15 @@
 #include "nsrpageslider.h"
 #include "nsrglobalnotifier.h"
 #include "nsrthemesupport.h"
-#include "nsrreader.h"
+#include "nsrhardwareinfo.h"
 
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/StackLayoutProperties>
 #include <bb/cascades/Color>
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+#  include <bb/cascades/TrackpadHandler>
+#endif
 
 using namespace bb::cascades;
 
@@ -13,7 +17,9 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 	Container (parent),
 	_translator (NULL),
 	_slider (NULL),
-	_spaceContainer (NULL)
+	_spaceContainer (NULL),
+	_trackpadActivated (false),
+	_originValue (0.0)
 {
 	_translator = new NSRTranslator (this);
 
@@ -61,9 +67,20 @@ NSRPageSlider::NSRPageSlider (Container *parent) :
 #endif
 
 	bool ok = connect (_slider, SIGNAL (touch (bb::cascades::TouchEvent *)),
-		      this, SLOT (onSliderTouchEvent (bb::cascades::TouchEvent *)));
+			   this, SLOT (onSliderTouchEvent (bb::cascades::TouchEvent *)));
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	TrackpadHandler *trackpadHandler = TrackpadHandler::create()
+						.onTrackpad (this, SLOT (onTrackpadEvent (bb::cascades::TrackpadEvent *)));
+
+	_slider->addEventHandler (trackpadHandler);
+
+	ok = connect (_slider->navigation (), SIGNAL (wantsHighlightChanged (bool)),
+		      this, SLOT (onWantsHighlightChanged (bool)));
+	Q_ASSERT (ok);
+#endif
 
 	add (_slider);
 	add (_spaceContainer);
@@ -106,6 +123,21 @@ NSRPageSlider::getValue () const
 }
 
 void
+NSRPageSlider::setEnabled (bool enabled)
+{
+	Container::setEnabled (enabled);
+
+	if (enabled && NSRHardwareInfo::instance()->isTrackpad ()) {
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+		if (_slider->navigation()->wantsHighlight ())
+			_slider->requestFocus ();
+	}
+#else
+	}
+#endif
+}
+
+void
 NSRPageSlider::onSliderTouchEvent (bb::cascades::TouchEvent* event)
 {
 	if (!isEnabled ())
@@ -128,5 +160,60 @@ NSRPageSlider::onSliderTouchEvent (bb::cascades::TouchEvent* event)
 		break;
 	default:
 		emit interactionEnded ();
+	}
+}
+
+void
+NSRPageSlider::onTrackpadEvent (bb::cascades::TrackpadEvent* event)
+{
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	switch (event->trackpadEventType ()) {
+	case TrackpadEventType::Release:
+	{
+		if (_trackpadActivated) {
+			_slider->setValue ((int) _slider->immediateValue ());
+			emit interactionEnded ();
+		} else {
+			_originValue = _slider->immediateValue ();
+			emit interactionStarted ();
+		}
+
+		_trackpadActivated = !_trackpadActivated;
+	}
+	break;
+	case TrackpadEventType::Move:
+	{
+		if (_trackpadActivated)
+			emit currentValueChanged ((int) _slider->immediateValue ());
+	}
+	break;
+	case TrackpadEventType::Cancel:
+	{
+		if (_trackpadActivated) {
+			_slider->setValue (_originValue);
+			emit currentValueChanged ((int) _slider->immediateValue ());
+			emit interactionEnded ();
+		}
+	}
+	break;
+	default:
+		break;
+	}
+#else
+	Q_UNUSED (event);
+#endif
+}
+
+void
+NSRPageSlider::onWantsHighlightChanged (bool wantsHighlight)
+{
+	if (!NSRHardwareInfo::instance()->isTrackpad ())
+		return;
+
+	if (_trackpadActivated && !wantsHighlight) {
+		_slider->setValue (_originValue);
+		emit currentValueChanged ((int) _slider->immediateValue ());
+		emit interactionEnded ();
+		_trackpadActivated = false;
 	}
 }

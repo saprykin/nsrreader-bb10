@@ -2,10 +2,21 @@
 #define NSRPAGESLIDER_H_
 
 #include "nsrtranslator.h"
+#include "nsrreader.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/Slider>
 #include <bb/cascades/TouchEvent>
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+#  include <bb/cascades/TrackpadEvent>
+#else
+typedef bb::cascades::Event TrackpadEvent;
+
+namespace bb { namespace cascades {
+	class TrackpadEvent;
+}}
+#endif
 
 #include <QObject>
 
@@ -20,6 +31,7 @@ public:
 	void setRange (int from, int to);
 	void setBottomSpace (int space);
 	int getValue () const;
+	void setEnabled (bool enabled);
 
 Q_SIGNALS:
 	void interactionStarted ();
@@ -28,11 +40,15 @@ Q_SIGNALS:
 
 private Q_SLOTS:
 	void onSliderTouchEvent (bb::cascades::TouchEvent *event);
+	void onTrackpadEvent (bb::cascades::TrackpadEvent* event);
+	void onWantsHighlightChanged (bool wantsHighlight);
 
 private:
 	NSRTranslator *			_translator;
 	bb::cascades::Slider *		_slider;
 	bb::cascades::Container *	_spaceContainer;
+	bool				_trackpadActivated;
+	float				_originValue;
 };
 
 #endif /* NSRPAGESLIDER_H_ */
