@@ -2,6 +2,7 @@
 #include "nsrthumbnailer.h"
 #include "nsrbookmarksstorage.h"
 #include "nsrabstractdocument.h"
+#include "nsrhardwareinfo.h"
 
 #include <QDir>
 #include <QDateTime>
@@ -77,8 +78,16 @@ NSRSettings::NSRSettings () :
 	_textEncoding = value(NSR_SETTINGF_TEXT_ENCODING, NSR_SETTINGS_DEFAULT_ENCODING).toString ();
 	_lastDocuments = value(NSR_SETTINGS_LAST_DOCUMENTS, QStringList ()).toStringList ();
 	_isFirstStart = value(NSR_SETTINGS_FIRST_START, true).toBool ();
-	_visualStyle = (VisualStyle::Type) (value(NSR_SETTINGS_VISUAL_STYLE, (int) VisualStyle::Dark).toInt ());
 	_isBrandColors = value(NSR_SETTINGS_BRAND_COLORS, false).toBool ();
+
+	if (NSRHardwareInfo::instance()->isOLED ())
+		_visualStyle = VisualStyle::Dark;
+	else {
+		_visualStyle = (VisualStyle::Type) (value(NSR_SETTINGS_VISUAL_STYLE, (int) VisualStyle::Dark).toInt ());
+
+		if (_visualStyle < VisualStyle::Bright || _visualStyle > VisualStyle::Dark)
+			_visualStyle = VisualStyle::Dark;
+	}
 
 	if (!QDir(_lastOpenDir).exists ())
 		_lastOpenDir = NSR_SETTINGS_DEFAULT_PATH;
@@ -88,9 +97,6 @@ NSRSettings::NSRSettings () :
 
 	if (!getSupportedEncodingsShort().contains (_textEncoding))
 		_textEncoding = NSR_SETTINGS_DEFAULT_ENCODING;
-
-	if (_visualStyle < VisualStyle::Bright || _visualStyle > VisualStyle::Dark)
-		_visualStyle = VisualStyle::Bright;
 
 	endGroup ();
 	cleanOldFiles ();
@@ -478,6 +484,9 @@ NSRSettings::saveFirstStart ()
 void
 NSRSettings::saveVisualStyle (bb::cascades::VisualStyle::Type visualStyle)
 {
+	if (NSRHardwareInfo::instance()->isOLED ())
+		return;
+
 	_visualStyle = visualStyle;
 
 	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);

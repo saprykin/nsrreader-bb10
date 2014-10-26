@@ -2,6 +2,7 @@
 #include "nsrsettings.h"
 #include "nsrglobalnotifier.h"
 #include "nsrthemesupport.h"
+#include "nsrhardwareinfo.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/Color>
@@ -79,8 +80,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_themeList->add (optionThemeBright);
 	_themeList->add (optionThemeDark);
 
-	int themeIndex = (int) NSRSettings::instance()->getVisualStyle () - 1;
-	_themeList->setSelectedIndex (themeIndex);
+	if (NSRHardwareInfo::instance()->isOLED ()) {
+		_themeList->setSelectedIndex (VisualStyle::Dark - 1);
+		_themeList->setEnabled (false);
+	} else
+		_themeList->setSelectedIndex (NSRSettings::instance()->getVisualStyle () - 1);
 
 	/* 'Visual Theme' section */
 	Container *themeContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -380,7 +384,7 @@ NSRPreferencesPage::saveSettings ()
 	if (_encodingsList->isSelectedOptionSet ())
 		NSRSettings::instance()->saveTextEncoding (NSRSettings::mapIndexToEncoding (_encodingsList->selectedIndex ()));
 
-	if (_themeList->isSelectedOptionSet ())
+	if (!NSRHardwareInfo::instance()->isOLED() && _themeList->isSelectedOptionSet ())
 		NSRSettings::instance()->saveVisualStyle ((VisualStyle::Type) (_themeList->selectedIndex () + 1));
 }
 
