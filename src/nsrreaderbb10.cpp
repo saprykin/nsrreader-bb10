@@ -209,9 +209,11 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	_slider = new NSRPageSlider ();
-	_slider->setFocusPolicy (FocusPolicy::None);
 	_slider->setBottomSpace (getActionBarHeight ());
 	_slider->setVisible (false);
+
+	if (!NSRHardwareInfo::instance()->isTrackpad ())
+		_slider->setFocusPolicy (FocusPolicy::None);
 
 	ok = connect (_slider, SIGNAL (interactionStarted ()), this, SLOT (onPageSliderInteractionStarted ()));
 	Q_ASSERT (ok);
@@ -651,9 +653,9 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	if (!NSRHardwareInfo::instance()->isTrackpad ()) {
-	ok = connect (Application::instance()->mainWindow (), SIGNAL (posted ()),
-		      _pageView, SLOT (requestFocusForScroll ()));
-	Q_ASSERT (ok);
+		ok = connect (Application::instance()->mainWindow (), SIGNAL (posted ()),
+			      _pageView, SLOT (requestFocusForScroll ()));
+		Q_ASSERT (ok);
 	}
 
 	onSystemLanguageChanged ();
@@ -748,7 +750,7 @@ NSRReaderBB10::onGotoActionTriggered ()
 		_pageStatus->setVisible (true);
 
 	if (!NSRHardwareInfo::instance()->isTrackpad ())
-	_pageView->requestFocusForScroll ();
+		_pageView->requestFocusForScroll ();
 }
 
 void
