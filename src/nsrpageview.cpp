@@ -314,12 +314,13 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 				      imageSize.height () * outscale);
 
 	/* Do not update current zoom value for text only pages */
-	if (!page.isTextOnly ())
+	if (!page.isTextOnly ()) {
 		_currentZoom = page.getRenderedZoom () * outscale;
 
-	/* Protection for broken pages */
-	if (qAbs (_currentZoom <= DBL_EPSILON))
-		_currentZoom = 100.0;
+		/* Protection for broken pages */
+		if (qAbs (_currentZoom <= DBL_EPSILON))
+			_currentZoom = 100.0;
+	}
 
 	if (page.getRenderReason () == NSRRenderRequest::NSR_RENDER_REASON_NAVIGATION ||
 	    !_delayedScrollPos.isNull ())
@@ -504,6 +505,14 @@ NSRPageView::resetOverzoom ()
 {
 	if (_currentZoom > _maxZoom)
 		_currentZoom = _maxZoom;
+}
+
+void
+NSRPageView::prepareForReload ()
+{
+	_currentZoom = 0.0;
+	_maxZoom = 0.0;
+	_page = NSRRenderedPage ();
 }
 
 void

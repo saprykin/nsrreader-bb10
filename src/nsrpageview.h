@@ -81,6 +81,7 @@ public:
 	void fitToWidth (NSRRenderRequest::NSRRenderReason reason);
 	void resetPage ();
 	void resetOverzoom ();
+	void prepareForReload ();
 
 public Q_SLOTS:
 	void zoomIn ();

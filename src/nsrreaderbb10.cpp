@@ -1074,6 +1074,8 @@ NSRReaderBB10::loadSession (const QString& path, int page)
 						    NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT);
 	}
 
+	_pageView->prepareForReload ();
+
 	if (_core->isPasswordProtected (session.getFile ())) {
 		if (_prompt != NULL)
 			return;
