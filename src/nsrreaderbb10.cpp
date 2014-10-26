@@ -1125,7 +1125,12 @@ NSRReaderBB10::saveSession ()
 	session.setFile (_core->getSessionFile ());
 	session.setPage (page.getNumber ());
 	session.setFitToWidth (page.isZoomToWidth ());
-	session.setZoomGraphic (_pageView->getZoom ());
+
+	if (_pageView->isOverzoom ())
+		session.setZoomGraphic (_pageView->getZoom ());
+	else
+		session.setZoomGraphic (_core->getZoom ());
+
 	session.setRotation (page.getRotation ());
 	session.setZoomText (_pageView->getTextZoom ());
 	session.setPosition (_pageView->getScrollPosition (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC));
