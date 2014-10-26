@@ -1,6 +1,7 @@
 #include "nsrpageview.h"
 #include "nsrglobalnotifier.h"
 #include "nsrthemesupport.h"
+#include "nsrhardwareinfo.h"
 #include "nsrreader.h"
 
 #include <float.h>
@@ -336,7 +337,9 @@ NSRPageView::setPage (const NSRRenderedPage& page)
 	_page = page;
 
 	retranslateTitle ();
-	requestFocusForScroll ();
+
+	if (!NSRHardwareInfo::instance()->isTrackpad ())
+		requestFocusForScroll ();
 }
 
 void
@@ -360,7 +363,8 @@ NSRPageView::setViewMode (NSRAbstractDocument::NSRDocumentStyle mode)
 		return;
 	}
 
-	requestFocusForScroll ();
+	if (!NSRHardwareInfo::instance()->isTrackpad ())
+		requestFocusForScroll ();
 }
 
 void

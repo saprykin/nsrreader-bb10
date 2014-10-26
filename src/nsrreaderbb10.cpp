@@ -7,6 +7,7 @@
 #include "nsrglobalnotifier.h"
 #include "nsrthumbnailer.h"
 #include "nsrthemesupport.h"
+#include "nsrhardwareinfo.h"
 #include "nsrreader.h"
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
 #  include "nsrscenemulticover.h"
@@ -233,7 +234,6 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (_page, SIGNAL (actionMenuVisualStateChanged (bb::cascades::ActionMenuVisualState::Type)),
 		      this, SLOT (onActionMenuVisualStateChanged (bb::cascades::ActionMenuVisualState::Type)));
 	Q_ASSERT (ok);
-
 
 	_actionAggregator = new NSRActionAggregator (this);
 	_bpsHandler = new NSRBpsEventHandler (this);
@@ -650,9 +650,11 @@ NSRReaderBB10::initFullUI ()
 	ok = connect (Application::instance (), SIGNAL (manualExit ()), this, SLOT (onManualExit ()));
 	Q_ASSERT (ok);
 
+	if (!NSRHardwareInfo::instance()->isTrackpad ()) {
 	ok = connect (Application::instance()->mainWindow (), SIGNAL (posted ()),
 		      _pageView, SLOT (requestFocusForScroll ()));
 	Q_ASSERT (ok);
+	}
 
 	onSystemLanguageChanged ();
 
@@ -745,6 +747,7 @@ NSRReaderBB10::onGotoActionTriggered ()
 	if (_slider->isVisible ())
 		_pageStatus->setVisible (true);
 
+	if (!NSRHardwareInfo::instance()->isTrackpad ())
 	_pageView->requestFocusForScroll ();
 }
 
@@ -1291,7 +1294,7 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 	if (page != NULL)
 		delete page;
 
-	if (_naviPane->count () == 1)
+	if (_naviPane->count () == 1 && !NSRHardwareInfo::instance()->isTrackpad ())
 		_pageView->requestFocusForScroll ();
 }
 
@@ -1647,14 +1650,14 @@ NSRReaderBB10::onDocumentClosed ()
 void
 NSRReaderBB10::onActivePaneChanged (bb::cascades::AbstractPane *pane)
 {
-	if (pane == _naviPane)
+	if (pane == _naviPane && !NSRHardwareInfo::instance()->isTrackpad ())
 		_pageView->requestFocusForScroll ();
 }
 
 void
 NSRReaderBB10::onActionMenuVisualStateChanged (bb::cascades::ActionMenuVisualState::Type state)
 {
-	if (state == ActionMenuVisualState::Hidden)
+	if (state == ActionMenuVisualState::Hidden && !NSRHardwareInfo::instance()->isTrackpad ())
 		_pageView->requestFocusForScroll ();
 }
 
