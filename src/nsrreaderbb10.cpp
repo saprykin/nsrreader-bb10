@@ -886,7 +886,7 @@ NSRReaderBB10::onPageRendered (int number)
 	NSRRenderedPage page = _core->getCurrentPage ();
 
 	if (!page.isTextOnly ())
-		_pageView->setMaxZoom (_core->getMaxZoom ());
+		_pageView->setMaxZoom (page.getMaxRenderZoom ());
 
 	if (_pageView->isOverzoom ())
 		page.setZoom (_pageView->getZoom ());
@@ -900,8 +900,8 @@ NSRReaderBB10::onPageRendered (int number)
 	if (_pageView->getViewMode () == NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC) {
 		int pageDiff = _pageView->getSize().width () - page.getSize().width ();
 
-		bool canFit = (pageDiff > 0 && (_core->getMaxZoom () - page.getRenderedZoom ()) > DBL_EPSILON) ||
-			      (pageDiff < 0 && (page.getRenderedZoom () - _core->getMinZoom ()) > DBL_EPSILON);
+		bool canFit = (pageDiff > 0 && (page.getMaxRenderZoom () - page.getRenderedZoom ()) > DBL_EPSILON) ||
+			      (pageDiff < 0 && (page.getRenderedZoom () - page.getMinRenderZoom ()) > DBL_EPSILON);
 
 		bool needToFit = _core->isFitToWidth () ?
 				qAbs (pageDiff) > NSR_GUI_CROP_TO_WIDTH_THRESHOLD :
