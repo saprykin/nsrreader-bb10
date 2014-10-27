@@ -161,14 +161,6 @@
         <translation>Tombol &lt;b&gt;O&lt;/b&gt; untuk memperkecil tampilan halaman</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Shift + O&lt;/b&gt; to open another file</source>
-        <translation>&lt;b&gt;Shift + O&lt;/b&gt; untuk membuka berkas yang lain</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Shift + I&lt;/b&gt; to invert colors</source>
-        <translation>&lt;b&gt;Shift + I&lt;/b&gt; untuk membalik warna</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen</source>
         <translation>&lt;b&gt;Shift + Spasi&lt;/b&gt; untuk menggulung ke atas satu layar</translation>
     </message>
@@ -215,6 +207,14 @@
     <message>
         <source>&lt;b&gt;Brand Colors&lt;/b&gt; &amp;ndash; provides orange accents on UI controls.</source>
         <translation>&lt;b&gt;Warna Aksen&lt;/b&gt; &amp;ndash; mengatur aksen oranye pada kontrol Antarmuka Pengguna.</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;E&lt;/b&gt; to open another file</source>
+        <translation>&lt;b&gt;E&lt;/b&gt; untuk membuka berkas yang lain</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;V&lt;/b&gt; to invert colors</source>
+        <translation>&lt;b&gt;V&lt;/b&gt; untuk membalik warna</translation>
     </message>
 </context>
 <context>

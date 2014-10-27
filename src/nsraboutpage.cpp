@@ -411,10 +411,10 @@ NSRAboutPage::retranslateUi ()
 	QString kht3 = trUtf8 ("<b>I</b> key to zoom in page");
 	QString kht4 = trUtf8 ("<b>O</b> key to zoom out page");
 	QString kht5 = trUtf8 ("<b>G</b> key to go to arbitrary page");
-	QString kht6 = trUtf8 ("<b>Shift + O</b> to open another file");
+	QString kht6 = trUtf8 ("<b>E</b> to open another file");
 	QString kht7 = trUtf8 ("<b>K</b> key to add or edit bookmark");
 	QString kht8 = trUtf8 ("<b>R</b> key to switch text reflow mode");
-	QString kht9 = trUtf8 ("<b>Shift + I</b> to invert colors");
+	QString kht9 = trUtf8 ("<b>V</b> to invert colors");
 	QString kht10 = trUtf8 ("<b>Space</b> key to scroll down one screen");
 	QString kht11 = trUtf8 ("<b>Shift + Space</b> to scroll up one screen");
 	QString kht12 = trUtf8 ("<b>B</b> key to scroll to bottom");

@@ -161,14 +161,6 @@
         <translation>&lt;b&gt;O&lt;/b&gt; для уменьшения страницы</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Shift + O&lt;/b&gt; to open another file</source>
-        <translation>&lt;b&gt;Shift + O&lt;/b&gt; для открытия другого файла</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Shift + I&lt;/b&gt; to invert colors</source>
-        <translation>&lt;b&gt;Shift + I&lt;/b&gt; для инвертирования цветов</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen</source>
         <translation>&lt;b&gt;Shift + Space&lt;/b&gt; для пролистывания одного экрана вверх</translation>
     </message>
@@ -216,6 +208,14 @@
     <message>
         <source>&lt;b&gt;Brand Colors&lt;/b&gt; &amp;ndash; provides orange accents on UI controls.</source>
         <translation>&lt;b&gt;Фирменные цвета&lt;/b&gt; &amp;ndash; добавляет оранжевые оттенки на элементы пользовательского интерфейса.</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;E&lt;/b&gt; to open another file</source>
+        <translation>&lt;b&gt;E&lt;/b&gt; для открытия другого файла</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;V&lt;/b&gt; to invert colors</source>
+        <translation>&lt;b&gt;V&lt;/b&gt; для инвертирования цветов</translation>
     </message>
 </context>
 <context>

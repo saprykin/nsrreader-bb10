@@ -160,14 +160,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Shift + O&lt;/b&gt; to open another file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Shift + I&lt;/b&gt; to invert colors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;Shift + Space&lt;/b&gt; to scroll up one screen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -213,6 +205,14 @@
     </message>
     <message>
         <source>&lt;b&gt;Brand Colors&lt;/b&gt; &amp;ndash; provides orange accents on UI controls.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;E&lt;/b&gt; to open another file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;V&lt;/b&gt; to invert colors</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

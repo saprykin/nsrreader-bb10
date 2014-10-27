@@ -411,7 +411,7 @@ NSRReaderBB10::initFullUI ()
 	SystemShortcut *zoomOutShortcut = SystemShortcut::create (SystemShortcuts::ZoomOut);
 	Shortcut *gotoShortcut = Shortcut::create().key ("G");
 	Shortcut *reflowShortcut = Shortcut::create().key ("R");
-	Shortcut *invertShortcut = Shortcut::create().key ("Shift + I");
+	Shortcut *invertShortcut = Shortcut::create().key ("V");
 
 	prevPageAction->addShortcut (prevShortcut);
 	nextPageAction->addShortcut (nextShortcut);
@@ -430,7 +430,7 @@ NSRReaderBB10::initFullUI ()
 	Q_ASSERT (ok);
 
 	if (_startMode != ApplicationStartupMode::InvokeCard) {
-		Shortcut *openShortcut = Shortcut::create().key ("Shift + O");
+		Shortcut *openShortcut = Shortcut::create().key ("E");
 		Shortcut *bookmarkShortcut = Shortcut::create().key ("K");
 
 		openAction->addShortcut (openShortcut);
