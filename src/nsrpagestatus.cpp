@@ -11,6 +11,7 @@ using namespace bb::cascades;
 NSRPageStatus::NSRPageStatus (bb::cascades::Container *parent) :
 	Container (parent),
 	_backgroundContainer (NULL),
+	_labelContainer (NULL),
 	_statusLabel (NULL),
 	_timerId (-1),
 	_autoHide (true)
@@ -23,31 +24,43 @@ NSRPageStatus::NSRPageStatus (bb::cascades::Container *parent) :
 						  .background(Color::Gray)
 						  .opacity(0.5);
 
-	Container *labelContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						       .vertical(VerticalAlignment::Fill)
-						       .background(Color::Transparent)
-						       .layout(DockLayout::create());
+	_labelContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					     .vertical(VerticalAlignment::Fill)
+					     .background(Color::Transparent)
+					     .layout(DockLayout::create());
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	labelContainer->setLeftPadding (ui()->sdu (0.5f));
-	labelContainer->setRightPadding (ui()->sdu (0.5f));
-	labelContainer->setTopPadding (ui()->sdu (0.5f));
-	labelContainer->setBottomPadding (ui()->sdu (0.5f));
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_labelContainer->setLeftPadding (ui()->sddu (0.5f));
+	_labelContainer->setRightPadding (ui()->sddu (0.5f));
+	_labelContainer->setTopPadding (ui()->sddu (0.5f));
+	_labelContainer->setBottomPadding (ui()->sddu (0.5f));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_labelContainer->setLeftPadding (ui()->sdu (0.5f));
+	_labelContainer->setRightPadding (ui()->sdu (0.5f));
+	_labelContainer->setTopPadding (ui()->sdu (0.5f));
+	_labelContainer->setBottomPadding (ui()->sdu (0.5f));
 #else
-	labelContainer->setLeftPadding (5);
-	labelContainer->setRightPadding (5);
-	labelContainer->setTopPadding (5);
-	labelContainer->setBottomPadding (5);
+	_labelContainer->setLeftPadding (5);
+	_labelContainer->setRightPadding (5);
+	_labelContainer->setTopPadding (5);
+	_labelContainer->setBottomPadding (5);
 #endif
 
 	_statusLabel = Label::create().horizontal(HorizontalAlignment::Fill)
 				       .vertical(VerticalAlignment::Fill);
 	_statusLabel->textStyle()->setColor (Color::White);
 
-	labelContainer->add (_statusLabel);
+	_labelContainer->add (_statusLabel);
 
 	add (_backgroundContainer);
-	add (labelContainer);
+	add (_labelContainer);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	bool ok = connect (ui (), SIGNAL (dduFactorChanged (float)),
+			  this, SLOT (onDynamicDUFactorChanged (float)));
+	Q_UNUSED (ok);
+	Q_ASSERT (ok);
+#endif
 }
 
 NSRPageStatus::~NSRPageStatus ()
@@ -142,4 +155,17 @@ NSRPageStatus::timerEvent (QTimerEvent* ev)
 	}
 
 	setOnScreen (false);
+}
+
+void
+NSRPageStatus::onDynamicDUFactorChanged (float dduFactor)
+{
+	Q_UNUSED (dduFactor);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_labelContainer->setLeftPadding (ui()->sddu (0.5f));
+	_labelContainer->setRightPadding (ui()->sddu (0.5f));
+	_labelContainer->setTopPadding (ui()->sddu (0.5f));
+	_labelContainer->setBottomPadding (ui()->sddu (0.5f));
+#endif
 }

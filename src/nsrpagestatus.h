@@ -26,8 +26,12 @@ public:
 protected:
 	void timerEvent (QTimerEvent *ev);
 
+private Q_SLOTS:
+	void onDynamicDUFactorChanged (float dduFactor);
+
 private:
 	bb::cascades::Container	*_backgroundContainer;
+	bb::cascades::Container *_labelContainer;
 	bb::cascades::Label	*_statusLabel;
 	int			_timerId;
 	bool			_autoHide;
