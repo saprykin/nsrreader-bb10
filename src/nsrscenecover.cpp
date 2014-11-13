@@ -42,7 +42,12 @@ NSRSceneCover::NSRSceneCover (NSRCoverMode mode, QObject *parent) :
 						     .background(Color::Black)
 						     .visible(false);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+		_titleContainer->setLeftPadding (ui()->sddu (1));
+		_titleContainer->setRightPadding (ui()->sddu (1));
+		_titleContainer->setTopPadding (ui()->sddu (1));
+		_titleContainer->setBottomPadding (ui()->sddu (1));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
 		_titleContainer->setLeftPadding (ui()->sdu (1));
 		_titleContainer->setRightPadding (ui()->sdu (1));
 		_titleContainer->setTopPadding (ui()->sdu (1));
@@ -122,6 +127,12 @@ NSRSceneCover::NSRSceneCover (NSRCoverMode mode, QObject *parent) :
 			   this, SLOT (retranslateUi ()));
 	Q_UNUSED (ok);
 	Q_ASSERT (ok);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	ok = connect (ui (), SIGNAL (dduFactorChanged (float)),
+		      this, SLOT (onDynamicDUFactorChanged (float)));
+	Q_ASSERT (ok);
+#endif
 }
 
 NSRSceneCover::~NSRSceneCover ()
@@ -207,4 +218,19 @@ NSRSceneCover::retranslateUi ()
 {
 	if (_isEmptyText && !_textView->text().isEmpty ())
 		_textView->setText (trUtf8 ("No text data available for this page"));
+}
+
+void
+NSRSceneCover::onDynamicDUFactorChanged (float dduFactor)
+{
+	Q_UNUSED (dduFactor);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	if (_mode == NSR_COVER_MODE_FULL) {
+		_titleContainer->setLeftPadding (ui()->sddu (1));
+		_titleContainer->setRightPadding (ui()->sddu (1));
+		_titleContainer->setTopPadding (ui()->sddu (1));
+		_titleContainer->setBottomPadding (ui()->sddu (1));
+	}
+#endif
 }

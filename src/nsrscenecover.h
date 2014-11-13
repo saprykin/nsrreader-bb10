@@ -43,6 +43,7 @@ public:
 
 private Q_SLOTS:
 	void retranslateUi ();
+	void onDynamicDUFactorChanged (float dduFactor);
 
 private:
 	NSRPageStatus *			_pageStatus;
