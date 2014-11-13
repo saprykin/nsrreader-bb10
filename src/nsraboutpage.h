@@ -32,14 +32,17 @@ private Q_SLOTS:
 	void onBuyActionTriggered ();
 #endif
 	void retranslateUi ();
+	void onDynamicDUFactorChanged (float dduFactor);
 
 private:
 	NSRTranslator			*_translator;
 	bb::cascades::Container		*_aboutContainer;
 	bb::cascades::Container		*_helpContainer;
 	bb::cascades::Container		*_changesContainer;
+	bb::cascades::Container		*_contactsContainer;
 	bb::cascades::ScrollView	*_scrollView;
 	bb::cascades::WebView		*_webHelp;
+	bb::cascades::WebView		*_webChanges;
 	bb::cascades::Label		*_versionPlatform;
 	bb::cascades::Label		*_versionEngine;
 #ifdef NSR_LITE_VERSION

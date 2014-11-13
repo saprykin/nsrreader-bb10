@@ -22,8 +22,11 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	Page (parent),
 	_aboutContainer (NULL),
 	_helpContainer (NULL),
+	_changesContainer (NULL),
+	_contactsContainer (NULL),
 	_scrollView (NULL),
 	_webHelp (NULL),
+	_webChanges (NULL),
 	_versionPlatform (NULL),
 	_versionEngine (NULL)
 #ifdef NSR_LITE_VERSION
@@ -93,20 +96,23 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	contactsInfo->setTextFormat (TextFormat::Html);
 	contactsInfo->content()->setFlags (TextContentFlag::ActiveText);
 
-	Container *contactsContainer = Container::create().horizontal(HorizontalAlignment::Center)
-							  .vertical(VerticalAlignment::Fill)
-							  .layout(StackLayout::create ());
+	_contactsContainer = Container::create().horizontal(HorizontalAlignment::Center)
+						.vertical(VerticalAlignment::Fill)
+						.layout(StackLayout::create ());
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	contactsContainer->setTopPadding (ui()->sdu (2));
-	contactsContainer->setBottomPadding (ui()->sdu (2));
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_contactsContainer->setTopPadding (ui()->sddu (2));
+	_contactsContainer->setBottomPadding (ui()->sddu (2));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_contactsContainer->setTopPadding (ui()->sdu (2));
+	_contactsContainer->setBottomPadding (ui()->sdu (2));
 #else
-	contactsContainer->setTopPadding (20);
-	contactsContainer->setBottomPadding (20);
+	_contactsContainer->setTopPadding (20);
+	_contactsContainer->setBottomPadding (20);
 #endif
 
-	contactsContainer->add (authorInfo);
-	contactsContainer->add (contactsInfo);
+	_contactsContainer->add (authorInfo);
+	_contactsContainer->add (contactsInfo);
 
 #if BBNDK_VERSION_AT_LEAST(10,2,0)
 	contactsInfo->accessibility()->setName (trUtf8 ("nsr.reader@gmail.com - tap to write a email"));
@@ -127,7 +133,10 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_liteLabel->textStyle()->setTextAlign(TextAlign::Center);
 #endif
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_aboutContainer->setTopPadding (ui()->sddu (4));
+	_aboutContainer->setBottomPadding (ui()->sddu (4));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
 	_aboutContainer->setTopPadding (ui()->sdu (4));
 	_aboutContainer->setBottomPadding (ui()->sdu (4));
 #else
@@ -139,7 +148,7 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	_aboutContainer->add (versionInfo);
 	_aboutContainer->add (_versionPlatform);
 	_aboutContainer->add (_versionEngine);
-	_aboutContainer->add (contactsContainer);
+	_aboutContainer->add (_contactsContainer);
 	_aboutContainer->add (reviewLabel);
 
 #ifdef NSR_LITE_VERSION
@@ -157,7 +166,11 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 					    .layout(StackLayout::create ());
 
 	_webHelp = WebView::create ();
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_webHelp->settings()->setDevicePixelRatio (ui()->dduFactor ());
+#else
 	_webHelp->settings()->setDevicePixelRatio (1.0);
+#endif
 	_webHelp->settings()->setViewportArguments (viewportMap);
 	_webHelp->settings()->setBackground (NSRThemeSupport::instance()->getBackground ());
 
@@ -170,15 +183,19 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 					       .vertical(VerticalAlignment::Fill)
 					       .layout(StackLayout::create ());
 
-	WebView *webChanges = WebView::create ();
-	webChanges->settings()->setDevicePixelRatio (1.0);
-	webChanges->settings()->setViewportArguments (viewportMap);
-	webChanges->settings()->setBackground (NSRThemeSupport::instance()->getBackground ());
+	_webChanges = WebView::create ();
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_webChanges->settings()->setDevicePixelRatio (ui()->dduFactor());
+#else
+	_webChanges->settings()->setDevicePixelRatio (1.0);
+#endif
+	_webChanges->settings()->setViewportArguments (viewportMap);
+	_webChanges->settings()->setBackground (NSRThemeSupport::instance()->getBackground ());
 
-	webChanges->setUrl (QUrl (QString("local:///assets/%1/whats-new.html")
-					  .arg (NSRThemeSupport::instance()->getAssetsThemeDirectory ())));
+	_webChanges->setUrl (QUrl (QString("local:///assets/%1/whats-new.html")
+					   .arg (NSRThemeSupport::instance()->getAssetsThemeDirectory ())));
 
-	_changesContainer->add (webChanges);
+	_changesContainer->add (_webChanges);
 	_changesContainer->setVisible (false);
 
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -314,6 +331,12 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		      this, SLOT (retranslateUi ()));
 	Q_ASSERT (ok);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	ok = connect (ui (), SIGNAL (dduFactorChanged (float)),
+		      this, SLOT (onDynamicDUFactorChanged (float)));
+	Q_ASSERT (ok);
+#endif
 }
 
 NSRAboutPage::~NSRAboutPage ()
@@ -518,4 +541,22 @@ NSRAboutPage::retranslateUi ()
 	_webHelp->setHtml (htmlHelp);
 
 	_translator->translate ();
+}
+
+void
+NSRAboutPage::onDynamicDUFactorChanged (float dduFactor)
+{
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_contactsContainer->setTopPadding (ui()->sddu (2));
+	_contactsContainer->setBottomPadding (ui()->sddu (2));
+	_aboutContainer->setTopPadding (ui()->sddu (4));
+	_aboutContainer->setBottomPadding (ui()->sddu (4));
+	_webHelp->settings()->setDevicePixelRatio (dduFactor);
+	_webHelp->setHtml (_webHelp->html ());
+	_webChanges->settings()->setDevicePixelRatio (dduFactor);
+	_webChanges->setUrl (QUrl (QString("local:///assets/%1/whats-new.html")
+					   .arg (NSRThemeSupport::instance()->getAssetsThemeDirectory ())));
+#else
+	Q_UNUSED (dduFactor);
+#endif
 }
