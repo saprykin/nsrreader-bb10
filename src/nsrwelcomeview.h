@@ -23,6 +23,9 @@ Q_SIGNALS:
 	void openDocumentRequested ();
 	void recentDocumentsRequested ();
 
+private Q_SLOTS:
+	void onDynamicDUFactorChanged (float dduFactor);
+
 private:
 	NSRTranslator		*_translator;
 	bb::cascades::Button	*_openButton;

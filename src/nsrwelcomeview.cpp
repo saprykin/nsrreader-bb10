@@ -52,7 +52,9 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 				     .vertical(VerticalAlignment::Center);
 	_startLabel->textStyle()->setFontSize (FontSize::XLarge);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_startLabel->setBottomMargin (ui()->sddu (6));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
 	_startLabel->setBottomMargin (ui()->sdu (6));
 #else
 	_startLabel->setBottomMargin (60);
@@ -76,6 +78,12 @@ NSRWelcomeView::NSRWelcomeView (bb::cascades::Container *parent) :
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		      _translator, SLOT (translate ()));
 	Q_ASSERT (ok);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	ok = connect (ui (), SIGNAL (dduFactorChanged (float)),
+		      this, SLOT (onDynamicDUFactorChanged (float)));
+	Q_ASSERT (ok);
+#endif
 }
 
 NSRWelcomeView::~NSRWelcomeView ()
@@ -95,4 +103,14 @@ NSRWelcomeView::setReadOnly (bool readOnly)
 {
 	_openButton->setEnabled (!readOnly);
 	_lastDocsButton->setEnabled (!readOnly);
+}
+
+void
+NSRWelcomeView::onDynamicDUFactorChanged (float dduFactor)
+{
+	Q_UNUSED (dduFactor);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_startLabel->setBottomMargin (ui()->sddu (6));
+#endif
 }
