@@ -26,18 +26,22 @@ Q_SIGNALS:
 private Q_SLOTS:
 	void retranslateUi ();
 	void onEncodingAutodetectionCheckedChanged (bool checked);
+	void onDynamicDUFactorChanged (float dduFactor);
 
 private:
-	NSRTranslator			*_translator;
-	bb::cascades::ToggleButton	*_isFullscreen;
-	bb::cascades::ToggleButton	*_isAutoCrop;
-	bb::cascades::ToggleButton	*_isPreventScreenLock;
-	bb::cascades::ToggleButton	*_isEncodingAutodetection;
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	bb::cascades::ToggleButton	*_isBrandColors;
-#endif
-	bb::cascades::DropDown		*_encodingsList;
-	bb::cascades::DropDown		*_themeList;
+	NSRTranslator *			_translator;
+	bb::cascades::Container *	_themeContainer;
+	bb::cascades::Container *	_fullscreenContainer;
+	bb::cascades::Container *	_cropContainer;
+	bb::cascades::Container *	_screenLockContainer;
+	bb::cascades::Container *	_encodingContainer;
+	bb::cascades::ToggleButton *	_isFullscreen;
+	bb::cascades::ToggleButton *	_isAutoCrop;
+	bb::cascades::ToggleButton *	_isPreventScreenLock;
+	bb::cascades::ToggleButton *	_isEncodingAutodetection;
+	bb::cascades::ToggleButton *	_isBrandColors;
+	bb::cascades::DropDown *	_encodingsList;
+	bb::cascades::DropDown *	_themeList;
 };
 
 #endif /* NSRPREFERENCESPAGE_H_ */

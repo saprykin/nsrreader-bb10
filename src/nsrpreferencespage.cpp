@@ -19,13 +19,16 @@ using namespace bb::cascades;
 NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Page (parent),
 	_translator (NULL),
+	_themeContainer (NULL),
+	_fullscreenContainer (NULL),
+	_cropContainer (NULL),
+	_screenLockContainer (NULL),
+	_encodingContainer (NULL),
 	_isFullscreen (NULL),
 	_isAutoCrop (NULL),
 	_isPreventScreenLock (NULL),
 	_isEncodingAutodetection (NULL),
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_isBrandColors (NULL),
-#endif
 	_encodingsList (NULL),
 	_themeList (NULL)
 {
@@ -87,8 +90,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 		_themeList->setSelectedIndex (NSRSettings::instance()->getVisualStyle () - 1);
 
 	/* 'Visual Theme' section */
-	Container *themeContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						       .layout(StackLayout::create ());
+	_themeContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					     .layout(StackLayout::create ());
 
 	Label *themeInfoLabel = Label::create(trUtf8 ("Close and reopen the app to apply changes."))
 				      .horizontal(HorizontalAlignment::Fill)
@@ -113,35 +116,43 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	themeInfoLabel->textStyle()->setFontSize (FontSize::XSmall);
 	themeInfoLabel->textStyle()->setColor (NSRThemeSupport::instance()->getTipText ());
 
-	themeContainer->add (_themeList);
+	_themeContainer->add (_themeList);
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
-	themeContainer->add (themeInContainer);
+	_themeContainer->add (themeInContainer);
 #endif
-	themeContainer->add (themeInfoLabel);
+	_themeContainer->add (themeInfoLabel);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	themeContainer->setTopPadding (ui()->sdu (2));
-	themeContainer->setLeftPadding (ui()->sdu (2));
-	themeContainer->setRightPadding (ui()->sdu (2));
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_themeContainer->setTopPadding (ui()->sddu (2));
+	_themeContainer->setLeftPadding (ui()->sddu (2));
+	_themeContainer->setRightPadding (ui()->sddu (2));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_themeContainer->setTopPadding (ui()->sdu (2));
+	_themeContainer->setLeftPadding (ui()->sdu (2));
+	_themeContainer->setRightPadding (ui()->sdu (2));
 #else
-	themeContainer->setTopPadding (20);
-	themeContainer->setLeftPadding (20);
-	themeContainer->setRightPadding (20);
+	_themeContainer->setTopPadding (20);
+	_themeContainer->setLeftPadding (20);
+	_themeContainer->setRightPadding (20);
 #endif
 
 	/* 'Fullscreen Mode' option */
-	Container *fullscreenContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-							    .layout(StackLayout::create()
-									        .orientation(LayoutOrientation::LeftToRight));
+	_fullscreenContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						  .layout(StackLayout::create()
+								      .orientation(LayoutOrientation::LeftToRight));
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	fullscreenContainer->setTopPadding (ui()->sdu (2));
-	fullscreenContainer->setLeftPadding (ui()->sdu (2));
-	fullscreenContainer->setRightPadding (ui()->sdu (2));
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_fullscreenContainer->setTopPadding (ui()->sddu (2));
+	_fullscreenContainer->setLeftPadding (ui()->sddu (2));
+	_fullscreenContainer->setRightPadding (ui()->sddu (2));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_fullscreenContainer->setTopPadding (ui()->sdu (2));
+	_fullscreenContainer->setLeftPadding (ui()->sdu (2));
+	_fullscreenContainer->setRightPadding (ui()->sdu (2));
 #else
-	fullscreenContainer->setTopPadding (20);
-	fullscreenContainer->setLeftPadding (20);
-	fullscreenContainer->setRightPadding (20);
+	_fullscreenContainer->setTopPadding (20);
+	_fullscreenContainer->setLeftPadding (20);
+	_fullscreenContainer->setRightPadding (20);
 #endif
 
 	Label *fullscreenLabel = Label::create(trUtf8 ("Fullscreen Mode", "Option in preferences"))
@@ -150,13 +161,13 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				       .multiline(true)
 				       .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
 
-	fullscreenContainer->add (fullscreenLabel);
-	fullscreenContainer->add (_isFullscreen);
+	_fullscreenContainer->add (fullscreenLabel);
+	_fullscreenContainer->add (_isFullscreen);
 
 	/* 'Crop Blank Edges' option */
-	Container *cropContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						      .layout(StackLayout::create()
-									  .orientation(LayoutOrientation::LeftToRight));
+	_cropContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					    .layout(StackLayout::create()
+								.orientation(LayoutOrientation::LeftToRight));
 
 	Label *cropLabel = Label::create(trUtf8 ("Crop Blank Edges", "Option in preferences"))
 				 .horizontal(HorizontalAlignment::Left)
@@ -164,15 +175,18 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				 .multiline(true)
 				 .layoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
 
-	cropContainer->add (cropLabel);
-	cropContainer->add (_isAutoCrop);
+	_cropContainer->add (cropLabel);
+	_cropContainer->add (_isAutoCrop);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	cropContainer->setLeftPadding (ui()->sdu (2));
-	cropContainer->setRightPadding (ui()->sdu (2));
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_cropContainer->setLeftPadding (ui()->sddu (2));
+	_cropContainer->setRightPadding (ui()->sddu (2));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_cropContainer->setLeftPadding (ui()->sdu (2));
+	_cropContainer->setRightPadding (ui()->sdu (2));
 #else
-	cropContainer->setLeftPadding (20);
-	cropContainer->setRightPadding (20);
+	_cropContainer->setLeftPadding (20);
+	_cropContainer->setRightPadding (20);
 #endif
 
 	/* 'Prevent Screen Locking' option */
@@ -196,18 +210,21 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	screenLockInContainer->add (preventScreenLockLabel);
 	screenLockInContainer->add (_isPreventScreenLock);
 
-	Container *screenLockContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-							    .layout(StackLayout::create ());
+	_screenLockContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						  .layout(StackLayout::create ());
 
-	screenLockContainer->add (screenLockInContainer);
-	screenLockContainer->add (screenLockInfo);
+	_screenLockContainer->add (screenLockInContainer);
+	_screenLockContainer->add (screenLockInfo);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	screenLockContainer->setLeftPadding (ui()->sdu (2));
-	screenLockContainer->setRightPadding (ui()->sdu (2));
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_screenLockContainer->setLeftPadding (ui()->sddu (2));
+	_screenLockContainer->setRightPadding (ui()->sddu (2));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_screenLockContainer->setLeftPadding (ui()->sdu (2));
+	_screenLockContainer->setRightPadding (ui()->sdu (2));
 #else
-	screenLockContainer->setLeftPadding (20);
-	screenLockContainer->setRightPadding (20);
+	_screenLockContainer->setLeftPadding (20);
+	_screenLockContainer->setRightPadding (20);
 #endif
 
 	/* 'Text Encoding' section */
@@ -224,8 +241,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	encodingInContainer->add (encodingAutodetectLabel);
 	encodingInContainer->add (_isEncodingAutodetection);
 
-	Container *encodingContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						          .layout(StackLayout::create());
+	_encodingContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						.layout(StackLayout::create());
 	Label *encodingInfo = Label::create(trUtf8 ("Text encoding is used only for plain text files, "
 					       	    "none other format supports encoding selection."))
 				     .horizontal(HorizontalAlignment::Fill)
@@ -234,19 +251,23 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	encodingInfo->textStyle()->setColor (NSRThemeSupport::instance()->getTipText ());
 	encodingInfo->setMultiline (true);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	encodingContainer->setTopPadding (ui()->sdu (2));
-	encodingContainer->setLeftPadding (ui()->sdu (2));
-	encodingContainer->setRightPadding (ui()->sdu (2));
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_encodingContainer->setTopPadding (ui()->sddu (2));
+	_encodingContainer->setLeftPadding (ui()->sddu (2));
+	_encodingContainer->setRightPadding (ui()->sddu (2));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_encodingContainer->setTopPadding (ui()->sdu (2));
+	_encodingContainer->setLeftPadding (ui()->sdu (2));
+	_encodingContainer->setRightPadding (ui()->sdu (2));
 #else
-	encodingContainer->setTopPadding (20);
-	encodingContainer->setLeftPadding (20);
-	encodingContainer->setRightPadding (20);
+	_encodingContainer->setTopPadding (20);
+	_encodingContainer->setLeftPadding (20);
+	_encodingContainer->setRightPadding (20);
 #endif
 
-	encodingContainer->add (encodingInContainer);
-	encodingContainer->add (_encodingsList);
-	encodingContainer->add (encodingInfo);
+	_encodingContainer->add (encodingInContainer);
+	_encodingContainer->add (_encodingsList);
+	_encodingContainer->add (encodingInfo);
 
 #if BBNDK_VERSION_AT_LEAST(10,2,0)
 	_isFullscreen->accessibility()->addLabel (fullscreenLabel);
@@ -265,17 +286,17 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 
 	/* Add all options to root layout */
 	rootContainer->add (themeHeader);
-	rootContainer->add (themeContainer);
+	rootContainer->add (_themeContainer);
 	rootContainer->add (Divider::create().bottomMargin (0));
 	rootContainer->add (generalHeader);
-	rootContainer->add (fullscreenContainer);
+	rootContainer->add (_fullscreenContainer);
 	rootContainer->add (Divider::create ());
-	rootContainer->add (cropContainer);
+	rootContainer->add (_cropContainer);
 	rootContainer->add (Divider::create ());
-	rootContainer->add (screenLockContainer);
+	rootContainer->add (_screenLockContainer);
 	rootContainer->add (Divider::create().bottomMargin (0));
 	rootContainer->add (encodingHeader);
-	rootContainer->add (encodingContainer);
+	rootContainer->add (_encodingContainer);
 	rootContainer->add (Divider::create ());
 
 	ScrollView *scrollView = ScrollView::create().horizontal(HorizontalAlignment::Fill)
@@ -364,6 +385,12 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		     this, SLOT (retranslateUi ()));
 	Q_ASSERT (ok);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	ok = connect (ui (), SIGNAL (dduFactorChanged (float)),
+		      this, SLOT (onDynamicDUFactorChanged (float)));
+	Q_ASSERT (ok);
+#endif
 }
 
 NSRPreferencesPage::~NSRPreferencesPage ()
@@ -409,4 +436,30 @@ void
 NSRPreferencesPage::onEncodingAutodetectionCheckedChanged (bool checked)
 {
 	_encodingsList->setEnabled (!checked);
+}
+
+void
+NSRPreferencesPage::onDynamicDUFactorChanged (float dduFactor)
+{
+	Q_UNUSED (dduFactor);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_themeContainer->setTopPadding (ui()->sddu (2));
+	_themeContainer->setLeftPadding (ui()->sddu (2));
+	_themeContainer->setRightPadding (ui()->sddu (2));
+
+	_fullscreenContainer->setTopPadding (ui()->sddu (2));
+	_fullscreenContainer->setLeftPadding (ui()->sddu (2));
+	_fullscreenContainer->setRightPadding (ui()->sddu (2));
+
+	_cropContainer->setLeftPadding (ui()->sddu (2));
+	_cropContainer->setRightPadding (ui()->sddu (2));
+
+	_screenLockContainer->setLeftPadding (ui()->sddu (2));
+	_screenLockContainer->setRightPadding (ui()->sddu (2));
+
+	_encodingContainer->setTopPadding (ui()->sddu (2));
+	_encodingContainer->setLeftPadding (ui()->sddu (2));
+	_encodingContainer->setRightPadding (ui()->sddu (2));
+#endif
 }
