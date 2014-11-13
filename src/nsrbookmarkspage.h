@@ -38,6 +38,7 @@ private Q_SLOTS:
 	void saveData ();
 	void updateUi ();
 	void onListItemTriggered (QVariantList indexPath);
+	void onDynamicDUFactorChanged (float dduFactor);
 
 private:
 	void loadData (const QString& file);

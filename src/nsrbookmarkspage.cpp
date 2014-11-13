@@ -82,7 +82,10 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .layout(StackLayout::create ());
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_emptyContainer->setLeftPadding (ui()->sddu (2));
+	_emptyContainer->setRightPadding (ui()->sddu (2));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
 	_emptyContainer->setLeftPadding (ui()->sdu (2));
 	_emptyContainer->setRightPadding (ui()->sdu (2));
 #else
@@ -133,6 +136,12 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		      this, SLOT (retranslateUi ()));
 	Q_ASSERT (ok);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	ok = connect (ui (), SIGNAL (dduFactorChanged (float)),
+		      this, SLOT (onDynamicDUFactorChanged (float)));
+	Q_ASSERT (ok);
+#endif
 
 	_model = new GroupDataModel ();
 	_model->setGrouping (ItemGrouping::None);
@@ -375,4 +384,15 @@ NSRBookmarksPage::onListItemTriggered (QVariantList indexPath)
 	QVariantMap map = _listView->dataModel()->data(indexPath).toMap ();
 
 	emit pageRequested (map["page-number"].toInt ());
+}
+
+void
+NSRBookmarksPage::onDynamicDUFactorChanged (float dduFactor)
+{
+	Q_UNUSED (dduFactor);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_emptyContainer->setLeftPadding (ui()->sddu (2));
+	_emptyContainer->setRightPadding (ui()->sddu (2));
+#endif
 }
