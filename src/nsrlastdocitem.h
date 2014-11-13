@@ -11,6 +11,7 @@
 #include <bb/cascades/ImageTracker>
 #include <bb/cascades/ResourceState>
 #include <bb/cascades/FadeTransition>
+#include <bb/cascades/LayoutUpdateHandler>
 
 #include <QRectF>
 #include <QObject>
@@ -43,24 +44,27 @@ private Q_SLOTS:
 	void onAnimationStopped ();
 	void retranslateUi ();
 	void onWantsHighlightChanged (bool wantsHighlight);
+	void onDynamicDUFactorChanged (float dduFactor);
 
 private:
 	void retranslateSubtitle ();
 
-	NSRTranslator			*_translator;
-	bb::cascades::ImageView		*_imageView;
-	bb::cascades::Label		*_textView;
-	bb::cascades::Label		*_label;
-	bb::cascades::Container		*_lockContainer;
-	bb::cascades::Container		*_viewContainer;
-	bb::cascades::ImageTracker	*_imgTracker;
-	bb::cascades::Container		*_solidSelect[4];
-	bb::cascades::Container		*_innerSelect[4];
-	bb::cascades::Container		*_solidContainer;
-	bb::cascades::Container		*_innerContainer;
-	bb::cascades::FadeTransition	*_selectAnimation;
-	QString				_path;
-	bool				_selected;
+	NSRTranslator *				_translator;
+	bb::cascades::ImageView *		_imageView;
+	bb::cascades::Label *			_textView;
+	bb::cascades::Label *			_label;
+	bb::cascades::Container *		_lockContainer;
+	bb::cascades::Container *		_viewContainer;
+	bb::cascades::Container *		_labelContainer;
+	bb::cascades::ImageTracker *		_imgTracker;
+	bb::cascades::Container *		_solidSelect[4];
+	bb::cascades::Container *		_innerSelect[4];
+	bb::cascades::Container *		_solidContainer;
+	bb::cascades::Container *		_innerContainer;
+	bb::cascades::FadeTransition *		_selectAnimation;
+	bb::cascades::LayoutUpdateHandler *	_layoutHandler;
+	QString					_path;
+	bool					_selected;
 };
 
 #endif /* NSRLASTDOCITEM_H_ */

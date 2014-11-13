@@ -9,7 +9,6 @@
 #include <bb/cascades/StackLayoutProperties>
 #include <bb/cascades/Color>
 #include <bb/cascades/ImagePaint>
-#include <bb/cascades/LayoutUpdateHandler>
 #include <bb/cascades/ActionSet>
 #include <bb/cascades/ThemeSupport>
 #include <bb/cascades/Theme>
@@ -27,10 +26,12 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_label (NULL),
 	_lockContainer (NULL),
 	_viewContainer (NULL),
+	_labelContainer (NULL),
 	_imgTracker (NULL),
 	_solidContainer (NULL),
 	_innerContainer (NULL),
 	_selectAnimation (NULL),
+	_layoutHandler (NULL),
 	_selected (false)
 {
 	_translator = new NSRTranslator (this);
@@ -66,24 +67,28 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_label->textStyle()->setColor (Color::White);
 	_label->textStyle()->setFontSize (FontSize::XSmall);
 
-	Container *labelContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						       .vertical(VerticalAlignment::Bottom)
-						       .layout(DockLayout::create ())
-						       .background(Color::Black);
-	labelContainer->setOpacity (0.8);
-	labelContainer->setTopMargin (0);
+	_labelContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					    .vertical(VerticalAlignment::Bottom)
+					    .layout(DockLayout::create ())
+					    .background(Color::Black);
+	_labelContainer->setOpacity (0.8);
+	_labelContainer->setTopMargin (0);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	labelContainer->setMinHeight (ui()->sdu (7));
-	labelContainer->setLeftPadding (ui()->sdu (1.5f));
-	labelContainer->setRightPadding (ui()->sdu (1.5f));
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_labelContainer->setMinHeight (ui()->sddu (7));
+	_labelContainer->setLeftPadding (ui()->sddu (1.5f));
+	_labelContainer->setRightPadding (ui()->sddu (1.5f));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_labelContainer->setMinHeight (ui()->sdu (7));
+	_labelContainer->setLeftPadding (ui()->sdu (1.5f));
+	_labelContainer->setRightPadding (ui()->sdu (1.5f));
 #else
-	labelContainer->setMinHeight (70);
-	labelContainer->setLeftPadding (15);
-	labelContainer->setRightPadding (15);
+	_labelContainer->setMinHeight (70);
+	_labelContainer->setLeftPadding (15);
+	_labelContainer->setRightPadding (15);
 #endif
 
-	labelContainer->add (_label);
+	_labelContainer->add (_label);
 
 	_lockContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Center)
@@ -103,7 +108,7 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	_lockContainer->add (lockLabel);
 
 	rootContainer->add (_viewContainer);
-	rootContainer->add (labelContainer);
+	rootContainer->add (_labelContainer);
 	rootContainer->add (_lockContainer);
 
 	_imgTracker = new ImageTracker (this);
@@ -141,7 +146,12 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .background(frameColor);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_solidSelect[0]->setPreferredHeight (ui()->sddu (0.4f));
+	_solidSelect[1]->setPreferredWidth (ui()->sddu (0.4f));
+	_solidSelect[2]->setPreferredHeight (ui()->sddu (0.4f));
+	_solidSelect[3]->setPreferredWidth (ui()->sddu (0.4f));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
 	_solidSelect[0]->setPreferredHeight (ui()->sdu (0.4f));
 	_solidSelect[1]->setPreferredWidth (ui()->sdu (0.4f));
 	_solidSelect[2]->setPreferredHeight (ui()->sdu (0.4f));
@@ -165,7 +175,12 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					     .layout(DockLayout::create())
 					     .background(Color::Transparent);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_innerContainer->setTopPadding (ui()->sddu (0.4f));
+	_innerContainer->setRightPadding (ui()->sddu (0.4f));
+	_innerContainer->setBottomPadding (ui()->sddu (0.4f));
+	_innerContainer->setLeftPadding (ui()->sddu (0.4f));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
 	_innerContainer->setTopPadding (ui()->sdu (0.4f));
 	_innerContainer->setRightPadding (ui()->sdu (0.4f));
 	_innerContainer->setBottomPadding (ui()->sdu (0.4f));
@@ -190,7 +205,12 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 					     .vertical(VerticalAlignment::Center)
 					     .background(frameColor);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_innerSelect[0]->setPreferredHeight (ui()->sddu (0.8f));
+	_innerSelect[1]->setPreferredWidth (ui()->sddu (0.8f));
+	_innerSelect[2]->setPreferredHeight (ui()->sddu (0.8f));
+	_innerSelect[3]->setPreferredWidth (ui()->sddu (0.8f));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
 	_innerSelect[0]->setPreferredHeight (ui()->sdu (0.8f));
 	_innerSelect[1]->setPreferredWidth (ui()->sdu (0.8f));
 	_innerSelect[2]->setPreferredHeight (ui()->sdu (0.8f));
@@ -216,8 +236,8 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 	ok = connect (_selectAnimation, SIGNAL (stopped ()), this, SLOT (onAnimationStopped ()));
 	Q_ASSERT (ok);
 
-	LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
-							       SLOT (onLayoutFrameChanged (QRectF)));
+	_layoutHandler = LayoutUpdateHandler::create(this).onLayoutFrameChanged (this,
+			SLOT (onLayoutFrameChanged (QRectF)));
 
 	mainContainer->add (rootContainer);
 	setRoot (mainContainer);
@@ -232,6 +252,10 @@ NSRLastDocItem::NSRLastDocItem (bb::cascades::Container* parent) :
 
 	ok = connect (navigation (), SIGNAL (wantsHighlightChanged (bool)),
 		      this, SLOT (onWantsHighlightChanged (bool)));
+	Q_ASSERT (ok);
+
+	ok = connect (ui (), SIGNAL (dduFactorChanged (float)),
+		      this, SLOT (onDynamicDUFactorChanged (float)));
 	Q_ASSERT (ok);
 #endif
 
@@ -275,7 +299,12 @@ NSRLastDocItem::updateItem (const QString&	title,
 		_textView->setVisible (true);
 		_textView->setText (text);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+		_viewContainer->setLeftPadding (ui()->sddu (1.2f));
+		_viewContainer->setTopPadding (ui()->sddu (1.2f));
+		_viewContainer->setRightPadding (ui()->sddu (1.2f));
+		_viewContainer->setBottomPadding (ui()->sddu (1.2f));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
 		_viewContainer->setLeftPadding (ui()->sdu (1.2f));
 		_viewContainer->setTopPadding (ui()->sdu (1.2f));
 		_viewContainer->setRightPadding (ui()->sdu (1.2f));
@@ -411,6 +440,35 @@ NSRLastDocItem::onWantsHighlightChanged (bool wantsHighlight)
 	_solidContainer->setVisible (wantsHighlight);
 #else
 	Q_UNUSED (wantsHighlight);
+#endif
+}
+
+void
+NSRLastDocItem::onDynamicDUFactorChanged (float dduFactor)
+{
+	Q_UNUSED (dduFactor);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_labelContainer->setMinHeight (ui()->sddu (7));
+	_labelContainer->setLeftPadding (ui()->sddu (1.5f));
+	_labelContainer->setRightPadding (ui()->sddu (1.5f));
+
+	_solidSelect[0]->setPreferredHeight (ui()->sddu (0.4f));
+	_solidSelect[1]->setPreferredWidth (ui()->sddu (0.4f));
+	_solidSelect[2]->setPreferredHeight (ui()->sddu (0.4f));
+	_solidSelect[3]->setPreferredWidth (ui()->sddu (0.4f));
+
+	_innerContainer->setTopPadding (ui()->sddu (0.4f));
+	_innerContainer->setRightPadding (ui()->sddu (0.4f));
+	_innerContainer->setBottomPadding (ui()->sddu (0.4f));
+	_innerContainer->setLeftPadding (ui()->sddu (0.4f));
+
+	_innerSelect[0]->setPreferredHeight (ui()->sddu (0.8f));
+	_innerSelect[1]->setPreferredWidth (ui()->sddu (0.8f));
+	_innerSelect[2]->setPreferredHeight (ui()->sddu (0.8f));
+	_innerSelect[3]->setPreferredWidth (ui()->sddu (0.8f));
+
+	onLayoutFrameChanged (_layoutHandler->layoutFrame ());
 #endif
 }
 
