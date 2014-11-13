@@ -32,16 +32,18 @@ private Q_SLOTS:
 	void onOrientationAboutToChange (bb::cascades::UIOrientation::Type type);
 	void onListItemTriggered (QVariantList indexPath);
 	void onModelUpdated (bool isEmpty);
+	void onDynamicDUFactorChanged (float dduFactor);
 
 private:
 	void loadData ();
 	QVariant createModelItem (const QString& file);
 
 	QString				_lastOpenedFile;
-	NSRTranslator			*_translator;
-	NSRLastDocsListView		*_listView;
-	bb::cascades::GridListLayout	*_listLayout;
-	bb::cascades::Container		*_emptyContainer;
+	NSRTranslator *			_translator;
+	NSRLastDocsListView *		_listView;
+	bb::cascades::GridListLayout *	_listLayout;
+	bb::cascades::Container *	_rootContainer;
+	bb::cascades::Container *	_emptyContainer;
 };
 
 #endif /* NSRLASTDOCSPAGE_H_ */

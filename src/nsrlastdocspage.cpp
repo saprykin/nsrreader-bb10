@@ -27,20 +27,24 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	_translator (NULL),
 	_listView (NULL),
 	_listLayout (NULL),
+	_rootContainer (NULL),
 	_emptyContainer (NULL)
 {
 	_translator = new NSRTranslator (this);
 
-	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-						      .vertical(VerticalAlignment::Fill)
-						      .layout(DockLayout::create ());
+	_rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+					    .vertical(VerticalAlignment::Fill)
+					    .layout(DockLayout::create ());
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
-	rootContainer->setLeftPadding (ui()->sdu (1));
-	rootContainer->setRightPadding (ui()->sdu (1));
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_rootContainer->setLeftPadding (ui()->sddu (1));
+	_rootContainer->setRightPadding (ui()->sddu (1));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_rootContainer->setLeftPadding (ui()->sdu (1));
+	_rootContainer->setRightPadding (ui()->sdu (1));
 #else
-	rootContainer->setLeftPadding (10);
-	rootContainer->setRightPadding (10);
+	_rootContainer->setLeftPadding (10);
+	_rootContainer->setRightPadding (10);
 #endif
 
 	_listView = new NSRLastDocsListView ();
@@ -95,7 +99,10 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 					     .layout(StackLayout::create ())
 					     .visible(false);
 
-#if BBNDK_VERSION_AT_LEAST(10,3,0)
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_emptyContainer->setLeftPadding (ui()->sddu (2));
+	_emptyContainer->setRightPadding (ui()->sddu (2));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
 	_emptyContainer->setLeftPadding (ui()->sdu (2));
 	_emptyContainer->setRightPadding (ui()->sdu (2));
 #else
@@ -107,11 +114,11 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	_emptyContainer->add (emptyLabel);
 	_emptyContainer->add (emptyMoreLabel);
 
-	rootContainer->add (_listView);
-	rootContainer->add (_emptyContainer);
-	rootContainer->setBackground (NSRThemeSupport::instance()->getBackground ());
+	_rootContainer->add (_listView);
+	_rootContainer->add (_emptyContainer);
+	_rootContainer->setBackground (NSRThemeSupport::instance()->getBackground ());
 
-	setContent (rootContainer);
+	setContent (_rootContainer);
 	setTitleBar (TitleBar::create().title(trUtf8 ("Recent",
 						      "Title for window with recently "
 						      "opened files")));
@@ -163,6 +170,12 @@ NSRLastDocsPage::NSRLastDocsPage (QObject *parent) :
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		      _translator, SLOT (translate ()));
 	Q_ASSERT (ok);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	ok = connect (ui (), SIGNAL (dduFactorChanged (float)),
+		      this, SLOT (onDynamicDUFactorChanged (float)));
+	Q_ASSERT (ok);
+#endif
 }
 
 NSRLastDocsPage::~NSRLastDocsPage ()
@@ -255,6 +268,19 @@ NSRLastDocsPage::onModelUpdated (bool isEmpty)
 		else
 			rootContainer->setBackground (NSRThemeSupport::instance()->getImageBackground ());
 	}
+}
+
+void
+NSRLastDocsPage::onDynamicDUFactorChanged (float dduFactor)
+{
+	Q_UNUSED (dduFactor);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_rootContainer->setLeftPadding (ui()->sddu (1));
+	_rootContainer->setRightPadding (ui()->sddu (1));
+	_emptyContainer->setLeftPadding (ui()->sddu (2));
+	_emptyContainer->setRightPadding (ui()->sddu (2));
+#endif
 }
 
 void
