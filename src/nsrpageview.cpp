@@ -202,8 +202,6 @@ NSRPageView::NSRPageView (Container *parent) :
 	_scrollView->setScrollRole (ScrollRole::Main);
 #endif
 
-	_scrollView->requestFocus ();
-
 	ok = connect (NSRGlobalNotifier::instance (), SIGNAL (languageChanged ()),
 		      this, SLOT (retranslateUi ()));
 	Q_ASSERT (ok);
