@@ -970,6 +970,10 @@ NSRReaderBB10::updateVisualControls ()
 
 		if (_isWaitingForFirstPage) {
 			_page->setActionBarVisibility (ChromeVisibility::Visible);
+
+			if (_slider->isVisible ())
+				_slider->setBottomSpace (getActionBarHeight ());
+
 			_pageStatus->setVisible (true);
 			_isWaitingForFirstPage = false;
 		}
