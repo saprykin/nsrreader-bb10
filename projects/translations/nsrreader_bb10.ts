@@ -488,6 +488,25 @@
         <comment>Option in preferences</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Normal</source>
+        <comment>Normal (black &amp; white) text color theme</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sepia</source>
+        <comment>Sepia text color theme</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text Theme</source>
+        <comment>Text color theme</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text theme is used only for plain text files and reflow mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRReaderBB10</name>

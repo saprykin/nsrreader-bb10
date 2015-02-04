@@ -490,6 +490,25 @@
         <comment>Option in preferences</comment>
         <translation>Фирменные цвета</translation>
     </message>
+    <message>
+        <source>Normal</source>
+        <comment>Normal (black &amp; white) text color theme</comment>
+        <translation>Нормальная</translation>
+    </message>
+    <message>
+        <source>Sepia</source>
+        <comment>Sepia text color theme</comment>
+        <translation>Сепия</translation>
+    </message>
+    <message>
+        <source>Text Theme</source>
+        <comment>Text color theme</comment>
+        <translation>Тема текста</translation>
+    </message>
+    <message>
+        <source>Text theme is used only for plain text files and reflow mode.</source>
+        <translation>Тема текста используется только для чисто текстовых файлов и режима переформатирования.</translation>
+    </message>
 </context>
 <context>
     <name>NSRReaderBB10</name>
