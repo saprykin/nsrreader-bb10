@@ -1,8 +1,9 @@
-#ifndef NSRSETTINGS_H
-#define NSRSETTINGS_H
+#ifndef NSRSETTINGS_H_
+#define NSRSETTINGS_H_
 
 #include "insrsettings.h"
 #include "nsrsession.h"
+#include "nsrreadingtheme.h"
 
 #include <bb/cascades/VisualStyle>
 
@@ -62,6 +63,8 @@ public:
 		return _isBrandColors;
 	}
 	void saveBrandColors (bool isBrandColors);
+	inline NSRReadingTheme::Type getTextTheme () const {return _textTheme;}
+	void saveTextTheme (NSRReadingTheme::Type type);
 
 	static QStringList getSupportedEncodings ();
 	static QString mapIndexToEncoding (int index);
@@ -82,6 +85,7 @@ private:
 
 	static NSRSettings *		_instance;
 	bb::cascades::VisualStyle::Type	_visualStyle;
+	NSRReadingTheme::Type		_textTheme;
 	bool				_isFullscreenMode;
 	bool				_isWordWrap;
 	bool				_isTextModeNoted;
@@ -99,4 +103,4 @@ private:
 	QStringList			_lastDocuments;
 };
 
-#endif // NSRSETTINGS_H
+#endif /* NSRSETTINGS_H_ */

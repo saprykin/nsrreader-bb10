@@ -31,6 +31,7 @@
 #define NSR_SETTINGS_FIRST_START		"first-start"
 #define NSR_SETTINGS_VISUAL_STYLE		"visual-style"
 #define NSR_SETTINGS_BRAND_COLORS		"brand-colors"
+#define NSR_SETTINGS_TEXT_THEME			"text-theme"
 
 #define NSR_SETTINGS_LOAD_LAST_DOC		"load-last-doc"
 #define NSR_SETTINGS_LAST_CONFIG_CLEAN		"last-config-clean"
@@ -88,6 +89,11 @@ NSRSettings::NSRSettings () :
 		if (_visualStyle < VisualStyle::Bright || _visualStyle > VisualStyle::Dark)
 			_visualStyle = VisualStyle::Dark;
 	}
+
+	_textTheme = (NSRReadingTheme::Type) (value(NSR_SETTINGS_TEXT_THEME, (int) NSRReadingTheme::Normal).toInt ());
+
+	if (_textTheme < NSRReadingTheme::Normal || _textTheme > NSRReadingTheme::Sepia)
+		_textTheme = NSRReadingTheme::Normal;
 
 	if (!QDir(_lastOpenDir).exists ())
 		_lastOpenDir = NSR_SETTINGS_DEFAULT_PATH;
@@ -503,6 +509,18 @@ NSRSettings::saveBrandColors (bool isBrandColors)
 
 	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
 	setValue (NSR_SETTINGS_BRAND_COLORS, _isBrandColors);
+	endGroup ();
+
+	sync ();
+}
+
+void
+NSRSettings::saveTextTheme (NSRReadingTheme::Type type)
+{
+	_textTheme = type;
+
+	beginGroup (NSR_SETTINGS_GLOBAL_SECTION);
+	setValue (NSR_SETTINGS_TEXT_THEME, (int) _textTheme);
 	endGroup ();
 
 	sync ();
