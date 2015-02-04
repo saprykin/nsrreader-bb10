@@ -20,6 +20,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Page (parent),
 	_translator (NULL),
 	_themeContainer (NULL),
+	_textThemeContainer (NULL),
 	_fullscreenContainer (NULL),
 	_cropContainer (NULL),
 	_screenLockContainer (NULL),
@@ -30,7 +31,8 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isEncodingAutodetection (NULL),
 	_isBrandColors (NULL),
 	_encodingsList (NULL),
-	_themeList (NULL)
+	_themeList (NULL),
+	_textThemeList (NULL)
 {
 	QString defEncoding ("UTF-8");
 
@@ -49,8 +51,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 #endif
 	_encodingsList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 	_themeList = DropDown::create().horizontal(HorizontalAlignment::Fill);
+	_textThemeList = DropDown::create().horizontal(HorizontalAlignment::Fill);
 
 	_themeList->setFocusPolicy (FocusPolicy::Touch);
+	_textThemeList->setFocusPolicy (FocusPolicy::Touch);
 
 	_isFullscreen->setChecked (NSRSettings::instance()->isFullscreenMode ());
 	_isAutoCrop->setChecked (NSRSettings::instance()->isAutoCrop ());
@@ -88,6 +92,14 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 		_themeList->setEnabled (false);
 	} else
 		_themeList->setSelectedIndex (NSRSettings::instance()->getVisualStyle () - 1);
+
+	Option *optionNormalText = Option::create().text(trUtf8 ("Normal", "Normal (black & white) text color theme"));
+	Option *optionSepiaText = Option::create().text(trUtf8 ("Sepia", "Sepia text color theme"));
+
+	_textThemeList->setTitle (trUtf8 ("Text Theme", "Text color theme"));
+	_textThemeList->add (optionNormalText);
+	_textThemeList->add (optionSepiaText);
+	_textThemeList->setSelectedIndex (NSRSettings::instance()->getTextTheme () - 1);
 
 	/* 'Visual Theme' section */
 	_themeContainer = Container::create().horizontal(HorizontalAlignment::Fill)
@@ -134,6 +146,36 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_themeContainer->setTopPadding (20);
 	_themeContainer->setLeftPadding (20);
 	_themeContainer->setRightPadding (20);
+#endif
+
+	/* 'Text Theme' section */
+	_textThemeContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						 .layout(StackLayout::create ());
+
+	Label *textThemeInfoLabel = Label::create(trUtf8 ("Text theme is used only for plain text files and "
+							  "reflow mode."))
+					  .horizontal(HorizontalAlignment::Fill)
+					  .vertical(VerticalAlignment::Center)
+					  .multiline(true);
+
+	textThemeInfoLabel->textStyle()->setFontSize (FontSize::XSmall);
+	textThemeInfoLabel->textStyle()->setColor (NSRThemeSupport::instance()->getTipText ());
+
+	_textThemeContainer->add (_textThemeList);
+	_textThemeContainer->add (textThemeInfoLabel);
+
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_textThemeContainer->setTopPadding (ui()->sddu (2));
+	_textThemeContainer->setLeftPadding (ui()->sddu (2));
+	_textThemeContainer->setRightPadding (ui()->sddu (2));
+#elif BBNDK_VERSION_AT_LEAST(10,3,0)
+	_textThemeContainer->setTopPadding (ui()->sdu (2));
+	_textThemeContainer->setLeftPadding (ui()->sdu (2));
+	_textThemeContainer->setRightPadding (ui()->sdu (2));
+#else
+	_textThemeContainer->setTopPadding (20);
+	_textThemeContainer->setLeftPadding (20);
+	_textThemeContainer->setRightPadding (20);
 #endif
 
 	/* 'Fullscreen Mode' option */
@@ -283,10 +325,14 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Header *generalHeader = Header::create().title (trUtf8 ("General", "General settings"));
 	Header *encodingHeader = Header::create().title (trUtf8 ("Text Encoding", "Text encoding settings"));
 	Header *themeHeader = Header::create().title (trUtf8 ("Visual Theme", "Visual theme settings"));
+	Header *textThemeHeader = Header::create().title (trUtf8 ("Text Theme", "Text color theme"));
 
 	/* Add all options to root layout */
 	rootContainer->add (themeHeader);
 	rootContainer->add (_themeContainer);
+	rootContainer->add (Divider::create().bottomMargin (0));
+	rootContainer->add (textThemeHeader);
+	rootContainer->add (_textThemeContainer);
 	rootContainer->add (Divider::create().bottomMargin (0));
 	rootContainer->add (generalHeader);
 	rootContainer->add (_fullscreenContainer);
@@ -326,6 +372,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_HEADER,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Visual Theme"));
+	_translator->addTranslatable ((UIObject *) textThemeHeader,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_HEADER,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Text Theme"));
 	_translator->addTranslatable ((UIObject *) fullscreenLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -373,6 +423,23 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Dark"));
+	_translator->addTranslatable ((UIObject *) textThemeInfoLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Text theme is used only for plain text files and "
+					       "reflow mode."));
+	_translator->addTranslatable ((UIObject *) _textThemeList,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_DROPDOWN_TITLE,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Text Theme"));
+	_translator->addTranslatable ((UIObject *) optionNormalText,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Normal"));
+	_translator->addTranslatable ((UIObject *) optionSepiaText,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Sepia"));
 	_translator->addTranslatable ((UIObject *) titleBar (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_TITLEBAR,
 				      QString ("NSRPreferencesPage"),
@@ -413,6 +480,9 @@ NSRPreferencesPage::saveSettings ()
 
 	if (!NSRHardwareInfo::instance()->isOLED() && _themeList->isSelectedOptionSet ())
 		NSRSettings::instance()->saveVisualStyle ((VisualStyle::Type) (_themeList->selectedIndex () + 1));
+
+	if (_textThemeList->isSelectedOptionSet ())
+		NSRSettings::instance()->saveTextTheme ((NSRReadingTheme::Type) (_textThemeList->selectedIndex () + 1));
 }
 
 void
@@ -447,6 +517,10 @@ NSRPreferencesPage::onDynamicDUFactorChanged (float dduFactor)
 	_themeContainer->setTopPadding (ui()->sddu (2));
 	_themeContainer->setLeftPadding (ui()->sddu (2));
 	_themeContainer->setRightPadding (ui()->sddu (2));
+
+	_textThemeContainer->setTopPadding (ui()->sddu (2));
+	_textThemeContainer->setLeftPadding (ui()->sddu (2));
+	_textThemeContainer->setRightPadding (ui()->sddu (2));
 
 	_fullscreenContainer->setTopPadding (ui()->sddu (2));
 	_fullscreenContainer->setLeftPadding (ui()->sddu (2));

@@ -31,6 +31,7 @@ private Q_SLOTS:
 private:
 	NSRTranslator *			_translator;
 	bb::cascades::Container *	_themeContainer;
+	bb::cascades::Container *	_textThemeContainer;
 	bb::cascades::Container *	_fullscreenContainer;
 	bb::cascades::Container *	_cropContainer;
 	bb::cascades::Container *	_screenLockContainer;
@@ -42,6 +43,7 @@ private:
 	bb::cascades::ToggleButton *	_isBrandColors;
 	bb::cascades::DropDown *	_encodingsList;
 	bb::cascades::DropDown *	_themeList;
+	bb::cascades::DropDown *	_textThemeList;
 };
 
 #endif /* NSRPREFERENCESPAGE_H_ */
