@@ -2,6 +2,7 @@
 #include "nsrglobalnotifier.h"
 #include "nsrthemesupport.h"
 #include "nsrhardwareinfo.h"
+#include "nsrreadingtheme.h"
 #include "nsrreader.h"
 
 #include <float.h>
@@ -51,6 +52,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_imageContainer (NULL),
 	_actionSet (NULL),
 	_viewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC),
+	_textTheme (NSRReadingTheme::Normal),
 	_lastTapTime (QTime::currentTime ()),
 	_currentZoom (0.0),
 	_maxZoom (0.0),
@@ -84,7 +86,7 @@ NSRPageView::NSRPageView (Container *parent) :
 	_textContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
 					    .layout(DockLayout::create())
-					    .background(Color::White);
+					    .background(NSRThemeSupport::getReadingBackground (_textTheme));
 	_textArea = TextArea::create().horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Fill)
 				      .editable(false)
@@ -96,7 +98,7 @@ NSRPageView::NSRPageView (Container *parent) :
 						  TextInputFlag::WordSubstitutionOff |
 						  TextInputFlag::VirtualKeyboardOff);
 	_textArea->setTextFormat (TextFormat::Plain);
-	_textArea->textStyle()->setColor (Color::Black);
+	_textArea->textStyle()->setColor (NSRThemeSupport::getReadingColor (_textTheme));
 	_textContainer->add (_textArea);
 	_textScrollView->setContent (_textContainer);
 	_textScrollView->setVisible (false);
@@ -448,8 +450,22 @@ NSRPageView::setInvertedColors (bool inv)
 		_textArea->textStyle()->setColor (Color::White);
 		_textContainer->setBackground (Color::Black);
 	} else {
-		_textArea->textStyle()->setColor (Color::Black);
-		_textContainer->setBackground (Color::White);
+		_textArea->textStyle()->setColor (NSRThemeSupport::getReadingColor (_textTheme));
+		_textContainer->setBackground (NSRThemeSupport::getReadingBackground (_textTheme));
+	}
+}
+
+void
+NSRPageView::setTextTheme (NSRReadingTheme::Type type)
+{
+	if (_textTheme == type)
+		return;
+
+	_textTheme = type;
+
+	if (!_isInvertedColors) {
+		_textArea->textStyle()->setColor (NSRThemeSupport::getReadingColor (_textTheme));
+		_textContainer->setBackground (NSRThemeSupport::getReadingBackground (_textTheme));
 	}
 }
 

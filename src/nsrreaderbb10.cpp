@@ -621,10 +621,12 @@ NSRReaderBB10::initFullUI ()
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
 		_pageView->setViewMode (NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		_pageView->setInvertedColors (false);
+		_pageView->setTextTheme (NSRReadingTheme::Normal);
 		onFullscreenSwitchRequested (true);
 	} else {
 		/* We do need it here to not to read settings in card mode */
 		_pageView->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
+		_pageView->setTextTheme (NSRSettings::instance()->getTextTheme ());
 		_pageView->setViewMode (NSRSettings::instance()->isWordWrap () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
 									       : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		onFullscreenSwitchRequested (NSRSettings::instance()->isFullscreenMode ());
@@ -1301,6 +1303,7 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 		prefsPage->saveSettings ();
 		_core->reloadSettings ();
 		_actionAggregator->setActionEnabled ("prefs", true);
+		_pageView->setTextTheme (NSRSettings::instance()->getTextTheme ());
 	} else if (dynamic_cast < NSRAboutPage * > (page) != NULL)
 		_actionAggregator->setActionEnabled ("help", true);
 

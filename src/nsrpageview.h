@@ -4,6 +4,7 @@
 #include "nsrrenderedpage.h"
 #include "nsrtranslator.h"
 #include "nsrabstractdocument.h"
+#include "nsrreadingtheme.h"
 
 #include <bb/cascades/Container>
 #include <bb/cascades/ImageView>
@@ -77,6 +78,7 @@ public:
 	void setActionsEnabled (bool enabled);
 	void setGesturesEnabled (bool enabled);
 	void setInvertedColors (bool inv);
+	void setTextTheme (NSRReadingTheme::Type type);
 
 	void fitToWidth (NSRRenderRequest::NSRRenderReason reason);
 	void resetPage ();
@@ -128,6 +130,7 @@ private:
 	bb::cascades::Container			*_imageContainer;
 	bb::cascades::ActionSet			*_actionSet;
 	NSRAbstractDocument::NSRDocumentStyle	_viewMode;
+	NSRReadingTheme::Type			_textTheme;
 	QSize					_size;
 	QSize					_initialScaleSize;
 	QPointF					_delayedScrollPos;
