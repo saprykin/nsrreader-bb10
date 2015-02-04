@@ -1,6 +1,8 @@
 #ifndef NSRTHEMESUPPORT_H_
 #define NSRTHEMESUPPORT_H_
 
+#include "nsrreadingtheme.h"
+
 #include <bb/cascades/VisualStyle>
 #include <bb/cascades/Color>
 
@@ -21,6 +23,9 @@ public:
 	bb::cascades::VisualStyle::Type getVisualStyle () const;
 	void setVisualStyle (bb::cascades::VisualStyle::Type visualStyle);
 	QString getAssetsThemeDirectory () const;
+
+	static bb::cascades::Color getReadingColor (NSRReadingTheme::Type type);
+	static bb::cascades::Color getReadingBackground (NSRReadingTheme::Type type);
 
 private:
 	NSRThemeSupport ();

@@ -127,6 +127,32 @@ NSRThemeSupport::getAssetsThemeDirectory () const
 		return QString ("dark");
 }
 
+bb::cascades::Color
+NSRThemeSupport::getReadingColor (NSRReadingTheme::Type type)
+{
+	switch (type) {
+	case NSRReadingTheme::Normal:
+		return Color::Black;
+	case NSRReadingTheme::Sepia:
+		return Color::fromRGBA (0.44f, 0.26f, 0.08f);
+	default:
+		return Color::Black;
+	}
+}
+
+bb::cascades::Color
+NSRThemeSupport::getReadingBackground (NSRReadingTheme::Type type)
+{
+	switch (type) {
+	case NSRReadingTheme::Normal:
+		return Color::White;
+	case NSRReadingTheme::Sepia:
+		return Color::fromRGBA (0.92f, 0.89f, 0.83f);
+	default:
+		return Color::White;
+	}
+}
+
 NSRThemeSupport::NSRThemeSupport () :
 	_visualStyle (VisualStyle::Dark),
 	_colorBackground (Color::fromRGBA (0.09f, 0.09f, 0.09f)),
