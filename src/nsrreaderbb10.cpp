@@ -1549,6 +1549,7 @@ NSRReaderBB10::onThumbnail ()
 					    	  _core->getPagesCount ());
 			_sceneCover->setTextOnly (_core->isTextReflow ());
 			_sceneCover->setInvertedColors (_core->isInvertedColors ());
+			_sceneCover->setTextTheme (NSRSettings::instance()->getTextTheme ());
 			_sceneCover->updateState (false);
 		} else
 			_sceneCover->updateState (true);

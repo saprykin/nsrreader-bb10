@@ -80,3 +80,14 @@ NSRSceneMultiCover::setInvertedColors (bool invertedColors)
 	Q_UNUSED (invertedColors);
 #endif
 }
+
+void
+NSRSceneMultiCover::setTextTheme (NSRReadingTheme::Type type)
+{
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+	_fullCover->setTextTheme (type);
+	_compactCover->setTextTheme (type);
+#else
+	Q_UNUSED (type);
+#endif
+}

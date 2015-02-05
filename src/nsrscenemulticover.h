@@ -3,6 +3,7 @@
 
 #include "insrscenecover.h"
 #include "nsrscenecover.h"
+#include "nsrreadingtheme.h"
 #include "nsrreader.h"
 
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
@@ -33,6 +34,7 @@ public:
 	void updateState (bool isStatic);
 	void setTextOnly (bool textOnly);
 	void setInvertedColors (bool invertedColors);
+	void setTextTheme (NSRReadingTheme::Type type);
 
 private:
 	NSRSceneCover *	_fullCover;

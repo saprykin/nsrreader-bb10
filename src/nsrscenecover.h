@@ -4,6 +4,7 @@
 #include "insrscenecover.h"
 #include "nsrrenderedpage.h"
 #include "nsrpagestatus.h"
+#include "nsrreadingtheme.h"
 
 #include <bb/cascades/SceneCover>
 #include <bb/cascades/ImageView>
@@ -40,6 +41,7 @@ public:
 	void updateState (bool isStatic);
 	void setTextOnly (bool textOnly);
 	void setInvertedColors (bool invertedColors);
+	void setTextTheme (NSRReadingTheme::Type type);
 
 private Q_SLOTS:
 	void retranslateUi ();
@@ -54,6 +56,7 @@ private:
 	bb::cascades::TextArea *	_textView;
 	bb::cascades::Container *	_textContainer;
 	NSRCoverMode			_mode;
+	NSRReadingTheme::Type		_textTheme;
 	bool				_isTextOnly;
 	bool				_isInvertedColors;
 	bool				_isEmptyText;

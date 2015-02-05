@@ -2,6 +2,7 @@
 #define INSRSCENECOVER_H_
 
 #include "nsrrenderedpage.h"
+#include "nsrreadingtheme.h"
 
 #include <QString>
 
@@ -18,6 +19,7 @@ public:
 	virtual void updateState (bool isStatic) = 0;
 	virtual void setTextOnly (bool textOnly) = 0;
 	virtual void setInvertedColors (bool invertedColors) = 0;
+	virtual void setTextTheme (NSRReadingTheme::Type type) = 0;
 };
 
 #endif /* INSRSCENECOVER_H_ */

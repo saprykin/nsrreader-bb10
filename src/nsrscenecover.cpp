@@ -1,5 +1,6 @@
 #include "nsrscenecover.h"
 #include "nsrglobalnotifier.h"
+#include "nsrthemesupport.h"
 #include "nsrreader.h"
 
 #include <bb/cascades/Container>
@@ -27,6 +28,7 @@ NSRSceneCover::NSRSceneCover (NSRCoverMode mode, QObject *parent) :
 	_textView (NULL),
 	_textContainer (NULL),
 	_mode (mode),
+	_textTheme (NSRReadingTheme::Normal),
 	_isTextOnly (false),
 	_isInvertedColors (false),
 	_isEmptyText (false)
@@ -91,7 +93,7 @@ NSRSceneCover::NSRSceneCover (NSRCoverMode mode, QObject *parent) :
 	_textContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					    .vertical(VerticalAlignment::Fill)
 					    .layout(StackLayout::create())
-					    .background(Color::White)
+					    .background(NSRThemeSupport::getReadingBackground (_textTheme))
 					    .visible(false);
 	_textView = TextArea::create().horizontal(HorizontalAlignment::Fill)
 				      .vertical(VerticalAlignment::Fill)
@@ -107,7 +109,7 @@ NSRSceneCover::NSRSceneCover (NSRCoverMode mode, QObject *parent) :
 	_textView->setTopPadding (0);
 	_textView->setBottomPadding (0);
 	_textView->setTextFormat (TextFormat::Plain);
-	_textView->textStyle()->setColor (Color::Black);
+	_textView->textStyle()->setColor (NSRThemeSupport::getReadingColor (_textTheme));
 	_textView->textStyle()->setFontSize (FontSize::XSmall);
 	_textContainer->add (_textView);
 
@@ -193,18 +195,31 @@ NSRSceneCover::updateState (bool isStatic)
 {
 	if (_mode == NSR_COVER_MODE_FULL)
 		_titleContainer->setVisible (!isStatic);
+
 	_logoView->setVisible (isStatic);
 	_pageView->setVisible (!isStatic && !_isTextOnly);
 	_textContainer->setVisible (_isTextOnly);
 	_pageStatus->setVisible (!isStatic);
-	_textContainer->setBackground (_isInvertedColors ? Color::Black : Color::White);
-	_textView->textStyle()->setColor (_isInvertedColors ? Color::White : Color::Black);
+
+	if (!_isInvertedColors) {
+		_textContainer->setBackground (NSRThemeSupport::getReadingBackground (_textTheme));
+		_textView->textStyle()->setColor (NSRThemeSupport::getReadingColor (_textTheme));
+	} else {
+		_textContainer->setBackground (Color::Black);
+		_textView->textStyle()->setColor (Color::White);
+	}
 }
 
 void
 NSRSceneCover::setInvertedColors (bool invertedColors)
 {
 	_isInvertedColors = invertedColors;
+}
+
+void
+NSRSceneCover::setTextTheme (NSRReadingTheme::Type type)
+{
+	_textTheme = type;
 }
 
 void
