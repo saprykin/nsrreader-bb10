@@ -627,6 +627,7 @@ NSRReaderBB10::initFullUI ()
 		/* We do need it here to not to read settings in card mode */
 		_pageView->setInvertedColors (NSRSettings::instance()->isInvertedColors ());
 		_pageView->setTextTheme (NSRSettings::instance()->getTextTheme ());
+		_pageView->setFontFamily (NSRSettings::instance()->getFontFamily ());
 		_pageView->setViewMode (NSRSettings::instance()->isWordWrap () ? NSRAbstractDocument::NSR_DOCUMENT_STYLE_TEXT
 									       : NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC);
 		onFullscreenSwitchRequested (NSRSettings::instance()->isFullscreenMode ());
@@ -1304,6 +1305,7 @@ NSRReaderBB10::onPopTransitionEnded (bb::cascades::Page *page)
 		_core->reloadSettings ();
 		_actionAggregator->setActionEnabled ("prefs", true);
 		_pageView->setTextTheme (NSRSettings::instance()->getTextTheme ());
+		_pageView->setFontFamily (NSRSettings::instance()->getFontFamily ());
 	} else if (dynamic_cast < NSRAboutPage * > (page) != NULL)
 		_actionAggregator->setActionEnabled ("help", true);
 
@@ -1550,6 +1552,7 @@ NSRReaderBB10::onThumbnail ()
 			_sceneCover->setTextOnly (_core->isTextReflow ());
 			_sceneCover->setInvertedColors (_core->isInvertedColors ());
 			_sceneCover->setTextTheme (NSRSettings::instance()->getTextTheme ());
+			_sceneCover->setFontFamily (NSRSettings::instance()->getFontFamily ());
 			_sceneCover->updateState (false);
 		} else
 			_sceneCover->updateState (true);
