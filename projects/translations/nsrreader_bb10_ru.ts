@@ -506,8 +506,16 @@
         <translation>Тема текста</translation>
     </message>
     <message>
-        <source>Text theme is used only for plain text files and reflow mode.</source>
-        <translation>Тема текста используется только для чисто текстовых файлов и режима переформатирования.</translation>
+        <source>Font</source>
+        <translation>Шрифт</translation>
+    </message>
+    <message>
+        <source>Example text. Text theme and font are used only for plain text files and reflow mode.</source>
+        <translation>Пример текста. Тема текста и шрифт используются только для чисто текстовых файлов и режима переформатирования.</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>Текст</translation>
     </message>
 </context>
 <context>

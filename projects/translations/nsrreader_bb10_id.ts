@@ -505,7 +505,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Text theme is used only for plain text files and reflow mode.</source>
+        <source>Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Example text. Text theme and font are used only for plain text files and reflow mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
