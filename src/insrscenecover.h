@@ -20,6 +20,7 @@ public:
 	virtual void setTextOnly (bool textOnly) = 0;
 	virtual void setInvertedColors (bool invertedColors) = 0;
 	virtual void setTextTheme (NSRReadingTheme::Type type) = 0;
+	virtual void setFontFamily (const QString& fontFamily) = 0;
 };
 
 #endif /* INSRSCENECOVER_H_ */

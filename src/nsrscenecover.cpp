@@ -223,6 +223,12 @@ NSRSceneCover::setTextTheme (NSRReadingTheme::Type type)
 }
 
 void
+NSRSceneCover::setFontFamily (const QString& fontFamily)
+{
+	_textView->textStyle()->setFontFamily (fontFamily);
+}
+
+void
 NSRSceneCover::setTextOnly (bool textOnly)
 {
 	_isTextOnly = textOnly;

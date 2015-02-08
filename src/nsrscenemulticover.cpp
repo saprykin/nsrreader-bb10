@@ -91,3 +91,14 @@ NSRSceneMultiCover::setTextTheme (NSRReadingTheme::Type type)
 	Q_UNUSED (type);
 #endif
 }
+
+void
+NSRSceneMultiCover::setFontFamily (const QString& fontFamily)
+{
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+	_fullCover->setFontFamily (fontFamily);
+	_compactCover->setFontFamily (fontFamily);
+#else
+	Q_UNUSED (fontFamily);
+#endif
+}

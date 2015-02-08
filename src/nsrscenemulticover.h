@@ -35,6 +35,7 @@ public:
 	void setTextOnly (bool textOnly);
 	void setInvertedColors (bool invertedColors);
 	void setTextTheme (NSRReadingTheme::Type type);
+	void setFontFamily (const QString& fontFamily);
 
 private:
 	NSRSceneCover *	_fullCover;
