@@ -134,7 +134,7 @@ NSRThemeSupport::getReadingColor (NSRReadingTheme::Type type)
 	case NSRReadingTheme::Normal:
 		return Color::Black;
 	case NSRReadingTheme::Sepia:
-		return Color::fromRGBA (0.44f, 0.26f, 0.08f);
+		return Color::fromRGBA (0.39f, 0.23f, 0.06f);
 	default:
 		return Color::Black;
 	}
@@ -147,7 +147,7 @@ NSRThemeSupport::getReadingBackground (NSRReadingTheme::Type type)
 	case NSRReadingTheme::Normal:
 		return Color::White;
 	case NSRReadingTheme::Sepia:
-		return Color::fromRGBA (0.92f, 0.89f, 0.83f);
+		return Color::fromRGBA (0.93f, 0.91f, 0.82f);
 	default:
 		return Color::White;
 	}
