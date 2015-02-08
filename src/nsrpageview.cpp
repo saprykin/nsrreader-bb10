@@ -470,6 +470,12 @@ NSRPageView::setTextTheme (NSRReadingTheme::Type type)
 }
 
 void
+NSRPageView::setFontFamily (const QString& fontFamily)
+{
+	_textArea->textStyle()->setFontFamily (fontFamily);
+}
+
+void
 NSRPageView::fitToWidth (NSRRenderRequest::NSRRenderReason reason)
 {
 	if (_viewMode != NSRAbstractDocument::NSR_DOCUMENT_STYLE_GRAPHIC)

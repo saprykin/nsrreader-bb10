@@ -79,6 +79,7 @@ public:
 	void setGesturesEnabled (bool enabled);
 	void setInvertedColors (bool inv);
 	void setTextTheme (NSRReadingTheme::Type type);
+	void setFontFamily (const QString& fontFamily);
 
 	void fitToWidth (NSRRenderRequest::NSRRenderReason reason);
 	void resetPage ();
