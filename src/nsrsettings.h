@@ -66,6 +66,8 @@ public:
 	inline NSRReadingTheme::Type getTextTheme () const {return _textTheme;}
 	void saveTextTheme (NSRReadingTheme::Type type);
 
+	static QString getDefaultFontFamily ();
+	static QStringList getSupportedFontFamilies ();
 	static QStringList getSupportedEncodings ();
 	static QString mapIndexToEncoding (int index);
 	static int mapEncodingToIndex (const QString& encoding);

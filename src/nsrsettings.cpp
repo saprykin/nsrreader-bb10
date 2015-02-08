@@ -46,7 +46,7 @@
 #define NSR_SETTINGS_S_TEXT_POSITION		"text-position"
 #define NSR_SETTINGS_S_ANGLE			"angle"
 
-#define NSR_SETTINGS_DEFAULT_FONT		"Sans Serif"
+#define NSR_SETTINGS_DEFAULT_FONT		"Slate Pro"
 #define NSR_SETTINGS_DEFAULT_ENCODING		"UTF-8"
 #define NSR_SETTINGS_DEFAULT_PATH		QDir::currentPath () + "/shared"
 
@@ -97,9 +97,6 @@ NSRSettings::NSRSettings () :
 
 	if (!QDir(_lastOpenDir).exists ())
 		_lastOpenDir = NSR_SETTINGS_DEFAULT_PATH;
-
-	/* TODO: find a way to check if a font from configuration file exists */
-	_fontFamily = NSR_SETTINGS_DEFAULT_FONT;
 
 	if (!getSupportedEncodingsShort().contains (_textEncoding))
 		_textEncoding = NSR_SETTINGS_DEFAULT_ENCODING;
@@ -322,6 +319,25 @@ NSRSettings::saveTextEncoding (const QString &textEnc)
 	endGroup ();
 
 	sync ();
+}
+
+QString
+NSRSettings::getDefaultFontFamily ()
+{
+	return QString (NSR_SETTINGS_DEFAULT_FONT);
+}
+
+QStringList
+NSRSettings::getSupportedFontFamilies ()
+{
+	QStringList families = QStringList ()
+		<< "Arial" << "Comic Sans MS" << "Courier New" << "DejaVu Sans"
+		<< "DejaVu Sans Condensed" << "DejaVu Sans Mono" << "DejaVu Serif"
+		<< "DejaVu Serif Condensed" << "Georgia"
+		<< "Sans-Serif" << "Serif" << "Slate Pro" << "Tahoma" << "Times New Roman"
+		<< "Trebuchet MS" << "Verdana";
+
+	return families;
 }
 
 QStringList
