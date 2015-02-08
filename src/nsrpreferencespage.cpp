@@ -8,7 +8,6 @@
 #include <bb/cascades/Color>
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/StackLayoutProperties>
-#include <bb/cascades/Label>
 #include <bb/cascades/TitleBar>
 #include <bb/cascades/ScrollView>
 #include <bb/cascades/Divider>
@@ -25,6 +24,7 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_cropContainer (NULL),
 	_screenLockContainer (NULL),
 	_encodingContainer (NULL),
+	_fontExampleContainer (NULL),
 	_isFullscreen (NULL),
 	_isAutoCrop (NULL),
 	_isPreventScreenLock (NULL),
@@ -32,7 +32,9 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_isBrandColors (NULL),
 	_encodingsList (NULL),
 	_themeList (NULL),
-	_textThemeList (NULL)
+	_textThemeList (NULL),
+	_fontList (NULL),
+	_fontExampleLabel (NULL)
 {
 	QString defEncoding ("UTF-8");
 
@@ -148,21 +150,54 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	_themeContainer->setRightPadding (20);
 #endif
 
-	/* 'Text Theme' section */
+	/* 'Text' section */
 	_textThemeContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						 .layout(StackLayout::create ());
 
-	Label *textThemeInfoLabel = Label::create(trUtf8 ("Text theme is used only for plain text files and "
-							  "reflow mode."))
-					  .horizontal(HorizontalAlignment::Fill)
-					  .vertical(VerticalAlignment::Center)
-					  .multiline(true);
+	_fontList = DropDown::create().title(trUtf8 ("Font"))
+				      .horizontal(HorizontalAlignment::Fill);
+	_fontList->setFocusPolicy (FocusPolicy::Touch);
 
-	textThemeInfoLabel->textStyle()->setFontSize (FontSize::XSmall);
-	textThemeInfoLabel->textStyle()->setColor (NSRThemeSupport::instance()->getTipText ());
+	QStringList fontFamilies   = NSRSettings::getSupportedFontFamilies ();
+	QString defaultFontFamily  = NSRSettings::getDefaultFontFamily ();
+	QString savedFontFamily    = NSRSettings::instance()->getFontFamily ();
+	Option *selectedFontOption = NULL;
+
+	foreach (QString family, fontFamilies) {
+		Option *familyOption = Option::create().text (family);
+
+		if (family == savedFontFamily ||
+		    (family == defaultFontFamily && selectedFontOption == NULL))
+			selectedFontOption = familyOption;
+
+		_fontList->add (familyOption);
+	}
+
+	_fontExampleContainer = Container::create().horizontal(HorizontalAlignment::Fill)
+						   .layout(StackLayout::create ());
+	_fontExampleLabel = Label::create(trUtf8 ("Example text. Text theme and font are used "
+						  "only for plain text files and reflow mode."))
+				  .horizontal(HorizontalAlignment::Fill)
+				  .vertical(VerticalAlignment::Center)
+				  .multiline(true);
+	_fontExampleContainer->add (_fontExampleLabel);
 
 	_textThemeContainer->add (_textThemeList);
-	_textThemeContainer->add (textThemeInfoLabel);
+	_textThemeContainer->add (_fontList);
+	_textThemeContainer->add (_fontExampleContainer);
+
+	ok = connect (_fontList, SIGNAL (selectedOptionChanged (bb::cascades::Option *)),
+		      this, SLOT (onSelectedFontOptionChanged (bb::cascades::Option *)));
+	Q_ASSERT (ok);
+
+	ok = connect (_textThemeList, SIGNAL (selectedOptionChanged (bb::cascades::Option *)),
+		      this, SLOT (onSelectedTextThemeOptionChanged (bb::cascades::Option *)));
+	Q_ASSERT (ok);
+
+	if (selectedFontOption != NULL)
+		_fontList->setSelectedOption (selectedFontOption);
+
+	onSelectedTextThemeOptionChanged (_textThemeList->selectedOption ());
 
 #if BBNDK_VERSION_AT_LEAST(10,3,1)
 	_textThemeContainer->setTopPadding (ui()->sddu (2));
@@ -325,13 +360,13 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 	Header *generalHeader = Header::create().title (trUtf8 ("General", "General settings"));
 	Header *encodingHeader = Header::create().title (trUtf8 ("Text Encoding", "Text encoding settings"));
 	Header *themeHeader = Header::create().title (trUtf8 ("Visual Theme", "Visual theme settings"));
-	Header *textThemeHeader = Header::create().title (trUtf8 ("Text Theme", "Text color theme"));
+	Header *textHeader = Header::create().title (trUtf8 ("Text"));
 
 	/* Add all options to root layout */
 	rootContainer->add (themeHeader);
 	rootContainer->add (_themeContainer);
 	rootContainer->add (Divider::create().bottomMargin (0));
-	rootContainer->add (textThemeHeader);
+	rootContainer->add (textHeader);
 	rootContainer->add (_textThemeContainer);
 	rootContainer->add (Divider::create().bottomMargin (0));
 	rootContainer->add (generalHeader);
@@ -372,10 +407,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_HEADER,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Visual Theme"));
-	_translator->addTranslatable ((UIObject *) textThemeHeader,
+	_translator->addTranslatable ((UIObject *) textHeader,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_HEADER,
 				      QString ("NSRPreferencesPage"),
-				      QString ("Text Theme"));
+				      QString ("Text"));
 	_translator->addTranslatable ((UIObject *) fullscreenLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
@@ -423,11 +458,11 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Dark"));
-	_translator->addTranslatable ((UIObject *) textThemeInfoLabel,
+	_translator->addTranslatable ((UIObject *) _fontExampleLabel,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRPreferencesPage"),
-				      QString ("Text theme is used only for plain text files and "
-					       "reflow mode."));
+				      QString ("Example text. Text theme and font are used "
+					       "only for plain text files and reflow mode."));
 	_translator->addTranslatable ((UIObject *) _textThemeList,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_DROPDOWN_TITLE,
 				      QString ("NSRPreferencesPage"),
@@ -440,6 +475,10 @@ NSRPreferencesPage::NSRPreferencesPage (QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_OPTION,
 				      QString ("NSRPreferencesPage"),
 				      QString ("Sepia"));
+	_translator->addTranslatable ((UIObject *) _fontList,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_DROPDOWN_TITLE,
+				      QString ("NSRPreferencesPage"),
+				      QString ("Font"));
 	_translator->addTranslatable ((UIObject *) titleBar (),
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_TITLEBAR,
 				      QString ("NSRPreferencesPage"),
@@ -483,6 +522,9 @@ NSRPreferencesPage::saveSettings ()
 
 	if (_textThemeList->isSelectedOptionSet ())
 		NSRSettings::instance()->saveTextTheme ((NSRReadingTheme::Type) (_textThemeList->selectedIndex () + 1));
+
+	if (_fontList->isSelectedOptionSet ())
+		NSRSettings::instance()->saveFontFamily (_fontList->selectedOption()->text ());
 }
 
 void
@@ -536,4 +578,25 @@ NSRPreferencesPage::onDynamicDUFactorChanged (float dduFactor)
 	_encodingContainer->setLeftPadding (ui()->sddu (2));
 	_encodingContainer->setRightPadding (ui()->sddu (2));
 #endif
+}
+
+void
+NSRPreferencesPage::onSelectedFontOptionChanged (bb::cascades::Option *option)
+{
+	if (option == NULL)
+		return;
+
+	_fontExampleLabel->textStyle()->setFontFamily (option->text ());
+}
+
+void
+NSRPreferencesPage::onSelectedTextThemeOptionChanged (bb::cascades::Option *option)
+{
+	if (option == NULL)
+		return;
+
+	NSRReadingTheme::Type type = (NSRReadingTheme::Type) (_textThemeList->indexOf (option) + 1);
+
+	_fontExampleLabel->textStyle()->setColor (NSRThemeSupport::getReadingColor (type));
+	_fontExampleContainer->setBackground (NSRThemeSupport::getReadingBackground (type));
 }

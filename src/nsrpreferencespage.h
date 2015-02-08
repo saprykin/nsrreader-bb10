@@ -7,6 +7,7 @@
 #include <bb/cascades/Page>
 #include <bb/cascades/ToggleButton>
 #include <bb/cascades/DropDown>
+#include <bb/cascades/Label>
 
 #include <QObject>
 
@@ -27,6 +28,8 @@ private Q_SLOTS:
 	void retranslateUi ();
 	void onEncodingAutodetectionCheckedChanged (bool checked);
 	void onDynamicDUFactorChanged (float dduFactor);
+	void onSelectedFontOptionChanged (bb::cascades::Option *option);
+	void onSelectedTextThemeOptionChanged (bb::cascades::Option *option);
 
 private:
 	NSRTranslator *			_translator;
@@ -36,6 +39,7 @@ private:
 	bb::cascades::Container *	_cropContainer;
 	bb::cascades::Container *	_screenLockContainer;
 	bb::cascades::Container *	_encodingContainer;
+	bb::cascades::Container *	_fontExampleContainer;
 	bb::cascades::ToggleButton *	_isFullscreen;
 	bb::cascades::ToggleButton *	_isAutoCrop;
 	bb::cascades::ToggleButton *	_isPreventScreenLock;
@@ -44,6 +48,8 @@ private:
 	bb::cascades::DropDown *	_encodingsList;
 	bb::cascades::DropDown *	_themeList;
 	bb::cascades::DropDown *	_textThemeList;
+	bb::cascades::DropDown *	_fontList;
+	bb::cascades::Label *		_fontExampleLabel;
 };
 
 #endif /* NSRPREFERENCESPAGE_H_ */
