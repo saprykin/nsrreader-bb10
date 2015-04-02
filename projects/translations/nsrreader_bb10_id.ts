@@ -80,33 +80,12 @@
         <translation>Navigasi</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <comment>Application settings</comment>
-        <translation>Setelan</translation>
-    </message>
-    <message>
         <source>Tips &amp; Tricks</source>
         <translation>Petunjuk dan Kiat</translation>
     </message>
     <message>
         <source>NSR Reader is a handy tool for reading PDF, DjVu, TIFF and TXT files. Hope you will be enjoying using it! Please take a look at the following instructions and tips to make reading more comfortable.</source>
         <translation>NSR Reader adalah perkakas yang handal untuk membaca berkas PDF, DjVu, TIFF dan TXT. Saya harap Anda akan senang menggunakannya! Mohon membaca instruksi dan petunjuk berikut untuk membaca dengan lebih nyaman.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Fullscreen Mode&lt;/b&gt; &amp;ndash; Action Bar at the bottom of the screen will be hidden (tap the screen somewhere to show or hide it again).</source>
-        <translation>&lt;b&gt;Modus Layar Penuh&lt;/b&gt; &amp;ndash; Bilah Aksi pada bagian bawah layar akan disembunyikan (ketuk layar di mana saja untuk memunculkan atau menyembunyikannya lagi).</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Crop Blank Edges&lt;/b&gt; &amp;ndash; automatically tries to detect and crop page&apos;s blank edges to reduce side-to-side scrolling, especially when page is fitted to screen width.</source>
-        <translation>&lt;b&gt;Potong Tepian Kosong&lt;/b&gt; &amp;ndash; secara otomatis mencoba mendeteksi dan memotong tepian halaman yang kosong untuk mengurangi gulungan ke samping, terutama saat halaman ditampilkan sesuai dengan lebar layar.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Prevent Screen Locking&lt;/b&gt; &amp;ndash; disables screen autolocking feature while you are reading the file.</source>
-        <translation>&lt;b&gt;Cegah Penguncian Layar&lt;/b&gt; &amp;ndash; menon-aktifkan fitur penguncian layar secara otomatis saat Anda sedang membaca berkas.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files. Use it for files with specific national encoding.</source>
-        <translation>&lt;b&gt;Encoding Teks&lt;/b&gt; &amp;ndash; hanya berlaku untuk berkas teks biasa. Gunakan terhadap berkas dengan encoding nasional khusus.</translation>
     </message>
     <message>
         <source>NSR Reader always saves position for every file.</source>
@@ -127,10 +106,6 @@
     <message>
         <source>If plain text files are displayed incorrectly try to select different encoding in Settings.</source>
         <translation>Jika berkas teks biasa tidak ditampilkan dengan benar cobalah untuk memilih encoding yang berbeda melalui Setelan.</translation>
-    </message>
-    <message>
-        <source>NSR Reader supports password protected PDF files (except for latest Adobe&amp;reg; Reader&amp;reg; X encryption algorithm), so don&apos;t scary them!</source>
-        <translation>NSR Reader mendukung berkas PDF yang dilindungi kata sandi (kecuali untuk algoritma enkripsi Adobe&amp;reg; Reader&amp;reg; X yang terbaru), jadi jangan takut!</translation>
     </message>
     <message>
         <source>NSR Reader caches already rendered pages to increase performance.</source>
@@ -197,24 +172,16 @@
         <translation>Gunakan panah navigasi pada Bilah Aksi (di bagian bawah layar). Ketuk ganda di sisi kiri layar untuk ke halaman sebelumnya, pada sisi kanan untuk ke halaman selanjutnya dan di tengah untuk menampilkan halaman sesuai lebar layar. Satu ketukan di bagian mana pun pada layar sudah cukup untuk modus reflow teks. Cara navigasi lain ialah menggunakan &lt;i&gt;Volume Naik/Turun&lt;/i&gt; tombol perangkat keras: tombol &lt;i&gt;Volume Naik&lt;/i&gt; untuk halaman sebelumnya dan tombol &lt;i&gt;Volume Turun&lt;/i&gt; untuk halaman selanjutnya. &lt;p&gt;&lt;/p&gt;Jika Anda memiliki papan ketik fisik gunakan tombol-tombol berikut (dapat bervariasi sesuai bahasa): &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Autodetect Encoding&lt;/b&gt; &amp;ndash; automatically tries to detect text encoding.</source>
-        <translation>&lt;b&gt;Deteksi Encoding Otomatis&lt;/b&gt; &amp;ndash; secara otomatis mencoba mendeteksi encoding teks.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Visual Theme&lt;/b&gt; &amp;ndash; specifies look and feel of UI controls.</source>
-        <translation>&lt;b&gt;Tema Visual&lt;/b&gt; &amp;ndash; mengatur tampilan dan rasa kontrol Antarmuka Pengguna.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Brand Colors&lt;/b&gt; &amp;ndash; provides orange accents on UI controls.</source>
-        <translation>&lt;b&gt;Warna Aksen&lt;/b&gt; &amp;ndash; mengatur aksen oranye pada kontrol Antarmuka Pengguna.</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;E&lt;/b&gt; to open another file</source>
         <translation>&lt;b&gt;E&lt;/b&gt; untuk membuka berkas yang lain</translation>
     </message>
     <message>
         <source>&lt;b&gt;V&lt;/b&gt; to invert colors</source>
         <translation>&lt;b&gt;V&lt;/b&gt; untuk membalik warna</translation>
+    </message>
+    <message>
+        <source>NSR Reader supports password protected PDF files, so don&apos;t scary them!</source>
+        <translation>NSR Reader mendukung berkas PDF yang dilindungi kata sandi, jadi jangan takut!</translation>
     </message>
 </context>
 <context>

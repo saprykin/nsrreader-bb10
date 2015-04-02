@@ -79,32 +79,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Settings</source>
-        <comment>Application settings</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Tips &amp; Tricks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>NSR Reader is a handy tool for reading PDF, DjVu, TIFF and TXT files. Hope you will be enjoying using it! Please take a look at the following instructions and tips to make reading more comfortable.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Fullscreen Mode&lt;/b&gt; &amp;ndash; Action Bar at the bottom of the screen will be hidden (tap the screen somewhere to show or hide it again).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Crop Blank Edges&lt;/b&gt; &amp;ndash; automatically tries to detect and crop page&apos;s blank edges to reduce side-to-side scrolling, especially when page is fitted to screen width.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Prevent Screen Locking&lt;/b&gt; &amp;ndash; disables screen autolocking feature while you are reading the file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files. Use it for files with specific national encoding.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -125,10 +104,6 @@
     </message>
     <message>
         <source>If plain text files are displayed incorrectly try to select different encoding in Settings.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NSR Reader supports password protected PDF files (except for latest Adobe&amp;reg; Reader&amp;reg; X encryption algorithm), so don&apos;t scary them!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -196,23 +171,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Autodetect Encoding&lt;/b&gt; &amp;ndash; automatically tries to detect text encoding.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Visual Theme&lt;/b&gt; &amp;ndash; specifies look and feel of UI controls.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Brand Colors&lt;/b&gt; &amp;ndash; provides orange accents on UI controls.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&lt;b&gt;E&lt;/b&gt; to open another file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;b&gt;V&lt;/b&gt; to invert colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NSR Reader supports password protected PDF files, so don&apos;t scary them!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

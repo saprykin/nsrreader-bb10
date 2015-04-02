@@ -23,17 +23,8 @@
         <translation>Навигация</translation>
     </message>
     <message>
-        <source>Settings</source>
-        <comment>Application settings</comment>
-        <translation>Настройки</translation>
-    </message>
-    <message>
         <source>Tips &amp; Tricks</source>
         <translation>Подсказки</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Fullscreen Mode&lt;/b&gt; &amp;ndash; Action Bar at the bottom of the screen will be hidden (tap the screen somewhere to show or hide it again).</source>
-        <translation>&lt;b&gt;Полноэкранный режим&lt;/b&gt; &amp;ndash; скрывает панель инструментов в нижней части экрана  (коснитесь экрана, чтобы снова отобразить/скрыть её).</translation>
     </message>
     <message>
         <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
@@ -58,10 +49,6 @@
         <translation>Отзыв</translation>
     </message>
     <message>
-        <source>NSR Reader supports password protected PDF files (except for latest Adobe&amp;reg; Reader&amp;reg; X encryption algorithm), so don&apos;t scary them!</source>
-        <translation>NSR Reader поддерживает зашифрованные файлы PDF (за исключением последнего алгоритма шифрования Adobe&amp;reg; Reader&amp;reg; X), так что не пугайтесь их!</translation>
-    </message>
-    <message>
         <source>NSR Reader always saves position for every file.</source>
         <translation>NSR Reader всегда сохраняет последнюю позицию для каждого открытого файла.</translation>
     </message>
@@ -76,14 +63,6 @@
     <message>
         <source>Review the app in the store</source>
         <translation>Написать отзыв в магазине</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Crop Blank Edges&lt;/b&gt; &amp;ndash; automatically tries to detect and crop page&apos;s blank edges to reduce side-to-side scrolling, especially when page is fitted to screen width.</source>
-        <translation>&lt;b&gt;Обрезать пустые края&lt;/b&gt; &amp;ndash; автоматически пытается определить и обрезать пустые края страницы для уменьшения горизонтального пролистывания, особенно при масштабировании по ширине экрана.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text Encoding&lt;/b&gt; &amp;ndash; this is only applied for plain text files. Use it for files with specific national encoding.</source>
-        <translation>&lt;b&gt;Кодировка текста&lt;/b&gt; &amp;ndash; применима только для чисто текстовых файлов. Используйте для файлов со специфичной национальной кодировкой.</translation>
     </message>
     <message>
         <source>nsr.reader@gmail.com - tap to write a email</source>
@@ -123,10 +102,6 @@
     <message>
         <source>You are using the Lite version which can read only first %1 pages of the file. Please consider buying the full version if you want to read larger files.</source>
         <translation>Вы используете Lite версию, которая позволяет читать только первые %1 страниц файла. Купите полную версию, если хотите читать файлы большего объёма.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Prevent Screen Locking&lt;/b&gt; &amp;ndash; disables screen autolocking feature while you are reading the file.</source>
-        <translation>&lt;b&gt;Не блокировать экран&lt;/b&gt; &amp;ndash; выключает автоматическую блокировку экрана во время чтения файла.</translation>
     </message>
     <message>
         <source>Use &lt;i&gt;Recent&lt;/i&gt; tab to get fast access to files you have been reading.</source>
@@ -198,24 +173,16 @@
 &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Autodetect Encoding&lt;/b&gt; &amp;ndash; automatically tries to detect text encoding.</source>
-        <translation>&lt;b&gt;Автоопределение кодировки&lt;/b&gt; &amp;ndash; автоматически пытается определить кодировку текста.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Visual Theme&lt;/b&gt; &amp;ndash; specifies look and feel of UI controls.</source>
-        <translation>&lt;b&gt;Тема оформления&lt;/b&gt; &amp;ndash; определяет внешний вид элементов пользовательского интерфейса.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Brand Colors&lt;/b&gt; &amp;ndash; provides orange accents on UI controls.</source>
-        <translation>&lt;b&gt;Фирменные цвета&lt;/b&gt; &amp;ndash; добавляет оранжевые оттенки на элементы пользовательского интерфейса.</translation>
-    </message>
-    <message>
         <source>&lt;b&gt;E&lt;/b&gt; to open another file</source>
         <translation>&lt;b&gt;E&lt;/b&gt; для открытия другого файла</translation>
     </message>
     <message>
         <source>&lt;b&gt;V&lt;/b&gt; to invert colors</source>
         <translation>&lt;b&gt;V&lt;/b&gt; для инвертирования цветов</translation>
+    </message>
+    <message>
+        <source>NSR Reader supports password protected PDF files, so don&apos;t scary them!</source>
+        <translation>NSR Reader поддерживает зашифрованные файлы PDF, так что не пугайтесь их!</translation>
     </message>
 </context>
 <context>
