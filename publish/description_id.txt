@@ -8,7 +8,7 @@ Banyak fitur yang akan membuat membaca di mana pun terasa nyaman:
 - membukan berkas teks polos dan membaginya ke dalam halaman-halaman;
 - deteksi otomatis encoding teks;
 - secara otomatis mendeteksi dan memotong tepian yang kosong;
-- mendukung PDF yang dilindungi oleh kata sandi (kecuali enkripsi Adobe® Reader® X yang terbaru);
+- mendukung PDF yang dilindungi oleh kata sandi;
 - menyimpan posisi baca terakhir;
 - dukungan pembatas buku;
 - modus warna terbalik untuk membantu menghemat daya dan membaca dalam gelap;

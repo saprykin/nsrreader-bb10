@@ -8,7 +8,7 @@ Plenty of features will make reading comfortable everywhere:
 - opens plain text files and breaks them into pages;
 - text encoding autodetection;
 - automatically detects and crops blank edges;
-- supports password protected PDFs (except latest Adobe® Reader® X encryption);
+- supports password protected PDFs;
 - saves last reading position;
 - bookmarks support;
 - inverted colors mode helps to save power and read at dark;
