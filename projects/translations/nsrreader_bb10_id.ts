@@ -459,29 +459,29 @@
     <message>
         <source>Normal</source>
         <comment>Normal (black &amp; white) text color theme</comment>
-        <translation type="unfinished"></translation>
+        <translation>Normal</translation>
     </message>
     <message>
         <source>Sepia</source>
         <comment>Sepia text color theme</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sepia</translation>
     </message>
     <message>
         <source>Text Theme</source>
         <comment>Text color theme</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tema Teks</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Jenis Huruf</translation>
     </message>
     <message>
         <source>Example text. Text theme and font are used only for plain text files and reflow mode.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teks contoh. Tema dan jenis huruf teks hanya digunakan untuk berkas teks polos dan modus alir-ulang.</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Teks</translation>
     </message>
 </context>
 <context>

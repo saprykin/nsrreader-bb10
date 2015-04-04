@@ -460,7 +460,7 @@
     <message>
         <source>Normal</source>
         <comment>Normal (black &amp; white) text color theme</comment>
-        <translation>Нормальная</translation>
+        <translation>Обычная</translation>
     </message>
     <message>
         <source>Sepia</source>
