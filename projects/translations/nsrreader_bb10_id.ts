@@ -767,10 +767,6 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
         <translation>Bahasa Sirilik/Ukraina (KOI8-U)</translation>
     </message>
     <message>
-        <source>Hebrew (ISO-8859-8)</source>
-        <translation>Bahasa Ibrani (ISO-8859-8)</translation>
-    </message>
-    <message>
         <source>Hebrew (ISO-8859-8-I)</source>
         <translation>Bahasa Ibrani (ISO-8859-8-I)</translation>
     </message>
@@ -901,6 +897,10 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
     <message>
         <source>WINSAMI2</source>
         <translation>WINSAMI2</translation>
+    </message>
+    <message>
+        <source>Visual Hebrew (ISO-8859-8)</source>
+        <translation>Bahasa Ibrani Visual (ISO-8859-8)</translation>
     </message>
 </context>
 <context>

@@ -764,10 +764,6 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hebrew (ISO-8859-8)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Hebrew (ISO-8859-8-I)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -897,6 +893,10 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     </message>
     <message>
         <source>WINSAMI2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual Hebrew (ISO-8859-8)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

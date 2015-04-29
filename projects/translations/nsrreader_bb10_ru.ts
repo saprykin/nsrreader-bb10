@@ -767,10 +767,6 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
         <translation>Кириллица/Украина (KOI8-U)</translation>
     </message>
     <message>
-        <source>Hebrew (ISO-8859-8)</source>
-        <translation>Иврит (ISO-8859-8)</translation>
-    </message>
-    <message>
         <source>Hebrew (ISO-8859-8-I)</source>
         <translation>Иврит (ISO-8859-8-I)</translation>
     </message>
@@ -901,6 +897,10 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>WINSAMI2</source>
         <translation>WINSAMI2</translation>
+    </message>
+    <message>
+        <source>Visual Hebrew (ISO-8859-8)</source>
+        <translation>Визуальный иврит (ISO-8859-8)</translation>
     </message>
 </context>
 <context>
