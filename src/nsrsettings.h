@@ -1,7 +1,7 @@
 #ifndef NSRSETTINGS_H_
 #define NSRSETTINGS_H_
 
-#include "insrsettings.h"
+#include "interfaces/insrsettings.h"
 #include "nsrsession.h"
 #include "nsrreadingtheme.h"
 

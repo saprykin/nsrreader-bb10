@@ -1,7 +1,7 @@
 #ifndef NSRTHUMBNAILER_H_
 #define NSRTHUMBNAILER_H_
 
-#include "insrthumbnailer.h"
+#include "interfaces/insrthumbnailer.h"
 #include "nsrrenderedpage.h"
 
 #include <QString>
