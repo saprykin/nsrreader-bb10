@@ -149,14 +149,14 @@ NSRPageSlider::onSliderTouchEvent (bb::cascades::TouchEvent* event)
 		emit interactionStarted ();
 		break;
 	case TouchType::Up:
-		_slider->setValue ((int) _slider->immediateValue ());
+		_slider->setValue ((int) (_slider->immediateValue () + 0.5));
 		emit interactionEnded ();
 		break;
 	case TouchType::Move:
-		emit currentValueChanged ((int) _slider->immediateValue ());
+		emit currentValueChanged ((int) (_slider->immediateValue () + 0.5));
 		break;
 	case TouchType::Cancel:
-		_slider->setValue ((int) _slider->immediateValue ());
+		_slider->setValue ((int) (_slider->immediateValue () + 0.5));
 		emit interactionEnded ();
 		break;
 	default:
@@ -172,7 +172,7 @@ NSRPageSlider::onTrackpadEvent (bb::cascades::TrackpadEvent* event)
 	case TrackpadEventType::Release:
 	{
 		if (_trackpadActivated) {
-			_slider->setValue ((int) _slider->immediateValue ());
+			_slider->setValue ((int) (_slider->immediateValue () + 0.5));
 			emit interactionEnded ();
 		} else {
 			_originValue = _slider->immediateValue ();
@@ -185,14 +185,14 @@ NSRPageSlider::onTrackpadEvent (bb::cascades::TrackpadEvent* event)
 	case TrackpadEventType::Move:
 	{
 		if (_trackpadActivated)
-			emit currentValueChanged ((int) _slider->immediateValue ());
+			emit currentValueChanged ((int) (_slider->immediateValue () + 0.5));
 	}
 	break;
 	case TrackpadEventType::Cancel:
 	{
 		if (_trackpadActivated) {
 			_slider->setValue (_originValue);
-			emit currentValueChanged ((int) _slider->immediateValue ());
+			emit currentValueChanged ((int) (_slider->immediateValue () + 0.1));
 			emit interactionEnded ();
 		}
 	}
@@ -213,7 +213,7 @@ NSRPageSlider::onWantsHighlightChanged (bool wantsHighlight)
 
 	if (_trackpadActivated && !wantsHighlight) {
 		_slider->setValue (_originValue);
-		emit currentValueChanged ((int) _slider->immediateValue ());
+		emit currentValueChanged ((int) (_slider->immediateValue () + 0.1));
 		emit interactionEnded ();
 		_trackpadActivated = false;
 	}
