@@ -47,11 +47,11 @@
     </message>
     <message>
         <source>Visit Twitter page</source>
-        <translation>访问Twitter页面</translation>
+        <translation>访问 Twitter 页面</translation>
     </message>
     <message>
         <source>Visit Facebook page</source>
-        <translation>访问Facebook页面</translation>
+        <translation>访问 Facebook 页面</translation>
     </message>
     <message>
         <source>Buy full version of the app</source>
@@ -59,12 +59,12 @@
     </message>
     <message>
         <source>You are using the Lite version which can read only first %1 pages of the file. Please consider buying the full version if you want to read larger files.</source>
-        <translation>您正在使用Lite版，仅可以阅读文件前 %1 页。如果您想要阅读更大文件，请考虑购买完整版。</translation>
+        <translation>您正在使用 Lite 版，仅可以阅读文件前 %1 页。如果您想要阅读更大文件，请考虑购买完整版。</translation>
     </message>
     <message>
         <source>for BlackBerry%1 10</source>
         <comment>%1 will be replaced with reg in circle symbol</comment>
-        <translation>为BlackBerry%1 10</translation>
+        <translation>为 BlackBerry%1 10</translation>
     </message>
     <message>
         <source>Rendering engine %1</source>
@@ -85,11 +85,11 @@
     </message>
     <message>
         <source>NSR Reader is a handy tool for reading PDF, DjVu, TIFF and TXT files. Hope you will be enjoying using it! Please take a look at the following instructions and tips to make reading more comfortable.</source>
-        <translation>NSR Reader是是一个方便的工具，用于读取PDF、DjVu、TIFF、TXT 文件。希望您会喜欢使用它！请看下面的说明和提示，可以让阅读更舒适。</translation>
+        <translation>NSR Reader 是是一个方便的工具，用于读取 PDF、DjVu、TIFF、TXT 文件。希望您会喜欢使用它！请看下面的说明和提示，可以让阅读更舒适。</translation>
     </message>
     <message>
         <source>NSR Reader always saves position for every file.</source>
-        <translation>NSR Reader始终为每个文件保存位置。</translation>
+        <translation>NSR Reader 始终为每个文件保存位置。</translation>
     </message>
     <message>
         <source>Just tap the screen to see current page and overall page count at the top left corner.</source>
@@ -109,15 +109,15 @@
     </message>
     <message>
         <source>NSR Reader caches already rendered pages to increase performance.</source>
-        <translation>NSR Reader缓存已呈现页面以提高性能。</translation>
+        <translation>NSR Reader 缓存已呈现页面以提高性能。</translation>
     </message>
     <message>
         <source>If you have any problems with the app, please contact me (see contacts on &lt;i&gt;About&lt;/i&gt; page). Any suggestions are highly welcomed, too.</source>
-        <translation>如果您对该应用程序有任何问题，请随时联系我 （在 &lt;i&gt;关于&lt;/i&gt; 页面查看联系方式）。同时欢迎任何建议。</translation>
+        <translation>如果您对该应用程序有任何问题，请随时联系我（在 &lt;i&gt;关于&lt;/i&gt; 页面查看联系方式）。同时欢迎任何建议。</translation>
     </message>
     <message>
         <source>Please leave a review for NSR Reader if you like it to help others find it in the store. Thank you!</source>
-        <translation>如果您喜欢NSR Reader，请留下评论帮助其他人在应用商店中发现它。非常感谢！</translation>
+        <translation>如果您喜欢 NSR Reader，请留下评论帮助其他人在应用商店中发现它。非常感谢！</translation>
     </message>
     <message>
         <source>&lt;b&gt;P&lt;/b&gt; key to navigate to previous page</source>
@@ -169,7 +169,7 @@
     </message>
     <message>
         <source>Use navigation arrows on Action Bar (at the bottom of the screen). Double tap on the left area of the screen to go to previous page, on the right area to go to next page and on the center to fit page to screen width. Single tap on any side of the screen is enough in text reflow mode. Another way of navigation is to use &lt;i&gt;Volume Up/Down&lt;/i&gt; hardware keys: &lt;i&gt;Volume Up&lt;/i&gt; key for the previous page and &lt;i&gt;Volume Down&lt;/i&gt; key for the next page. &lt;p&gt;&lt;/p&gt;If you have physical keyboard use the following keys (may vary with language): &lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</source>
-        <translation>在操作栏上使用导航箭头（在屏幕底部）。双击屏幕区域左侧转到上一页，在后侧区域以转到下一页，在中心区域以适配页面到屏幕宽度。单击屏幕任意一侧是文本重排模式。其他导航方式是使用 &lt;i&gt;音量加/减&lt;/i&gt; 物理按键： &lt;i&gt;音量加&lt;/i&gt; 键转到上一页， &lt;i&gt;音量减&lt;/i&gt; 键转到下一页。 &lt;p&gt;&lt;/p&gt;如果您有物理键盘，使用以下按键 （随语言可能改变）：&lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</translation>
+        <translation>在操作栏上使用导航箭头（在屏幕底部）。双击屏幕区域左侧转到上一页，在后侧区域以转到下一页，在中心区域以适配页面到屏幕宽度。单击屏幕任意一侧是文本重排模式。其他导航方式是使用 &lt;i&gt;音量加/减&lt;/i&gt; 物理按键：&lt;i&gt;音量加&lt;/i&gt; 键转到上一页，&lt;i&gt;音量减&lt;/i&gt; 键转到下一页。&lt;p&gt;&lt;/p&gt;如果您有物理键盘，使用以下按键 （随语言可能改变）：&lt;ul&gt;&lt;li&gt;%1&lt;/li&gt;&lt;li&gt;%2&lt;/li&gt;&lt;li&gt;%3&lt;/li&gt;&lt;li&gt;%4&lt;/li&gt;&lt;li&gt;%5&lt;/li&gt;&lt;li&gt;%6&lt;/li&gt;&lt;li&gt;%7&lt;/li&gt;&lt;li&gt;%8&lt;/li&gt;&lt;li&gt;%9&lt;/li&gt;&lt;li&gt;%10&lt;/li&gt;&lt;li&gt;%11&lt;/li&gt;&lt;li&gt;%12&lt;/li&gt;&lt;li&gt;%13&lt;/li&gt;&lt;/ul&gt;%14</translation>
     </message>
     <message>
         <source>&lt;b&gt;E&lt;/b&gt; to open another file</source>
@@ -181,7 +181,7 @@
     </message>
     <message>
         <source>NSR Reader supports password protected PDF files, so don&apos;t scary them!</source>
-        <translation>NSR Reader支持受密码保护的PDF文件，所以不用担心！</translation>
+        <translation>NSR Reader 支持受密码保护的 PDF 文件，所以不用担心！</translation>
     </message>
 </context>
 <context>
@@ -625,7 +625,7 @@
     </message>
     <message>
         <source>It seems that NSR Reader doesn&apos;t have Shared Files permission required for proper working. Do you want to change the permission for shared files now? You have to restart the app after changing permissions.</source>
-        <translation>NSR Reader无正常工作所需的共享文件权限。您想要现在更改共享文件权限吗？您必须更改权限后重启该应用程序。</translation>
+        <translation>NSR Reader 无正常工作所需的共享文件权限。您想要现在更改共享文件权限吗？您必须更改权限后重启该应用程序。</translation>
     </message>
     <message>
         <source>Enter Password</source>
@@ -639,17 +639,17 @@
         <source>Seems that entered password is wrong or encryption algorithm is not supported.
 Please do not blame hard NSR Reader for that because it is only a piece of software :)</source>
         <translation>输入密码错误或加密算法不支持。
-请勿责怪NSR Reader，因为它只是一款软件 :)</translation>
+请勿责怪 NSR Reader，因为它只是一款软件 :)</translation>
     </message>
     <message>
         <source>Unknown error! Maybe file is broken.
 NSR Reader tried to open this file, but it can&apos;t :( Please check this file on desktop computer.</source>
         <translation>未知错误！文件可能已损坏。
-NSR Reader无法打开该文件 :( 请在桌面计算机上检查该文件。</translation>
+NSR Reader 无法打开该文件 :( 请在桌面计算机上检查该文件。</translation>
     </message>
     <message>
         <source>Lite version of NSR Reader allows to read only first %1 pages of the file. If you want to read larger files, please consider buying the full version.</source>
-        <translation>NSR Reader Lite版仅允许阅读该文件的 %1 页。如果您想阅读更大文件，请考虑购买完整版。</translation>
+        <translation>NSR Reader Lite 版仅允许阅读该文件的 %1 页。如果您想阅读更大文件，请考虑购买完整版。</translation>
     </message>
     <message>
         <source>Select File</source>
@@ -684,7 +684,7 @@ NSR Reader无法打开该文件 :( 请在桌面计算机上检查该文件。</t
     <name>NSRSettings</name>
     <message>
         <source>Unicode (UTF-8)</source>
-        <translation></translation>
+        <translation>Unicode（UTF-8）</translation>
     </message>
     <message>
         <source>Western European (ISO-8859-1)</source>
@@ -868,27 +868,27 @@ NSR Reader无法打开该文件 :( 请在桌面计算机上检查该文件。</t
     </message>
     <message>
         <source>Unicode (UTF-16)</source>
-        <translation></translation>
+        <translation>Unicode（UTF-16）</translation>
     </message>
     <message>
         <source>Unicode (UTF-16BE)</source>
-        <translation></translation>
+        <translation>Unicode（UTF-16BE）</translation>
     </message>
     <message>
         <source>Unicode (UTF-16LE)</source>
-        <translation></translation>
+        <translation>Unicode（UTF-16LE）</translation>
     </message>
     <message>
         <source>Unicode (UTF-32)</source>
-        <translation></translation>
+        <translation>Unicode（UTF-32）</translation>
     </message>
     <message>
         <source>Unicode (UTF-32BE)</source>
-        <translation></translation>
+        <translation>Unicode（UTF-32BE）</translation>
     </message>
     <message>
         <source>Unicode (UTF-32LE)</source>
-        <translation></translation>
+        <translation>Unicode（UTF-32LE）</translation>
     </message>
     <message>
         <source>Apple Roman</source>
