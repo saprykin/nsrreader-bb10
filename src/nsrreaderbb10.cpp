@@ -68,7 +68,8 @@ using namespace bb::multimedia;
 #endif
 #define NSR_GUI_MAIN_TAB_INDEX			0
 #define NSR_GUI_RECENT_TAB_INDEX		1
-#define NSR_GUI_BOOKMARKS_TAB_INDEX		2
+#define NSR_GUI_TOC_TAB_INDEX			2
+#define NSR_GUI_BOOKMARKS_TAB_INDEX		3
 
 NSRReaderBB10::NSRReaderBB10 (bb::cascades::Application *app) :
 	QObject (app),
@@ -528,8 +529,13 @@ NSRReaderBB10::initFullUI ()
 	if (_startMode == ApplicationStartupMode::InvokeCard) {
 		Application::instance()->setScene (_naviPane);
 	} else {
+		NavigationPane *tocNavi = NavigationPane::create ();
+
 		NSRLastDocsPage *recentPage = new NSRLastDocsPage ();
 		NSRBookmarksPage *bookmarksPage = new NSRBookmarksPage ();
+		NSRTocPage *tocPage = new NSRTocPage (tocNavi);
+
+		tocNavi->push (tocPage);
 
 		ok = connect (recentPage, SIGNAL (requestDocument (QString)), this, SLOT (onLastDocumentRequested (QString)));
 		Q_ASSERT (ok);
@@ -542,9 +548,10 @@ NSRReaderBB10::initFullUI ()
 
 		Tab *mainTab = Tab::create().content(_naviPane).title(trUtf8 ("Reading")).imageSource(QUrl ("asset:///main-tab.png"));
 		Tab *recentTab = Tab::create().content(recentPage).title(trUtf8 ("Recent")).imageSource(QUrl ("asset:///recent.png"));
+		Tab *tocTab = Tab::create().content(tocNavi).title(trUtf8 ("Contents")).imageSource(QUrl ("asset:///contents.png"));
 		Tab *bookmarksTab = Tab::create().content(bookmarksPage).title(trUtf8 ("Bookmarks")).imageSource(QUrl ("asset:///bookmarks.png"));
 
-		TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(bookmarksTab);
+		TabbedPane *tabbedPane = TabbedPane::create().add(mainTab).add(recentTab).add(tocTab).add(bookmarksTab);
 		tabbedPane->setPeekEnabled (false);
 
 		ok = connect (tabbedPane, SIGNAL (activePaneChanged (bb::cascades::AbstractPane *)),
@@ -566,39 +573,61 @@ NSRReaderBB10::initFullUI ()
 		ok = connect (bookmarksPage, SIGNAL (bookmarkChanged (int, bool)), this, SLOT (onBookmarkChanged (int, bool)));
 		Q_ASSERT (ok);
 
-		ok = connect (bookmarksPage, SIGNAL (pageRequested (int)), this, SLOT (onBookmarkPageRequested (int)));
+		ok = connect (bookmarksPage, SIGNAL (pageRequested (int)), this, SLOT (onPageRequestedFromTab (int)));
+		Q_ASSERT (ok);
+
+		ok = connect (_core, SIGNAL (sessionFileOpened (QString)), tocPage, SLOT (onDocumentOpened (QString)));
+		Q_ASSERT (ok);
+
+		ok = connect (_core, SIGNAL (sessionFileClosed (QString)), tocPage, SLOT (onDocumentClosed ()));
+		Q_ASSERT (ok);
+
+		ok = connect (tocPage, SIGNAL (pageRequested (int)), this, SLOT (onPageRequestedFromTab (int)));
+		Q_ASSERT (ok);
+
+		ok = connect (tocPage, SIGNAL (subtreeRequested (const NSRTocEntry *)),
+			      tocPage, SLOT (onSubtreeRequested (const NSRTocEntry *)));
 		Q_ASSERT (ok);
 
 		_translator->addTranslatable ((UIObject *) mainTab,
-				NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
-				QString ("NSRReaderBB10"),
-				QString ("Reading"));
+					      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+					      QString ("NSRReaderBB10"),
+					      QString ("Reading"));
 		_translator->addTranslatable ((UIObject *) recentTab,
-				NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
-				QString ("NSRReaderBB10"),
-				QString ("Recent"));
+					      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+					      QString ("NSRReaderBB10"),
+					      QString ("Recent"));
+		_translator->addTranslatable ((UIObject *) tocTab,
+					      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+					      QString ("NSRReaderBB10"),
+					      QString ("Contents"));
 		_translator->addTranslatable ((UIObject *) bookmarksTab,
-				NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
-				QString ("NSRReaderBB10"),
-				QString ("Bookmarks"));
+					      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
+					      QString ("NSRReaderBB10"),
+					      QString ("Bookmarks"));
 
 #if BBNDK_VERSION_AT_LEAST(10,2,0)
 		mainTab->accessibility()->setName (trUtf8 ("Main file reading page"));
 		recentTab->accessibility()->setName (trUtf8 ("Page with recent files"));
+		tocTab->accessibility()->setName (trUtf8 ("Page with table of contents"));
 		bookmarksTab->accessibility()->setName (trUtf8 ("Page with bookmarks"));
 
 		_translator->addTranslatable ((UIObject *) mainTab->accessibility (),
-				NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				QString ("NSRReaderBB10"),
-				QString ("Main file reading page"));
+					      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+					      QString ("NSRReaderBB10"),
+					      QString ("Main file reading page"));
 		_translator->addTranslatable ((UIObject *) recentTab->accessibility (),
-				NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				QString ("NSRReaderBB10"),
-				QString ("Page with recent files"));
+					      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+					      QString ("NSRReaderBB10"),
+					      QString ("Page with recent files"));
+		_translator->addTranslatable ((UIObject *) tocTab->accessibility (),
+					      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+					      QString ("NSRReaderBB10"),
+					      QString ("Page with table of contents"));
 		_translator->addTranslatable ((UIObject *) bookmarksTab->accessibility (),
-				NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
-				QString ("NSRReaderBB10"),
-				QString ("Page with bookmarks"));
+					      NSRTranslator::NSR_TRANSLATOR_TYPE_A11Y,
+					      QString ("NSRReaderBB10"),
+					      QString ("Page with bookmarks"));
 #endif
 
 		Application::instance()->setScene (tabbedPane);
@@ -991,19 +1020,25 @@ NSRReaderBB10::updateVisualControls ()
 		bookmarkAction->setEnabled (isDocumentOpened);
 		retranslateBookmarkAction (hasBookmark);
 	}
+
+	if (pane != NULL)
+		pane->at(NSR_GUI_TOC_TAB_INDEX)->setEnabled (true);
 }
 
 void
 NSRReaderBB10::disableVisualControls ()
 {
-	if (_startMode != ApplicationStartupMode::InvokeCard) {
-		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
+	if (_startMode != ApplicationStartupMode::InvokeCard) {
 		if (pane != NULL) {
 			pane->at(NSR_GUI_RECENT_TAB_INDEX)->setEnabled (false);
 			pane->at(NSR_GUI_BOOKMARKS_TAB_INDEX)->setEnabled (false);
 		}
 	}
+
+	if (pane != NULL)
+		pane->at(NSR_GUI_TOC_TAB_INDEX)->setEnabled (false);
 
 	_actionAggregator->setActionEnabled ("open", false);
 	_actionAggregator->setActionEnabled ("prev", false);
@@ -1627,7 +1662,7 @@ NSRReaderBB10::onBookmarkChanged (int page, bool removed)
 }
 
 void
-NSRReaderBB10::onBookmarkPageRequested (int page)
+NSRReaderBB10::onPageRequestedFromTab (int page)
 {
 	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
 
@@ -1645,6 +1680,11 @@ NSRReaderBB10::onDocumentOpened (const QString &path)
 
 	if (_startMode == ApplicationStartupMode::InvokeCard)
 		return;
+
+	NSRTocPage *tocPage = getTocPage ();
+
+	if (tocPage != NULL)
+		tocPage->setToc (_core->getToc ());
 
 	if (!_isActiveFrame && _core->getPagesCount () > 1)
 		setVolumeKeysEnabled (true);
@@ -1743,6 +1783,25 @@ NSRReaderBB10::getBookmarksPage () const
 	if (pane != NULL)
 		return dynamic_cast < NSRBookmarksPage * > (pane->at(NSR_GUI_BOOKMARKS_TAB_INDEX)->content ());
 	else
+		return NULL;
+}
+
+NSRTocPage *
+NSRReaderBB10::getTocPage () const
+{
+	if (_startMode == ApplicationStartupMode::InvokeCard)
+		return NULL;
+
+	TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+
+	if (pane != NULL) {
+		NavigationPane *tocNavi = dynamic_cast < NavigationPane * > (pane->at(NSR_GUI_TOC_TAB_INDEX)->content ());
+
+		if (tocNavi == NULL || tocNavi->count () == 0)
+			return NULL;
+
+		return dynamic_cast < NSRTocPage * > (tocNavi->at (0));
+	} else
 		return NULL;
 }
 

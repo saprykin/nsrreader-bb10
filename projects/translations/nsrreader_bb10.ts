@@ -236,11 +236,6 @@
 <context>
     <name>NSRBookmarksPage</name>
     <message>
-        <source>No bookmarks</source>
-        <comment>List bookmarks related to opened file</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Add bookmarks to display them</source>
         <translation type="unfinished"></translation>
     </message>
@@ -263,6 +258,11 @@
     </message>
     <message>
         <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No bookmarks</source>
+        <comment>List of bookmarks related to opened file</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -669,6 +669,14 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
         <source>Add bookmark for current page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Contents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page with table of contents</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRSceneCover</name>
@@ -897,6 +905,31 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     </message>
     <message>
         <source>Visual Hebrew (ISO-8859-8)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NSRTocPage</name>
+    <message>
+        <source>No contents</source>
+        <comment>List of contents related to opened file</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No contents to display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file to display contents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contents</source>
+        <comment>Title for window with contents</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image of contents</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

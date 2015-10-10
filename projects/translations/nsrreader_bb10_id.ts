@@ -237,11 +237,6 @@
 <context>
     <name>NSRBookmarksPage</name>
     <message>
-        <source>No bookmarks</source>
-        <comment>List bookmarks related to opened file</comment>
-        <translation>Tidak ada pembatas buku</translation>
-    </message>
-    <message>
         <source>Add bookmarks to display them</source>
         <translation>Tambah pembatas buku untuk menampilkan</translation>
     </message>
@@ -265,6 +260,11 @@
     <message>
         <source>Undo</source>
         <translation>Tidak jadi</translation>
+    </message>
+    <message>
+        <source>No bookmarks</source>
+        <comment>List of bookmarks related to opened file</comment>
+        <translation>Tidak ada pembatas buku</translation>
     </message>
 </context>
 <context>
@@ -672,6 +672,14 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
         <source>Add bookmark for current page</source>
         <translation>Tambah pembatas buku untuk halaman ini</translation>
     </message>
+    <message>
+        <source>Contents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page with table of contents</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRSceneCover</name>
@@ -901,6 +909,31 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
     <message>
         <source>Visual Hebrew (ISO-8859-8)</source>
         <translation>Bahasa Ibrani Visual (ISO-8859-8)</translation>
+    </message>
+</context>
+<context>
+    <name>NSRTocPage</name>
+    <message>
+        <source>No contents</source>
+        <comment>List of contents related to opened file</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No contents to display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file to display contents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contents</source>
+        <comment>Title for window with contents</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image of contents</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

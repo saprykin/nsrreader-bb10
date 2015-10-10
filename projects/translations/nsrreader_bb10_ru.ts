@@ -238,11 +238,6 @@
 <context>
     <name>NSRBookmarksPage</name>
     <message>
-        <source>No bookmarks</source>
-        <comment>List bookmarks related to opened file</comment>
-        <translation>Нет закладок</translation>
-    </message>
-    <message>
         <source>Image of bookmark</source>
         <translation>Изображение закладки</translation>
     </message>
@@ -266,6 +261,11 @@
     <message>
         <source>Add bookmarks to display them</source>
         <translation>Добавьте закладки для отображения</translation>
+    </message>
+    <message>
+        <source>No bookmarks</source>
+        <comment>List of bookmarks related to opened file</comment>
+        <translation>Нет закладок</translation>
     </message>
 </context>
 <context>
@@ -672,6 +672,14 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
         <source>It seems that NSR Reader doesn&apos;t have Shared Files permission required for proper working. Do you want to change the permission for shared files now? You have to restart the app after changing permissions.</source>
         <translation>Похоже, что у NSR Reader нет разрешения на чтение общих файлов, которое требуется для нормальной работы. Хотите изменить разрешение на чтение общих файлов сейчас? После изменения разрешений необходимо перезапустить приложение.</translation>
     </message>
+    <message>
+        <source>Contents</source>
+        <translation>Содержание</translation>
+    </message>
+    <message>
+        <source>Page with table of contents</source>
+        <translation>Страница с содержанием</translation>
+    </message>
 </context>
 <context>
     <name>NSRSceneCover</name>
@@ -901,6 +909,31 @@ NSR Reader tried to open this file, but it can&apos;t :( Please check this file 
     <message>
         <source>Visual Hebrew (ISO-8859-8)</source>
         <translation>Визуальный иврит (ISO-8859-8)</translation>
+    </message>
+</context>
+<context>
+    <name>NSRTocPage</name>
+    <message>
+        <source>No contents</source>
+        <comment>List of contents related to opened file</comment>
+        <translation>Содержание отсутствует</translation>
+    </message>
+    <message>
+        <source>No contents to display</source>
+        <translation>Нет содержания для отображения</translation>
+    </message>
+    <message>
+        <source>Open file to display contents</source>
+        <translation>Откройте файл для отображения содержания</translation>
+    </message>
+    <message>
+        <source>Contents</source>
+        <comment>Title for window with contents</comment>
+        <translation>Содержание</translation>
+    </message>
+    <message>
+        <source>Image of contents</source>
+        <translation>Изображение содержания</translation>
     </message>
 </context>
 <context>

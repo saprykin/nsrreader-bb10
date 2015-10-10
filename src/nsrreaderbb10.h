@@ -11,6 +11,7 @@
 #include "nsrbpseventhandler.h"
 #include "nsrtranslator.h"
 #include "nsrbookmarkspage.h"
+#include "nsrtocpage.h"
 #include "insrscenecover.h"
 
 #include <bb/cascades/pickers/FilePicker>
@@ -89,7 +90,7 @@ private Q_SLOTS:
     void onPageSliderValueChanged (int value);
     void onVkbVisibilityChanged (bool visible);
     void onBookmarkChanged (int page, bool removed);
-    void onBookmarkPageRequested (int page);
+    void onPageRequestedFromTab (int page);
     void onDocumentOpened (const QString &path);
     void onDocumentClosed ();
     void onActivePaneChanged (bb::cascades::AbstractPane *pane);
@@ -114,6 +115,7 @@ private:
     int getActionBarHeight ();
     int getActionBarHeightForOrientation (bb::cascades::UIOrientation::Type orientation);
     NSRBookmarksPage * getBookmarksPage () const;
+    NSRTocPage * getTocPage () const;
 
     NSRReaderCore				*_core;
     NSRPageView					*_pageView;
