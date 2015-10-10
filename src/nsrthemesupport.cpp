@@ -76,6 +76,12 @@ NSRThemeSupport::getPrimaryBrand () const
 	return _colorPrimaryBrand;
 }
 
+bb::cascades::Color
+NSRThemeSupport::getListSelection () const
+{
+	return _colorListSelection;
+}
+
 bb::cascades::VisualStyle::Type
 NSRThemeSupport::getVisualStyle () const
 {
@@ -162,7 +168,8 @@ NSRThemeSupport::NSRThemeSupport () :
 	_colorRecentItemText (Color::Gray),
 	_colorTipText (Color::Gray),
 	_colorOverlay (Color::fromRGBA (0.1f, 0.1f, 0.1f, 0.95f)),
-	_colorPrimaryBrand (Color::fromRGBA (0.0f, 0.66f, 0.87f))
+	_colorPrimaryBrand (Color::fromRGBA (0.0f, 0.66f, 0.87f)),
+	_colorListSelection (Color::fromRGBA (0.5f, 0.5f, 0.5f, 0.2f))
 {
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
 	_colorPrimaryBrand = Color::fromRGBA (1.0f, 0.5f, 0.0f);

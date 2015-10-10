@@ -20,6 +20,7 @@ public:
 	bb::cascades::Color getTipText () const;
 	bb::cascades::Color getOverlay () const;
 	bb::cascades::Color getPrimaryBrand () const;
+	bb::cascades::Color getListSelection () const;
 	bb::cascades::VisualStyle::Type getVisualStyle () const;
 	void setVisualStyle (bb::cascades::VisualStyle::Type visualStyle);
 	QString getAssetsThemeDirectory () const;
@@ -41,6 +42,7 @@ private:
 	bb::cascades::Color		_colorTipText;
 	bb::cascades::Color		_colorOverlay;
 	bb::cascades::Color		_colorPrimaryBrand;
+	bb::cascades::Color		_colorListSelection;
 };
 
 #endif /* NSRTHEMESUPPORT_H_ */
