@@ -52,7 +52,7 @@ NSRBookmarksPage::NSRBookmarksPage (QObject *parent) :
 	Label *emptyLabel = Label::create().horizontal(HorizontalAlignment::Center)
 					   .vertical(VerticalAlignment::Center)
 					   .multiline(true)
-					   .text(trUtf8 ("No bookmarks", "List bookmarks related to opened file"));
+					   .text(trUtf8 ("No bookmarks", "List of bookmarks related to opened file"));
 	emptyLabel->textStyle()->setFontSize (FontSize::Large);
 	emptyLabel->textStyle()->setTextAlign (TextAlign::Center);
 
