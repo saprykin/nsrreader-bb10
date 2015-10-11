@@ -22,8 +22,7 @@ NSRTocItem::NSRTocItem (bb::cascades::Container* parent) :
 	_imageViewPressed (NULL),
 	_itemContainer (NULL),
 	_labelContainer (NULL),
-	_imageContainer (NULL),
-	_selectContainer (NULL)
+	_imageContainer (NULL)
 {
 	Container *rootContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 						      .vertical(VerticalAlignment::Fill)
@@ -41,11 +40,6 @@ NSRTocItem::NSRTocItem (bb::cascades::Container* parent) :
 	_labelContainer = Container::create().horizontal(HorizontalAlignment::Fill)
 					     .vertical(VerticalAlignment::Center)
 					     .layoutProperties(StackLayoutProperties::create().spaceQuota (1.0));
-
-	_selectContainer = Container::create().horizontal(HorizontalAlignment::Fill)
-					      .vertical(VerticalAlignment::Fill)
-					      .background(NSRThemeSupport::instance()->getOverlay ())
-					      .visible(false);
 
 #if BBNDK_VERSION_AT_LEAST(10,3,1)
 	_itemContainer->setLeftPadding (ui()->sddu (2));
@@ -91,7 +85,6 @@ NSRTocItem::NSRTocItem (bb::cascades::Container* parent) :
 	_itemContainer->add (_imageContainer);
 
 	innerRootContainer->add (_itemContainer);
-	innerRootContainer->add (_selectContainer);
 
 	rootContainer->add (innerRootContainer);
 	rootContainer->add (Divider::create().bottomMargin(0.0f).topMargin(0.0f));
@@ -142,9 +135,9 @@ void
 NSRTocItem::select (bool select)
 {
 	if (select)
-		(static_cast<Container *> (root()))->setBackground (NSRThemeSupport::instance()->getListSelection ());
+		(static_cast<Container *> (root ()))->setBackground (NSRThemeSupport::instance()->getListSelection ());
 	else
-		(static_cast<Container *> (root()))->setBackground (Color::Transparent);
+		(static_cast<Container *> (root ()))->setBackground (Color::Transparent);
 }
 
 void

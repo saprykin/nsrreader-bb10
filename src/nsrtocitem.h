@@ -60,7 +60,6 @@ private:
 	bb::cascades::Container *		_itemContainer;
 	bb::cascades::Container *		_labelContainer;
 	bb::cascades::Container *		_imageContainer;
-	bb::cascades::Container *		_selectContainer;
 };
 
 #endif /* NSRTOCITEM_H_ */
