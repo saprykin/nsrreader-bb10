@@ -589,6 +589,10 @@ NSRReaderBB10::initFullUI ()
 			      tocPage, SLOT (onSubtreeRequested (const NSRTocEntry *)));
 		Q_ASSERT (ok);
 
+		ok = connect (tocNavi, SIGNAL (popTransitionEnded (bb::cascades::Page *)),
+				tocPage, SLOT (onPopTransitionEnded (bb::cascades::Page *)));
+		Q_ASSERT (ok);
+
 		_translator->addTranslatable ((UIObject *) mainTab,
 					      NSRTranslator::NSR_TRANSLATOR_TYPE_TAB,
 					      QString ("NSRReaderBB10"),

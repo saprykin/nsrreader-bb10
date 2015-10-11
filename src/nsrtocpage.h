@@ -30,6 +30,7 @@ public Q_SLOTS:
 	void onDocumentOpened (const QString& file);
 	void onDocumentClosed ();
 	void onSubtreeRequested (const NSRTocEntry *toc);
+	void onPopTransitionEnded (bb::cascades::Page *page);
 
 private Q_SLOTS:
 	void updateUi ();

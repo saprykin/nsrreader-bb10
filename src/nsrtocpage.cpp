@@ -220,6 +220,13 @@ NSRTocPage::onSubtreeRequested (const NSRTocEntry *toc)
 }
 
 void
+NSRTocPage::onPopTransitionEnded (bb::cascades::Page *page)
+{
+	if (page != NULL)
+		delete page;
+}
+
+void
 NSRTocPage::unloadData ()
 {
 	_model->clear ();
