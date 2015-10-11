@@ -8,7 +8,8 @@
 #include <bb/cascades/Divider>
 
 #if BBNDK_VERSION_AT_LEAST(10,3,1)
-#include <bb/cascades/TrackpadHandler>
+#  include <bb/cascades/TrackpadHandler>
+#  include <bb/cascades/NavigationHandler>
 #endif
 
 using namespace bb::cascades;
@@ -113,7 +114,7 @@ NSRTocItem::NSRTocItem (bb::cascades::Container* parent) :
 	Q_ASSERT (ok);
 
 	ok = connect (this, SIGNAL (locallyFocusedChanged (bool)),
-		      this, SLOT (onLocallyFocusedChanged (bool)));
+		      this, SLOT (onItemLocallyFocusedChanged (bool)));
 	Q_ASSERT (ok);
 
 	ok = connect (_imageContainer, SIGNAL (locallyFocusedChanged (bool)),
@@ -122,8 +123,17 @@ NSRTocItem::NSRTocItem (bb::cascades::Container* parent) :
 
 	TrackpadHandler *trackpadHandler = TrackpadHandler::create()
 						.onTrackpad (this, SLOT (onImageTrackpadEvent (bb::cascades::TrackpadEvent *)));
-
 	_imageContainer->addEventHandler (trackpadHandler);
+
+	TrackpadHandler *itemTrackpadHandler = TrackpadHandler::create()
+						.onTrackpad (this, SLOT (onItemTrackpadEvent (bb::cascades::TrackpadEvent *)));
+	addEventHandler (itemTrackpadHandler);
+
+	/* For unknown reason, navigation order doesn't work as should be,
+	 * so we do that manually */
+	NavigationHandler *naviHandler = NavigationHandler::create()
+						.onNavigation (this, SLOT (onItemNavigation (bb::cascades::NavigationEvent*)));
+	addEventHandler (naviHandler);
 #endif
 }
 
@@ -185,25 +195,13 @@ NSRTocItem::onDynamicDUFactorChanged (float dduFactor)
 }
 
 void
-NSRTocItem::onLocallyFocusedChanged (bool locallyFocused)
-{
-#if BBNDK_VERSION_AT_LEAST(10,3,1)
-	_imageContainer->navigation()->setFocusPolicy (locallyFocused ? NavigationFocusPolicy::Focusable :
-									NavigationFocusPolicy::NotFocusable);
-
-#else
-	Q_UNUSED (lcoalllocallyFocused);
-#endif
-}
-
-void
 NSRTocItem::onImageLocallyFocusedChanged (bool locallyFocused)
 {
 #if BBNDK_VERSION_AT_LEAST(10,3,1)
-	_imageView->setVisible (locallyFocused);
-	_imageViewPressed->setVisible (!locallyFocused);
+	_imageView->setVisible (!locallyFocused);
+	_imageViewPressed->setVisible (locallyFocused);
 #else
-	Q_UNUSED (lcoalllocallyFocused);
+	Q_UNUSED (locallyFocused);
 #endif
 }
 
@@ -221,6 +219,17 @@ NSRTocItem::onImageTouchEvent (bb::cascades::TouchEvent *event)
 }
 
 void
+NSRTocItem::onItemLocallyFocusedChanged (bool locallyFocused)
+{
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	_imageContainer->navigation()->setFocusPolicy (locallyFocused ? NavigationFocusPolicy::Focusable :
+									NavigationFocusPolicy::NotFocusable);
+#else
+	Q_UNUSED (locallyFocused);
+#endif
+}
+
+void
 NSRTocItem::onItemTouchEvent (bb::cascades::TouchEvent *event)
 {
 	if (event->isDown ())
@@ -231,15 +240,8 @@ void
 NSRTocItem::onImageTrackpadEvent (bb::cascades::TrackpadEvent* event)
 {
 #if BBNDK_VERSION_AT_LEAST(10,3,1)
-	if (event->trackpadEventType () == TrackpadEventType::Press) {
-		_imageView->setVisible (false);
-		_imageViewPressed->setVisible (true);
+	if (event->trackpadEventType () == TrackpadEventType::Press)
 		_view->setProperty (NSR_TOC_ITEM_INNER_TAP_PROP, true);
-	} else if (event->trackpadEventType () == TrackpadEventType::Cancel ||
-		   event->trackpadEventType () == TrackpadEventType::Release) {
-		_imageView->setVisible (true);
-		_imageViewPressed->setVisible (false);
-	}
 #else
 	Q_UNUSED (event);
 #endif
@@ -251,6 +253,19 @@ NSRTocItem::onItemTrackpadEvent (bb::cascades::TrackpadEvent* event)
 #if BBNDK_VERSION_AT_LEAST(10,3,1)
 	if (event->trackpadEventType () == TrackpadEventType::Press)
 		_view->setProperty (NSR_TOC_ITEM_INNER_TAP_PROP, false);
+#else
+	Q_UNUSED (event);
+#endif
+}
+
+void
+NSRTocItem::onItemNavigation (bb::cascades::NavigationEvent* event)
+{
+#if BBNDK_VERSION_AT_LEAST(10,3,1)
+	if (event->navigationEventType () == NavigationEventType::Right) {
+		if (_imageContainer->isVisible ())
+			_imageContainer->setLocallyFocused (true);
+	}
 #else
 	Q_UNUSED (event);
 #endif

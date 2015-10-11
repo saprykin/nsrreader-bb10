@@ -14,11 +14,18 @@
 
 #if BBNDK_VERSION_AT_LEAST(10,3,1)
 #  include <bb/cascades/TrackpadEvent>
+#  include <bb/cascades/NavigationEvent>
 #else
 typedef bb::cascades::Event TrackpadEvent;
 
 namespace bb { namespace cascades {
 	class TrackpadEvent;
+}}
+
+typedef bb::cascades::Event NavigationEvent;
+
+namespace bb { namespace cascades {
+	class NavigationEvent;
 }}
 #endif
 
@@ -44,12 +51,13 @@ public:
 
 private Q_SLOTS:
 	void onDynamicDUFactorChanged (float dduFactor);
-	void onLocallyFocusedChanged (bool locallyFocused);
 	void onImageLocallyFocusedChanged (bool locallyFocused);
 	void onImageTouchEvent (bb::cascades::TouchEvent *event);
+	void onItemLocallyFocusedChanged (bool locallyFocused);
 	void onItemTouchEvent (bb::cascades::TouchEvent *event);
 	void onImageTrackpadEvent (bb::cascades::TrackpadEvent* event);
 	void onItemTrackpadEvent (bb::cascades::TrackpadEvent* event);
+	void onItemNavigation (bb::cascades::NavigationEvent* event);
 
 private:
 	const NSRTocEntry *			_tocEntry;
