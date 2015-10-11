@@ -55,7 +55,7 @@ using namespace bb::cascades::pickers;
 using namespace bb::device;
 using namespace bb::multimedia;
 
-#define NSR_GUI_VERSION				"1.6.2"
+#define NSR_GUI_VERSION				"1.6.3"
 
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
 #  define NSR_GUI_ACTION_BAR_NORMAL_HEIGHT	(Application::instance()->scene()->ui()->sdu (12))
