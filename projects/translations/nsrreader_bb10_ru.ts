@@ -184,6 +184,10 @@
         <source>NSR Reader supports password protected PDF files, so don&apos;t scary them!</source>
         <translation>NSR Reader поддерживает зашифрованные файлы PDF, так что не пугайтесь их!</translation>
     </message>
+    <message>
+        <source>Licensed under the GPLv2</source>
+        <translation>Лицензировано под GPLv2 </translation>
+    </message>
 </context>
 <context>
     <name>NSRBookmarkItem</name>

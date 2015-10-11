@@ -182,6 +182,10 @@
         <source>NSR Reader supports password protected PDF files, so don&apos;t scary them!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Licensed under the GPLv2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NSRBookmarkItem</name>

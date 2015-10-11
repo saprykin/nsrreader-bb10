@@ -126,6 +126,13 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 	reviewLabel->setTextFormat (TextFormat::Html);
 	reviewLabel->textStyle()->setTextAlign (TextAlign::Center);
 
+	Label *licenseLabel = Label::create().horizontal(HorizontalAlignment::Center)
+					     .vertical(VerticalAlignment::Fill)
+					     .multiline(true);
+	licenseLabel->setText (trUtf8 ("Licensed under the GPLv2"));
+	licenseLabel->textStyle()->setFontSize (FontSize::Small);
+	licenseLabel->textStyle()->setTextAlign (TextAlign::Center);
+
 #ifdef NSR_LITE_VERSION
 	_liteLabel = Label::create().horizontal(HorizontalAlignment::Center)
 					  .vertical(VerticalAlignment::Fill)
@@ -154,6 +161,8 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 #ifdef NSR_LITE_VERSION
 	_aboutContainer->add (_liteLabel);
 #endif
+
+	_aboutContainer->add (licenseLabel);
 
 	/* Help section goes next */
 
@@ -284,6 +293,10 @@ NSRAboutPage::NSRAboutPage (NSRAboutSection section, QObject *parent) :
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
 				      QString ("NSRAboutPage"),
 				      QString ("Please, leave a review if you like this app\n<b>Thank you!</b>"));
+	_translator->addTranslatable ((UIObject *) licenseLabel,
+				      NSRTranslator::NSR_TRANSLATOR_TYPE_LABEL,
+				      QString ("NSRAboutPage"),
+				      QString ("Licensed under the GPLv2"));
 	_translator->addTranslatable ((UIObject *) reviewAction,
 				      NSRTranslator::NSR_TRANSLATOR_TYPE_ACTION,
 				      QString ("NSRAboutPage"),
