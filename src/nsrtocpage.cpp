@@ -144,7 +144,12 @@ NSRTocPage::NSRTocPage (bb::cascades::NavigationPane *naviPane, QObject *parent)
 
 NSRTocPage::~NSRTocPage ()
 {
-	unloadData ();
+	_model->clear ();
+
+	if (_toc != NULL) {
+		delete _toc;
+		_toc = NULL;
+	}
 }
 
 void
