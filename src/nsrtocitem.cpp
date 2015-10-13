@@ -49,7 +49,7 @@ NSRTocItem::NSRTocItem (bb::cascades::Container* parent) :
 	_labelContainer->setBottomPadding (ui()->sddu (2.3));
 #elif BBNDK_VERSION_AT_LEAST(10,3,0)
 	_itemContainer->setLeftPadding (ui()->sdu (2));
-	_labelContainer->setLeftMargin (ui()->ddu (2));
+	_labelContainer->setLeftMargin (ui()->sdu (2));
 	_labelContainer->setTopPadding (ui()->sdu (2.3));
 	_labelContainer->setBottomPadding (ui()->sdu (2.3));
 #else
