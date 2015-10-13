@@ -1439,6 +1439,13 @@ NSRReaderBB10::onInvoke (const bb::system::InvokeRequest& req)
 #endif
 		saveSession ();
 		loadSession (file, page);
+
+		TabbedPane *pane = dynamic_cast < TabbedPane * > (Application::instance()->scene ());
+
+		if (pane != NULL) {
+			pane->setActiveTab (pane->at(NSR_GUI_MAIN_TAB_INDEX));
+			pane->resetSidebarState ();
+		}
 #ifdef NSR_LITE_VERSION
 	} else if (target == "com.gmail.lite.reader.nsr.viewer")
 #else
