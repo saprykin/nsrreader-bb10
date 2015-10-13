@@ -139,28 +139,18 @@ NSRTocPage::NSRTocPage (bb::cascades::NavigationPane *naviPane, QObject *parent)
 	_listView->setDataModel (_model);
 
 	/* Show empty label and image */
-	unloadData ();
+	unloadDataUi ();
 }
 
 NSRTocPage::~NSRTocPage ()
 {
-	_model->clear ();
-
-	if (_toc != NULL) {
-		delete _toc;
-		_toc = NULL;
-	}
+	unloadData ();
 }
 
 void
 NSRTocPage::setToc (NSRTocEntry *toc)
 {
-	_model->clear ();
-
-	if (_toc != NULL) {
-		delete _toc;
-		_toc = NULL;
-	}
+	unloadData ();
 
 	_toc = toc;
 
@@ -192,7 +182,7 @@ NSRTocPage::onDocumentOpened (const QString& file)
 void
 NSRTocPage::onDocumentClosed ()
 {
-	unloadData ();
+	unloadDataUi ();
 }
 
 void
@@ -229,12 +219,23 @@ NSRTocPage::onPopTransitionEnded (bb::cascades::Page *page)
 void
 NSRTocPage::unloadData ()
 {
+	if (_naviPane != NULL && _naviPane->count () > 0 && _naviPane->at (0) == this) {
+		while (_naviPane->count () != 1)
+			_naviPane->pop ();
+	}
+
 	_model->clear ();
 
 	if (_toc != NULL) {
 		delete _toc;
 		_toc = NULL;
 	}
+}
+
+void
+NSRTocPage::unloadDataUi ()
+{
+	unloadData ();
 
 	_listView->setVisible (false);
 	_emptyContainer->setVisible (true);

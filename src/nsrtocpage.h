@@ -39,6 +39,7 @@ private Q_SLOTS:
 
 private:
 	void unloadData ();
+	void unloadDataUi ();
 
 	NSRTranslator *			_translator;
 	NSRTocEntry *			_toc;
