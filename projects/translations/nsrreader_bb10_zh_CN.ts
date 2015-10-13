@@ -185,7 +185,7 @@
     </message>
     <message>
         <source>Licensed under the GPLv2</source>
-        <translation type="unfinished"></translation>
+        <translation>GPLv2 授权许可</translation>
     </message>
 </context>
 <context>
@@ -678,11 +678,11 @@ NSR Reader 无法打开该文件 :( 请在桌面计算机上检查该文件。</
     </message>
     <message>
         <source>Contents</source>
-        <translation type="unfinished"></translation>
+        <translation>目录</translation>
     </message>
     <message>
         <source>Page with table of contents</source>
-        <translation type="unfinished"></translation>
+        <translation>目录页</translation>
     </message>
 </context>
 <context>
@@ -904,11 +904,11 @@ NSR Reader 无法打开该文件 :( 请在桌面计算机上检查该文件。</
     </message>
     <message>
         <source>Apple Roman</source>
-        <translation></translation>
+        <translation>Apple Roman</translation>
     </message>
     <message>
         <source>WINSAMI2</source>
-        <translation></translation>
+        <translation>WINSAMI2</translation>
     </message>
     <message>
         <source>Visual Hebrew (ISO-8859-8)</source>
@@ -920,24 +920,24 @@ NSR Reader 无法打开该文件 :( 请在桌面计算机上检查该文件。</
     <message>
         <source>No contents</source>
         <comment>List of contents related to opened file</comment>
-        <translation type="unfinished"></translation>
+        <translation>无目录</translation>
     </message>
     <message>
         <source>No contents to display</source>
-        <translation type="unfinished"></translation>
+        <translation>无可显示目录</translation>
     </message>
     <message>
         <source>Open file to display contents</source>
-        <translation type="unfinished"></translation>
+        <translation>打开文件显示目录</translation>
     </message>
     <message>
         <source>Contents</source>
         <comment>Title for window with contents</comment>
-        <translation type="unfinished"></translation>
+        <translation>目录</translation>
     </message>
     <message>
         <source>Image of contents</source>
-        <translation type="unfinished"></translation>
+        <translation>目录图片</translation>
     </message>
 </context>
 <context>

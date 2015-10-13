@@ -185,7 +185,7 @@
     </message>
     <message>
         <source>Licensed under the GPLv2</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisensi menurut GPLv2</translation>
     </message>
 </context>
 <context>
@@ -678,11 +678,11 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
     </message>
     <message>
         <source>Contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Isi</translation>
     </message>
     <message>
         <source>Page with table of contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Halaman dengan daftar isi</translation>
     </message>
 </context>
 <context>
@@ -920,24 +920,24 @@ NSR Reader telah mencoba untuk membuka berkas ini, tetapi gagal :( Mohon memerik
     <message>
         <source>No contents</source>
         <comment>List of contents related to opened file</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kosong</translation>
     </message>
     <message>
         <source>No contents to display</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada yang dapat ditampilkan</translation>
     </message>
     <message>
         <source>Open file to display contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka berkas untuk menampilkan isi</translation>
     </message>
     <message>
         <source>Contents</source>
         <comment>Title for window with contents</comment>
-        <translation type="unfinished"></translation>
+        <translation>Isi</translation>
     </message>
     <message>
         <source>Image of contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Gambar isi</translation>
     </message>
 </context>
 <context>
